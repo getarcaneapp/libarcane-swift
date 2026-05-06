@@ -1,0 +1,26 @@
+name: Spec Update
+
+on:
+  schedule:
+    - cron: "0 8 * * *"
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@v4
+      - name: Checkout Arcane
+        uses: actions/checkout@v4
+        with:
+          repository: getarcaneapp/arcane
+          path: ../arcane
+      - name: Update spec
+        run: Scripts/update-spec.sh
+      - name: Open PR
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: Update Arcane OpenAPI spec
+          title: Update Arcane OpenAPI spec
+          body: Automated refresh of `Spec/openapi.json` from `getarcaneapp/arcane`.
+          branch: automation/update-openapi-spec

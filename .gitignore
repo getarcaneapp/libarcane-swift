@@ -1,0 +1,45 @@
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# Xcode
+DerivedData/
+*.xcuserdata/
+xcuserdata/
+*.xcscmblueprint
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Keep generated projects out of source unless intentionally checked in.
+*.xcodeproj/
+*.xcworkspace/
+
+# User schemes and local breakpoints
+*.xcscheme
+*.xcbkptlist
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Editor and local environment
+.vscode/
+.idea/
+*.swp
+*.swo
+*.tmp
+*.log
+.env
+.env.*
+
+# Code coverage and test output
+.coverage/
+coverage/
+*.profraw
+*.profdata
+TestResults/
+*.xcresult/
