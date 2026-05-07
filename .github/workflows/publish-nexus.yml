@@ -1,0 +1,69 @@
+name: Publish Nexus Swift Package
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Semantic version to publish, for example 1.0.0 or v1.0.0"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: macos-26
+    env:
+      REGISTRY_URL: https://pkgs.getarcane.app/repository/swift/
+      PACKAGE_ID: getarcaneapp.libarcane-swift
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Resolve version
+        id: version
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" ]]; then
+            raw="${{ inputs.version }}"
+          else
+            raw="${GITHUB_REF_NAME}"
+          fi
+          version="${raw#v}"
+          if [[ ! "${version}" =~ ^[0-9]+\.[0-9]+\.[0-9]+([.-][0-9A-Za-z.-]+)?$ ]]; then
+            echo "Invalid semantic version: ${raw}" >&2
+            exit 1
+          fi
+          echo "version=${version}" >> "${GITHUB_OUTPUT}"
+
+      - name: Build
+        run: swift build
+
+      - name: Configure Swift registry
+        run: |
+          swift package-registry set --scope getarcaneapp "${REGISTRY_URL}"
+
+      - name: Login to Nexus Swift registry
+        env:
+          NEXUS_SWIFT_USERNAME: ${{ secrets.NEXUS_SWIFT_USERNAME }}
+          NEXUS_SWIFT_PASSWORD: ${{ secrets.NEXUS_SWIFT_PASSWORD }}
+        run: |
+          if [[ -z "${NEXUS_SWIFT_USERNAME}" || -z "${NEXUS_SWIFT_PASSWORD}" ]]; then
+            echo "NEXUS_SWIFT_USERNAME and NEXUS_SWIFT_PASSWORD secrets are required" >&2
+            exit 1
+          fi
+          swift package-registry login "${REGISTRY_URL}login" \
+            --username "${NEXUS_SWIFT_USERNAME}" \
+            --password "${NEXUS_SWIFT_PASSWORD}" \
+            --no-confirm
+
+      - name: Publish package
+        run: |
+          swift package-registry publish "${PACKAGE_ID}" "${{ steps.version.outputs.version }}" \
+            --url "${REGISTRY_URL}"

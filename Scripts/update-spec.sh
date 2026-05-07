@@ -5,6 +5,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 ARCANE_REPO="${ARCANE_REPO:-${REPO_ROOT}/../arcane}"
 OUT="${REPO_ROOT}/Spec/openapi.json"
+GENERATOR="${GENERATOR:-swift-openapi-generator}"
 TMP_YAML="$(mktemp)"
 
 cleanup() {
@@ -14,6 +15,13 @@ trap cleanup EXIT
 
 if ! command -v yq >/dev/null 2>&1; then
   echo "error: yq is required to convert downgraded OpenAPI YAML to JSON" >&2
+  exit 1
+fi
+
+if ! command -v "${GENERATOR}" >/dev/null 2>&1; then
+  echo "error: ${GENERATOR} is required to regenerate Sources/ArcaneAPI" >&2
+  echo "Install it with: mint install apple/swift-openapi-generator" >&2
+  echo "Or run with GENERATOR=/path/to/swift-openapi-generator ${0}" >&2
   exit 1
 fi
 
@@ -46,3 +54,8 @@ jq_filter='
 yq -o=json '.' "${TMP_YAML}" | jq "${jq_filter}" > "${OUT}"
 jq -e '.openapi == "3.0.3"' "${OUT}" >/dev/null
 echo "OpenAPI spec written to ${OUT}"
+
+"${GENERATOR}" generate "${OUT}" \
+  --config "${REPO_ROOT}/Generator/openapi-generator-config.yaml" \
+  --output-directory "${REPO_ROOT}/Sources/ArcaneAPI"
+echo "Generated ArcaneAPI Swift sources in ${REPO_ROOT}/Sources/ArcaneAPI"

@@ -9,16 +9,16 @@ jobs:
   update:
     runs-on: macos-26
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Checkout Arcane
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: getarcaneapp/arcane
           path: ../arcane
       - name: Update spec
         run: Scripts/update-spec.sh
       - name: Open PR
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v8
         with:
           commit-message: Update Arcane OpenAPI spec
           title: Update Arcane OpenAPI spec
