@@ -4,11 +4,6 @@ public struct RESTService: Sendable {
     let transport: ArcaneURLSessionTransport
     let defaultEnvironmentID: EnvironmentID
 
-    init(transport: ArcaneURLSessionTransport, defaultEnvironmentID: EnvironmentID) {
-        self.transport = transport
-        self.defaultEnvironmentID = defaultEnvironmentID
-    }
-
     public func get<T: Decodable & Sendable>(_ path: String, query: [URLQueryItem] = []) async throws -> T {
         try await transport.request(path, query: query)
     }

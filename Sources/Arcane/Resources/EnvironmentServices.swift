@@ -36,7 +36,14 @@ public struct ProjectsService: Sendable {
         self.rest = rest
     }
 
-    public func logs(envID: EnvironmentID? = nil, id: String, follow: Bool = true, tail: String = "100", since: String? = nil, timestamps: Bool = false) -> LogStream {
+    public func logs(
+        envID: EnvironmentID? = nil,
+        id: String,
+        follow: Bool = true,
+        tail: String = "100",
+        since: String? = nil,
+        timestamps: Bool = false
+    ) -> LogStream {
         let env = envID ?? rest.defaultEnvironmentID
         return LogStream(
             transport: rest.transport,
@@ -53,7 +60,14 @@ public struct SwarmService: Sendable {
         self.rest = rest
     }
 
-    public func serviceLogs(envID: EnvironmentID? = nil, id: String, follow: Bool = true, tail: String = "100", since: String? = nil, timestamps: Bool = false) -> LogStream {
+    public func serviceLogs(
+        envID: EnvironmentID? = nil,
+        id: String,
+        follow: Bool = true,
+        tail: String = "100",
+        since: String? = nil,
+        timestamps: Bool = false
+    ) -> LogStream {
         let env = envID ?? rest.defaultEnvironmentID
         return LogStream(
             transport: rest.transport,

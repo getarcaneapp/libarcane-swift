@@ -24,10 +24,20 @@ public struct ContainersService: Sendable {
     }
 
     public func restart(envID: EnvironmentID? = nil, id: String) async throws {
-        let _: MessageResponse = try await rest.post(rest.environmentPath(envID, "containers/\(id)/restart"), body: Optional<EmptyBody>.none)
+        let _: MessageResponse = try await rest.post(
+            rest.environmentPath(envID, "containers/\(id)/restart"),
+            body: Optional<EmptyBody>.none
+        )
     }
 
-    public func logs(envID: EnvironmentID? = nil, id: String, follow: Bool = true, tail: String = "100", since: String? = nil, timestamps: Bool = false) -> LogStream {
+    public func logs(
+        envID: EnvironmentID? = nil,
+        id: String,
+        follow: Bool = true,
+        tail: String = "100",
+        since: String? = nil,
+        timestamps: Bool = false
+    ) -> LogStream {
         let env = envID ?? rest.defaultEnvironmentID
         return LogStream(
             transport: rest.transport,

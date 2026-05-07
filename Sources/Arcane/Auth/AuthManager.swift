@@ -93,7 +93,11 @@ public actor AuthManager {
                 }
                 let envelope = try decoder.decode(APIResponse<TokenRefreshResponse>.self, from: data)
                 let refreshResponse = envelope.data
-                return TokenPair(accessToken: refreshResponse.token, refreshToken: refreshResponse.refreshToken, expiresAt: refreshResponse.expiresAt)
+                return TokenPair(
+                    accessToken: refreshResponse.token,
+                    refreshToken: refreshResponse.refreshToken,
+                    expiresAt: refreshResponse.expiresAt
+                )
             } catch let error as ArcaneError {
                 throw error
             } catch let error as URLError {

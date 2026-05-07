@@ -80,6 +80,28 @@ swift test
 
 Integration tests are skipped unless `ARCANE_TEST_URL` is set.
 
+## Linting
+
+Install SwiftLint:
+
+```sh
+brew install swiftlint
+```
+
+Run it from the repository root:
+
+```sh
+swiftlint lint
+```
+
+Auto-correct safe style fixes:
+
+```sh
+swiftlint --fix
+```
+
+The config intentionally excludes `Sources/ArcaneAPI` because those files are generated from OpenAPI.
+
 ## Publishing to Nexus
 
 The package is published to the Sonatype Nexus Swift hosted registry at:

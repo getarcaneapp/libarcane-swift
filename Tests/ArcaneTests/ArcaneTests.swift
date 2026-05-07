@@ -1,6 +1,6 @@
-import XCTest
-import Foundation
 @testable import Arcane
+import Foundation
+import XCTest
 
 final class ArcaneTests: XCTestCase {
     func testEnvironmentIDLiteral() {
@@ -10,7 +10,7 @@ final class ArcaneTests: XCTestCase {
     }
 
     func testErrorMapping() {
-        let data = #"{"code":"CONFLICT","message":"already exists"}"#.data(using: .utf8)!
+        let data = Data(#"{"code":"CONFLICT","message":"already exists"}"#.utf8)
         let error = ArcaneError.from(statusCode: 409, data: data, headers: [:], decoder: ArcaneJSON.makeDecoder())
         XCTAssertEqual(error, .conflict(message: "already exists"))
     }

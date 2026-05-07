@@ -34,12 +34,24 @@ public struct LogStream: AsyncSequence, Sendable {
                             case let .string(text):
                                 if let data = text.data(using: .utf8),
                                    let json = try? ArcaneJSON.makeDecoder().decode(LogLineMessage.self, from: data) {
-                                    return LogLine(text: json.message, seq: json.seq, level: json.level, service: json.service, timestamp: json.timestamp)
+                                    return LogLine(
+                                        text: json.message,
+                                        seq: json.seq,
+                                        level: json.level,
+                                        service: json.service,
+                                        timestamp: json.timestamp
+                                    )
                                 }
                                 return LogLine(text: text)
                             case let .data(data):
                                 let json = try ArcaneJSON.makeDecoder().decode(LogLineMessage.self, from: data)
-                                return LogLine(text: json.message, seq: json.seq, level: json.level, service: json.service, timestamp: json.timestamp)
+                                return LogLine(
+                                    text: json.message,
+                                    seq: json.seq,
+                                    level: json.level,
+                                    service: json.service,
+                                    timestamp: json.timestamp
+                                )
                             @unknown default:
                                 throw ArcaneError.transport("Unsupported WebSocket log frame")
                             }
@@ -60,7 +72,7 @@ public struct LogStream: AsyncSequence, Sendable {
         var query = [
             URLQueryItem(name: "follow", value: follow ? "true" : "false"),
             URLQueryItem(name: "tail", value: tail),
-            URLQueryItem(name: "timestamps", value: timestamps ? "true" : "false"),
+            URLQueryItem(name: "timestamps", value: timestamps ? "true" : "false")
         ]
         if let since {
             query.append(URLQueryItem(name: "since", value: since))

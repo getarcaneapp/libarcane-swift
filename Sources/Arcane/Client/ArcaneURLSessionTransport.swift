@@ -162,8 +162,10 @@ public final class ArcaneURLSessionTransport: @unchecked Sendable {
 
     private func sleepBeforeRetry(attempt: Int) async throws {
         let multiplier = 1 << max(0, attempt - 1)
-        let base = retryPolicy.baseBackoff.components.attoseconds / 1_000_000_000 + retryPolicy.baseBackoff.components.seconds * 1_000_000_000
-        let maxDelay = retryPolicy.maxBackoff.components.attoseconds / 1_000_000_000 + retryPolicy.maxBackoff.components.seconds * 1_000_000_000
+        let base = retryPolicy.baseBackoff.components.attoseconds / 1_000_000_000
+            + retryPolicy.baseBackoff.components.seconds * 1_000_000_000
+        let maxDelay = retryPolicy.maxBackoff.components.attoseconds / 1_000_000_000
+            + retryPolicy.maxBackoff.components.seconds * 1_000_000_000
         let delay = min(base * Int64(multiplier), maxDelay)
         try await Task.sleep(nanoseconds: UInt64(max(delay, 0)))
     }

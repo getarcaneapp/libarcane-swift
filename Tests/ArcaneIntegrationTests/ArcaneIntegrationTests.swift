@@ -1,5 +1,5 @@
-import XCTest
 import Arcane
+import XCTest
 
 final class ArcaneIntegrationTests: XCTestCase {
     func testBackendHealthWhenConfigured() async throws {
