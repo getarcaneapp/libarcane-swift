@@ -38,6 +38,19 @@ for try await line in client.containers.logs(envID: "0", id: containers[0].id, f
 
 The complete OpenAPI client is generated from `Spec/openapi.json` and checked in under `Sources/ArcaneAPI`. Consumers do not need `swift-openapi-generator`; only maintainers need it when refreshing the spec.
 
+The `Arcane` product exports top-level Swift aliases for the generated DTOs that correspond to the `github.com/getarcaneapp/arcane/types` go package and the Arcane API.
+
+```swift
+let user: User
+let container: ContainerSummary
+let image: ImageSummary
+let env: Environment
+let volume: Volume
+let webhook: WebhookSummary
+```
+
+These are aliases to the generated OpenAPI schemas, not hand-written approximations, so fields stay aligned with the backend spec.
+
 Use the hand-written facade for common SDK workflows:
 
 ```swift
@@ -98,53 +111,4 @@ Auto-correct safe style fixes:
 
 ```sh
 swiftlint --fix
-```
-
-The config intentionally excludes `Sources/ArcaneAPI` because those files are generated from OpenAPI.
-
-## Publishing to Nexus
-
-The package is published to the Sonatype Nexus Swift hosted registry at:
-
-```sh
-https://pkgs.getarcane.app/repository/swift/
-```
-
-SwiftPM publishes registry packages by package identifier and semantic version:
-
-```sh
-swift package-registry publish getarcaneapp.libarcane-swift 1.0.0 \
-  --url https://pkgs.getarcane.app/repository/swift/
-```
-
-Use the helper script from a clean git checkout:
-
-```sh
-Scripts/publish-nexus.sh 1.0.0
-```
-
-GitHub Actions publishes automatically when a `v*.*.*` tag is pushed, or manually through the `Publish Nexus Swift Package` workflow. Configure these repository secrets first:
-
-```text
-NEXUS_SWIFT_USERNAME
-NEXUS_SWIFT_PASSWORD
-```
-
-Before publishing, configure auth for the Nexus registry:
-
-```sh
-swift package-registry set --scope getarcaneapp \
-  https://pkgs.getarcane.app/repository/swift/
-
-swift package-registry login \
-  https://pkgs.getarcane.app/repository/swift/login \
-  --username "$NEXUS_SWIFT_USERNAME" \
-  --password "$NEXUS_SWIFT_PASSWORD" \
-  --no-confirm
-```
-
-Consumers can then use the package identifier instead of a Git URL:
-
-```swift
-.package(id: "getarcaneapp.libarcane-swift", from: "1.0.0")
 ```

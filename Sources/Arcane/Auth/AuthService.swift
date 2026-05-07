@@ -14,7 +14,7 @@ public struct AuthService: Sendable {
         let response: LoginResponse = try await transport.request(
             "auth/login",
             method: "POST",
-            body: LoginRequest(username: username, password: password),
+            body: LoginRequest(password: password, username: username),
             authorized: false
         )
         try await authManager.save(loginResponse: response)

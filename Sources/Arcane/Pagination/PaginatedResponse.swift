@@ -1,13 +1,5 @@
 import Foundation
 
-public struct PaginationResponse: Codable, Equatable, Sendable {
-    public var totalPages: Int64
-    public var totalItems: Int64
-    public var currentPage: Int
-    public var itemsPerPage: Int
-    public var grandTotalItems: Int64?
-}
-
 public struct PaginatedResponse<T: Decodable & Sendable>: Decodable, Sendable {
     public var success: Bool
     public var data: [T]

@@ -1,20 +1,5 @@
 import Foundation
 
-public struct ContainerSummary: Codable, Hashable, Sendable, Identifiable {
-    public var id: String
-    public var name: String?
-    public var image: String?
-    public var state: String?
-    public var status: String?
-}
-
-public struct ImageSummary: Codable, Hashable, Sendable, Identifiable {
-    public var id: String
-    public var repository: String?
-    public var tag: String?
-    public var size: Int64?
-}
-
 public struct SystemStatsFrame: Codable, Hashable, Sendable {
     public var cpuPercent: Double?
     public var memoryPercent: Double?

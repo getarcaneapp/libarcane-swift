@@ -14,13 +14,6 @@ public struct EnvironmentID: RawRepresentable, ExpressibleByStringLiteral, Codab
     }
 }
 
-public struct Environment: Codable, Hashable, Sendable, Identifiable {
-    public var id: String
-    public var name: String?
-    public var url: String?
-    public var status: String?
-}
-
 public struct RetryPolicy: Sendable {
     public var maxAttempts: Int
     public var baseBackoff: Duration
