@@ -27,6 +27,19 @@ public struct SystemService: Sendable {
             query: [URLQueryItem(name: "interval", value: "\(interval)")]
         )
     }
+
+    public func dockerInfo(envID: EnvironmentID? = nil) async throws -> DockerInfo {
+        try await rest.get(rest.environmentPath(envID, "system/docker/info"))
+    }
+
+    public func appVersion() async throws -> VersionInfo {
+        try await rest.get("app-version")
+    }
+
+    public func versionCheck(current: String? = nil) async throws -> VersionCheck {
+        let query = current.map { [URLQueryItem(name: "current", value: $0)] } ?? []
+        return try await rest.get("version", query: query)
+    }
 }
 
 public struct ProjectsService: Sendable {
