@@ -6,6 +6,7 @@ This package has two layers:
 
 - `ArcaneAPI`: generated from `Spec/openapi.json` with Apple's `swift-openapi-generator` and checked in as static Swift source.
 - `Arcane`: a hand-written SDK facade with auth, token storage, environment scoping, generic REST helpers, and WebSocket streams.
+- `ArcaneGRPC`: a gRPC client for the mobile-pairing surface (`mobile.v1` proto). Used by paired devices that authenticate with a long-lived device token.
 
 `ArcaneOIDC` is a separate product for browser-based OIDC sign-in so apps that only use API keys or username/password auth do not link `AuthenticationServices`.
 
@@ -83,6 +84,24 @@ Maintainers need `swift-openapi-generator` on `PATH` to run the script:
 ```sh
 mint install apple/swift-openapi-generator
 ```
+
+## gRPC Sync
+
+`Spec/mobile.proto` is a checked-in copy of the backend's mobile pairing proto. To regenerate Swift sources after updating it:
+
+```sh
+Scripts/generate-grpc.sh
+```
+
+Maintainers need `protoc` plus the Swift code generators on `PATH`:
+
+```sh
+brew install protobuf
+mint install apple/swift-protobuf
+mint install grpc/grpc-swift-protobuf
+```
+
+The generated files are written to `Sources/ArcaneGRPC/Generated/` and committed alongside the proto. App consumers do not need `protoc` installed.
 
 ## Development
 

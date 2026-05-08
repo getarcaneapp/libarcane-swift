@@ -1,0 +1,148 @@
+syntax = "proto3";
+
+package mobile.v1;
+
+option go_package = "github.com/getarcaneapp/arcane/backend/pkg/libarcane/edge/proto/mobile/v1;mobilepb";
+
+// PairingService is the unauthenticated pairing handshake. Mobile calls
+// RedeemCode exactly once with a code obtained from the web UI; on success
+// it receives a long-lived device token. All other mobile RPCs are on
+// MobileService and require the device token in `x-api-key` metadata.
+service PairingService {
+  rpc RedeemCode(RedeemCodeRequest) returns (RedeemCodeResponse);
+}
+
+// MobileService is the authenticated post-pairing API. Phase 1 includes
+// just enough to demo the loop end-to-end. Phase 2+ migrate the rest of
+// the iOS REST surface to this service, method by method.
+service MobileService {
+  rpc GetServerInfo(GetServerInfoRequest) returns (GetServerInfoResponse);
+  rpc ListContainers(ListContainersRequest) returns (ListContainersResponse);
+  rpc GetCurrentDevice(GetCurrentDeviceRequest) returns (GetCurrentDeviceResponse);
+  rpc RevokeCurrentDevice(RevokeCurrentDeviceRequest) returns (RevokeCurrentDeviceResponse);
+}
+
+// ---------- Pairing ----------
+
+message RedeemCodeRequest {
+  // The 8-character alphanumeric short code displayed in the web UI, OR the
+  // longer opaque QR token. Server accepts both forms.
+  string code = 1;
+
+  // Stable identifier for this device, generated once by the iOS app and
+  // persisted in the Keychain. The server uses this to detect re-pairing
+  // of the same device vs. a new device.
+  string device_id = 2;
+
+  // Human-readable name shown in the "Paired Devices" list. Suggested
+  // default: "<UIDevice.current.name>'s iPhone".
+  string device_name = 3;
+
+  // App-side fingerprint for telemetry and audit.
+  string app_version = 4;
+  string os_version = 5;
+  string device_model = 6;
+}
+
+message RedeemCodeResponse {
+  // The long-lived device token. Mobile stores this and sends it as
+  // `x-api-key` metadata on every MobileService RPC.
+  string device_token = 1;
+
+  // Echo of the device record the server now holds.
+  Device device = 2;
+
+  // Server URL the client should use for subsequent gRPC calls.
+  string server_url = 3;
+
+  // The user account this device is bound to (read-only, displayed in
+  // settings: "Paired as kmendell").
+  string username = 4;
+}
+
+// ---------- Device ----------
+
+message Device {
+  string id = 1;
+  string name = 2;
+  string device_id = 3;
+  string app_version = 4;
+  string os_version = 5;
+  string device_model = 6;
+  // Unix milliseconds since epoch. 0 means unset/unknown.
+  int64 paired_at_unix_ms = 7;
+  int64 last_seen_at_unix_ms = 8;
+}
+
+message GetCurrentDeviceRequest {}
+
+message GetCurrentDeviceResponse {
+  Device device = 1;
+}
+
+message RevokeCurrentDeviceRequest {}
+
+message RevokeCurrentDeviceResponse {}
+
+// ---------- Server info ----------
+
+message GetServerInfoRequest {}
+
+message GetServerInfoResponse {
+  string server_version = 1;
+  string server_revision = 2;
+  string docker_version = 3;
+  string docker_api_version = 4;
+  string os = 5;
+  string arch = 6;
+  int32 environment_count = 7;
+}
+
+// ---------- Containers ----------
+
+message ListContainersRequest {
+  // Phase 1 supports only environment_id = "0" (local docker).
+  // Phase 3 adds remote environment routing.
+  string environment_id = 1;
+  bool include_all = 2;
+  bool include_internal = 3;
+  string search = 4;
+  int32 limit = 5;
+  int32 offset = 6;
+}
+
+message ListContainersResponse {
+  repeated ContainerSummary containers = 1;
+  ContainerCounts counts = 2;
+  int64 total = 3;
+}
+
+message ContainerSummary {
+  string id = 1;
+  repeated string names = 2;
+  string image = 3;
+  string image_id = 4;
+  string command = 5;
+  int64 created_unix = 6;
+  string state = 7;
+  string status = 8;
+  map<string, string> labels = 9;
+  repeated ContainerPort ports = 10;
+  string compose_project = 11;
+  string compose_service = 12;
+  bool has_image_update = 13;
+}
+
+message ContainerPort {
+  uint32 private_port = 1;
+  uint32 public_port = 2;
+  string type = 3;
+  string ip = 4;
+}
+
+message ContainerCounts {
+  int32 running = 1;
+  int32 stopped = 2;
+  int32 paused = 3;
+  int32 total = 4;
+}
