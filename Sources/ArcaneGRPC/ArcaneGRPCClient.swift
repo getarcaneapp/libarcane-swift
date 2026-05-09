@@ -395,3 +395,24 @@ public enum ArcaneGRPCError: Error, Sendable {
     case invalidServerURL
     case transportFailed(String)
 }
+
+/// Formats a swift gRPC client error into a human-readable string. Falls back
+/// to `localizedDescription` for non-gRPC errors. Useful for surfacing
+/// `RPCError`s in UI layers that don't import `GRPCCore` directly.
+public func describeGRPCError(_ error: any Error) -> String {
+    if let rpc = error as? RPCError {
+        let codeName = "\(rpc.code)"
+        if rpc.message.isEmpty {
+            return "gRPC \(codeName)"
+        }
+        return "gRPC \(codeName): \(rpc.message)"
+    }
+    if let arcane = error as? ArcaneGRPCError {
+        switch arcane {
+        case .missingDeviceToken: return "Device not paired"
+        case .invalidServerURL: return "Invalid server URL"
+        case .transportFailed(let message): return "Transport error: \(message)"
+        }
+    }
+    return error.localizedDescription
+}
