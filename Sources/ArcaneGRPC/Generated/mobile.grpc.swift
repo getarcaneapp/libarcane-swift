@@ -354,32 +354,6 @@ public enum Mobile_V1_MobileService: Sendable {
     public static let descriptor = GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService")
     /// Namespace for method metadata.
     public enum Method: Sendable {
-        /// Namespace for "GetServerInfo" metadata.
-        public enum GetServerInfo: Sendable {
-            /// Request type for "GetServerInfo".
-            public typealias Input = Mobile_V1_GetServerInfoRequest
-            /// Response type for "GetServerInfo".
-            public typealias Output = Mobile_V1_GetServerInfoResponse
-            /// Descriptor for "GetServerInfo".
-            public static let descriptor = GRPCCore.MethodDescriptor(
-                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
-                method: "GetServerInfo",
-                type: .unary
-            )
-        }
-        /// Namespace for "ListContainers" metadata.
-        public enum ListContainers: Sendable {
-            /// Request type for "ListContainers".
-            public typealias Input = Mobile_V1_ListContainersRequest
-            /// Response type for "ListContainers".
-            public typealias Output = Mobile_V1_ListContainersResponse
-            /// Descriptor for "ListContainers".
-            public static let descriptor = GRPCCore.MethodDescriptor(
-                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
-                method: "ListContainers",
-                type: .unary
-            )
-        }
         /// Namespace for "GetCurrentDevice" metadata.
         public enum GetCurrentDevice: Sendable {
             /// Request type for "GetCurrentDevice".
@@ -406,12 +380,1284 @@ public enum Mobile_V1_MobileService: Sendable {
                 type: .unary
             )
         }
+        /// Namespace for "GetServerInfo" metadata.
+        public enum GetServerInfo: Sendable {
+            /// Request type for "GetServerInfo".
+            public typealias Input = Mobile_V1_GetServerInfoRequest
+            /// Response type for "GetServerInfo".
+            public typealias Output = Mobile_V1_GetServerInfoResponse
+            /// Descriptor for "GetServerInfo".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "GetServerInfo",
+                type: .unary
+            )
+        }
+        /// Namespace for "GetDockerInfo" metadata.
+        public enum GetDockerInfo: Sendable {
+            /// Request type for "GetDockerInfo".
+            public typealias Input = Mobile_V1_GetDockerInfoRequest
+            /// Response type for "GetDockerInfo".
+            public typealias Output = Mobile_V1_GetDockerInfoResponse
+            /// Descriptor for "GetDockerInfo".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "GetDockerInfo",
+                type: .unary
+            )
+        }
+        /// Namespace for "GetAppVersion" metadata.
+        public enum GetAppVersion: Sendable {
+            /// Request type for "GetAppVersion".
+            public typealias Input = Mobile_V1_GetAppVersionRequest
+            /// Response type for "GetAppVersion".
+            public typealias Output = Mobile_V1_GetAppVersionResponse
+            /// Descriptor for "GetAppVersion".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "GetAppVersion",
+                type: .unary
+            )
+        }
+        /// Namespace for "ListContainers" metadata.
+        public enum ListContainers: Sendable {
+            /// Request type for "ListContainers".
+            public typealias Input = Mobile_V1_ListContainersRequest
+            /// Response type for "ListContainers".
+            public typealias Output = Mobile_V1_ListContainersResponse
+            /// Descriptor for "ListContainers".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "ListContainers",
+                type: .unary
+            )
+        }
+        /// Namespace for "InspectContainer" metadata.
+        public enum InspectContainer: Sendable {
+            /// Request type for "InspectContainer".
+            public typealias Input = Mobile_V1_InspectContainerRequest
+            /// Response type for "InspectContainer".
+            public typealias Output = Mobile_V1_InspectContainerResponse
+            /// Descriptor for "InspectContainer".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "InspectContainer",
+                type: .unary
+            )
+        }
+        /// Namespace for "StartContainer" metadata.
+        public enum StartContainer: Sendable {
+            /// Request type for "StartContainer".
+            public typealias Input = Mobile_V1_ContainerActionRequest
+            /// Response type for "StartContainer".
+            public typealias Output = Mobile_V1_ActionResult
+            /// Descriptor for "StartContainer".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "StartContainer",
+                type: .unary
+            )
+        }
+        /// Namespace for "StopContainer" metadata.
+        public enum StopContainer: Sendable {
+            /// Request type for "StopContainer".
+            public typealias Input = Mobile_V1_ContainerActionRequest
+            /// Response type for "StopContainer".
+            public typealias Output = Mobile_V1_ActionResult
+            /// Descriptor for "StopContainer".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "StopContainer",
+                type: .unary
+            )
+        }
+        /// Namespace for "RestartContainer" metadata.
+        public enum RestartContainer: Sendable {
+            /// Request type for "RestartContainer".
+            public typealias Input = Mobile_V1_ContainerActionRequest
+            /// Response type for "RestartContainer".
+            public typealias Output = Mobile_V1_ActionResult
+            /// Descriptor for "RestartContainer".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "RestartContainer",
+                type: .unary
+            )
+        }
+        /// Namespace for "RedeployContainer" metadata.
+        public enum RedeployContainer: Sendable {
+            /// Request type for "RedeployContainer".
+            public typealias Input = Mobile_V1_ContainerActionRequest
+            /// Response type for "RedeployContainer".
+            public typealias Output = Mobile_V1_ActionResult
+            /// Descriptor for "RedeployContainer".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "RedeployContainer",
+                type: .unary
+            )
+        }
+        /// Namespace for "DeleteContainer" metadata.
+        public enum DeleteContainer: Sendable {
+            /// Request type for "DeleteContainer".
+            public typealias Input = Mobile_V1_DeleteContainerRequest
+            /// Response type for "DeleteContainer".
+            public typealias Output = Mobile_V1_ActionResult
+            /// Descriptor for "DeleteContainer".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "DeleteContainer",
+                type: .unary
+            )
+        }
+        /// Namespace for "PruneContainers" metadata.
+        public enum PruneContainers: Sendable {
+            /// Request type for "PruneContainers".
+            public typealias Input = Mobile_V1_PruneContainersRequest
+            /// Response type for "PruneContainers".
+            public typealias Output = Mobile_V1_PruneResult
+            /// Descriptor for "PruneContainers".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "PruneContainers",
+                type: .unary
+            )
+        }
+        /// Namespace for "ListVolumes" metadata.
+        public enum ListVolumes: Sendable {
+            /// Request type for "ListVolumes".
+            public typealias Input = Mobile_V1_ListVolumesRequest
+            /// Response type for "ListVolumes".
+            public typealias Output = Mobile_V1_ListVolumesResponse
+            /// Descriptor for "ListVolumes".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "ListVolumes",
+                type: .unary
+            )
+        }
+        /// Namespace for "GetVolumeSizes" metadata.
+        public enum GetVolumeSizes: Sendable {
+            /// Request type for "GetVolumeSizes".
+            public typealias Input = Mobile_V1_GetVolumeSizesRequest
+            /// Response type for "GetVolumeSizes".
+            public typealias Output = Mobile_V1_GetVolumeSizesResponse
+            /// Descriptor for "GetVolumeSizes".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "GetVolumeSizes",
+                type: .unary
+            )
+        }
+        /// Namespace for "CreateVolume" metadata.
+        public enum CreateVolume: Sendable {
+            /// Request type for "CreateVolume".
+            public typealias Input = Mobile_V1_CreateVolumeRequest
+            /// Response type for "CreateVolume".
+            public typealias Output = Mobile_V1_CreateVolumeResponse
+            /// Descriptor for "CreateVolume".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "CreateVolume",
+                type: .unary
+            )
+        }
+        /// Namespace for "DeleteVolume" metadata.
+        public enum DeleteVolume: Sendable {
+            /// Request type for "DeleteVolume".
+            public typealias Input = Mobile_V1_DeleteVolumeRequest
+            /// Response type for "DeleteVolume".
+            public typealias Output = Mobile_V1_ActionResult
+            /// Descriptor for "DeleteVolume".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "DeleteVolume",
+                type: .unary
+            )
+        }
+        /// Namespace for "PruneVolumes" metadata.
+        public enum PruneVolumes: Sendable {
+            /// Request type for "PruneVolumes".
+            public typealias Input = Mobile_V1_PruneVolumesRequest
+            /// Response type for "PruneVolumes".
+            public typealias Output = Mobile_V1_PruneResult
+            /// Descriptor for "PruneVolumes".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "PruneVolumes",
+                type: .unary
+            )
+        }
+        /// Namespace for "ListNetworks" metadata.
+        public enum ListNetworks: Sendable {
+            /// Request type for "ListNetworks".
+            public typealias Input = Mobile_V1_ListNetworksRequest
+            /// Response type for "ListNetworks".
+            public typealias Output = Mobile_V1_ListNetworksResponse
+            /// Descriptor for "ListNetworks".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "ListNetworks",
+                type: .unary
+            )
+        }
+        /// Namespace for "CreateNetwork" metadata.
+        public enum CreateNetwork: Sendable {
+            /// Request type for "CreateNetwork".
+            public typealias Input = Mobile_V1_CreateNetworkRequest
+            /// Response type for "CreateNetwork".
+            public typealias Output = Mobile_V1_CreateNetworkResponse
+            /// Descriptor for "CreateNetwork".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "CreateNetwork",
+                type: .unary
+            )
+        }
+        /// Namespace for "DeleteNetwork" metadata.
+        public enum DeleteNetwork: Sendable {
+            /// Request type for "DeleteNetwork".
+            public typealias Input = Mobile_V1_DeleteNetworkRequest
+            /// Response type for "DeleteNetwork".
+            public typealias Output = Mobile_V1_ActionResult
+            /// Descriptor for "DeleteNetwork".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "DeleteNetwork",
+                type: .unary
+            )
+        }
+        /// Namespace for "PruneNetworks" metadata.
+        public enum PruneNetworks: Sendable {
+            /// Request type for "PruneNetworks".
+            public typealias Input = Mobile_V1_PruneNetworksRequest
+            /// Response type for "PruneNetworks".
+            public typealias Output = Mobile_V1_PruneResult
+            /// Descriptor for "PruneNetworks".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "PruneNetworks",
+                type: .unary
+            )
+        }
+        /// Namespace for "PauseContainer" metadata.
+        public enum PauseContainer: Sendable {
+            /// Request type for "PauseContainer".
+            public typealias Input = Mobile_V1_ContainerActionRequest
+            /// Response type for "PauseContainer".
+            public typealias Output = Mobile_V1_ActionResult
+            /// Descriptor for "PauseContainer".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "PauseContainer",
+                type: .unary
+            )
+        }
+        /// Namespace for "UnpauseContainer" metadata.
+        public enum UnpauseContainer: Sendable {
+            /// Request type for "UnpauseContainer".
+            public typealias Input = Mobile_V1_ContainerActionRequest
+            /// Response type for "UnpauseContainer".
+            public typealias Output = Mobile_V1_ActionResult
+            /// Descriptor for "UnpauseContainer".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "UnpauseContainer",
+                type: .unary
+            )
+        }
+        /// Namespace for "KillContainer" metadata.
+        public enum KillContainer: Sendable {
+            /// Request type for "KillContainer".
+            public typealias Input = Mobile_V1_ContainerActionRequest
+            /// Response type for "KillContainer".
+            public typealias Output = Mobile_V1_ActionResult
+            /// Descriptor for "KillContainer".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "KillContainer",
+                type: .unary
+            )
+        }
+        /// Namespace for "RenameContainer" metadata.
+        public enum RenameContainer: Sendable {
+            /// Request type for "RenameContainer".
+            public typealias Input = Mobile_V1_RenameContainerRequest
+            /// Response type for "RenameContainer".
+            public typealias Output = Mobile_V1_ActionResult
+            /// Descriptor for "RenameContainer".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "RenameContainer",
+                type: .unary
+            )
+        }
+        /// Namespace for "ListImages" metadata.
+        public enum ListImages: Sendable {
+            /// Request type for "ListImages".
+            public typealias Input = Mobile_V1_EnvIDOnlyRequest
+            /// Response type for "ListImages".
+            public typealias Output = Mobile_V1_JSONResponse
+            /// Descriptor for "ListImages".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "ListImages",
+                type: .unary
+            )
+        }
+        /// Namespace for "InspectImage" metadata.
+        public enum InspectImage: Sendable {
+            /// Request type for "InspectImage".
+            public typealias Input = Mobile_V1_EnvIDAndIDRequest
+            /// Response type for "InspectImage".
+            public typealias Output = Mobile_V1_JSONResponse
+            /// Descriptor for "InspectImage".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "InspectImage",
+                type: .unary
+            )
+        }
+        /// Namespace for "DeleteImage" metadata.
+        public enum DeleteImage: Sendable {
+            /// Request type for "DeleteImage".
+            public typealias Input = Mobile_V1_EnvIDAndIDRequest
+            /// Response type for "DeleteImage".
+            public typealias Output = Mobile_V1_ActionResult
+            /// Descriptor for "DeleteImage".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "DeleteImage",
+                type: .unary
+            )
+        }
+        /// Namespace for "PruneImages" metadata.
+        public enum PruneImages: Sendable {
+            /// Request type for "PruneImages".
+            public typealias Input = Mobile_V1_EnvIDOnlyRequest
+            /// Response type for "PruneImages".
+            public typealias Output = Mobile_V1_PruneResult
+            /// Descriptor for "PruneImages".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "PruneImages",
+                type: .unary
+            )
+        }
+        /// Namespace for "GetImageUpdateSummary" metadata.
+        public enum GetImageUpdateSummary: Sendable {
+            /// Request type for "GetImageUpdateSummary".
+            public typealias Input = Mobile_V1_EnvIDOnlyRequest
+            /// Response type for "GetImageUpdateSummary".
+            public typealias Output = Mobile_V1_JSONResponse
+            /// Descriptor for "GetImageUpdateSummary".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "GetImageUpdateSummary",
+                type: .unary
+            )
+        }
+        /// Namespace for "GetImageUpdatesByRefs" metadata.
+        public enum GetImageUpdatesByRefs: Sendable {
+            /// Request type for "GetImageUpdatesByRefs".
+            public typealias Input = Mobile_V1_GetImageUpdatesByRefsRequest
+            /// Response type for "GetImageUpdatesByRefs".
+            public typealias Output = Mobile_V1_JSONResponse
+            /// Descriptor for "GetImageUpdatesByRefs".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "GetImageUpdatesByRefs",
+                type: .unary
+            )
+        }
+        /// Namespace for "CheckImageUpdates" metadata.
+        public enum CheckImageUpdates: Sendable {
+            /// Request type for "CheckImageUpdates".
+            public typealias Input = Mobile_V1_EnvIDAndQueryRequest
+            /// Response type for "CheckImageUpdates".
+            public typealias Output = Mobile_V1_JSONResponse
+            /// Descriptor for "CheckImageUpdates".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "CheckImageUpdates",
+                type: .unary
+            )
+        }
+        /// Namespace for "CheckAllImageUpdates" metadata.
+        public enum CheckAllImageUpdates: Sendable {
+            /// Request type for "CheckAllImageUpdates".
+            public typealias Input = Mobile_V1_EnvIDOnlyRequest
+            /// Response type for "CheckAllImageUpdates".
+            public typealias Output = Mobile_V1_ActionResult
+            /// Descriptor for "CheckAllImageUpdates".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "CheckAllImageUpdates",
+                type: .unary
+            )
+        }
+        /// Namespace for "CheckImageUpdate" metadata.
+        public enum CheckImageUpdate: Sendable {
+            /// Request type for "CheckImageUpdate".
+            public typealias Input = Mobile_V1_EnvIDAndIDRequest
+            /// Response type for "CheckImageUpdate".
+            public typealias Output = Mobile_V1_JSONResponse
+            /// Descriptor for "CheckImageUpdate".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "CheckImageUpdate",
+                type: .unary
+            )
+        }
+        /// Namespace for "GetVulnerabilityScannerStatus" metadata.
+        public enum GetVulnerabilityScannerStatus: Sendable {
+            /// Request type for "GetVulnerabilityScannerStatus".
+            public typealias Input = Mobile_V1_EnvIDOnlyRequest
+            /// Response type for "GetVulnerabilityScannerStatus".
+            public typealias Output = Mobile_V1_JSONResponse
+            /// Descriptor for "GetVulnerabilityScannerStatus".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "GetVulnerabilityScannerStatus",
+                type: .unary
+            )
+        }
+        /// Namespace for "GetImageVulnerabilitySummary" metadata.
+        public enum GetImageVulnerabilitySummary: Sendable {
+            /// Request type for "GetImageVulnerabilitySummary".
+            public typealias Input = Mobile_V1_EnvIDAndIDRequest
+            /// Response type for "GetImageVulnerabilitySummary".
+            public typealias Output = Mobile_V1_JSONResponse
+            /// Descriptor for "GetImageVulnerabilitySummary".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "GetImageVulnerabilitySummary",
+                type: .unary
+            )
+        }
+        /// Namespace for "ListImageVulnerabilities" metadata.
+        public enum ListImageVulnerabilities: Sendable {
+            /// Request type for "ListImageVulnerabilities".
+            public typealias Input = Mobile_V1_EnvIDAndIDAndQueryRequest
+            /// Response type for "ListImageVulnerabilities".
+            public typealias Output = Mobile_V1_JSONResponse
+            /// Descriptor for "ListImageVulnerabilities".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "ListImageVulnerabilities",
+                type: .unary
+            )
+        }
+        /// Namespace for "ScanImageVulnerabilities" metadata.
+        public enum ScanImageVulnerabilities: Sendable {
+            /// Request type for "ScanImageVulnerabilities".
+            public typealias Input = Mobile_V1_EnvIDAndIDRequest
+            /// Response type for "ScanImageVulnerabilities".
+            public typealias Output = Mobile_V1_JSONResponse
+            /// Descriptor for "ScanImageVulnerabilities".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "ScanImageVulnerabilities",
+                type: .unary
+            )
+        }
+        /// Namespace for "GetAllVulnerabilitiesSummary" metadata.
+        public enum GetAllVulnerabilitiesSummary: Sendable {
+            /// Request type for "GetAllVulnerabilitiesSummary".
+            public typealias Input = Mobile_V1_EnvIDOnlyRequest
+            /// Response type for "GetAllVulnerabilitiesSummary".
+            public typealias Output = Mobile_V1_JSONResponse
+            /// Descriptor for "GetAllVulnerabilitiesSummary".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "GetAllVulnerabilitiesSummary",
+                type: .unary
+            )
+        }
+        /// Namespace for "GetVulnerabilityImageOptions" metadata.
+        public enum GetVulnerabilityImageOptions: Sendable {
+            /// Request type for "GetVulnerabilityImageOptions".
+            public typealias Input = Mobile_V1_EnvIDAndQueryRequest
+            /// Response type for "GetVulnerabilityImageOptions".
+            public typealias Output = Mobile_V1_JSONResponse
+            /// Descriptor for "GetVulnerabilityImageOptions".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "GetVulnerabilityImageOptions",
+                type: .unary
+            )
+        }
+        /// Namespace for "ListAllVulnerabilities" metadata.
+        public enum ListAllVulnerabilities: Sendable {
+            /// Request type for "ListAllVulnerabilities".
+            public typealias Input = Mobile_V1_EnvIDAndQueryRequest
+            /// Response type for "ListAllVulnerabilities".
+            public typealias Output = Mobile_V1_JSONResponse
+            /// Descriptor for "ListAllVulnerabilities".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "ListAllVulnerabilities",
+                type: .unary
+            )
+        }
+        /// Namespace for "IgnoreVulnerability" metadata.
+        public enum IgnoreVulnerability: Sendable {
+            /// Request type for "IgnoreVulnerability".
+            public typealias Input = Mobile_V1_EnvIDAndJSONBodyRequest
+            /// Response type for "IgnoreVulnerability".
+            public typealias Output = Mobile_V1_JSONResponse
+            /// Descriptor for "IgnoreVulnerability".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "IgnoreVulnerability",
+                type: .unary
+            )
+        }
+        /// Namespace for "DeleteVulnerabilityIgnore" metadata.
+        public enum DeleteVulnerabilityIgnore: Sendable {
+            /// Request type for "DeleteVulnerabilityIgnore".
+            public typealias Input = Mobile_V1_EnvIDAndIDRequest
+            /// Response type for "DeleteVulnerabilityIgnore".
+            public typealias Output = Mobile_V1_ActionResult
+            /// Descriptor for "DeleteVulnerabilityIgnore".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "DeleteVulnerabilityIgnore",
+                type: .unary
+            )
+        }
+        /// Namespace for "ListProjects" metadata.
+        public enum ListProjects: Sendable {
+            /// Request type for "ListProjects".
+            public typealias Input = Mobile_V1_ListProjectsRequest
+            /// Response type for "ListProjects".
+            public typealias Output = Mobile_V1_ListProjectsResponse
+            /// Descriptor for "ListProjects".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "ListProjects",
+                type: .unary
+            )
+        }
+        /// Namespace for "GetProject" metadata.
+        public enum GetProject: Sendable {
+            /// Request type for "GetProject".
+            public typealias Input = Mobile_V1_GetProjectRequest
+            /// Response type for "GetProject".
+            public typealias Output = Mobile_V1_GetProjectResponse
+            /// Descriptor for "GetProject".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "GetProject",
+                type: .unary
+            )
+        }
+        /// Namespace for "CreateProject" metadata.
+        public enum CreateProject: Sendable {
+            /// Request type for "CreateProject".
+            public typealias Input = Mobile_V1_EnvIDAndJSONBodyRequest
+            /// Response type for "CreateProject".
+            public typealias Output = Mobile_V1_JSONResponse
+            /// Descriptor for "CreateProject".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "CreateProject",
+                type: .unary
+            )
+        }
+        /// Namespace for "UpdateProject" metadata.
+        public enum UpdateProject: Sendable {
+            /// Request type for "UpdateProject".
+            public typealias Input = Mobile_V1_EnvIDAndIDAndJSONBodyRequest
+            /// Response type for "UpdateProject".
+            public typealias Output = Mobile_V1_JSONResponse
+            /// Descriptor for "UpdateProject".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "UpdateProject",
+                type: .unary
+            )
+        }
+        /// Namespace for "DeleteProject" metadata.
+        public enum DeleteProject: Sendable {
+            /// Request type for "DeleteProject".
+            public typealias Input = Mobile_V1_EnvIDAndIDRequest
+            /// Response type for "DeleteProject".
+            public typealias Output = Mobile_V1_ActionResult
+            /// Descriptor for "DeleteProject".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "DeleteProject",
+                type: .unary
+            )
+        }
+        /// Namespace for "StartProject" metadata.
+        public enum StartProject: Sendable {
+            /// Request type for "StartProject".
+            public typealias Input = Mobile_V1_EnvIDAndIDRequest
+            /// Response type for "StartProject".
+            public typealias Output = Mobile_V1_ActionResult
+            /// Descriptor for "StartProject".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "StartProject",
+                type: .unary
+            )
+        }
+        /// Namespace for "StopProject" metadata.
+        public enum StopProject: Sendable {
+            /// Request type for "StopProject".
+            public typealias Input = Mobile_V1_EnvIDAndIDRequest
+            /// Response type for "StopProject".
+            public typealias Output = Mobile_V1_ActionResult
+            /// Descriptor for "StopProject".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "StopProject",
+                type: .unary
+            )
+        }
+        /// Namespace for "DestroyProject" metadata.
+        public enum DestroyProject: Sendable {
+            /// Request type for "DestroyProject".
+            public typealias Input = Mobile_V1_EnvIDAndIDRequest
+            /// Response type for "DestroyProject".
+            public typealias Output = Mobile_V1_ActionResult
+            /// Descriptor for "DestroyProject".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "DestroyProject",
+                type: .unary
+            )
+        }
+        /// Namespace for "ListEnvironments" metadata.
+        public enum ListEnvironments: Sendable {
+            /// Request type for "ListEnvironments".
+            public typealias Input = Mobile_V1_EmptyRequest
+            /// Response type for "ListEnvironments".
+            public typealias Output = Mobile_V1_JSONResponse
+            /// Descriptor for "ListEnvironments".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "ListEnvironments",
+                type: .unary
+            )
+        }
+        /// Namespace for "CreateEnvironment" metadata.
+        public enum CreateEnvironment: Sendable {
+            /// Request type for "CreateEnvironment".
+            public typealias Input = Mobile_V1_JSONBodyRequest
+            /// Response type for "CreateEnvironment".
+            public typealias Output = Mobile_V1_JSONResponse
+            /// Descriptor for "CreateEnvironment".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "CreateEnvironment",
+                type: .unary
+            )
+        }
+        /// Namespace for "TestEnvironment" metadata.
+        public enum TestEnvironment: Sendable {
+            /// Request type for "TestEnvironment".
+            public typealias Input = Mobile_V1_EnvIDOnlyRequest
+            /// Response type for "TestEnvironment".
+            public typealias Output = Mobile_V1_JSONResponse
+            /// Descriptor for "TestEnvironment".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "TestEnvironment",
+                type: .unary
+            )
+        }
+        /// Namespace for "GetSettings" metadata.
+        public enum GetSettings: Sendable {
+            /// Request type for "GetSettings".
+            public typealias Input = Mobile_V1_EnvIDOnlyRequest
+            /// Response type for "GetSettings".
+            public typealias Output = Mobile_V1_JSONResponse
+            /// Descriptor for "GetSettings".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "GetSettings",
+                type: .unary
+            )
+        }
+        /// Namespace for "UpdateSettings" metadata.
+        public enum UpdateSettings: Sendable {
+            /// Request type for "UpdateSettings".
+            public typealias Input = Mobile_V1_EnvIDAndJSONBodyRequest
+            /// Response type for "UpdateSettings".
+            public typealias Output = Mobile_V1_JSONResponse
+            /// Descriptor for "UpdateSettings".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "UpdateSettings",
+                type: .unary
+            )
+        }
+        /// Namespace for "GetOidcStatus" metadata.
+        public enum GetOidcStatus: Sendable {
+            /// Request type for "GetOidcStatus".
+            public typealias Input = Mobile_V1_EmptyRequest
+            /// Response type for "GetOidcStatus".
+            public typealias Output = Mobile_V1_JSONResponse
+            /// Descriptor for "GetOidcStatus".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "GetOidcStatus",
+                type: .unary
+            )
+        }
+        /// Namespace for "GetNotificationSettings" metadata.
+        public enum GetNotificationSettings: Sendable {
+            /// Request type for "GetNotificationSettings".
+            public typealias Input = Mobile_V1_EnvIDOnlyRequest
+            /// Response type for "GetNotificationSettings".
+            public typealias Output = Mobile_V1_JSONResponse
+            /// Descriptor for "GetNotificationSettings".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "GetNotificationSettings",
+                type: .unary
+            )
+        }
+        /// Namespace for "SaveNotificationProvider" metadata.
+        public enum SaveNotificationProvider: Sendable {
+            /// Request type for "SaveNotificationProvider".
+            public typealias Input = Mobile_V1_EnvIDAndJSONBodyRequest
+            /// Response type for "SaveNotificationProvider".
+            public typealias Output = Mobile_V1_JSONResponse
+            /// Descriptor for "SaveNotificationProvider".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "SaveNotificationProvider",
+                type: .unary
+            )
+        }
+        /// Namespace for "DeleteNotificationProvider" metadata.
+        public enum DeleteNotificationProvider: Sendable {
+            /// Request type for "DeleteNotificationProvider".
+            public typealias Input = Mobile_V1_EnvIDAndIDRequest
+            /// Response type for "DeleteNotificationProvider".
+            public typealias Output = Mobile_V1_ActionResult
+            /// Descriptor for "DeleteNotificationProvider".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "DeleteNotificationProvider",
+                type: .unary
+            )
+        }
+        /// Namespace for "TestNotificationProvider" metadata.
+        public enum TestNotificationProvider: Sendable {
+            /// Request type for "TestNotificationProvider".
+            public typealias Input = Mobile_V1_EnvIDAndIDAndJSONBodyRequest
+            /// Response type for "TestNotificationProvider".
+            public typealias Output = Mobile_V1_ActionResult
+            /// Descriptor for "TestNotificationProvider".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "TestNotificationProvider",
+                type: .unary
+            )
+        }
+        /// Namespace for "GetApprise" metadata.
+        public enum GetApprise: Sendable {
+            /// Request type for "GetApprise".
+            public typealias Input = Mobile_V1_EnvIDOnlyRequest
+            /// Response type for "GetApprise".
+            public typealias Output = Mobile_V1_JSONResponse
+            /// Descriptor for "GetApprise".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "GetApprise",
+                type: .unary
+            )
+        }
+        /// Namespace for "UpdateApprise" metadata.
+        public enum UpdateApprise: Sendable {
+            /// Request type for "UpdateApprise".
+            public typealias Input = Mobile_V1_EnvIDAndJSONBodyRequest
+            /// Response type for "UpdateApprise".
+            public typealias Output = Mobile_V1_JSONResponse
+            /// Descriptor for "UpdateApprise".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "UpdateApprise",
+                type: .unary
+            )
+        }
+        /// Namespace for "TestApprise" metadata.
+        public enum TestApprise: Sendable {
+            /// Request type for "TestApprise".
+            public typealias Input = Mobile_V1_EnvIDAndJSONBodyRequest
+            /// Response type for "TestApprise".
+            public typealias Output = Mobile_V1_ActionResult
+            /// Descriptor for "TestApprise".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "TestApprise",
+                type: .unary
+            )
+        }
+        /// Namespace for "ListWebhooks" metadata.
+        public enum ListWebhooks: Sendable {
+            /// Request type for "ListWebhooks".
+            public typealias Input = Mobile_V1_EnvIDOnlyRequest
+            /// Response type for "ListWebhooks".
+            public typealias Output = Mobile_V1_JSONResponse
+            /// Descriptor for "ListWebhooks".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "ListWebhooks",
+                type: .unary
+            )
+        }
+        /// Namespace for "CreateWebhook" metadata.
+        public enum CreateWebhook: Sendable {
+            /// Request type for "CreateWebhook".
+            public typealias Input = Mobile_V1_EnvIDAndJSONBodyRequest
+            /// Response type for "CreateWebhook".
+            public typealias Output = Mobile_V1_JSONResponse
+            /// Descriptor for "CreateWebhook".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "CreateWebhook",
+                type: .unary
+            )
+        }
+        /// Namespace for "UpdateWebhook" metadata.
+        public enum UpdateWebhook: Sendable {
+            /// Request type for "UpdateWebhook".
+            public typealias Input = Mobile_V1_EnvIDAndIDAndJSONBodyRequest
+            /// Response type for "UpdateWebhook".
+            public typealias Output = Mobile_V1_JSONResponse
+            /// Descriptor for "UpdateWebhook".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "UpdateWebhook",
+                type: .unary
+            )
+        }
+        /// Namespace for "DeleteWebhook" metadata.
+        public enum DeleteWebhook: Sendable {
+            /// Request type for "DeleteWebhook".
+            public typealias Input = Mobile_V1_EnvIDAndIDRequest
+            /// Response type for "DeleteWebhook".
+            public typealias Output = Mobile_V1_ActionResult
+            /// Descriptor for "DeleteWebhook".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "DeleteWebhook",
+                type: .unary
+            )
+        }
+        /// Namespace for "ListUsers" metadata.
+        public enum ListUsers: Sendable {
+            /// Request type for "ListUsers".
+            public typealias Input = Mobile_V1_EmptyRequest
+            /// Response type for "ListUsers".
+            public typealias Output = Mobile_V1_JSONResponse
+            /// Descriptor for "ListUsers".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "ListUsers",
+                type: .unary
+            )
+        }
+        /// Namespace for "CreateUser" metadata.
+        public enum CreateUser: Sendable {
+            /// Request type for "CreateUser".
+            public typealias Input = Mobile_V1_JSONBodyRequest
+            /// Response type for "CreateUser".
+            public typealias Output = Mobile_V1_JSONResponse
+            /// Descriptor for "CreateUser".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "CreateUser",
+                type: .unary
+            )
+        }
+        /// Namespace for "UpdateUser" metadata.
+        public enum UpdateUser: Sendable {
+            /// Request type for "UpdateUser".
+            public typealias Input = Mobile_V1_IDAndJSONBodyRequest
+            /// Response type for "UpdateUser".
+            public typealias Output = Mobile_V1_JSONResponse
+            /// Descriptor for "UpdateUser".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "UpdateUser",
+                type: .unary
+            )
+        }
+        /// Namespace for "DeleteUser" metadata.
+        public enum DeleteUser: Sendable {
+            /// Request type for "DeleteUser".
+            public typealias Input = Mobile_V1_IDOnlyRequest
+            /// Response type for "DeleteUser".
+            public typealias Output = Mobile_V1_ActionResult
+            /// Descriptor for "DeleteUser".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "DeleteUser",
+                type: .unary
+            )
+        }
+        /// Namespace for "ListApiKeys" metadata.
+        public enum ListApiKeys: Sendable {
+            /// Request type for "ListApiKeys".
+            public typealias Input = Mobile_V1_EmptyRequest
+            /// Response type for "ListApiKeys".
+            public typealias Output = Mobile_V1_JSONResponse
+            /// Descriptor for "ListApiKeys".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "ListApiKeys",
+                type: .unary
+            )
+        }
+        /// Namespace for "CreateApiKey" metadata.
+        public enum CreateApiKey: Sendable {
+            /// Request type for "CreateApiKey".
+            public typealias Input = Mobile_V1_JSONBodyRequest
+            /// Response type for "CreateApiKey".
+            public typealias Output = Mobile_V1_JSONResponse
+            /// Descriptor for "CreateApiKey".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "CreateApiKey",
+                type: .unary
+            )
+        }
+        /// Namespace for "DeleteApiKey" metadata.
+        public enum DeleteApiKey: Sendable {
+            /// Request type for "DeleteApiKey".
+            public typealias Input = Mobile_V1_IDOnlyRequest
+            /// Response type for "DeleteApiKey".
+            public typealias Output = Mobile_V1_ActionResult
+            /// Descriptor for "DeleteApiKey".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "DeleteApiKey",
+                type: .unary
+            )
+        }
+        /// Namespace for "ListContainerRegistries" metadata.
+        public enum ListContainerRegistries: Sendable {
+            /// Request type for "ListContainerRegistries".
+            public typealias Input = Mobile_V1_EmptyRequest
+            /// Response type for "ListContainerRegistries".
+            public typealias Output = Mobile_V1_JSONResponse
+            /// Descriptor for "ListContainerRegistries".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "ListContainerRegistries",
+                type: .unary
+            )
+        }
+        /// Namespace for "CreateContainerRegistry" metadata.
+        public enum CreateContainerRegistry: Sendable {
+            /// Request type for "CreateContainerRegistry".
+            public typealias Input = Mobile_V1_JSONBodyRequest
+            /// Response type for "CreateContainerRegistry".
+            public typealias Output = Mobile_V1_JSONResponse
+            /// Descriptor for "CreateContainerRegistry".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "CreateContainerRegistry",
+                type: .unary
+            )
+        }
+        /// Namespace for "UpdateContainerRegistry" metadata.
+        public enum UpdateContainerRegistry: Sendable {
+            /// Request type for "UpdateContainerRegistry".
+            public typealias Input = Mobile_V1_IDAndJSONBodyRequest
+            /// Response type for "UpdateContainerRegistry".
+            public typealias Output = Mobile_V1_JSONResponse
+            /// Descriptor for "UpdateContainerRegistry".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "UpdateContainerRegistry",
+                type: .unary
+            )
+        }
+        /// Namespace for "DeleteContainerRegistry" metadata.
+        public enum DeleteContainerRegistry: Sendable {
+            /// Request type for "DeleteContainerRegistry".
+            public typealias Input = Mobile_V1_IDOnlyRequest
+            /// Response type for "DeleteContainerRegistry".
+            public typealias Output = Mobile_V1_ActionResult
+            /// Descriptor for "DeleteContainerRegistry".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "DeleteContainerRegistry",
+                type: .unary
+            )
+        }
+        /// Namespace for "ListTemplates" metadata.
+        public enum ListTemplates: Sendable {
+            /// Request type for "ListTemplates".
+            public typealias Input = Mobile_V1_EmptyRequest
+            /// Response type for "ListTemplates".
+            public typealias Output = Mobile_V1_JSONResponse
+            /// Descriptor for "ListTemplates".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "ListTemplates",
+                type: .unary
+            )
+        }
+        /// Namespace for "GetTemplateContent" metadata.
+        public enum GetTemplateContent: Sendable {
+            /// Request type for "GetTemplateContent".
+            public typealias Input = Mobile_V1_IDOnlyRequest
+            /// Response type for "GetTemplateContent".
+            public typealias Output = Mobile_V1_JSONResponse
+            /// Descriptor for "GetTemplateContent".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "GetTemplateContent",
+                type: .unary
+            )
+        }
+        /// Namespace for "ListTemplateRegistries" metadata.
+        public enum ListTemplateRegistries: Sendable {
+            /// Request type for "ListTemplateRegistries".
+            public typealias Input = Mobile_V1_EmptyRequest
+            /// Response type for "ListTemplateRegistries".
+            public typealias Output = Mobile_V1_JSONResponse
+            /// Descriptor for "ListTemplateRegistries".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "ListTemplateRegistries",
+                type: .unary
+            )
+        }
+        /// Namespace for "CreateTemplateRegistry" metadata.
+        public enum CreateTemplateRegistry: Sendable {
+            /// Request type for "CreateTemplateRegistry".
+            public typealias Input = Mobile_V1_JSONBodyRequest
+            /// Response type for "CreateTemplateRegistry".
+            public typealias Output = Mobile_V1_JSONResponse
+            /// Descriptor for "CreateTemplateRegistry".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "CreateTemplateRegistry",
+                type: .unary
+            )
+        }
+        /// Namespace for "UpdateTemplateRegistry" metadata.
+        public enum UpdateTemplateRegistry: Sendable {
+            /// Request type for "UpdateTemplateRegistry".
+            public typealias Input = Mobile_V1_IDAndJSONBodyRequest
+            /// Response type for "UpdateTemplateRegistry".
+            public typealias Output = Mobile_V1_JSONResponse
+            /// Descriptor for "UpdateTemplateRegistry".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "UpdateTemplateRegistry",
+                type: .unary
+            )
+        }
+        /// Namespace for "DeleteTemplateRegistry" metadata.
+        public enum DeleteTemplateRegistry: Sendable {
+            /// Request type for "DeleteTemplateRegistry".
+            public typealias Input = Mobile_V1_IDOnlyRequest
+            /// Response type for "DeleteTemplateRegistry".
+            public typealias Output = Mobile_V1_ActionResult
+            /// Descriptor for "DeleteTemplateRegistry".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "DeleteTemplateRegistry",
+                type: .unary
+            )
+        }
+        /// Namespace for "PruneSystem" metadata.
+        public enum PruneSystem: Sendable {
+            /// Request type for "PruneSystem".
+            public typealias Input = Mobile_V1_EnvIDAndJSONBodyRequest
+            /// Response type for "PruneSystem".
+            public typealias Output = Mobile_V1_JSONResponse
+            /// Descriptor for "PruneSystem".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "PruneSystem",
+                type: .unary
+            )
+        }
+        /// Namespace for "StreamContainerLogs" metadata.
+        public enum StreamContainerLogs: Sendable {
+            /// Request type for "StreamContainerLogs".
+            public typealias Input = Mobile_V1_StreamContainerLogsRequest
+            /// Response type for "StreamContainerLogs".
+            public typealias Output = Mobile_V1_StreamFrame
+            /// Descriptor for "StreamContainerLogs".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "StreamContainerLogs",
+                type: .serverStreaming
+            )
+        }
+        /// Namespace for "StreamContainerStats" metadata.
+        public enum StreamContainerStats: Sendable {
+            /// Request type for "StreamContainerStats".
+            public typealias Input = Mobile_V1_EnvIDAndIDRequest
+            /// Response type for "StreamContainerStats".
+            public typealias Output = Mobile_V1_StreamFrame
+            /// Descriptor for "StreamContainerStats".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "StreamContainerStats",
+                type: .serverStreaming
+            )
+        }
+        /// Namespace for "StreamProjectLogs" metadata.
+        public enum StreamProjectLogs: Sendable {
+            /// Request type for "StreamProjectLogs".
+            public typealias Input = Mobile_V1_StreamProjectLogsRequest
+            /// Response type for "StreamProjectLogs".
+            public typealias Output = Mobile_V1_StreamFrame
+            /// Descriptor for "StreamProjectLogs".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "StreamProjectLogs",
+                type: .serverStreaming
+            )
+        }
+        /// Namespace for "StreamSystemStats" metadata.
+        public enum StreamSystemStats: Sendable {
+            /// Request type for "StreamSystemStats".
+            public typealias Input = Mobile_V1_StreamSystemStatsRequest
+            /// Response type for "StreamSystemStats".
+            public typealias Output = Mobile_V1_StreamFrame
+            /// Descriptor for "StreamSystemStats".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "StreamSystemStats",
+                type: .serverStreaming
+            )
+        }
+        /// Namespace for "StreamPullImage" metadata.
+        public enum StreamPullImage: Sendable {
+            /// Request type for "StreamPullImage".
+            public typealias Input = Mobile_V1_PullImageRequest
+            /// Response type for "StreamPullImage".
+            public typealias Output = Mobile_V1_StreamFrame
+            /// Descriptor for "StreamPullImage".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "StreamPullImage",
+                type: .serverStreaming
+            )
+        }
+        /// Namespace for "ContainerTerminal" metadata.
+        public enum ContainerTerminal: Sendable {
+            /// Request type for "ContainerTerminal".
+            public typealias Input = Mobile_V1_TerminalClientFrame
+            /// Response type for "ContainerTerminal".
+            public typealias Output = Mobile_V1_TerminalServerFrame
+            /// Descriptor for "ContainerTerminal".
+            public static let descriptor = GRPCCore.MethodDescriptor(
+                service: GRPCCore.ServiceDescriptor(fullyQualifiedService: "mobile.v1.MobileService"),
+                method: "ContainerTerminal",
+                type: .bidirectionalStreaming
+            )
+        }
         /// Descriptors for all methods in the "mobile.v1.MobileService" service.
         public static let descriptors: [GRPCCore.MethodDescriptor] = [
-            GetServerInfo.descriptor,
-            ListContainers.descriptor,
             GetCurrentDevice.descriptor,
-            RevokeCurrentDevice.descriptor
+            RevokeCurrentDevice.descriptor,
+            GetServerInfo.descriptor,
+            GetDockerInfo.descriptor,
+            GetAppVersion.descriptor,
+            ListContainers.descriptor,
+            InspectContainer.descriptor,
+            StartContainer.descriptor,
+            StopContainer.descriptor,
+            RestartContainer.descriptor,
+            RedeployContainer.descriptor,
+            DeleteContainer.descriptor,
+            PruneContainers.descriptor,
+            ListVolumes.descriptor,
+            GetVolumeSizes.descriptor,
+            CreateVolume.descriptor,
+            DeleteVolume.descriptor,
+            PruneVolumes.descriptor,
+            ListNetworks.descriptor,
+            CreateNetwork.descriptor,
+            DeleteNetwork.descriptor,
+            PruneNetworks.descriptor,
+            PauseContainer.descriptor,
+            UnpauseContainer.descriptor,
+            KillContainer.descriptor,
+            RenameContainer.descriptor,
+            ListImages.descriptor,
+            InspectImage.descriptor,
+            DeleteImage.descriptor,
+            PruneImages.descriptor,
+            GetImageUpdateSummary.descriptor,
+            GetImageUpdatesByRefs.descriptor,
+            CheckImageUpdates.descriptor,
+            CheckAllImageUpdates.descriptor,
+            CheckImageUpdate.descriptor,
+            GetVulnerabilityScannerStatus.descriptor,
+            GetImageVulnerabilitySummary.descriptor,
+            ListImageVulnerabilities.descriptor,
+            ScanImageVulnerabilities.descriptor,
+            GetAllVulnerabilitiesSummary.descriptor,
+            GetVulnerabilityImageOptions.descriptor,
+            ListAllVulnerabilities.descriptor,
+            IgnoreVulnerability.descriptor,
+            DeleteVulnerabilityIgnore.descriptor,
+            ListProjects.descriptor,
+            GetProject.descriptor,
+            CreateProject.descriptor,
+            UpdateProject.descriptor,
+            DeleteProject.descriptor,
+            StartProject.descriptor,
+            StopProject.descriptor,
+            DestroyProject.descriptor,
+            ListEnvironments.descriptor,
+            CreateEnvironment.descriptor,
+            TestEnvironment.descriptor,
+            GetSettings.descriptor,
+            UpdateSettings.descriptor,
+            GetOidcStatus.descriptor,
+            GetNotificationSettings.descriptor,
+            SaveNotificationProvider.descriptor,
+            DeleteNotificationProvider.descriptor,
+            TestNotificationProvider.descriptor,
+            GetApprise.descriptor,
+            UpdateApprise.descriptor,
+            TestApprise.descriptor,
+            ListWebhooks.descriptor,
+            CreateWebhook.descriptor,
+            UpdateWebhook.descriptor,
+            DeleteWebhook.descriptor,
+            ListUsers.descriptor,
+            CreateUser.descriptor,
+            UpdateUser.descriptor,
+            DeleteUser.descriptor,
+            ListApiKeys.descriptor,
+            CreateApiKey.descriptor,
+            DeleteApiKey.descriptor,
+            ListContainerRegistries.descriptor,
+            CreateContainerRegistry.descriptor,
+            UpdateContainerRegistry.descriptor,
+            DeleteContainerRegistry.descriptor,
+            ListTemplates.descriptor,
+            GetTemplateContent.descriptor,
+            ListTemplateRegistries.descriptor,
+            CreateTemplateRegistry.descriptor,
+            UpdateTemplateRegistry.descriptor,
+            DeleteTemplateRegistry.descriptor,
+            PruneSystem.descriptor,
+            StreamContainerLogs.descriptor,
+            StreamContainerStats.descriptor,
+            StreamProjectLogs.descriptor,
+            StreamSystemStats.descriptor,
+            StreamPullImage.descriptor,
+            ContainerTerminal.descriptor
         ]
     }
 }
@@ -439,39 +1685,21 @@ extension Mobile_V1_MobileService {
     ///
     /// > Source IDL Documentation:
     /// >
-    /// > MobileService is the authenticated post-pairing API. Phase 1 includes
-    /// > just enough to demo the loop end-to-end. Phase 2+ migrate the rest of
-    /// > the iOS REST surface to this service, method by method.
+    /// > MobileService is the authenticated post-pairing API.
+    /// > 
+    /// > Conventions:
+    /// >   * Every multi-environment RPC carries `environment_id`. "0" means the
+    /// >     local Docker environment.
+    /// >   * Inspection / details responses use `bytes details_json` carrying the
+    /// >     same JSON shape as the REST endpoint so existing Swift Codable types
+    /// >     decode them unchanged. Lists/summaries/native types are fully typed.
+    /// >   * Mutating actions return ActionResult unless they need richer output.
     public protocol StreamingServiceProtocol: GRPCCore.RegistrableRPCService {
-        /// Handle the "GetServerInfo" method.
-        ///
-        /// - Parameters:
-        ///   - request: A streaming request of `Mobile_V1_GetServerInfoRequest` messages.
-        ///   - context: Context providing information about the RPC.
-        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
-        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
-        ///     to an internal error.
-        /// - Returns: A streaming response of `Mobile_V1_GetServerInfoResponse` messages.
-        func getServerInfo(
-            request: GRPCCore.StreamingServerRequest<Mobile_V1_GetServerInfoRequest>,
-            context: GRPCCore.ServerContext
-        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_GetServerInfoResponse>
-
-        /// Handle the "ListContainers" method.
-        ///
-        /// - Parameters:
-        ///   - request: A streaming request of `Mobile_V1_ListContainersRequest` messages.
-        ///   - context: Context providing information about the RPC.
-        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
-        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
-        ///     to an internal error.
-        /// - Returns: A streaming response of `Mobile_V1_ListContainersResponse` messages.
-        func listContainers(
-            request: GRPCCore.StreamingServerRequest<Mobile_V1_ListContainersRequest>,
-            context: GRPCCore.ServerContext
-        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ListContainersResponse>
-
         /// Handle the "GetCurrentDevice" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Pairing-related ----------
         ///
         /// - Parameters:
         ///   - request: A streaming request of `Mobile_V1_GetCurrentDeviceRequest` messages.
@@ -498,6 +1726,1356 @@ extension Mobile_V1_MobileService {
             request: GRPCCore.StreamingServerRequest<Mobile_V1_RevokeCurrentDeviceRequest>,
             context: GRPCCore.ServerContext
         ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_RevokeCurrentDeviceResponse>
+
+        /// Handle the "GetServerInfo" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Server / system ----------
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_GetServerInfoRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_GetServerInfoResponse` messages.
+        func getServerInfo(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_GetServerInfoRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_GetServerInfoResponse>
+
+        /// Handle the "GetDockerInfo" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_GetDockerInfoRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_GetDockerInfoResponse` messages.
+        func getDockerInfo(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_GetDockerInfoRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_GetDockerInfoResponse>
+
+        /// Handle the "GetAppVersion" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_GetAppVersionRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_GetAppVersionResponse` messages.
+        func getAppVersion(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_GetAppVersionRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_GetAppVersionResponse>
+
+        /// Handle the "ListContainers" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Containers ----------
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_ListContainersRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_ListContainersResponse` messages.
+        func listContainers(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_ListContainersRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ListContainersResponse>
+
+        /// Handle the "InspectContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_InspectContainerRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_InspectContainerResponse` messages.
+        func inspectContainer(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_InspectContainerRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_InspectContainerResponse>
+
+        /// Handle the "StartContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_ContainerActionRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_ActionResult` messages.
+        func startContainer(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_ContainerActionRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "StopContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_ContainerActionRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_ActionResult` messages.
+        func stopContainer(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_ContainerActionRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "RestartContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_ContainerActionRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_ActionResult` messages.
+        func restartContainer(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_ContainerActionRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "RedeployContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_ContainerActionRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_ActionResult` messages.
+        func redeployContainer(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_ContainerActionRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "DeleteContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_DeleteContainerRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_ActionResult` messages.
+        func deleteContainer(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_DeleteContainerRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "PruneContainers" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_PruneContainersRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_PruneResult` messages.
+        func pruneContainers(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_PruneContainersRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_PruneResult>
+
+        /// Handle the "ListVolumes" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Volumes ----------
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_ListVolumesRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_ListVolumesResponse` messages.
+        func listVolumes(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_ListVolumesRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ListVolumesResponse>
+
+        /// Handle the "GetVolumeSizes" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_GetVolumeSizesRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_GetVolumeSizesResponse` messages.
+        func getVolumeSizes(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_GetVolumeSizesRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_GetVolumeSizesResponse>
+
+        /// Handle the "CreateVolume" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_CreateVolumeRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_CreateVolumeResponse` messages.
+        func createVolume(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_CreateVolumeRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_CreateVolumeResponse>
+
+        /// Handle the "DeleteVolume" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_DeleteVolumeRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_ActionResult` messages.
+        func deleteVolume(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_DeleteVolumeRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "PruneVolumes" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_PruneVolumesRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_PruneResult` messages.
+        func pruneVolumes(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_PruneVolumesRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_PruneResult>
+
+        /// Handle the "ListNetworks" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Networks ----------
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_ListNetworksRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_ListNetworksResponse` messages.
+        func listNetworks(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_ListNetworksRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ListNetworksResponse>
+
+        /// Handle the "CreateNetwork" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_CreateNetworkRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_CreateNetworkResponse` messages.
+        func createNetwork(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_CreateNetworkRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_CreateNetworkResponse>
+
+        /// Handle the "DeleteNetwork" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_DeleteNetworkRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_ActionResult` messages.
+        func deleteNetwork(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_DeleteNetworkRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "PruneNetworks" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_PruneNetworksRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_PruneResult` messages.
+        func pruneNetworks(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_PruneNetworksRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_PruneResult>
+
+        /// Handle the "PauseContainer" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Container extras ----------
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_ContainerActionRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_ActionResult` messages.
+        func pauseContainer(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_ContainerActionRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "UnpauseContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_ContainerActionRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_ActionResult` messages.
+        func unpauseContainer(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_ContainerActionRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "KillContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_ContainerActionRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_ActionResult` messages.
+        func killContainer(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_ContainerActionRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "RenameContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_RenameContainerRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_ActionResult` messages.
+        func renameContainer(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_RenameContainerRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "ListImages" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Images ----------
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EnvIDOnlyRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_JSONResponse` messages.
+        func listImages(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "InspectImage" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EnvIDAndIDRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_JSONResponse` messages.
+        func inspectImage(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "DeleteImage" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EnvIDAndIDRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_ActionResult` messages.
+        func deleteImage(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "PruneImages" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EnvIDOnlyRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_PruneResult` messages.
+        func pruneImages(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_PruneResult>
+
+        /// Handle the "GetImageUpdateSummary" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Image updates ----------
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EnvIDOnlyRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_JSONResponse` messages.
+        func getImageUpdateSummary(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "GetImageUpdatesByRefs" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_GetImageUpdatesByRefsRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_JSONResponse` messages.
+        func getImageUpdatesByRefs(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_GetImageUpdatesByRefsRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "CheckImageUpdates" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EnvIDAndQueryRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_JSONResponse` messages.
+        func checkImageUpdates(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndQueryRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "CheckAllImageUpdates" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EnvIDOnlyRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_ActionResult` messages.
+        func checkAllImageUpdates(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "CheckImageUpdate" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EnvIDAndIDRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_JSONResponse` messages.
+        func checkImageUpdate(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "GetVulnerabilityScannerStatus" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Vulnerabilities ----------
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EnvIDOnlyRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_JSONResponse` messages.
+        func getVulnerabilityScannerStatus(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "GetImageVulnerabilitySummary" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EnvIDAndIDRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_JSONResponse` messages.
+        func getImageVulnerabilitySummary(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "ListImageVulnerabilities" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EnvIDAndIDAndQueryRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_JSONResponse` messages.
+        func listImageVulnerabilities(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndIDAndQueryRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "ScanImageVulnerabilities" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EnvIDAndIDRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_JSONResponse` messages.
+        func scanImageVulnerabilities(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "GetAllVulnerabilitiesSummary" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EnvIDOnlyRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_JSONResponse` messages.
+        func getAllVulnerabilitiesSummary(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "GetVulnerabilityImageOptions" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EnvIDAndQueryRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_JSONResponse` messages.
+        func getVulnerabilityImageOptions(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndQueryRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "ListAllVulnerabilities" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EnvIDAndQueryRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_JSONResponse` messages.
+        func listAllVulnerabilities(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndQueryRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "IgnoreVulnerability" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EnvIDAndJSONBodyRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_JSONResponse` messages.
+        func ignoreVulnerability(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "DeleteVulnerabilityIgnore" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EnvIDAndIDRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_ActionResult` messages.
+        func deleteVulnerabilityIgnore(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "ListProjects" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Projects (read + mutations) ----------
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_ListProjectsRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_ListProjectsResponse` messages.
+        func listProjects(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_ListProjectsRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ListProjectsResponse>
+
+        /// Handle the "GetProject" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_GetProjectRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_GetProjectResponse` messages.
+        func getProject(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_GetProjectRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_GetProjectResponse>
+
+        /// Handle the "CreateProject" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EnvIDAndJSONBodyRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_JSONResponse` messages.
+        func createProject(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "UpdateProject" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EnvIDAndIDAndJSONBodyRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_JSONResponse` messages.
+        func updateProject(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndIDAndJSONBodyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "DeleteProject" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EnvIDAndIDRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_ActionResult` messages.
+        func deleteProject(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "StartProject" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EnvIDAndIDRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_ActionResult` messages.
+        func startProject(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "StopProject" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EnvIDAndIDRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_ActionResult` messages.
+        func stopProject(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "DestroyProject" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EnvIDAndIDRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_ActionResult` messages.
+        func destroyProject(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "ListEnvironments" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Environments ----------
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EmptyRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_JSONResponse` messages.
+        func listEnvironments(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EmptyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "CreateEnvironment" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_JSONBodyRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_JSONResponse` messages.
+        func createEnvironment(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_JSONBodyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "TestEnvironment" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EnvIDOnlyRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_JSONResponse` messages.
+        func testEnvironment(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "GetSettings" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Settings ----------
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EnvIDOnlyRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_JSONResponse` messages.
+        func getSettings(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "UpdateSettings" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EnvIDAndJSONBodyRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_JSONResponse` messages.
+        func updateSettings(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "GetOidcStatus" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EmptyRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_JSONResponse` messages.
+        func getOidcStatus(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EmptyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "GetNotificationSettings" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Notifications ----------
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EnvIDOnlyRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_JSONResponse` messages.
+        func getNotificationSettings(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "SaveNotificationProvider" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EnvIDAndJSONBodyRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_JSONResponse` messages.
+        func saveNotificationProvider(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "DeleteNotificationProvider" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EnvIDAndIDRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_ActionResult` messages.
+        func deleteNotificationProvider(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "TestNotificationProvider" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EnvIDAndIDAndJSONBodyRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_ActionResult` messages.
+        func testNotificationProvider(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndIDAndJSONBodyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "GetApprise" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EnvIDOnlyRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_JSONResponse` messages.
+        func getApprise(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "UpdateApprise" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EnvIDAndJSONBodyRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_JSONResponse` messages.
+        func updateApprise(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "TestApprise" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EnvIDAndJSONBodyRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_ActionResult` messages.
+        func testApprise(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "ListWebhooks" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Webhooks ----------
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EnvIDOnlyRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_JSONResponse` messages.
+        func listWebhooks(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "CreateWebhook" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EnvIDAndJSONBodyRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_JSONResponse` messages.
+        func createWebhook(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "UpdateWebhook" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EnvIDAndIDAndJSONBodyRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_JSONResponse` messages.
+        func updateWebhook(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndIDAndJSONBodyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "DeleteWebhook" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EnvIDAndIDRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_ActionResult` messages.
+        func deleteWebhook(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "ListUsers" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Users (global) ----------
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EmptyRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_JSONResponse` messages.
+        func listUsers(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EmptyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "CreateUser" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_JSONBodyRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_JSONResponse` messages.
+        func createUser(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_JSONBodyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "UpdateUser" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_IDAndJSONBodyRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_JSONResponse` messages.
+        func updateUser(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_IDAndJSONBodyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "DeleteUser" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_IDOnlyRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_ActionResult` messages.
+        func deleteUser(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_IDOnlyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "ListApiKeys" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- API keys (global) ----------
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EmptyRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_JSONResponse` messages.
+        func listApiKeys(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EmptyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "CreateApiKey" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_JSONBodyRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_JSONResponse` messages.
+        func createApiKey(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_JSONBodyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "DeleteApiKey" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_IDOnlyRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_ActionResult` messages.
+        func deleteApiKey(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_IDOnlyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "ListContainerRegistries" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Container registries (global) ----------
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EmptyRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_JSONResponse` messages.
+        func listContainerRegistries(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EmptyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "CreateContainerRegistry" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_JSONBodyRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_JSONResponse` messages.
+        func createContainerRegistry(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_JSONBodyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "UpdateContainerRegistry" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_IDAndJSONBodyRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_JSONResponse` messages.
+        func updateContainerRegistry(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_IDAndJSONBodyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "DeleteContainerRegistry" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_IDOnlyRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_ActionResult` messages.
+        func deleteContainerRegistry(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_IDOnlyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "ListTemplates" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Templates (global) ----------
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EmptyRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_JSONResponse` messages.
+        func listTemplates(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EmptyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "GetTemplateContent" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_IDOnlyRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_JSONResponse` messages.
+        func getTemplateContent(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_IDOnlyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "ListTemplateRegistries" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EmptyRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_JSONResponse` messages.
+        func listTemplateRegistries(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EmptyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "CreateTemplateRegistry" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_JSONBodyRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_JSONResponse` messages.
+        func createTemplateRegistry(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_JSONBodyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "UpdateTemplateRegistry" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_IDAndJSONBodyRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_JSONResponse` messages.
+        func updateTemplateRegistry(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_IDAndJSONBodyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "DeleteTemplateRegistry" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_IDOnlyRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_ActionResult` messages.
+        func deleteTemplateRegistry(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_IDOnlyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "PruneSystem" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- System ----------
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EnvIDAndJSONBodyRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_JSONResponse` messages.
+        func pruneSystem(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "StreamContainerLogs" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Streaming ----------
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_StreamContainerLogsRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_StreamFrame` messages.
+        func streamContainerLogs(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_StreamContainerLogsRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_StreamFrame>
+
+        /// Handle the "StreamContainerStats" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_EnvIDAndIDRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_StreamFrame` messages.
+        func streamContainerStats(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_StreamFrame>
+
+        /// Handle the "StreamProjectLogs" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_StreamProjectLogsRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_StreamFrame` messages.
+        func streamProjectLogs(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_StreamProjectLogsRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_StreamFrame>
+
+        /// Handle the "StreamSystemStats" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_StreamSystemStatsRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_StreamFrame` messages.
+        func streamSystemStats(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_StreamSystemStatsRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_StreamFrame>
+
+        /// Handle the "StreamPullImage" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_PullImageRequest` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_StreamFrame` messages.
+        func streamPullImage(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_PullImageRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_StreamFrame>
+
+        /// Handle the "ContainerTerminal" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_TerminalClientFrame` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_TerminalServerFrame` messages.
+        func containerTerminal(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_TerminalClientFrame>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_TerminalServerFrame>
     }
 
     /// Service protocol for the "mobile.v1.MobileService" service.
@@ -510,39 +3088,21 @@ extension Mobile_V1_MobileService {
     ///
     /// > Source IDL Documentation:
     /// >
-    /// > MobileService is the authenticated post-pairing API. Phase 1 includes
-    /// > just enough to demo the loop end-to-end. Phase 2+ migrate the rest of
-    /// > the iOS REST surface to this service, method by method.
+    /// > MobileService is the authenticated post-pairing API.
+    /// > 
+    /// > Conventions:
+    /// >   * Every multi-environment RPC carries `environment_id`. "0" means the
+    /// >     local Docker environment.
+    /// >   * Inspection / details responses use `bytes details_json` carrying the
+    /// >     same JSON shape as the REST endpoint so existing Swift Codable types
+    /// >     decode them unchanged. Lists/summaries/native types are fully typed.
+    /// >   * Mutating actions return ActionResult unless they need richer output.
     public protocol ServiceProtocol: Mobile_V1_MobileService.StreamingServiceProtocol {
-        /// Handle the "GetServerInfo" method.
-        ///
-        /// - Parameters:
-        ///   - request: A request containing a single `Mobile_V1_GetServerInfoRequest` message.
-        ///   - context: Context providing information about the RPC.
-        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
-        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
-        ///     to an internal error.
-        /// - Returns: A response containing a single `Mobile_V1_GetServerInfoResponse` message.
-        func getServerInfo(
-            request: GRPCCore.ServerRequest<Mobile_V1_GetServerInfoRequest>,
-            context: GRPCCore.ServerContext
-        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_GetServerInfoResponse>
-
-        /// Handle the "ListContainers" method.
-        ///
-        /// - Parameters:
-        ///   - request: A request containing a single `Mobile_V1_ListContainersRequest` message.
-        ///   - context: Context providing information about the RPC.
-        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
-        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
-        ///     to an internal error.
-        /// - Returns: A response containing a single `Mobile_V1_ListContainersResponse` message.
-        func listContainers(
-            request: GRPCCore.ServerRequest<Mobile_V1_ListContainersRequest>,
-            context: GRPCCore.ServerContext
-        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ListContainersResponse>
-
         /// Handle the "GetCurrentDevice" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Pairing-related ----------
         ///
         /// - Parameters:
         ///   - request: A request containing a single `Mobile_V1_GetCurrentDeviceRequest` message.
@@ -569,6 +3129,1356 @@ extension Mobile_V1_MobileService {
             request: GRPCCore.ServerRequest<Mobile_V1_RevokeCurrentDeviceRequest>,
             context: GRPCCore.ServerContext
         ) async throws -> GRPCCore.ServerResponse<Mobile_V1_RevokeCurrentDeviceResponse>
+
+        /// Handle the "GetServerInfo" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Server / system ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_GetServerInfoRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_GetServerInfoResponse` message.
+        func getServerInfo(
+            request: GRPCCore.ServerRequest<Mobile_V1_GetServerInfoRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_GetServerInfoResponse>
+
+        /// Handle the "GetDockerInfo" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_GetDockerInfoRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_GetDockerInfoResponse` message.
+        func getDockerInfo(
+            request: GRPCCore.ServerRequest<Mobile_V1_GetDockerInfoRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_GetDockerInfoResponse>
+
+        /// Handle the "GetAppVersion" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_GetAppVersionRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_GetAppVersionResponse` message.
+        func getAppVersion(
+            request: GRPCCore.ServerRequest<Mobile_V1_GetAppVersionRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_GetAppVersionResponse>
+
+        /// Handle the "ListContainers" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Containers ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_ListContainersRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_ListContainersResponse` message.
+        func listContainers(
+            request: GRPCCore.ServerRequest<Mobile_V1_ListContainersRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ListContainersResponse>
+
+        /// Handle the "InspectContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_InspectContainerRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_InspectContainerResponse` message.
+        func inspectContainer(
+            request: GRPCCore.ServerRequest<Mobile_V1_InspectContainerRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_InspectContainerResponse>
+
+        /// Handle the "StartContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_ContainerActionRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_ActionResult` message.
+        func startContainer(
+            request: GRPCCore.ServerRequest<Mobile_V1_ContainerActionRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "StopContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_ContainerActionRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_ActionResult` message.
+        func stopContainer(
+            request: GRPCCore.ServerRequest<Mobile_V1_ContainerActionRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "RestartContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_ContainerActionRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_ActionResult` message.
+        func restartContainer(
+            request: GRPCCore.ServerRequest<Mobile_V1_ContainerActionRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "RedeployContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_ContainerActionRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_ActionResult` message.
+        func redeployContainer(
+            request: GRPCCore.ServerRequest<Mobile_V1_ContainerActionRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "DeleteContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_DeleteContainerRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_ActionResult` message.
+        func deleteContainer(
+            request: GRPCCore.ServerRequest<Mobile_V1_DeleteContainerRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "PruneContainers" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_PruneContainersRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_PruneResult` message.
+        func pruneContainers(
+            request: GRPCCore.ServerRequest<Mobile_V1_PruneContainersRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_PruneResult>
+
+        /// Handle the "ListVolumes" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Volumes ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_ListVolumesRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_ListVolumesResponse` message.
+        func listVolumes(
+            request: GRPCCore.ServerRequest<Mobile_V1_ListVolumesRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ListVolumesResponse>
+
+        /// Handle the "GetVolumeSizes" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_GetVolumeSizesRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_GetVolumeSizesResponse` message.
+        func getVolumeSizes(
+            request: GRPCCore.ServerRequest<Mobile_V1_GetVolumeSizesRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_GetVolumeSizesResponse>
+
+        /// Handle the "CreateVolume" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_CreateVolumeRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_CreateVolumeResponse` message.
+        func createVolume(
+            request: GRPCCore.ServerRequest<Mobile_V1_CreateVolumeRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_CreateVolumeResponse>
+
+        /// Handle the "DeleteVolume" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_DeleteVolumeRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_ActionResult` message.
+        func deleteVolume(
+            request: GRPCCore.ServerRequest<Mobile_V1_DeleteVolumeRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "PruneVolumes" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_PruneVolumesRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_PruneResult` message.
+        func pruneVolumes(
+            request: GRPCCore.ServerRequest<Mobile_V1_PruneVolumesRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_PruneResult>
+
+        /// Handle the "ListNetworks" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Networks ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_ListNetworksRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_ListNetworksResponse` message.
+        func listNetworks(
+            request: GRPCCore.ServerRequest<Mobile_V1_ListNetworksRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ListNetworksResponse>
+
+        /// Handle the "CreateNetwork" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_CreateNetworkRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_CreateNetworkResponse` message.
+        func createNetwork(
+            request: GRPCCore.ServerRequest<Mobile_V1_CreateNetworkRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_CreateNetworkResponse>
+
+        /// Handle the "DeleteNetwork" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_DeleteNetworkRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_ActionResult` message.
+        func deleteNetwork(
+            request: GRPCCore.ServerRequest<Mobile_V1_DeleteNetworkRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "PruneNetworks" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_PruneNetworksRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_PruneResult` message.
+        func pruneNetworks(
+            request: GRPCCore.ServerRequest<Mobile_V1_PruneNetworksRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_PruneResult>
+
+        /// Handle the "PauseContainer" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Container extras ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_ContainerActionRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_ActionResult` message.
+        func pauseContainer(
+            request: GRPCCore.ServerRequest<Mobile_V1_ContainerActionRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "UnpauseContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_ContainerActionRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_ActionResult` message.
+        func unpauseContainer(
+            request: GRPCCore.ServerRequest<Mobile_V1_ContainerActionRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "KillContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_ContainerActionRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_ActionResult` message.
+        func killContainer(
+            request: GRPCCore.ServerRequest<Mobile_V1_ContainerActionRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "RenameContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_RenameContainerRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_ActionResult` message.
+        func renameContainer(
+            request: GRPCCore.ServerRequest<Mobile_V1_RenameContainerRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "ListImages" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Images ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_JSONResponse` message.
+        func listImages(
+            request: GRPCCore.ServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "InspectImage" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_JSONResponse` message.
+        func inspectImage(
+            request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "DeleteImage" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_ActionResult` message.
+        func deleteImage(
+            request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "PruneImages" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_PruneResult` message.
+        func pruneImages(
+            request: GRPCCore.ServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_PruneResult>
+
+        /// Handle the "GetImageUpdateSummary" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Image updates ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_JSONResponse` message.
+        func getImageUpdateSummary(
+            request: GRPCCore.ServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "GetImageUpdatesByRefs" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_GetImageUpdatesByRefsRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_JSONResponse` message.
+        func getImageUpdatesByRefs(
+            request: GRPCCore.ServerRequest<Mobile_V1_GetImageUpdatesByRefsRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "CheckImageUpdates" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndQueryRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_JSONResponse` message.
+        func checkImageUpdates(
+            request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndQueryRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "CheckAllImageUpdates" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_ActionResult` message.
+        func checkAllImageUpdates(
+            request: GRPCCore.ServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "CheckImageUpdate" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_JSONResponse` message.
+        func checkImageUpdate(
+            request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "GetVulnerabilityScannerStatus" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Vulnerabilities ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_JSONResponse` message.
+        func getVulnerabilityScannerStatus(
+            request: GRPCCore.ServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "GetImageVulnerabilitySummary" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_JSONResponse` message.
+        func getImageVulnerabilitySummary(
+            request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "ListImageVulnerabilities" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDAndQueryRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_JSONResponse` message.
+        func listImageVulnerabilities(
+            request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndIDAndQueryRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "ScanImageVulnerabilities" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_JSONResponse` message.
+        func scanImageVulnerabilities(
+            request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "GetAllVulnerabilitiesSummary" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_JSONResponse` message.
+        func getAllVulnerabilitiesSummary(
+            request: GRPCCore.ServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "GetVulnerabilityImageOptions" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndQueryRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_JSONResponse` message.
+        func getVulnerabilityImageOptions(
+            request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndQueryRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "ListAllVulnerabilities" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndQueryRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_JSONResponse` message.
+        func listAllVulnerabilities(
+            request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndQueryRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "IgnoreVulnerability" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndJSONBodyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_JSONResponse` message.
+        func ignoreVulnerability(
+            request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "DeleteVulnerabilityIgnore" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_ActionResult` message.
+        func deleteVulnerabilityIgnore(
+            request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "ListProjects" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Projects (read + mutations) ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_ListProjectsRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_ListProjectsResponse` message.
+        func listProjects(
+            request: GRPCCore.ServerRequest<Mobile_V1_ListProjectsRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ListProjectsResponse>
+
+        /// Handle the "GetProject" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_GetProjectRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_GetProjectResponse` message.
+        func getProject(
+            request: GRPCCore.ServerRequest<Mobile_V1_GetProjectRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_GetProjectResponse>
+
+        /// Handle the "CreateProject" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndJSONBodyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_JSONResponse` message.
+        func createProject(
+            request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "UpdateProject" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDAndJSONBodyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_JSONResponse` message.
+        func updateProject(
+            request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndIDAndJSONBodyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "DeleteProject" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_ActionResult` message.
+        func deleteProject(
+            request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "StartProject" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_ActionResult` message.
+        func startProject(
+            request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "StopProject" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_ActionResult` message.
+        func stopProject(
+            request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "DestroyProject" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_ActionResult` message.
+        func destroyProject(
+            request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "ListEnvironments" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Environments ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EmptyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_JSONResponse` message.
+        func listEnvironments(
+            request: GRPCCore.ServerRequest<Mobile_V1_EmptyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "CreateEnvironment" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_JSONBodyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_JSONResponse` message.
+        func createEnvironment(
+            request: GRPCCore.ServerRequest<Mobile_V1_JSONBodyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "TestEnvironment" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_JSONResponse` message.
+        func testEnvironment(
+            request: GRPCCore.ServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "GetSettings" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Settings ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_JSONResponse` message.
+        func getSettings(
+            request: GRPCCore.ServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "UpdateSettings" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndJSONBodyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_JSONResponse` message.
+        func updateSettings(
+            request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "GetOidcStatus" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EmptyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_JSONResponse` message.
+        func getOidcStatus(
+            request: GRPCCore.ServerRequest<Mobile_V1_EmptyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "GetNotificationSettings" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Notifications ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_JSONResponse` message.
+        func getNotificationSettings(
+            request: GRPCCore.ServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "SaveNotificationProvider" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndJSONBodyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_JSONResponse` message.
+        func saveNotificationProvider(
+            request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "DeleteNotificationProvider" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_ActionResult` message.
+        func deleteNotificationProvider(
+            request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "TestNotificationProvider" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDAndJSONBodyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_ActionResult` message.
+        func testNotificationProvider(
+            request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndIDAndJSONBodyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "GetApprise" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_JSONResponse` message.
+        func getApprise(
+            request: GRPCCore.ServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "UpdateApprise" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndJSONBodyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_JSONResponse` message.
+        func updateApprise(
+            request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "TestApprise" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndJSONBodyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_ActionResult` message.
+        func testApprise(
+            request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "ListWebhooks" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Webhooks ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_JSONResponse` message.
+        func listWebhooks(
+            request: GRPCCore.ServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "CreateWebhook" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndJSONBodyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_JSONResponse` message.
+        func createWebhook(
+            request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "UpdateWebhook" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDAndJSONBodyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_JSONResponse` message.
+        func updateWebhook(
+            request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndIDAndJSONBodyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "DeleteWebhook" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_ActionResult` message.
+        func deleteWebhook(
+            request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "ListUsers" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Users (global) ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EmptyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_JSONResponse` message.
+        func listUsers(
+            request: GRPCCore.ServerRequest<Mobile_V1_EmptyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "CreateUser" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_JSONBodyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_JSONResponse` message.
+        func createUser(
+            request: GRPCCore.ServerRequest<Mobile_V1_JSONBodyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "UpdateUser" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_IDAndJSONBodyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_JSONResponse` message.
+        func updateUser(
+            request: GRPCCore.ServerRequest<Mobile_V1_IDAndJSONBodyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "DeleteUser" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_IDOnlyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_ActionResult` message.
+        func deleteUser(
+            request: GRPCCore.ServerRequest<Mobile_V1_IDOnlyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "ListApiKeys" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- API keys (global) ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EmptyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_JSONResponse` message.
+        func listApiKeys(
+            request: GRPCCore.ServerRequest<Mobile_V1_EmptyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "CreateApiKey" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_JSONBodyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_JSONResponse` message.
+        func createApiKey(
+            request: GRPCCore.ServerRequest<Mobile_V1_JSONBodyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "DeleteApiKey" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_IDOnlyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_ActionResult` message.
+        func deleteApiKey(
+            request: GRPCCore.ServerRequest<Mobile_V1_IDOnlyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "ListContainerRegistries" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Container registries (global) ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EmptyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_JSONResponse` message.
+        func listContainerRegistries(
+            request: GRPCCore.ServerRequest<Mobile_V1_EmptyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "CreateContainerRegistry" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_JSONBodyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_JSONResponse` message.
+        func createContainerRegistry(
+            request: GRPCCore.ServerRequest<Mobile_V1_JSONBodyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "UpdateContainerRegistry" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_IDAndJSONBodyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_JSONResponse` message.
+        func updateContainerRegistry(
+            request: GRPCCore.ServerRequest<Mobile_V1_IDAndJSONBodyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "DeleteContainerRegistry" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_IDOnlyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_ActionResult` message.
+        func deleteContainerRegistry(
+            request: GRPCCore.ServerRequest<Mobile_V1_IDOnlyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "ListTemplates" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Templates (global) ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EmptyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_JSONResponse` message.
+        func listTemplates(
+            request: GRPCCore.ServerRequest<Mobile_V1_EmptyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "GetTemplateContent" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_IDOnlyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_JSONResponse` message.
+        func getTemplateContent(
+            request: GRPCCore.ServerRequest<Mobile_V1_IDOnlyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "ListTemplateRegistries" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EmptyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_JSONResponse` message.
+        func listTemplateRegistries(
+            request: GRPCCore.ServerRequest<Mobile_V1_EmptyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "CreateTemplateRegistry" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_JSONBodyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_JSONResponse` message.
+        func createTemplateRegistry(
+            request: GRPCCore.ServerRequest<Mobile_V1_JSONBodyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "UpdateTemplateRegistry" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_IDAndJSONBodyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_JSONResponse` message.
+        func updateTemplateRegistry(
+            request: GRPCCore.ServerRequest<Mobile_V1_IDAndJSONBodyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "DeleteTemplateRegistry" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_IDOnlyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_ActionResult` message.
+        func deleteTemplateRegistry(
+            request: GRPCCore.ServerRequest<Mobile_V1_IDOnlyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult>
+
+        /// Handle the "PruneSystem" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- System ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndJSONBodyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A response containing a single `Mobile_V1_JSONResponse` message.
+        func pruneSystem(
+            request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse>
+
+        /// Handle the "StreamContainerLogs" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Streaming ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_StreamContainerLogsRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_StreamFrame` messages.
+        func streamContainerLogs(
+            request: GRPCCore.ServerRequest<Mobile_V1_StreamContainerLogsRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_StreamFrame>
+
+        /// Handle the "StreamContainerStats" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_StreamFrame` messages.
+        func streamContainerStats(
+            request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_StreamFrame>
+
+        /// Handle the "StreamProjectLogs" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_StreamProjectLogsRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_StreamFrame` messages.
+        func streamProjectLogs(
+            request: GRPCCore.ServerRequest<Mobile_V1_StreamProjectLogsRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_StreamFrame>
+
+        /// Handle the "StreamSystemStats" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_StreamSystemStatsRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_StreamFrame` messages.
+        func streamSystemStats(
+            request: GRPCCore.ServerRequest<Mobile_V1_StreamSystemStatsRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_StreamFrame>
+
+        /// Handle the "StreamPullImage" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_PullImageRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_StreamFrame` messages.
+        func streamPullImage(
+            request: GRPCCore.ServerRequest<Mobile_V1_PullImageRequest>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_StreamFrame>
+
+        /// Handle the "ContainerTerminal" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request of `Mobile_V1_TerminalClientFrame` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A streaming response of `Mobile_V1_TerminalServerFrame` messages.
+        func containerTerminal(
+            request: GRPCCore.StreamingServerRequest<Mobile_V1_TerminalClientFrame>,
+            context: GRPCCore.ServerContext
+        ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_TerminalServerFrame>
     }
 
     /// Simple service protocol for the "mobile.v1.MobileService" service.
@@ -579,39 +4489,21 @@ extension Mobile_V1_MobileService {
     ///
     /// > Source IDL Documentation:
     /// >
-    /// > MobileService is the authenticated post-pairing API. Phase 1 includes
-    /// > just enough to demo the loop end-to-end. Phase 2+ migrate the rest of
-    /// > the iOS REST surface to this service, method by method.
+    /// > MobileService is the authenticated post-pairing API.
+    /// > 
+    /// > Conventions:
+    /// >   * Every multi-environment RPC carries `environment_id`. "0" means the
+    /// >     local Docker environment.
+    /// >   * Inspection / details responses use `bytes details_json` carrying the
+    /// >     same JSON shape as the REST endpoint so existing Swift Codable types
+    /// >     decode them unchanged. Lists/summaries/native types are fully typed.
+    /// >   * Mutating actions return ActionResult unless they need richer output.
     public protocol SimpleServiceProtocol: Mobile_V1_MobileService.ServiceProtocol {
-        /// Handle the "GetServerInfo" method.
-        ///
-        /// - Parameters:
-        ///   - request: A `Mobile_V1_GetServerInfoRequest` message.
-        ///   - context: Context providing information about the RPC.
-        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
-        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
-        ///     to an internal error.
-        /// - Returns: A `Mobile_V1_GetServerInfoResponse` to respond with.
-        func getServerInfo(
-            request: Mobile_V1_GetServerInfoRequest,
-            context: GRPCCore.ServerContext
-        ) async throws -> Mobile_V1_GetServerInfoResponse
-
-        /// Handle the "ListContainers" method.
-        ///
-        /// - Parameters:
-        ///   - request: A `Mobile_V1_ListContainersRequest` message.
-        ///   - context: Context providing information about the RPC.
-        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
-        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
-        ///     to an internal error.
-        /// - Returns: A `Mobile_V1_ListContainersResponse` to respond with.
-        func listContainers(
-            request: Mobile_V1_ListContainersRequest,
-            context: GRPCCore.ServerContext
-        ) async throws -> Mobile_V1_ListContainersResponse
-
         /// Handle the "GetCurrentDevice" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Pairing-related ----------
         ///
         /// - Parameters:
         ///   - request: A `Mobile_V1_GetCurrentDeviceRequest` message.
@@ -638,6 +4530,1362 @@ extension Mobile_V1_MobileService {
             request: Mobile_V1_RevokeCurrentDeviceRequest,
             context: GRPCCore.ServerContext
         ) async throws -> Mobile_V1_RevokeCurrentDeviceResponse
+
+        /// Handle the "GetServerInfo" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Server / system ----------
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_GetServerInfoRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_GetServerInfoResponse` to respond with.
+        func getServerInfo(
+            request: Mobile_V1_GetServerInfoRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_GetServerInfoResponse
+
+        /// Handle the "GetDockerInfo" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_GetDockerInfoRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_GetDockerInfoResponse` to respond with.
+        func getDockerInfo(
+            request: Mobile_V1_GetDockerInfoRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_GetDockerInfoResponse
+
+        /// Handle the "GetAppVersion" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_GetAppVersionRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_GetAppVersionResponse` to respond with.
+        func getAppVersion(
+            request: Mobile_V1_GetAppVersionRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_GetAppVersionResponse
+
+        /// Handle the "ListContainers" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Containers ----------
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_ListContainersRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_ListContainersResponse` to respond with.
+        func listContainers(
+            request: Mobile_V1_ListContainersRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_ListContainersResponse
+
+        /// Handle the "InspectContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_InspectContainerRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_InspectContainerResponse` to respond with.
+        func inspectContainer(
+            request: Mobile_V1_InspectContainerRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_InspectContainerResponse
+
+        /// Handle the "StartContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_ContainerActionRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_ActionResult` to respond with.
+        func startContainer(
+            request: Mobile_V1_ContainerActionRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_ActionResult
+
+        /// Handle the "StopContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_ContainerActionRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_ActionResult` to respond with.
+        func stopContainer(
+            request: Mobile_V1_ContainerActionRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_ActionResult
+
+        /// Handle the "RestartContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_ContainerActionRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_ActionResult` to respond with.
+        func restartContainer(
+            request: Mobile_V1_ContainerActionRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_ActionResult
+
+        /// Handle the "RedeployContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_ContainerActionRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_ActionResult` to respond with.
+        func redeployContainer(
+            request: Mobile_V1_ContainerActionRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_ActionResult
+
+        /// Handle the "DeleteContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_DeleteContainerRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_ActionResult` to respond with.
+        func deleteContainer(
+            request: Mobile_V1_DeleteContainerRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_ActionResult
+
+        /// Handle the "PruneContainers" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_PruneContainersRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_PruneResult` to respond with.
+        func pruneContainers(
+            request: Mobile_V1_PruneContainersRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_PruneResult
+
+        /// Handle the "ListVolumes" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Volumes ----------
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_ListVolumesRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_ListVolumesResponse` to respond with.
+        func listVolumes(
+            request: Mobile_V1_ListVolumesRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_ListVolumesResponse
+
+        /// Handle the "GetVolumeSizes" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_GetVolumeSizesRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_GetVolumeSizesResponse` to respond with.
+        func getVolumeSizes(
+            request: Mobile_V1_GetVolumeSizesRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_GetVolumeSizesResponse
+
+        /// Handle the "CreateVolume" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_CreateVolumeRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_CreateVolumeResponse` to respond with.
+        func createVolume(
+            request: Mobile_V1_CreateVolumeRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_CreateVolumeResponse
+
+        /// Handle the "DeleteVolume" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_DeleteVolumeRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_ActionResult` to respond with.
+        func deleteVolume(
+            request: Mobile_V1_DeleteVolumeRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_ActionResult
+
+        /// Handle the "PruneVolumes" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_PruneVolumesRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_PruneResult` to respond with.
+        func pruneVolumes(
+            request: Mobile_V1_PruneVolumesRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_PruneResult
+
+        /// Handle the "ListNetworks" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Networks ----------
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_ListNetworksRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_ListNetworksResponse` to respond with.
+        func listNetworks(
+            request: Mobile_V1_ListNetworksRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_ListNetworksResponse
+
+        /// Handle the "CreateNetwork" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_CreateNetworkRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_CreateNetworkResponse` to respond with.
+        func createNetwork(
+            request: Mobile_V1_CreateNetworkRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_CreateNetworkResponse
+
+        /// Handle the "DeleteNetwork" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_DeleteNetworkRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_ActionResult` to respond with.
+        func deleteNetwork(
+            request: Mobile_V1_DeleteNetworkRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_ActionResult
+
+        /// Handle the "PruneNetworks" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_PruneNetworksRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_PruneResult` to respond with.
+        func pruneNetworks(
+            request: Mobile_V1_PruneNetworksRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_PruneResult
+
+        /// Handle the "PauseContainer" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Container extras ----------
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_ContainerActionRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_ActionResult` to respond with.
+        func pauseContainer(
+            request: Mobile_V1_ContainerActionRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_ActionResult
+
+        /// Handle the "UnpauseContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_ContainerActionRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_ActionResult` to respond with.
+        func unpauseContainer(
+            request: Mobile_V1_ContainerActionRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_ActionResult
+
+        /// Handle the "KillContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_ContainerActionRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_ActionResult` to respond with.
+        func killContainer(
+            request: Mobile_V1_ContainerActionRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_ActionResult
+
+        /// Handle the "RenameContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_RenameContainerRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_ActionResult` to respond with.
+        func renameContainer(
+            request: Mobile_V1_RenameContainerRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_ActionResult
+
+        /// Handle the "ListImages" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Images ----------
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_JSONResponse` to respond with.
+        func listImages(
+            request: Mobile_V1_EnvIDOnlyRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_JSONResponse
+
+        /// Handle the "InspectImage" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_JSONResponse` to respond with.
+        func inspectImage(
+            request: Mobile_V1_EnvIDAndIDRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_JSONResponse
+
+        /// Handle the "DeleteImage" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_ActionResult` to respond with.
+        func deleteImage(
+            request: Mobile_V1_EnvIDAndIDRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_ActionResult
+
+        /// Handle the "PruneImages" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_PruneResult` to respond with.
+        func pruneImages(
+            request: Mobile_V1_EnvIDOnlyRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_PruneResult
+
+        /// Handle the "GetImageUpdateSummary" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Image updates ----------
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_JSONResponse` to respond with.
+        func getImageUpdateSummary(
+            request: Mobile_V1_EnvIDOnlyRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_JSONResponse
+
+        /// Handle the "GetImageUpdatesByRefs" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_GetImageUpdatesByRefsRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_JSONResponse` to respond with.
+        func getImageUpdatesByRefs(
+            request: Mobile_V1_GetImageUpdatesByRefsRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_JSONResponse
+
+        /// Handle the "CheckImageUpdates" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EnvIDAndQueryRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_JSONResponse` to respond with.
+        func checkImageUpdates(
+            request: Mobile_V1_EnvIDAndQueryRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_JSONResponse
+
+        /// Handle the "CheckAllImageUpdates" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_ActionResult` to respond with.
+        func checkAllImageUpdates(
+            request: Mobile_V1_EnvIDOnlyRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_ActionResult
+
+        /// Handle the "CheckImageUpdate" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_JSONResponse` to respond with.
+        func checkImageUpdate(
+            request: Mobile_V1_EnvIDAndIDRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_JSONResponse
+
+        /// Handle the "GetVulnerabilityScannerStatus" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Vulnerabilities ----------
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_JSONResponse` to respond with.
+        func getVulnerabilityScannerStatus(
+            request: Mobile_V1_EnvIDOnlyRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_JSONResponse
+
+        /// Handle the "GetImageVulnerabilitySummary" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_JSONResponse` to respond with.
+        func getImageVulnerabilitySummary(
+            request: Mobile_V1_EnvIDAndIDRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_JSONResponse
+
+        /// Handle the "ListImageVulnerabilities" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EnvIDAndIDAndQueryRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_JSONResponse` to respond with.
+        func listImageVulnerabilities(
+            request: Mobile_V1_EnvIDAndIDAndQueryRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_JSONResponse
+
+        /// Handle the "ScanImageVulnerabilities" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_JSONResponse` to respond with.
+        func scanImageVulnerabilities(
+            request: Mobile_V1_EnvIDAndIDRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_JSONResponse
+
+        /// Handle the "GetAllVulnerabilitiesSummary" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_JSONResponse` to respond with.
+        func getAllVulnerabilitiesSummary(
+            request: Mobile_V1_EnvIDOnlyRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_JSONResponse
+
+        /// Handle the "GetVulnerabilityImageOptions" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EnvIDAndQueryRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_JSONResponse` to respond with.
+        func getVulnerabilityImageOptions(
+            request: Mobile_V1_EnvIDAndQueryRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_JSONResponse
+
+        /// Handle the "ListAllVulnerabilities" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EnvIDAndQueryRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_JSONResponse` to respond with.
+        func listAllVulnerabilities(
+            request: Mobile_V1_EnvIDAndQueryRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_JSONResponse
+
+        /// Handle the "IgnoreVulnerability" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EnvIDAndJSONBodyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_JSONResponse` to respond with.
+        func ignoreVulnerability(
+            request: Mobile_V1_EnvIDAndJSONBodyRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_JSONResponse
+
+        /// Handle the "DeleteVulnerabilityIgnore" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_ActionResult` to respond with.
+        func deleteVulnerabilityIgnore(
+            request: Mobile_V1_EnvIDAndIDRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_ActionResult
+
+        /// Handle the "ListProjects" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Projects (read + mutations) ----------
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_ListProjectsRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_ListProjectsResponse` to respond with.
+        func listProjects(
+            request: Mobile_V1_ListProjectsRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_ListProjectsResponse
+
+        /// Handle the "GetProject" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_GetProjectRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_GetProjectResponse` to respond with.
+        func getProject(
+            request: Mobile_V1_GetProjectRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_GetProjectResponse
+
+        /// Handle the "CreateProject" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EnvIDAndJSONBodyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_JSONResponse` to respond with.
+        func createProject(
+            request: Mobile_V1_EnvIDAndJSONBodyRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_JSONResponse
+
+        /// Handle the "UpdateProject" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EnvIDAndIDAndJSONBodyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_JSONResponse` to respond with.
+        func updateProject(
+            request: Mobile_V1_EnvIDAndIDAndJSONBodyRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_JSONResponse
+
+        /// Handle the "DeleteProject" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_ActionResult` to respond with.
+        func deleteProject(
+            request: Mobile_V1_EnvIDAndIDRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_ActionResult
+
+        /// Handle the "StartProject" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_ActionResult` to respond with.
+        func startProject(
+            request: Mobile_V1_EnvIDAndIDRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_ActionResult
+
+        /// Handle the "StopProject" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_ActionResult` to respond with.
+        func stopProject(
+            request: Mobile_V1_EnvIDAndIDRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_ActionResult
+
+        /// Handle the "DestroyProject" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_ActionResult` to respond with.
+        func destroyProject(
+            request: Mobile_V1_EnvIDAndIDRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_ActionResult
+
+        /// Handle the "ListEnvironments" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Environments ----------
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EmptyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_JSONResponse` to respond with.
+        func listEnvironments(
+            request: Mobile_V1_EmptyRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_JSONResponse
+
+        /// Handle the "CreateEnvironment" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_JSONBodyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_JSONResponse` to respond with.
+        func createEnvironment(
+            request: Mobile_V1_JSONBodyRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_JSONResponse
+
+        /// Handle the "TestEnvironment" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_JSONResponse` to respond with.
+        func testEnvironment(
+            request: Mobile_V1_EnvIDOnlyRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_JSONResponse
+
+        /// Handle the "GetSettings" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Settings ----------
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_JSONResponse` to respond with.
+        func getSettings(
+            request: Mobile_V1_EnvIDOnlyRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_JSONResponse
+
+        /// Handle the "UpdateSettings" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EnvIDAndJSONBodyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_JSONResponse` to respond with.
+        func updateSettings(
+            request: Mobile_V1_EnvIDAndJSONBodyRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_JSONResponse
+
+        /// Handle the "GetOidcStatus" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EmptyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_JSONResponse` to respond with.
+        func getOidcStatus(
+            request: Mobile_V1_EmptyRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_JSONResponse
+
+        /// Handle the "GetNotificationSettings" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Notifications ----------
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_JSONResponse` to respond with.
+        func getNotificationSettings(
+            request: Mobile_V1_EnvIDOnlyRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_JSONResponse
+
+        /// Handle the "SaveNotificationProvider" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EnvIDAndJSONBodyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_JSONResponse` to respond with.
+        func saveNotificationProvider(
+            request: Mobile_V1_EnvIDAndJSONBodyRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_JSONResponse
+
+        /// Handle the "DeleteNotificationProvider" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_ActionResult` to respond with.
+        func deleteNotificationProvider(
+            request: Mobile_V1_EnvIDAndIDRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_ActionResult
+
+        /// Handle the "TestNotificationProvider" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EnvIDAndIDAndJSONBodyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_ActionResult` to respond with.
+        func testNotificationProvider(
+            request: Mobile_V1_EnvIDAndIDAndJSONBodyRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_ActionResult
+
+        /// Handle the "GetApprise" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_JSONResponse` to respond with.
+        func getApprise(
+            request: Mobile_V1_EnvIDOnlyRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_JSONResponse
+
+        /// Handle the "UpdateApprise" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EnvIDAndJSONBodyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_JSONResponse` to respond with.
+        func updateApprise(
+            request: Mobile_V1_EnvIDAndJSONBodyRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_JSONResponse
+
+        /// Handle the "TestApprise" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EnvIDAndJSONBodyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_ActionResult` to respond with.
+        func testApprise(
+            request: Mobile_V1_EnvIDAndJSONBodyRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_ActionResult
+
+        /// Handle the "ListWebhooks" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Webhooks ----------
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_JSONResponse` to respond with.
+        func listWebhooks(
+            request: Mobile_V1_EnvIDOnlyRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_JSONResponse
+
+        /// Handle the "CreateWebhook" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EnvIDAndJSONBodyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_JSONResponse` to respond with.
+        func createWebhook(
+            request: Mobile_V1_EnvIDAndJSONBodyRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_JSONResponse
+
+        /// Handle the "UpdateWebhook" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EnvIDAndIDAndJSONBodyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_JSONResponse` to respond with.
+        func updateWebhook(
+            request: Mobile_V1_EnvIDAndIDAndJSONBodyRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_JSONResponse
+
+        /// Handle the "DeleteWebhook" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_ActionResult` to respond with.
+        func deleteWebhook(
+            request: Mobile_V1_EnvIDAndIDRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_ActionResult
+
+        /// Handle the "ListUsers" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Users (global) ----------
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EmptyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_JSONResponse` to respond with.
+        func listUsers(
+            request: Mobile_V1_EmptyRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_JSONResponse
+
+        /// Handle the "CreateUser" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_JSONBodyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_JSONResponse` to respond with.
+        func createUser(
+            request: Mobile_V1_JSONBodyRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_JSONResponse
+
+        /// Handle the "UpdateUser" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_IDAndJSONBodyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_JSONResponse` to respond with.
+        func updateUser(
+            request: Mobile_V1_IDAndJSONBodyRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_JSONResponse
+
+        /// Handle the "DeleteUser" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_IDOnlyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_ActionResult` to respond with.
+        func deleteUser(
+            request: Mobile_V1_IDOnlyRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_ActionResult
+
+        /// Handle the "ListApiKeys" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- API keys (global) ----------
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EmptyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_JSONResponse` to respond with.
+        func listApiKeys(
+            request: Mobile_V1_EmptyRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_JSONResponse
+
+        /// Handle the "CreateApiKey" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_JSONBodyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_JSONResponse` to respond with.
+        func createApiKey(
+            request: Mobile_V1_JSONBodyRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_JSONResponse
+
+        /// Handle the "DeleteApiKey" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_IDOnlyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_ActionResult` to respond with.
+        func deleteApiKey(
+            request: Mobile_V1_IDOnlyRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_ActionResult
+
+        /// Handle the "ListContainerRegistries" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Container registries (global) ----------
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EmptyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_JSONResponse` to respond with.
+        func listContainerRegistries(
+            request: Mobile_V1_EmptyRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_JSONResponse
+
+        /// Handle the "CreateContainerRegistry" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_JSONBodyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_JSONResponse` to respond with.
+        func createContainerRegistry(
+            request: Mobile_V1_JSONBodyRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_JSONResponse
+
+        /// Handle the "UpdateContainerRegistry" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_IDAndJSONBodyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_JSONResponse` to respond with.
+        func updateContainerRegistry(
+            request: Mobile_V1_IDAndJSONBodyRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_JSONResponse
+
+        /// Handle the "DeleteContainerRegistry" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_IDOnlyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_ActionResult` to respond with.
+        func deleteContainerRegistry(
+            request: Mobile_V1_IDOnlyRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_ActionResult
+
+        /// Handle the "ListTemplates" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Templates (global) ----------
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EmptyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_JSONResponse` to respond with.
+        func listTemplates(
+            request: Mobile_V1_EmptyRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_JSONResponse
+
+        /// Handle the "GetTemplateContent" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_IDOnlyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_JSONResponse` to respond with.
+        func getTemplateContent(
+            request: Mobile_V1_IDOnlyRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_JSONResponse
+
+        /// Handle the "ListTemplateRegistries" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EmptyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_JSONResponse` to respond with.
+        func listTemplateRegistries(
+            request: Mobile_V1_EmptyRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_JSONResponse
+
+        /// Handle the "CreateTemplateRegistry" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_JSONBodyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_JSONResponse` to respond with.
+        func createTemplateRegistry(
+            request: Mobile_V1_JSONBodyRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_JSONResponse
+
+        /// Handle the "UpdateTemplateRegistry" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_IDAndJSONBodyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_JSONResponse` to respond with.
+        func updateTemplateRegistry(
+            request: Mobile_V1_IDAndJSONBodyRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_JSONResponse
+
+        /// Handle the "DeleteTemplateRegistry" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_IDOnlyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_ActionResult` to respond with.
+        func deleteTemplateRegistry(
+            request: Mobile_V1_IDOnlyRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_ActionResult
+
+        /// Handle the "PruneSystem" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- System ----------
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EnvIDAndJSONBodyRequest` message.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        /// - Returns: A `Mobile_V1_JSONResponse` to respond with.
+        func pruneSystem(
+            request: Mobile_V1_EnvIDAndJSONBodyRequest,
+            context: GRPCCore.ServerContext
+        ) async throws -> Mobile_V1_JSONResponse
+
+        /// Handle the "StreamContainerLogs" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Streaming ----------
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_StreamContainerLogsRequest` message.
+        ///   - response: A response stream of `Mobile_V1_StreamFrame` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        func streamContainerLogs(
+            request: Mobile_V1_StreamContainerLogsRequest,
+            response: GRPCCore.RPCWriter<Mobile_V1_StreamFrame>,
+            context: GRPCCore.ServerContext
+        ) async throws
+
+        /// Handle the "StreamContainerStats" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - response: A response stream of `Mobile_V1_StreamFrame` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        func streamContainerStats(
+            request: Mobile_V1_EnvIDAndIDRequest,
+            response: GRPCCore.RPCWriter<Mobile_V1_StreamFrame>,
+            context: GRPCCore.ServerContext
+        ) async throws
+
+        /// Handle the "StreamProjectLogs" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_StreamProjectLogsRequest` message.
+        ///   - response: A response stream of `Mobile_V1_StreamFrame` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        func streamProjectLogs(
+            request: Mobile_V1_StreamProjectLogsRequest,
+            response: GRPCCore.RPCWriter<Mobile_V1_StreamFrame>,
+            context: GRPCCore.ServerContext
+        ) async throws
+
+        /// Handle the "StreamSystemStats" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_StreamSystemStatsRequest` message.
+        ///   - response: A response stream of `Mobile_V1_StreamFrame` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        func streamSystemStats(
+            request: Mobile_V1_StreamSystemStatsRequest,
+            response: GRPCCore.RPCWriter<Mobile_V1_StreamFrame>,
+            context: GRPCCore.ServerContext
+        ) async throws
+
+        /// Handle the "StreamPullImage" method.
+        ///
+        /// - Parameters:
+        ///   - request: A `Mobile_V1_PullImageRequest` message.
+        ///   - response: A response stream of `Mobile_V1_StreamFrame` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        func streamPullImage(
+            request: Mobile_V1_PullImageRequest,
+            response: GRPCCore.RPCWriter<Mobile_V1_StreamFrame>,
+            context: GRPCCore.ServerContext
+        ) async throws
+
+        /// Handle the "ContainerTerminal" method.
+        ///
+        /// - Parameters:
+        ///   - request: A stream of `Mobile_V1_TerminalClientFrame` messages.
+        ///   - response: A response stream of `Mobile_V1_TerminalServerFrame` messages.
+        ///   - context: Context providing information about the RPC.
+        /// - Throws: Any error which occurred during the processing of the request. Thrown errors
+        ///     of type `RPCError` are mapped to appropriate statuses. All other errors are converted
+        ///     to an internal error.
+        func containerTerminal(
+            request: GRPCCore.RPCAsyncSequence<Mobile_V1_TerminalClientFrame, any Swift.Error>,
+            response: GRPCCore.RPCWriter<Mobile_V1_TerminalServerFrame>,
+            context: GRPCCore.ServerContext
+        ) async throws
     }
 }
 
@@ -645,28 +5893,6 @@ extension Mobile_V1_MobileService {
 @available(macOS 15.0, iOS 18.0, watchOS 11.0, tvOS 18.0, visionOS 2.0, *)
 extension Mobile_V1_MobileService.StreamingServiceProtocol {
     public func registerMethods<Transport>(with router: inout GRPCCore.RPCRouter<Transport>) where Transport: GRPCCore.ServerTransport {
-        router.registerHandler(
-            forMethod: Mobile_V1_MobileService.Method.GetServerInfo.descriptor,
-            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_GetServerInfoRequest>(),
-            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_GetServerInfoResponse>(),
-            handler: { request, context in
-                try await self.getServerInfo(
-                    request: request,
-                    context: context
-                )
-            }
-        )
-        router.registerHandler(
-            forMethod: Mobile_V1_MobileService.Method.ListContainers.descriptor,
-            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_ListContainersRequest>(),
-            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_ListContainersResponse>(),
-            handler: { request, context in
-                try await self.listContainers(
-                    request: request,
-                    context: context
-                )
-            }
-        )
         router.registerHandler(
             forMethod: Mobile_V1_MobileService.Method.GetCurrentDevice.descriptor,
             deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_GetCurrentDeviceRequest>(),
@@ -689,34 +5915,1013 @@ extension Mobile_V1_MobileService.StreamingServiceProtocol {
                 )
             }
         )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.GetServerInfo.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_GetServerInfoRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_GetServerInfoResponse>(),
+            handler: { request, context in
+                try await self.getServerInfo(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.GetDockerInfo.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_GetDockerInfoRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_GetDockerInfoResponse>(),
+            handler: { request, context in
+                try await self.getDockerInfo(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.GetAppVersion.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_GetAppVersionRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_GetAppVersionResponse>(),
+            handler: { request, context in
+                try await self.getAppVersion(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.ListContainers.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_ListContainersRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_ListContainersResponse>(),
+            handler: { request, context in
+                try await self.listContainers(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.InspectContainer.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_InspectContainerRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_InspectContainerResponse>(),
+            handler: { request, context in
+                try await self.inspectContainer(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.StartContainer.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_ContainerActionRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_ActionResult>(),
+            handler: { request, context in
+                try await self.startContainer(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.StopContainer.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_ContainerActionRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_ActionResult>(),
+            handler: { request, context in
+                try await self.stopContainer(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.RestartContainer.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_ContainerActionRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_ActionResult>(),
+            handler: { request, context in
+                try await self.restartContainer(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.RedeployContainer.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_ContainerActionRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_ActionResult>(),
+            handler: { request, context in
+                try await self.redeployContainer(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.DeleteContainer.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_DeleteContainerRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_ActionResult>(),
+            handler: { request, context in
+                try await self.deleteContainer(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.PruneContainers.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_PruneContainersRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_PruneResult>(),
+            handler: { request, context in
+                try await self.pruneContainers(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.ListVolumes.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_ListVolumesRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_ListVolumesResponse>(),
+            handler: { request, context in
+                try await self.listVolumes(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.GetVolumeSizes.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_GetVolumeSizesRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_GetVolumeSizesResponse>(),
+            handler: { request, context in
+                try await self.getVolumeSizes(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.CreateVolume.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_CreateVolumeRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_CreateVolumeResponse>(),
+            handler: { request, context in
+                try await self.createVolume(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.DeleteVolume.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_DeleteVolumeRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_ActionResult>(),
+            handler: { request, context in
+                try await self.deleteVolume(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.PruneVolumes.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_PruneVolumesRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_PruneResult>(),
+            handler: { request, context in
+                try await self.pruneVolumes(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.ListNetworks.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_ListNetworksRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_ListNetworksResponse>(),
+            handler: { request, context in
+                try await self.listNetworks(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.CreateNetwork.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_CreateNetworkRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_CreateNetworkResponse>(),
+            handler: { request, context in
+                try await self.createNetwork(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.DeleteNetwork.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_DeleteNetworkRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_ActionResult>(),
+            handler: { request, context in
+                try await self.deleteNetwork(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.PruneNetworks.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_PruneNetworksRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_PruneResult>(),
+            handler: { request, context in
+                try await self.pruneNetworks(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.PauseContainer.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_ContainerActionRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_ActionResult>(),
+            handler: { request, context in
+                try await self.pauseContainer(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.UnpauseContainer.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_ContainerActionRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_ActionResult>(),
+            handler: { request, context in
+                try await self.unpauseContainer(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.KillContainer.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_ContainerActionRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_ActionResult>(),
+            handler: { request, context in
+                try await self.killContainer(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.RenameContainer.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_RenameContainerRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_ActionResult>(),
+            handler: { request, context in
+                try await self.renameContainer(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.ListImages.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EnvIDOnlyRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONResponse>(),
+            handler: { request, context in
+                try await self.listImages(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.InspectImage.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EnvIDAndIDRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONResponse>(),
+            handler: { request, context in
+                try await self.inspectImage(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.DeleteImage.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EnvIDAndIDRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_ActionResult>(),
+            handler: { request, context in
+                try await self.deleteImage(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.PruneImages.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EnvIDOnlyRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_PruneResult>(),
+            handler: { request, context in
+                try await self.pruneImages(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.GetImageUpdateSummary.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EnvIDOnlyRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONResponse>(),
+            handler: { request, context in
+                try await self.getImageUpdateSummary(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.GetImageUpdatesByRefs.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_GetImageUpdatesByRefsRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONResponse>(),
+            handler: { request, context in
+                try await self.getImageUpdatesByRefs(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.CheckImageUpdates.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EnvIDAndQueryRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONResponse>(),
+            handler: { request, context in
+                try await self.checkImageUpdates(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.CheckAllImageUpdates.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EnvIDOnlyRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_ActionResult>(),
+            handler: { request, context in
+                try await self.checkAllImageUpdates(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.CheckImageUpdate.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EnvIDAndIDRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONResponse>(),
+            handler: { request, context in
+                try await self.checkImageUpdate(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.GetVulnerabilityScannerStatus.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EnvIDOnlyRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONResponse>(),
+            handler: { request, context in
+                try await self.getVulnerabilityScannerStatus(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.GetImageVulnerabilitySummary.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EnvIDAndIDRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONResponse>(),
+            handler: { request, context in
+                try await self.getImageVulnerabilitySummary(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.ListImageVulnerabilities.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EnvIDAndIDAndQueryRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONResponse>(),
+            handler: { request, context in
+                try await self.listImageVulnerabilities(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.ScanImageVulnerabilities.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EnvIDAndIDRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONResponse>(),
+            handler: { request, context in
+                try await self.scanImageVulnerabilities(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.GetAllVulnerabilitiesSummary.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EnvIDOnlyRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONResponse>(),
+            handler: { request, context in
+                try await self.getAllVulnerabilitiesSummary(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.GetVulnerabilityImageOptions.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EnvIDAndQueryRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONResponse>(),
+            handler: { request, context in
+                try await self.getVulnerabilityImageOptions(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.ListAllVulnerabilities.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EnvIDAndQueryRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONResponse>(),
+            handler: { request, context in
+                try await self.listAllVulnerabilities(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.IgnoreVulnerability.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EnvIDAndJSONBodyRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONResponse>(),
+            handler: { request, context in
+                try await self.ignoreVulnerability(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.DeleteVulnerabilityIgnore.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EnvIDAndIDRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_ActionResult>(),
+            handler: { request, context in
+                try await self.deleteVulnerabilityIgnore(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.ListProjects.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_ListProjectsRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_ListProjectsResponse>(),
+            handler: { request, context in
+                try await self.listProjects(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.GetProject.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_GetProjectRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_GetProjectResponse>(),
+            handler: { request, context in
+                try await self.getProject(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.CreateProject.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EnvIDAndJSONBodyRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONResponse>(),
+            handler: { request, context in
+                try await self.createProject(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.UpdateProject.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EnvIDAndIDAndJSONBodyRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONResponse>(),
+            handler: { request, context in
+                try await self.updateProject(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.DeleteProject.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EnvIDAndIDRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_ActionResult>(),
+            handler: { request, context in
+                try await self.deleteProject(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.StartProject.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EnvIDAndIDRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_ActionResult>(),
+            handler: { request, context in
+                try await self.startProject(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.StopProject.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EnvIDAndIDRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_ActionResult>(),
+            handler: { request, context in
+                try await self.stopProject(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.DestroyProject.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EnvIDAndIDRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_ActionResult>(),
+            handler: { request, context in
+                try await self.destroyProject(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.ListEnvironments.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EmptyRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONResponse>(),
+            handler: { request, context in
+                try await self.listEnvironments(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.CreateEnvironment.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONBodyRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONResponse>(),
+            handler: { request, context in
+                try await self.createEnvironment(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.TestEnvironment.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EnvIDOnlyRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONResponse>(),
+            handler: { request, context in
+                try await self.testEnvironment(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.GetSettings.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EnvIDOnlyRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONResponse>(),
+            handler: { request, context in
+                try await self.getSettings(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.UpdateSettings.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EnvIDAndJSONBodyRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONResponse>(),
+            handler: { request, context in
+                try await self.updateSettings(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.GetOidcStatus.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EmptyRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONResponse>(),
+            handler: { request, context in
+                try await self.getOidcStatus(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.GetNotificationSettings.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EnvIDOnlyRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONResponse>(),
+            handler: { request, context in
+                try await self.getNotificationSettings(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.SaveNotificationProvider.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EnvIDAndJSONBodyRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONResponse>(),
+            handler: { request, context in
+                try await self.saveNotificationProvider(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.DeleteNotificationProvider.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EnvIDAndIDRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_ActionResult>(),
+            handler: { request, context in
+                try await self.deleteNotificationProvider(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.TestNotificationProvider.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EnvIDAndIDAndJSONBodyRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_ActionResult>(),
+            handler: { request, context in
+                try await self.testNotificationProvider(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.GetApprise.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EnvIDOnlyRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONResponse>(),
+            handler: { request, context in
+                try await self.getApprise(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.UpdateApprise.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EnvIDAndJSONBodyRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONResponse>(),
+            handler: { request, context in
+                try await self.updateApprise(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.TestApprise.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EnvIDAndJSONBodyRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_ActionResult>(),
+            handler: { request, context in
+                try await self.testApprise(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.ListWebhooks.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EnvIDOnlyRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONResponse>(),
+            handler: { request, context in
+                try await self.listWebhooks(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.CreateWebhook.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EnvIDAndJSONBodyRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONResponse>(),
+            handler: { request, context in
+                try await self.createWebhook(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.UpdateWebhook.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EnvIDAndIDAndJSONBodyRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONResponse>(),
+            handler: { request, context in
+                try await self.updateWebhook(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.DeleteWebhook.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EnvIDAndIDRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_ActionResult>(),
+            handler: { request, context in
+                try await self.deleteWebhook(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.ListUsers.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EmptyRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONResponse>(),
+            handler: { request, context in
+                try await self.listUsers(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.CreateUser.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONBodyRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONResponse>(),
+            handler: { request, context in
+                try await self.createUser(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.UpdateUser.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_IDAndJSONBodyRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONResponse>(),
+            handler: { request, context in
+                try await self.updateUser(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.DeleteUser.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_IDOnlyRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_ActionResult>(),
+            handler: { request, context in
+                try await self.deleteUser(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.ListApiKeys.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EmptyRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONResponse>(),
+            handler: { request, context in
+                try await self.listApiKeys(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.CreateApiKey.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONBodyRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONResponse>(),
+            handler: { request, context in
+                try await self.createApiKey(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.DeleteApiKey.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_IDOnlyRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_ActionResult>(),
+            handler: { request, context in
+                try await self.deleteApiKey(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.ListContainerRegistries.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EmptyRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONResponse>(),
+            handler: { request, context in
+                try await self.listContainerRegistries(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.CreateContainerRegistry.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONBodyRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONResponse>(),
+            handler: { request, context in
+                try await self.createContainerRegistry(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.UpdateContainerRegistry.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_IDAndJSONBodyRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONResponse>(),
+            handler: { request, context in
+                try await self.updateContainerRegistry(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.DeleteContainerRegistry.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_IDOnlyRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_ActionResult>(),
+            handler: { request, context in
+                try await self.deleteContainerRegistry(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.ListTemplates.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EmptyRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONResponse>(),
+            handler: { request, context in
+                try await self.listTemplates(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.GetTemplateContent.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_IDOnlyRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONResponse>(),
+            handler: { request, context in
+                try await self.getTemplateContent(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.ListTemplateRegistries.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EmptyRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONResponse>(),
+            handler: { request, context in
+                try await self.listTemplateRegistries(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.CreateTemplateRegistry.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONBodyRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONResponse>(),
+            handler: { request, context in
+                try await self.createTemplateRegistry(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.UpdateTemplateRegistry.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_IDAndJSONBodyRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONResponse>(),
+            handler: { request, context in
+                try await self.updateTemplateRegistry(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.DeleteTemplateRegistry.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_IDOnlyRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_ActionResult>(),
+            handler: { request, context in
+                try await self.deleteTemplateRegistry(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.PruneSystem.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EnvIDAndJSONBodyRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONResponse>(),
+            handler: { request, context in
+                try await self.pruneSystem(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.StreamContainerLogs.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_StreamContainerLogsRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_StreamFrame>(),
+            handler: { request, context in
+                try await self.streamContainerLogs(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.StreamContainerStats.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_EnvIDAndIDRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_StreamFrame>(),
+            handler: { request, context in
+                try await self.streamContainerStats(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.StreamProjectLogs.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_StreamProjectLogsRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_StreamFrame>(),
+            handler: { request, context in
+                try await self.streamProjectLogs(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.StreamSystemStats.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_StreamSystemStatsRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_StreamFrame>(),
+            handler: { request, context in
+                try await self.streamSystemStats(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.StreamPullImage.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_PullImageRequest>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_StreamFrame>(),
+            handler: { request, context in
+                try await self.streamPullImage(
+                    request: request,
+                    context: context
+                )
+            }
+        )
+        router.registerHandler(
+            forMethod: Mobile_V1_MobileService.Method.ContainerTerminal.descriptor,
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_TerminalClientFrame>(),
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_TerminalServerFrame>(),
+            handler: { request, context in
+                try await self.containerTerminal(
+                    request: request,
+                    context: context
+                )
+            }
+        )
     }
 }
 
 // Default implementation of streaming methods from 'StreamingServiceProtocol'.
 @available(macOS 15.0, iOS 18.0, watchOS 11.0, tvOS 18.0, visionOS 2.0, *)
 extension Mobile_V1_MobileService.ServiceProtocol {
-    public func getServerInfo(
-        request: GRPCCore.StreamingServerRequest<Mobile_V1_GetServerInfoRequest>,
-        context: GRPCCore.ServerContext
-    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_GetServerInfoResponse> {
-        let response = try await self.getServerInfo(
-            request: GRPCCore.ServerRequest(stream: request),
-            context: context
-        )
-        return GRPCCore.StreamingServerResponse(single: response)
-    }
-
-    public func listContainers(
-        request: GRPCCore.StreamingServerRequest<Mobile_V1_ListContainersRequest>,
-        context: GRPCCore.ServerContext
-    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ListContainersResponse> {
-        let response = try await self.listContainers(
-            request: GRPCCore.ServerRequest(stream: request),
-            context: context
-        )
-        return GRPCCore.StreamingServerResponse(single: response)
-    }
-
     public func getCurrentDevice(
         request: GRPCCore.StreamingServerRequest<Mobile_V1_GetCurrentDeviceRequest>,
         context: GRPCCore.ServerContext
@@ -738,37 +6943,1001 @@ extension Mobile_V1_MobileService.ServiceProtocol {
         )
         return GRPCCore.StreamingServerResponse(single: response)
     }
+
+    public func getServerInfo(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_GetServerInfoRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_GetServerInfoResponse> {
+        let response = try await self.getServerInfo(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func getDockerInfo(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_GetDockerInfoRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_GetDockerInfoResponse> {
+        let response = try await self.getDockerInfo(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func getAppVersion(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_GetAppVersionRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_GetAppVersionResponse> {
+        let response = try await self.getAppVersion(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func listContainers(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_ListContainersRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ListContainersResponse> {
+        let response = try await self.listContainers(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func inspectContainer(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_InspectContainerRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_InspectContainerResponse> {
+        let response = try await self.inspectContainer(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func startContainer(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_ContainerActionRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult> {
+        let response = try await self.startContainer(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func stopContainer(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_ContainerActionRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult> {
+        let response = try await self.stopContainer(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func restartContainer(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_ContainerActionRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult> {
+        let response = try await self.restartContainer(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func redeployContainer(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_ContainerActionRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult> {
+        let response = try await self.redeployContainer(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func deleteContainer(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_DeleteContainerRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult> {
+        let response = try await self.deleteContainer(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func pruneContainers(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_PruneContainersRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_PruneResult> {
+        let response = try await self.pruneContainers(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func listVolumes(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_ListVolumesRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ListVolumesResponse> {
+        let response = try await self.listVolumes(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func getVolumeSizes(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_GetVolumeSizesRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_GetVolumeSizesResponse> {
+        let response = try await self.getVolumeSizes(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func createVolume(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_CreateVolumeRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_CreateVolumeResponse> {
+        let response = try await self.createVolume(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func deleteVolume(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_DeleteVolumeRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult> {
+        let response = try await self.deleteVolume(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func pruneVolumes(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_PruneVolumesRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_PruneResult> {
+        let response = try await self.pruneVolumes(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func listNetworks(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_ListNetworksRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ListNetworksResponse> {
+        let response = try await self.listNetworks(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func createNetwork(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_CreateNetworkRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_CreateNetworkResponse> {
+        let response = try await self.createNetwork(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func deleteNetwork(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_DeleteNetworkRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult> {
+        let response = try await self.deleteNetwork(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func pruneNetworks(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_PruneNetworksRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_PruneResult> {
+        let response = try await self.pruneNetworks(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func pauseContainer(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_ContainerActionRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult> {
+        let response = try await self.pauseContainer(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func unpauseContainer(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_ContainerActionRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult> {
+        let response = try await self.unpauseContainer(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func killContainer(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_ContainerActionRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult> {
+        let response = try await self.killContainer(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func renameContainer(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_RenameContainerRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult> {
+        let response = try await self.renameContainer(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func listImages(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse> {
+        let response = try await self.listImages(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func inspectImage(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse> {
+        let response = try await self.inspectImage(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func deleteImage(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult> {
+        let response = try await self.deleteImage(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func pruneImages(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_PruneResult> {
+        let response = try await self.pruneImages(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func getImageUpdateSummary(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse> {
+        let response = try await self.getImageUpdateSummary(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func getImageUpdatesByRefs(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_GetImageUpdatesByRefsRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse> {
+        let response = try await self.getImageUpdatesByRefs(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func checkImageUpdates(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndQueryRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse> {
+        let response = try await self.checkImageUpdates(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func checkAllImageUpdates(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult> {
+        let response = try await self.checkAllImageUpdates(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func checkImageUpdate(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse> {
+        let response = try await self.checkImageUpdate(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func getVulnerabilityScannerStatus(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse> {
+        let response = try await self.getVulnerabilityScannerStatus(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func getImageVulnerabilitySummary(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse> {
+        let response = try await self.getImageVulnerabilitySummary(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func listImageVulnerabilities(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndIDAndQueryRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse> {
+        let response = try await self.listImageVulnerabilities(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func scanImageVulnerabilities(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse> {
+        let response = try await self.scanImageVulnerabilities(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func getAllVulnerabilitiesSummary(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse> {
+        let response = try await self.getAllVulnerabilitiesSummary(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func getVulnerabilityImageOptions(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndQueryRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse> {
+        let response = try await self.getVulnerabilityImageOptions(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func listAllVulnerabilities(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndQueryRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse> {
+        let response = try await self.listAllVulnerabilities(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func ignoreVulnerability(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse> {
+        let response = try await self.ignoreVulnerability(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func deleteVulnerabilityIgnore(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult> {
+        let response = try await self.deleteVulnerabilityIgnore(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func listProjects(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_ListProjectsRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ListProjectsResponse> {
+        let response = try await self.listProjects(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func getProject(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_GetProjectRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_GetProjectResponse> {
+        let response = try await self.getProject(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func createProject(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse> {
+        let response = try await self.createProject(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func updateProject(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndIDAndJSONBodyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse> {
+        let response = try await self.updateProject(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func deleteProject(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult> {
+        let response = try await self.deleteProject(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func startProject(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult> {
+        let response = try await self.startProject(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func stopProject(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult> {
+        let response = try await self.stopProject(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func destroyProject(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult> {
+        let response = try await self.destroyProject(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func listEnvironments(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EmptyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse> {
+        let response = try await self.listEnvironments(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func createEnvironment(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_JSONBodyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse> {
+        let response = try await self.createEnvironment(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func testEnvironment(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse> {
+        let response = try await self.testEnvironment(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func getSettings(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse> {
+        let response = try await self.getSettings(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func updateSettings(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse> {
+        let response = try await self.updateSettings(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func getOidcStatus(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EmptyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse> {
+        let response = try await self.getOidcStatus(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func getNotificationSettings(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse> {
+        let response = try await self.getNotificationSettings(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func saveNotificationProvider(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse> {
+        let response = try await self.saveNotificationProvider(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func deleteNotificationProvider(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult> {
+        let response = try await self.deleteNotificationProvider(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func testNotificationProvider(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndIDAndJSONBodyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult> {
+        let response = try await self.testNotificationProvider(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func getApprise(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse> {
+        let response = try await self.getApprise(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func updateApprise(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse> {
+        let response = try await self.updateApprise(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func testApprise(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult> {
+        let response = try await self.testApprise(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func listWebhooks(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse> {
+        let response = try await self.listWebhooks(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func createWebhook(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse> {
+        let response = try await self.createWebhook(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func updateWebhook(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndIDAndJSONBodyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse> {
+        let response = try await self.updateWebhook(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func deleteWebhook(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult> {
+        let response = try await self.deleteWebhook(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func listUsers(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EmptyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse> {
+        let response = try await self.listUsers(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func createUser(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_JSONBodyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse> {
+        let response = try await self.createUser(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func updateUser(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_IDAndJSONBodyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse> {
+        let response = try await self.updateUser(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func deleteUser(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_IDOnlyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult> {
+        let response = try await self.deleteUser(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func listApiKeys(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EmptyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse> {
+        let response = try await self.listApiKeys(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func createApiKey(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_JSONBodyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse> {
+        let response = try await self.createApiKey(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func deleteApiKey(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_IDOnlyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult> {
+        let response = try await self.deleteApiKey(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func listContainerRegistries(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EmptyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse> {
+        let response = try await self.listContainerRegistries(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func createContainerRegistry(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_JSONBodyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse> {
+        let response = try await self.createContainerRegistry(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func updateContainerRegistry(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_IDAndJSONBodyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse> {
+        let response = try await self.updateContainerRegistry(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func deleteContainerRegistry(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_IDOnlyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult> {
+        let response = try await self.deleteContainerRegistry(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func listTemplates(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EmptyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse> {
+        let response = try await self.listTemplates(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func getTemplateContent(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_IDOnlyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse> {
+        let response = try await self.getTemplateContent(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func listTemplateRegistries(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EmptyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse> {
+        let response = try await self.listTemplateRegistries(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func createTemplateRegistry(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_JSONBodyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse> {
+        let response = try await self.createTemplateRegistry(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func updateTemplateRegistry(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_IDAndJSONBodyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse> {
+        let response = try await self.updateTemplateRegistry(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func deleteTemplateRegistry(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_IDOnlyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_ActionResult> {
+        let response = try await self.deleteTemplateRegistry(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func pruneSystem(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_JSONResponse> {
+        let response = try await self.pruneSystem(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return GRPCCore.StreamingServerResponse(single: response)
+    }
+
+    public func streamContainerLogs(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_StreamContainerLogsRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_StreamFrame> {
+        let response = try await self.streamContainerLogs(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return response
+    }
+
+    public func streamContainerStats(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_StreamFrame> {
+        let response = try await self.streamContainerStats(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return response
+    }
+
+    public func streamProjectLogs(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_StreamProjectLogsRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_StreamFrame> {
+        let response = try await self.streamProjectLogs(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return response
+    }
+
+    public func streamSystemStats(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_StreamSystemStatsRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_StreamFrame> {
+        let response = try await self.streamSystemStats(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return response
+    }
+
+    public func streamPullImage(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_PullImageRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_StreamFrame> {
+        let response = try await self.streamPullImage(
+            request: GRPCCore.ServerRequest(stream: request),
+            context: context
+        )
+        return response
+    }
 }
 
 // Default implementation of methods from 'ServiceProtocol'.
 @available(macOS 15.0, iOS 18.0, watchOS 11.0, tvOS 18.0, visionOS 2.0, *)
 extension Mobile_V1_MobileService.SimpleServiceProtocol {
-    public func getServerInfo(
-        request: GRPCCore.ServerRequest<Mobile_V1_GetServerInfoRequest>,
-        context: GRPCCore.ServerContext
-    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_GetServerInfoResponse> {
-        return GRPCCore.ServerResponse<Mobile_V1_GetServerInfoResponse>(
-            message: try await self.getServerInfo(
-                request: request.message,
-                context: context
-            ),
-            metadata: [:]
-        )
-    }
-
-    public func listContainers(
-        request: GRPCCore.ServerRequest<Mobile_V1_ListContainersRequest>,
-        context: GRPCCore.ServerContext
-    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ListContainersResponse> {
-        return GRPCCore.ServerResponse<Mobile_V1_ListContainersResponse>(
-            message: try await self.listContainers(
-                request: request.message,
-                context: context
-            ),
-            metadata: [:]
-        )
-    }
-
     public func getCurrentDevice(
         request: GRPCCore.ServerRequest<Mobile_V1_GetCurrentDeviceRequest>,
         context: GRPCCore.ServerContext
@@ -794,6 +7963,1213 @@ extension Mobile_V1_MobileService.SimpleServiceProtocol {
             metadata: [:]
         )
     }
+
+    public func getServerInfo(
+        request: GRPCCore.ServerRequest<Mobile_V1_GetServerInfoRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_GetServerInfoResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_GetServerInfoResponse>(
+            message: try await self.getServerInfo(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func getDockerInfo(
+        request: GRPCCore.ServerRequest<Mobile_V1_GetDockerInfoRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_GetDockerInfoResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_GetDockerInfoResponse>(
+            message: try await self.getDockerInfo(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func getAppVersion(
+        request: GRPCCore.ServerRequest<Mobile_V1_GetAppVersionRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_GetAppVersionResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_GetAppVersionResponse>(
+            message: try await self.getAppVersion(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func listContainers(
+        request: GRPCCore.ServerRequest<Mobile_V1_ListContainersRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ListContainersResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_ListContainersResponse>(
+            message: try await self.listContainers(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func inspectContainer(
+        request: GRPCCore.ServerRequest<Mobile_V1_InspectContainerRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_InspectContainerResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_InspectContainerResponse>(
+            message: try await self.inspectContainer(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func startContainer(
+        request: GRPCCore.ServerRequest<Mobile_V1_ContainerActionRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult> {
+        return GRPCCore.ServerResponse<Mobile_V1_ActionResult>(
+            message: try await self.startContainer(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func stopContainer(
+        request: GRPCCore.ServerRequest<Mobile_V1_ContainerActionRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult> {
+        return GRPCCore.ServerResponse<Mobile_V1_ActionResult>(
+            message: try await self.stopContainer(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func restartContainer(
+        request: GRPCCore.ServerRequest<Mobile_V1_ContainerActionRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult> {
+        return GRPCCore.ServerResponse<Mobile_V1_ActionResult>(
+            message: try await self.restartContainer(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func redeployContainer(
+        request: GRPCCore.ServerRequest<Mobile_V1_ContainerActionRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult> {
+        return GRPCCore.ServerResponse<Mobile_V1_ActionResult>(
+            message: try await self.redeployContainer(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func deleteContainer(
+        request: GRPCCore.ServerRequest<Mobile_V1_DeleteContainerRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult> {
+        return GRPCCore.ServerResponse<Mobile_V1_ActionResult>(
+            message: try await self.deleteContainer(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func pruneContainers(
+        request: GRPCCore.ServerRequest<Mobile_V1_PruneContainersRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_PruneResult> {
+        return GRPCCore.ServerResponse<Mobile_V1_PruneResult>(
+            message: try await self.pruneContainers(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func listVolumes(
+        request: GRPCCore.ServerRequest<Mobile_V1_ListVolumesRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ListVolumesResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_ListVolumesResponse>(
+            message: try await self.listVolumes(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func getVolumeSizes(
+        request: GRPCCore.ServerRequest<Mobile_V1_GetVolumeSizesRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_GetVolumeSizesResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_GetVolumeSizesResponse>(
+            message: try await self.getVolumeSizes(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func createVolume(
+        request: GRPCCore.ServerRequest<Mobile_V1_CreateVolumeRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_CreateVolumeResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_CreateVolumeResponse>(
+            message: try await self.createVolume(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func deleteVolume(
+        request: GRPCCore.ServerRequest<Mobile_V1_DeleteVolumeRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult> {
+        return GRPCCore.ServerResponse<Mobile_V1_ActionResult>(
+            message: try await self.deleteVolume(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func pruneVolumes(
+        request: GRPCCore.ServerRequest<Mobile_V1_PruneVolumesRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_PruneResult> {
+        return GRPCCore.ServerResponse<Mobile_V1_PruneResult>(
+            message: try await self.pruneVolumes(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func listNetworks(
+        request: GRPCCore.ServerRequest<Mobile_V1_ListNetworksRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ListNetworksResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_ListNetworksResponse>(
+            message: try await self.listNetworks(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func createNetwork(
+        request: GRPCCore.ServerRequest<Mobile_V1_CreateNetworkRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_CreateNetworkResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_CreateNetworkResponse>(
+            message: try await self.createNetwork(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func deleteNetwork(
+        request: GRPCCore.ServerRequest<Mobile_V1_DeleteNetworkRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult> {
+        return GRPCCore.ServerResponse<Mobile_V1_ActionResult>(
+            message: try await self.deleteNetwork(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func pruneNetworks(
+        request: GRPCCore.ServerRequest<Mobile_V1_PruneNetworksRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_PruneResult> {
+        return GRPCCore.ServerResponse<Mobile_V1_PruneResult>(
+            message: try await self.pruneNetworks(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func pauseContainer(
+        request: GRPCCore.ServerRequest<Mobile_V1_ContainerActionRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult> {
+        return GRPCCore.ServerResponse<Mobile_V1_ActionResult>(
+            message: try await self.pauseContainer(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func unpauseContainer(
+        request: GRPCCore.ServerRequest<Mobile_V1_ContainerActionRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult> {
+        return GRPCCore.ServerResponse<Mobile_V1_ActionResult>(
+            message: try await self.unpauseContainer(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func killContainer(
+        request: GRPCCore.ServerRequest<Mobile_V1_ContainerActionRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult> {
+        return GRPCCore.ServerResponse<Mobile_V1_ActionResult>(
+            message: try await self.killContainer(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func renameContainer(
+        request: GRPCCore.ServerRequest<Mobile_V1_RenameContainerRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult> {
+        return GRPCCore.ServerResponse<Mobile_V1_ActionResult>(
+            message: try await self.renameContainer(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func listImages(
+        request: GRPCCore.ServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_JSONResponse>(
+            message: try await self.listImages(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func inspectImage(
+        request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_JSONResponse>(
+            message: try await self.inspectImage(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func deleteImage(
+        request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult> {
+        return GRPCCore.ServerResponse<Mobile_V1_ActionResult>(
+            message: try await self.deleteImage(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func pruneImages(
+        request: GRPCCore.ServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_PruneResult> {
+        return GRPCCore.ServerResponse<Mobile_V1_PruneResult>(
+            message: try await self.pruneImages(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func getImageUpdateSummary(
+        request: GRPCCore.ServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_JSONResponse>(
+            message: try await self.getImageUpdateSummary(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func getImageUpdatesByRefs(
+        request: GRPCCore.ServerRequest<Mobile_V1_GetImageUpdatesByRefsRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_JSONResponse>(
+            message: try await self.getImageUpdatesByRefs(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func checkImageUpdates(
+        request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndQueryRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_JSONResponse>(
+            message: try await self.checkImageUpdates(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func checkAllImageUpdates(
+        request: GRPCCore.ServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult> {
+        return GRPCCore.ServerResponse<Mobile_V1_ActionResult>(
+            message: try await self.checkAllImageUpdates(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func checkImageUpdate(
+        request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_JSONResponse>(
+            message: try await self.checkImageUpdate(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func getVulnerabilityScannerStatus(
+        request: GRPCCore.ServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_JSONResponse>(
+            message: try await self.getVulnerabilityScannerStatus(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func getImageVulnerabilitySummary(
+        request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_JSONResponse>(
+            message: try await self.getImageVulnerabilitySummary(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func listImageVulnerabilities(
+        request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndIDAndQueryRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_JSONResponse>(
+            message: try await self.listImageVulnerabilities(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func scanImageVulnerabilities(
+        request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_JSONResponse>(
+            message: try await self.scanImageVulnerabilities(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func getAllVulnerabilitiesSummary(
+        request: GRPCCore.ServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_JSONResponse>(
+            message: try await self.getAllVulnerabilitiesSummary(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func getVulnerabilityImageOptions(
+        request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndQueryRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_JSONResponse>(
+            message: try await self.getVulnerabilityImageOptions(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func listAllVulnerabilities(
+        request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndQueryRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_JSONResponse>(
+            message: try await self.listAllVulnerabilities(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func ignoreVulnerability(
+        request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_JSONResponse>(
+            message: try await self.ignoreVulnerability(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func deleteVulnerabilityIgnore(
+        request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult> {
+        return GRPCCore.ServerResponse<Mobile_V1_ActionResult>(
+            message: try await self.deleteVulnerabilityIgnore(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func listProjects(
+        request: GRPCCore.ServerRequest<Mobile_V1_ListProjectsRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ListProjectsResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_ListProjectsResponse>(
+            message: try await self.listProjects(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func getProject(
+        request: GRPCCore.ServerRequest<Mobile_V1_GetProjectRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_GetProjectResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_GetProjectResponse>(
+            message: try await self.getProject(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func createProject(
+        request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_JSONResponse>(
+            message: try await self.createProject(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func updateProject(
+        request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndIDAndJSONBodyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_JSONResponse>(
+            message: try await self.updateProject(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func deleteProject(
+        request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult> {
+        return GRPCCore.ServerResponse<Mobile_V1_ActionResult>(
+            message: try await self.deleteProject(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func startProject(
+        request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult> {
+        return GRPCCore.ServerResponse<Mobile_V1_ActionResult>(
+            message: try await self.startProject(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func stopProject(
+        request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult> {
+        return GRPCCore.ServerResponse<Mobile_V1_ActionResult>(
+            message: try await self.stopProject(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func destroyProject(
+        request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult> {
+        return GRPCCore.ServerResponse<Mobile_V1_ActionResult>(
+            message: try await self.destroyProject(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func listEnvironments(
+        request: GRPCCore.ServerRequest<Mobile_V1_EmptyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_JSONResponse>(
+            message: try await self.listEnvironments(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func createEnvironment(
+        request: GRPCCore.ServerRequest<Mobile_V1_JSONBodyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_JSONResponse>(
+            message: try await self.createEnvironment(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func testEnvironment(
+        request: GRPCCore.ServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_JSONResponse>(
+            message: try await self.testEnvironment(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func getSettings(
+        request: GRPCCore.ServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_JSONResponse>(
+            message: try await self.getSettings(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func updateSettings(
+        request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_JSONResponse>(
+            message: try await self.updateSettings(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func getOidcStatus(
+        request: GRPCCore.ServerRequest<Mobile_V1_EmptyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_JSONResponse>(
+            message: try await self.getOidcStatus(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func getNotificationSettings(
+        request: GRPCCore.ServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_JSONResponse>(
+            message: try await self.getNotificationSettings(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func saveNotificationProvider(
+        request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_JSONResponse>(
+            message: try await self.saveNotificationProvider(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func deleteNotificationProvider(
+        request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult> {
+        return GRPCCore.ServerResponse<Mobile_V1_ActionResult>(
+            message: try await self.deleteNotificationProvider(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func testNotificationProvider(
+        request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndIDAndJSONBodyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult> {
+        return GRPCCore.ServerResponse<Mobile_V1_ActionResult>(
+            message: try await self.testNotificationProvider(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func getApprise(
+        request: GRPCCore.ServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_JSONResponse>(
+            message: try await self.getApprise(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func updateApprise(
+        request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_JSONResponse>(
+            message: try await self.updateApprise(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func testApprise(
+        request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult> {
+        return GRPCCore.ServerResponse<Mobile_V1_ActionResult>(
+            message: try await self.testApprise(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func listWebhooks(
+        request: GRPCCore.ServerRequest<Mobile_V1_EnvIDOnlyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_JSONResponse>(
+            message: try await self.listWebhooks(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func createWebhook(
+        request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_JSONResponse>(
+            message: try await self.createWebhook(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func updateWebhook(
+        request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndIDAndJSONBodyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_JSONResponse>(
+            message: try await self.updateWebhook(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func deleteWebhook(
+        request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult> {
+        return GRPCCore.ServerResponse<Mobile_V1_ActionResult>(
+            message: try await self.deleteWebhook(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func listUsers(
+        request: GRPCCore.ServerRequest<Mobile_V1_EmptyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_JSONResponse>(
+            message: try await self.listUsers(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func createUser(
+        request: GRPCCore.ServerRequest<Mobile_V1_JSONBodyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_JSONResponse>(
+            message: try await self.createUser(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func updateUser(
+        request: GRPCCore.ServerRequest<Mobile_V1_IDAndJSONBodyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_JSONResponse>(
+            message: try await self.updateUser(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func deleteUser(
+        request: GRPCCore.ServerRequest<Mobile_V1_IDOnlyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult> {
+        return GRPCCore.ServerResponse<Mobile_V1_ActionResult>(
+            message: try await self.deleteUser(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func listApiKeys(
+        request: GRPCCore.ServerRequest<Mobile_V1_EmptyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_JSONResponse>(
+            message: try await self.listApiKeys(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func createApiKey(
+        request: GRPCCore.ServerRequest<Mobile_V1_JSONBodyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_JSONResponse>(
+            message: try await self.createApiKey(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func deleteApiKey(
+        request: GRPCCore.ServerRequest<Mobile_V1_IDOnlyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult> {
+        return GRPCCore.ServerResponse<Mobile_V1_ActionResult>(
+            message: try await self.deleteApiKey(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func listContainerRegistries(
+        request: GRPCCore.ServerRequest<Mobile_V1_EmptyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_JSONResponse>(
+            message: try await self.listContainerRegistries(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func createContainerRegistry(
+        request: GRPCCore.ServerRequest<Mobile_V1_JSONBodyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_JSONResponse>(
+            message: try await self.createContainerRegistry(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func updateContainerRegistry(
+        request: GRPCCore.ServerRequest<Mobile_V1_IDAndJSONBodyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_JSONResponse>(
+            message: try await self.updateContainerRegistry(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func deleteContainerRegistry(
+        request: GRPCCore.ServerRequest<Mobile_V1_IDOnlyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult> {
+        return GRPCCore.ServerResponse<Mobile_V1_ActionResult>(
+            message: try await self.deleteContainerRegistry(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func listTemplates(
+        request: GRPCCore.ServerRequest<Mobile_V1_EmptyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_JSONResponse>(
+            message: try await self.listTemplates(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func getTemplateContent(
+        request: GRPCCore.ServerRequest<Mobile_V1_IDOnlyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_JSONResponse>(
+            message: try await self.getTemplateContent(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func listTemplateRegistries(
+        request: GRPCCore.ServerRequest<Mobile_V1_EmptyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_JSONResponse>(
+            message: try await self.listTemplateRegistries(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func createTemplateRegistry(
+        request: GRPCCore.ServerRequest<Mobile_V1_JSONBodyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_JSONResponse>(
+            message: try await self.createTemplateRegistry(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func updateTemplateRegistry(
+        request: GRPCCore.ServerRequest<Mobile_V1_IDAndJSONBodyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_JSONResponse>(
+            message: try await self.updateTemplateRegistry(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func deleteTemplateRegistry(
+        request: GRPCCore.ServerRequest<Mobile_V1_IDOnlyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_ActionResult> {
+        return GRPCCore.ServerResponse<Mobile_V1_ActionResult>(
+            message: try await self.deleteTemplateRegistry(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func pruneSystem(
+        request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.ServerResponse<Mobile_V1_JSONResponse> {
+        return GRPCCore.ServerResponse<Mobile_V1_JSONResponse>(
+            message: try await self.pruneSystem(
+                request: request.message,
+                context: context
+            ),
+            metadata: [:]
+        )
+    }
+
+    public func streamContainerLogs(
+        request: GRPCCore.ServerRequest<Mobile_V1_StreamContainerLogsRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_StreamFrame> {
+        return GRPCCore.StreamingServerResponse<Mobile_V1_StreamFrame>(
+            metadata: [:],
+            producer: { writer in
+                try await self.streamContainerLogs(
+                    request: request.message,
+                    response: writer,
+                    context: context
+                )
+                return [:]
+            }
+        )
+    }
+
+    public func streamContainerStats(
+        request: GRPCCore.ServerRequest<Mobile_V1_EnvIDAndIDRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_StreamFrame> {
+        return GRPCCore.StreamingServerResponse<Mobile_V1_StreamFrame>(
+            metadata: [:],
+            producer: { writer in
+                try await self.streamContainerStats(
+                    request: request.message,
+                    response: writer,
+                    context: context
+                )
+                return [:]
+            }
+        )
+    }
+
+    public func streamProjectLogs(
+        request: GRPCCore.ServerRequest<Mobile_V1_StreamProjectLogsRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_StreamFrame> {
+        return GRPCCore.StreamingServerResponse<Mobile_V1_StreamFrame>(
+            metadata: [:],
+            producer: { writer in
+                try await self.streamProjectLogs(
+                    request: request.message,
+                    response: writer,
+                    context: context
+                )
+                return [:]
+            }
+        )
+    }
+
+    public func streamSystemStats(
+        request: GRPCCore.ServerRequest<Mobile_V1_StreamSystemStatsRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_StreamFrame> {
+        return GRPCCore.StreamingServerResponse<Mobile_V1_StreamFrame>(
+            metadata: [:],
+            producer: { writer in
+                try await self.streamSystemStats(
+                    request: request.message,
+                    response: writer,
+                    context: context
+                )
+                return [:]
+            }
+        )
+    }
+
+    public func streamPullImage(
+        request: GRPCCore.ServerRequest<Mobile_V1_PullImageRequest>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_StreamFrame> {
+        return GRPCCore.StreamingServerResponse<Mobile_V1_StreamFrame>(
+            metadata: [:],
+            producer: { writer in
+                try await self.streamPullImage(
+                    request: request.message,
+                    response: writer,
+                    context: context
+                )
+                return [:]
+            }
+        )
+    }
+
+    public func containerTerminal(
+        request: GRPCCore.StreamingServerRequest<Mobile_V1_TerminalClientFrame>,
+        context: GRPCCore.ServerContext
+    ) async throws -> GRPCCore.StreamingServerResponse<Mobile_V1_TerminalServerFrame> {
+        return GRPCCore.StreamingServerResponse<Mobile_V1_TerminalServerFrame>(
+            metadata: [:],
+            producer: { writer in
+                try await self.containerTerminal(
+                    request: request.messages,
+                    response: writer,
+                    context: context
+                )
+                return [:]
+            }
+        )
+    }
 }
 
 // MARK: mobile.v1.MobileService (client)
@@ -807,49 +9183,21 @@ extension Mobile_V1_MobileService {
     ///
     /// > Source IDL Documentation:
     /// >
-    /// > MobileService is the authenticated post-pairing API. Phase 1 includes
-    /// > just enough to demo the loop end-to-end. Phase 2+ migrate the rest of
-    /// > the iOS REST surface to this service, method by method.
+    /// > MobileService is the authenticated post-pairing API.
+    /// > 
+    /// > Conventions:
+    /// >   * Every multi-environment RPC carries `environment_id`. "0" means the
+    /// >     local Docker environment.
+    /// >   * Inspection / details responses use `bytes details_json` carrying the
+    /// >     same JSON shape as the REST endpoint so existing Swift Codable types
+    /// >     decode them unchanged. Lists/summaries/native types are fully typed.
+    /// >   * Mutating actions return ActionResult unless they need richer output.
     public protocol ClientProtocol: Sendable {
-        /// Call the "GetServerInfo" method.
-        ///
-        /// - Parameters:
-        ///   - request: A request containing a single `Mobile_V1_GetServerInfoRequest` message.
-        ///   - serializer: A serializer for `Mobile_V1_GetServerInfoRequest` messages.
-        ///   - deserializer: A deserializer for `Mobile_V1_GetServerInfoResponse` messages.
-        ///   - options: Options to apply to this RPC.
-        ///   - handleResponse: A closure which handles the response, the result of which is
-        ///       returned to the caller. Returning from the closure will cancel the RPC if it
-        ///       hasn't already finished.
-        /// - Returns: The result of `handleResponse`.
-        func getServerInfo<Result>(
-            request: GRPCCore.ClientRequest<Mobile_V1_GetServerInfoRequest>,
-            serializer: some GRPCCore.MessageSerializer<Mobile_V1_GetServerInfoRequest>,
-            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_GetServerInfoResponse>,
-            options: GRPCCore.CallOptions,
-            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_GetServerInfoResponse>) async throws -> Result
-        ) async throws -> Result where Result: Sendable
-
-        /// Call the "ListContainers" method.
-        ///
-        /// - Parameters:
-        ///   - request: A request containing a single `Mobile_V1_ListContainersRequest` message.
-        ///   - serializer: A serializer for `Mobile_V1_ListContainersRequest` messages.
-        ///   - deserializer: A deserializer for `Mobile_V1_ListContainersResponse` messages.
-        ///   - options: Options to apply to this RPC.
-        ///   - handleResponse: A closure which handles the response, the result of which is
-        ///       returned to the caller. Returning from the closure will cancel the RPC if it
-        ///       hasn't already finished.
-        /// - Returns: The result of `handleResponse`.
-        func listContainers<Result>(
-            request: GRPCCore.ClientRequest<Mobile_V1_ListContainersRequest>,
-            serializer: some GRPCCore.MessageSerializer<Mobile_V1_ListContainersRequest>,
-            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ListContainersResponse>,
-            options: GRPCCore.CallOptions,
-            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ListContainersResponse>) async throws -> Result
-        ) async throws -> Result where Result: Sendable
-
         /// Call the "GetCurrentDevice" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Pairing-related ----------
         ///
         /// - Parameters:
         ///   - request: A request containing a single `Mobile_V1_GetCurrentDeviceRequest` message.
@@ -886,6 +9234,1811 @@ extension Mobile_V1_MobileService {
             options: GRPCCore.CallOptions,
             onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_RevokeCurrentDeviceResponse>) async throws -> Result
         ) async throws -> Result where Result: Sendable
+
+        /// Call the "GetServerInfo" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Server / system ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_GetServerInfoRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_GetServerInfoRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_GetServerInfoResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func getServerInfo<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_GetServerInfoRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_GetServerInfoRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_GetServerInfoResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_GetServerInfoResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "GetDockerInfo" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_GetDockerInfoRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_GetDockerInfoRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_GetDockerInfoResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func getDockerInfo<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_GetDockerInfoRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_GetDockerInfoRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_GetDockerInfoResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_GetDockerInfoResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "GetAppVersion" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_GetAppVersionRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_GetAppVersionRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_GetAppVersionResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func getAppVersion<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_GetAppVersionRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_GetAppVersionRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_GetAppVersionResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_GetAppVersionResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "ListContainers" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Containers ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_ListContainersRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_ListContainersRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ListContainersResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func listContainers<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_ListContainersRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_ListContainersRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ListContainersResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ListContainersResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "InspectContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_InspectContainerRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_InspectContainerRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_InspectContainerResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func inspectContainer<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_InspectContainerRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_InspectContainerRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_InspectContainerResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_InspectContainerResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "StartContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_ContainerActionRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_ContainerActionRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func startContainer<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_ContainerActionRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_ContainerActionRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "StopContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_ContainerActionRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_ContainerActionRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func stopContainer<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_ContainerActionRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_ContainerActionRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "RestartContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_ContainerActionRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_ContainerActionRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func restartContainer<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_ContainerActionRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_ContainerActionRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "RedeployContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_ContainerActionRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_ContainerActionRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func redeployContainer<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_ContainerActionRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_ContainerActionRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "DeleteContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_DeleteContainerRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_DeleteContainerRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func deleteContainer<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_DeleteContainerRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_DeleteContainerRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "PruneContainers" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_PruneContainersRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_PruneContainersRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_PruneResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func pruneContainers<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_PruneContainersRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_PruneContainersRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_PruneResult>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_PruneResult>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "ListVolumes" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Volumes ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_ListVolumesRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_ListVolumesRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ListVolumesResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func listVolumes<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_ListVolumesRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_ListVolumesRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ListVolumesResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ListVolumesResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "GetVolumeSizes" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_GetVolumeSizesRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_GetVolumeSizesRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_GetVolumeSizesResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func getVolumeSizes<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_GetVolumeSizesRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_GetVolumeSizesRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_GetVolumeSizesResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_GetVolumeSizesResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "CreateVolume" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_CreateVolumeRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_CreateVolumeRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_CreateVolumeResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func createVolume<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_CreateVolumeRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_CreateVolumeRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_CreateVolumeResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_CreateVolumeResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "DeleteVolume" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_DeleteVolumeRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_DeleteVolumeRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func deleteVolume<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_DeleteVolumeRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_DeleteVolumeRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "PruneVolumes" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_PruneVolumesRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_PruneVolumesRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_PruneResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func pruneVolumes<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_PruneVolumesRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_PruneVolumesRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_PruneResult>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_PruneResult>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "ListNetworks" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Networks ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_ListNetworksRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_ListNetworksRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ListNetworksResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func listNetworks<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_ListNetworksRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_ListNetworksRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ListNetworksResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ListNetworksResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "CreateNetwork" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_CreateNetworkRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_CreateNetworkRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_CreateNetworkResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func createNetwork<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_CreateNetworkRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_CreateNetworkRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_CreateNetworkResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_CreateNetworkResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "DeleteNetwork" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_DeleteNetworkRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_DeleteNetworkRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func deleteNetwork<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_DeleteNetworkRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_DeleteNetworkRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "PruneNetworks" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_PruneNetworksRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_PruneNetworksRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_PruneResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func pruneNetworks<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_PruneNetworksRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_PruneNetworksRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_PruneResult>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_PruneResult>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "PauseContainer" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Container extras ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_ContainerActionRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_ContainerActionRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func pauseContainer<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_ContainerActionRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_ContainerActionRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "UnpauseContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_ContainerActionRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_ContainerActionRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func unpauseContainer<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_ContainerActionRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_ContainerActionRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "KillContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_ContainerActionRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_ContainerActionRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func killContainer<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_ContainerActionRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_ContainerActionRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "RenameContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_RenameContainerRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_RenameContainerRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func renameContainer<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_RenameContainerRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_RenameContainerRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "ListImages" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Images ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDOnlyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func listImages<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDOnlyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "InspectImage" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndIDRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func inspectImage<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndIDRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "DeleteImage" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndIDRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func deleteImage<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndIDRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "PruneImages" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDOnlyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_PruneResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func pruneImages<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDOnlyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_PruneResult>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_PruneResult>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "GetImageUpdateSummary" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Image updates ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDOnlyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func getImageUpdateSummary<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDOnlyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "GetImageUpdatesByRefs" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_GetImageUpdatesByRefsRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_GetImageUpdatesByRefsRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func getImageUpdatesByRefs<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_GetImageUpdatesByRefsRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_GetImageUpdatesByRefsRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "CheckImageUpdates" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndQueryRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndQueryRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func checkImageUpdates<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndQueryRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndQueryRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "CheckAllImageUpdates" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDOnlyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func checkAllImageUpdates<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDOnlyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "CheckImageUpdate" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndIDRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func checkImageUpdate<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndIDRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "GetVulnerabilityScannerStatus" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Vulnerabilities ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDOnlyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func getVulnerabilityScannerStatus<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDOnlyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "GetImageVulnerabilitySummary" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndIDRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func getImageVulnerabilitySummary<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndIDRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "ListImageVulnerabilities" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDAndQueryRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndIDAndQueryRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func listImageVulnerabilities<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDAndQueryRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndIDAndQueryRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "ScanImageVulnerabilities" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndIDRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func scanImageVulnerabilities<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndIDRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "GetAllVulnerabilitiesSummary" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDOnlyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func getAllVulnerabilitiesSummary<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDOnlyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "GetVulnerabilityImageOptions" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndQueryRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndQueryRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func getVulnerabilityImageOptions<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndQueryRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndQueryRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "ListAllVulnerabilities" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndQueryRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndQueryRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func listAllVulnerabilities<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndQueryRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndQueryRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "IgnoreVulnerability" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndJSONBodyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndJSONBodyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func ignoreVulnerability<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "DeleteVulnerabilityIgnore" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndIDRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func deleteVulnerabilityIgnore<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndIDRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "ListProjects" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Projects (read + mutations) ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_ListProjectsRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_ListProjectsRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ListProjectsResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func listProjects<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_ListProjectsRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_ListProjectsRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ListProjectsResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ListProjectsResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "GetProject" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_GetProjectRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_GetProjectRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_GetProjectResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func getProject<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_GetProjectRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_GetProjectRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_GetProjectResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_GetProjectResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "CreateProject" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndJSONBodyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndJSONBodyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func createProject<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "UpdateProject" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDAndJSONBodyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndIDAndJSONBodyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func updateProject<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDAndJSONBodyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndIDAndJSONBodyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "DeleteProject" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndIDRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func deleteProject<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndIDRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "StartProject" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndIDRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func startProject<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndIDRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "StopProject" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndIDRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func stopProject<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndIDRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "DestroyProject" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndIDRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func destroyProject<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndIDRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "ListEnvironments" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Environments ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EmptyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EmptyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func listEnvironments<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EmptyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EmptyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "CreateEnvironment" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_JSONBodyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_JSONBodyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func createEnvironment<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_JSONBodyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_JSONBodyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "TestEnvironment" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDOnlyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func testEnvironment<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDOnlyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "GetSettings" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Settings ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDOnlyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func getSettings<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDOnlyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "UpdateSettings" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndJSONBodyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndJSONBodyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func updateSettings<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "GetOidcStatus" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EmptyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EmptyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func getOidcStatus<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EmptyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EmptyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "GetNotificationSettings" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Notifications ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDOnlyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func getNotificationSettings<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDOnlyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "SaveNotificationProvider" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndJSONBodyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndJSONBodyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func saveNotificationProvider<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "DeleteNotificationProvider" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndIDRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func deleteNotificationProvider<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndIDRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "TestNotificationProvider" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDAndJSONBodyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndIDAndJSONBodyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func testNotificationProvider<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDAndJSONBodyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndIDAndJSONBodyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "GetApprise" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDOnlyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func getApprise<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDOnlyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "UpdateApprise" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndJSONBodyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndJSONBodyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func updateApprise<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "TestApprise" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndJSONBodyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndJSONBodyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func testApprise<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "ListWebhooks" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Webhooks ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDOnlyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func listWebhooks<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDOnlyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "CreateWebhook" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndJSONBodyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndJSONBodyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func createWebhook<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "UpdateWebhook" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDAndJSONBodyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndIDAndJSONBodyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func updateWebhook<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDAndJSONBodyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndIDAndJSONBodyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "DeleteWebhook" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndIDRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func deleteWebhook<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndIDRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "ListUsers" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Users (global) ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EmptyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EmptyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func listUsers<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EmptyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EmptyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "CreateUser" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_JSONBodyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_JSONBodyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func createUser<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_JSONBodyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_JSONBodyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "UpdateUser" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_IDAndJSONBodyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_IDAndJSONBodyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func updateUser<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_IDAndJSONBodyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_IDAndJSONBodyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "DeleteUser" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_IDOnlyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_IDOnlyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func deleteUser<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_IDOnlyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_IDOnlyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "ListApiKeys" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- API keys (global) ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EmptyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EmptyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func listApiKeys<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EmptyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EmptyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "CreateApiKey" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_JSONBodyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_JSONBodyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func createApiKey<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_JSONBodyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_JSONBodyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "DeleteApiKey" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_IDOnlyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_IDOnlyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func deleteApiKey<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_IDOnlyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_IDOnlyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "ListContainerRegistries" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Container registries (global) ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EmptyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EmptyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func listContainerRegistries<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EmptyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EmptyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "CreateContainerRegistry" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_JSONBodyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_JSONBodyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func createContainerRegistry<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_JSONBodyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_JSONBodyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "UpdateContainerRegistry" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_IDAndJSONBodyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_IDAndJSONBodyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func updateContainerRegistry<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_IDAndJSONBodyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_IDAndJSONBodyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "DeleteContainerRegistry" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_IDOnlyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_IDOnlyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func deleteContainerRegistry<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_IDOnlyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_IDOnlyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "ListTemplates" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Templates (global) ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EmptyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EmptyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func listTemplates<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EmptyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EmptyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "GetTemplateContent" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_IDOnlyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_IDOnlyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func getTemplateContent<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_IDOnlyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_IDOnlyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "ListTemplateRegistries" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EmptyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EmptyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func listTemplateRegistries<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EmptyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EmptyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "CreateTemplateRegistry" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_JSONBodyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_JSONBodyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func createTemplateRegistry<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_JSONBodyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_JSONBodyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "UpdateTemplateRegistry" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_IDAndJSONBodyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_IDAndJSONBodyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func updateTemplateRegistry<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_IDAndJSONBodyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_IDAndJSONBodyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "DeleteTemplateRegistry" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_IDOnlyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_IDOnlyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func deleteTemplateRegistry<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_IDOnlyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_IDOnlyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "PruneSystem" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- System ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndJSONBodyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndJSONBodyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func pruneSystem<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "StreamContainerLogs" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Streaming ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_StreamContainerLogsRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_StreamContainerLogsRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_StreamFrame` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func streamContainerLogs<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_StreamContainerLogsRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_StreamContainerLogsRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_StreamFrame>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.StreamingClientResponse<Mobile_V1_StreamFrame>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "StreamContainerStats" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndIDRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_StreamFrame` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func streamContainerStats<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndIDRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_StreamFrame>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.StreamingClientResponse<Mobile_V1_StreamFrame>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "StreamProjectLogs" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_StreamProjectLogsRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_StreamProjectLogsRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_StreamFrame` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func streamProjectLogs<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_StreamProjectLogsRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_StreamProjectLogsRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_StreamFrame>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.StreamingClientResponse<Mobile_V1_StreamFrame>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "StreamSystemStats" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_StreamSystemStatsRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_StreamSystemStatsRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_StreamFrame` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func streamSystemStats<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_StreamSystemStatsRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_StreamSystemStatsRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_StreamFrame>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.StreamingClientResponse<Mobile_V1_StreamFrame>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "StreamPullImage" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_PullImageRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_PullImageRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_StreamFrame` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func streamPullImage<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_PullImageRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_PullImageRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_StreamFrame>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.StreamingClientResponse<Mobile_V1_StreamFrame>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
+
+        /// Call the "ContainerTerminal" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request producing `Mobile_V1_TerminalClientFrame` messages.
+        ///   - serializer: A serializer for `Mobile_V1_TerminalClientFrame` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_TerminalServerFrame` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        func containerTerminal<Result>(
+            request: GRPCCore.StreamingClientRequest<Mobile_V1_TerminalClientFrame>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_TerminalClientFrame>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_TerminalServerFrame>,
+            options: GRPCCore.CallOptions,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.StreamingClientResponse<Mobile_V1_TerminalServerFrame>) async throws -> Result
+        ) async throws -> Result where Result: Sendable
     }
 
     /// Generated client for the "mobile.v1.MobileService" service.
@@ -896,9 +11049,15 @@ extension Mobile_V1_MobileService {
     ///
     /// > Source IDL Documentation:
     /// >
-    /// > MobileService is the authenticated post-pairing API. Phase 1 includes
-    /// > just enough to demo the loop end-to-end. Phase 2+ migrate the rest of
-    /// > the iOS REST surface to this service, method by method.
+    /// > MobileService is the authenticated post-pairing API.
+    /// > 
+    /// > Conventions:
+    /// >   * Every multi-environment RPC carries `environment_id`. "0" means the
+    /// >     local Docker environment.
+    /// >   * Inspection / details responses use `bytes details_json` carrying the
+    /// >     same JSON shape as the REST endpoint so existing Swift Codable types
+    /// >     decode them unchanged. Lists/summaries/native types are fully typed.
+    /// >   * Mutating actions return ActionResult unless they need richer output.
     public struct Client<Transport>: ClientProtocol where Transport: GRPCCore.ClientTransport {
         private let client: GRPCCore.GRPCClient<Transport>
 
@@ -910,67 +11069,11 @@ extension Mobile_V1_MobileService {
             self.client = client
         }
 
-        /// Call the "GetServerInfo" method.
-        ///
-        /// - Parameters:
-        ///   - request: A request containing a single `Mobile_V1_GetServerInfoRequest` message.
-        ///   - serializer: A serializer for `Mobile_V1_GetServerInfoRequest` messages.
-        ///   - deserializer: A deserializer for `Mobile_V1_GetServerInfoResponse` messages.
-        ///   - options: Options to apply to this RPC.
-        ///   - handleResponse: A closure which handles the response, the result of which is
-        ///       returned to the caller. Returning from the closure will cancel the RPC if it
-        ///       hasn't already finished.
-        /// - Returns: The result of `handleResponse`.
-        public func getServerInfo<Result>(
-            request: GRPCCore.ClientRequest<Mobile_V1_GetServerInfoRequest>,
-            serializer: some GRPCCore.MessageSerializer<Mobile_V1_GetServerInfoRequest>,
-            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_GetServerInfoResponse>,
-            options: GRPCCore.CallOptions = .defaults,
-            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_GetServerInfoResponse>) async throws -> Result = { response in
-                try response.message
-            }
-        ) async throws -> Result where Result: Sendable {
-            try await self.client.unary(
-                request: request,
-                descriptor: Mobile_V1_MobileService.Method.GetServerInfo.descriptor,
-                serializer: serializer,
-                deserializer: deserializer,
-                options: options,
-                onResponse: handleResponse
-            )
-        }
-
-        /// Call the "ListContainers" method.
-        ///
-        /// - Parameters:
-        ///   - request: A request containing a single `Mobile_V1_ListContainersRequest` message.
-        ///   - serializer: A serializer for `Mobile_V1_ListContainersRequest` messages.
-        ///   - deserializer: A deserializer for `Mobile_V1_ListContainersResponse` messages.
-        ///   - options: Options to apply to this RPC.
-        ///   - handleResponse: A closure which handles the response, the result of which is
-        ///       returned to the caller. Returning from the closure will cancel the RPC if it
-        ///       hasn't already finished.
-        /// - Returns: The result of `handleResponse`.
-        public func listContainers<Result>(
-            request: GRPCCore.ClientRequest<Mobile_V1_ListContainersRequest>,
-            serializer: some GRPCCore.MessageSerializer<Mobile_V1_ListContainersRequest>,
-            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ListContainersResponse>,
-            options: GRPCCore.CallOptions = .defaults,
-            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ListContainersResponse>) async throws -> Result = { response in
-                try response.message
-            }
-        ) async throws -> Result where Result: Sendable {
-            try await self.client.unary(
-                request: request,
-                descriptor: Mobile_V1_MobileService.Method.ListContainers.descriptor,
-                serializer: serializer,
-                deserializer: deserializer,
-                options: options,
-                onResponse: handleResponse
-            )
-        }
-
         /// Call the "GetCurrentDevice" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Pairing-related ----------
         ///
         /// - Parameters:
         ///   - request: A request containing a single `Mobile_V1_GetCurrentDeviceRequest` message.
@@ -1029,63 +11132,2811 @@ extension Mobile_V1_MobileService {
                 onResponse: handleResponse
             )
         }
+
+        /// Call the "GetServerInfo" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Server / system ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_GetServerInfoRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_GetServerInfoRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_GetServerInfoResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func getServerInfo<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_GetServerInfoRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_GetServerInfoRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_GetServerInfoResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_GetServerInfoResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.GetServerInfo.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "GetDockerInfo" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_GetDockerInfoRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_GetDockerInfoRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_GetDockerInfoResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func getDockerInfo<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_GetDockerInfoRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_GetDockerInfoRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_GetDockerInfoResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_GetDockerInfoResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.GetDockerInfo.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "GetAppVersion" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_GetAppVersionRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_GetAppVersionRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_GetAppVersionResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func getAppVersion<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_GetAppVersionRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_GetAppVersionRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_GetAppVersionResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_GetAppVersionResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.GetAppVersion.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "ListContainers" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Containers ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_ListContainersRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_ListContainersRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ListContainersResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func listContainers<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_ListContainersRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_ListContainersRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ListContainersResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ListContainersResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.ListContainers.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "InspectContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_InspectContainerRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_InspectContainerRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_InspectContainerResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func inspectContainer<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_InspectContainerRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_InspectContainerRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_InspectContainerResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_InspectContainerResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.InspectContainer.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "StartContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_ContainerActionRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_ContainerActionRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func startContainer<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_ContainerActionRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_ContainerActionRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.StartContainer.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "StopContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_ContainerActionRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_ContainerActionRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func stopContainer<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_ContainerActionRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_ContainerActionRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.StopContainer.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "RestartContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_ContainerActionRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_ContainerActionRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func restartContainer<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_ContainerActionRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_ContainerActionRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.RestartContainer.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "RedeployContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_ContainerActionRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_ContainerActionRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func redeployContainer<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_ContainerActionRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_ContainerActionRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.RedeployContainer.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "DeleteContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_DeleteContainerRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_DeleteContainerRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func deleteContainer<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_DeleteContainerRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_DeleteContainerRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.DeleteContainer.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "PruneContainers" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_PruneContainersRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_PruneContainersRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_PruneResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func pruneContainers<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_PruneContainersRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_PruneContainersRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_PruneResult>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_PruneResult>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.PruneContainers.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "ListVolumes" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Volumes ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_ListVolumesRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_ListVolumesRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ListVolumesResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func listVolumes<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_ListVolumesRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_ListVolumesRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ListVolumesResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ListVolumesResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.ListVolumes.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "GetVolumeSizes" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_GetVolumeSizesRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_GetVolumeSizesRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_GetVolumeSizesResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func getVolumeSizes<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_GetVolumeSizesRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_GetVolumeSizesRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_GetVolumeSizesResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_GetVolumeSizesResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.GetVolumeSizes.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "CreateVolume" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_CreateVolumeRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_CreateVolumeRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_CreateVolumeResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func createVolume<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_CreateVolumeRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_CreateVolumeRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_CreateVolumeResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_CreateVolumeResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.CreateVolume.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "DeleteVolume" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_DeleteVolumeRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_DeleteVolumeRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func deleteVolume<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_DeleteVolumeRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_DeleteVolumeRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.DeleteVolume.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "PruneVolumes" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_PruneVolumesRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_PruneVolumesRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_PruneResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func pruneVolumes<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_PruneVolumesRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_PruneVolumesRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_PruneResult>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_PruneResult>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.PruneVolumes.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "ListNetworks" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Networks ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_ListNetworksRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_ListNetworksRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ListNetworksResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func listNetworks<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_ListNetworksRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_ListNetworksRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ListNetworksResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ListNetworksResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.ListNetworks.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "CreateNetwork" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_CreateNetworkRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_CreateNetworkRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_CreateNetworkResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func createNetwork<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_CreateNetworkRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_CreateNetworkRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_CreateNetworkResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_CreateNetworkResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.CreateNetwork.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "DeleteNetwork" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_DeleteNetworkRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_DeleteNetworkRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func deleteNetwork<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_DeleteNetworkRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_DeleteNetworkRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.DeleteNetwork.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "PruneNetworks" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_PruneNetworksRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_PruneNetworksRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_PruneResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func pruneNetworks<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_PruneNetworksRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_PruneNetworksRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_PruneResult>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_PruneResult>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.PruneNetworks.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "PauseContainer" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Container extras ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_ContainerActionRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_ContainerActionRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func pauseContainer<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_ContainerActionRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_ContainerActionRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.PauseContainer.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "UnpauseContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_ContainerActionRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_ContainerActionRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func unpauseContainer<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_ContainerActionRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_ContainerActionRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.UnpauseContainer.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "KillContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_ContainerActionRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_ContainerActionRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func killContainer<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_ContainerActionRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_ContainerActionRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.KillContainer.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "RenameContainer" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_RenameContainerRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_RenameContainerRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func renameContainer<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_RenameContainerRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_RenameContainerRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.RenameContainer.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "ListImages" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Images ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDOnlyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func listImages<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDOnlyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.ListImages.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "InspectImage" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndIDRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func inspectImage<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndIDRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.InspectImage.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "DeleteImage" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndIDRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func deleteImage<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndIDRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.DeleteImage.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "PruneImages" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDOnlyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_PruneResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func pruneImages<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDOnlyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_PruneResult>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_PruneResult>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.PruneImages.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "GetImageUpdateSummary" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Image updates ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDOnlyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func getImageUpdateSummary<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDOnlyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.GetImageUpdateSummary.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "GetImageUpdatesByRefs" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_GetImageUpdatesByRefsRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_GetImageUpdatesByRefsRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func getImageUpdatesByRefs<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_GetImageUpdatesByRefsRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_GetImageUpdatesByRefsRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.GetImageUpdatesByRefs.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "CheckImageUpdates" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndQueryRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndQueryRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func checkImageUpdates<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndQueryRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndQueryRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.CheckImageUpdates.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "CheckAllImageUpdates" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDOnlyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func checkAllImageUpdates<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDOnlyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.CheckAllImageUpdates.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "CheckImageUpdate" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndIDRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func checkImageUpdate<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndIDRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.CheckImageUpdate.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "GetVulnerabilityScannerStatus" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Vulnerabilities ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDOnlyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func getVulnerabilityScannerStatus<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDOnlyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.GetVulnerabilityScannerStatus.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "GetImageVulnerabilitySummary" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndIDRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func getImageVulnerabilitySummary<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndIDRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.GetImageVulnerabilitySummary.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "ListImageVulnerabilities" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDAndQueryRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndIDAndQueryRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func listImageVulnerabilities<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDAndQueryRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndIDAndQueryRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.ListImageVulnerabilities.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "ScanImageVulnerabilities" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndIDRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func scanImageVulnerabilities<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndIDRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.ScanImageVulnerabilities.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "GetAllVulnerabilitiesSummary" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDOnlyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func getAllVulnerabilitiesSummary<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDOnlyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.GetAllVulnerabilitiesSummary.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "GetVulnerabilityImageOptions" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndQueryRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndQueryRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func getVulnerabilityImageOptions<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndQueryRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndQueryRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.GetVulnerabilityImageOptions.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "ListAllVulnerabilities" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndQueryRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndQueryRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func listAllVulnerabilities<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndQueryRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndQueryRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.ListAllVulnerabilities.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "IgnoreVulnerability" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndJSONBodyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndJSONBodyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func ignoreVulnerability<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.IgnoreVulnerability.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "DeleteVulnerabilityIgnore" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndIDRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func deleteVulnerabilityIgnore<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndIDRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.DeleteVulnerabilityIgnore.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "ListProjects" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Projects (read + mutations) ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_ListProjectsRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_ListProjectsRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ListProjectsResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func listProjects<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_ListProjectsRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_ListProjectsRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ListProjectsResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ListProjectsResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.ListProjects.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "GetProject" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_GetProjectRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_GetProjectRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_GetProjectResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func getProject<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_GetProjectRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_GetProjectRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_GetProjectResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_GetProjectResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.GetProject.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "CreateProject" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndJSONBodyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndJSONBodyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func createProject<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.CreateProject.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "UpdateProject" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDAndJSONBodyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndIDAndJSONBodyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func updateProject<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDAndJSONBodyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndIDAndJSONBodyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.UpdateProject.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "DeleteProject" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndIDRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func deleteProject<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndIDRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.DeleteProject.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "StartProject" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndIDRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func startProject<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndIDRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.StartProject.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "StopProject" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndIDRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func stopProject<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndIDRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.StopProject.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "DestroyProject" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndIDRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func destroyProject<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndIDRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.DestroyProject.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "ListEnvironments" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Environments ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EmptyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EmptyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func listEnvironments<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EmptyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EmptyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.ListEnvironments.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "CreateEnvironment" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_JSONBodyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_JSONBodyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func createEnvironment<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_JSONBodyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_JSONBodyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.CreateEnvironment.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "TestEnvironment" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDOnlyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func testEnvironment<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDOnlyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.TestEnvironment.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "GetSettings" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Settings ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDOnlyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func getSettings<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDOnlyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.GetSettings.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "UpdateSettings" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndJSONBodyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndJSONBodyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func updateSettings<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.UpdateSettings.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "GetOidcStatus" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EmptyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EmptyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func getOidcStatus<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EmptyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EmptyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.GetOidcStatus.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "GetNotificationSettings" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Notifications ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDOnlyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func getNotificationSettings<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDOnlyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.GetNotificationSettings.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "SaveNotificationProvider" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndJSONBodyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndJSONBodyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func saveNotificationProvider<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.SaveNotificationProvider.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "DeleteNotificationProvider" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndIDRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func deleteNotificationProvider<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndIDRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.DeleteNotificationProvider.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "TestNotificationProvider" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDAndJSONBodyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndIDAndJSONBodyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func testNotificationProvider<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDAndJSONBodyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndIDAndJSONBodyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.TestNotificationProvider.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "GetApprise" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDOnlyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func getApprise<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDOnlyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.GetApprise.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "UpdateApprise" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndJSONBodyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndJSONBodyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func updateApprise<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.UpdateApprise.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "TestApprise" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndJSONBodyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndJSONBodyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func testApprise<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.TestApprise.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "ListWebhooks" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Webhooks ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDOnlyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func listWebhooks<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDOnlyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.ListWebhooks.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "CreateWebhook" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndJSONBodyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndJSONBodyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func createWebhook<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.CreateWebhook.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "UpdateWebhook" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDAndJSONBodyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndIDAndJSONBodyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func updateWebhook<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDAndJSONBodyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndIDAndJSONBodyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.UpdateWebhook.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "DeleteWebhook" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndIDRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func deleteWebhook<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndIDRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.DeleteWebhook.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "ListUsers" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Users (global) ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EmptyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EmptyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func listUsers<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EmptyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EmptyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.ListUsers.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "CreateUser" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_JSONBodyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_JSONBodyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func createUser<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_JSONBodyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_JSONBodyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.CreateUser.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "UpdateUser" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_IDAndJSONBodyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_IDAndJSONBodyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func updateUser<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_IDAndJSONBodyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_IDAndJSONBodyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.UpdateUser.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "DeleteUser" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_IDOnlyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_IDOnlyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func deleteUser<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_IDOnlyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_IDOnlyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.DeleteUser.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "ListApiKeys" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- API keys (global) ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EmptyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EmptyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func listApiKeys<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EmptyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EmptyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.ListApiKeys.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "CreateApiKey" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_JSONBodyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_JSONBodyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func createApiKey<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_JSONBodyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_JSONBodyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.CreateApiKey.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "DeleteApiKey" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_IDOnlyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_IDOnlyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func deleteApiKey<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_IDOnlyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_IDOnlyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.DeleteApiKey.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "ListContainerRegistries" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Container registries (global) ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EmptyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EmptyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func listContainerRegistries<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EmptyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EmptyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.ListContainerRegistries.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "CreateContainerRegistry" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_JSONBodyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_JSONBodyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func createContainerRegistry<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_JSONBodyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_JSONBodyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.CreateContainerRegistry.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "UpdateContainerRegistry" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_IDAndJSONBodyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_IDAndJSONBodyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func updateContainerRegistry<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_IDAndJSONBodyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_IDAndJSONBodyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.UpdateContainerRegistry.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "DeleteContainerRegistry" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_IDOnlyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_IDOnlyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func deleteContainerRegistry<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_IDOnlyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_IDOnlyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.DeleteContainerRegistry.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "ListTemplates" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Templates (global) ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EmptyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EmptyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func listTemplates<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EmptyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EmptyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.ListTemplates.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "GetTemplateContent" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_IDOnlyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_IDOnlyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func getTemplateContent<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_IDOnlyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_IDOnlyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.GetTemplateContent.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "ListTemplateRegistries" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EmptyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EmptyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func listTemplateRegistries<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EmptyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EmptyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.ListTemplateRegistries.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "CreateTemplateRegistry" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_JSONBodyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_JSONBodyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func createTemplateRegistry<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_JSONBodyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_JSONBodyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.CreateTemplateRegistry.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "UpdateTemplateRegistry" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_IDAndJSONBodyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_IDAndJSONBodyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func updateTemplateRegistry<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_IDAndJSONBodyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_IDAndJSONBodyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.UpdateTemplateRegistry.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "DeleteTemplateRegistry" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_IDOnlyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_IDOnlyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_ActionResult` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func deleteTemplateRegistry<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_IDOnlyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_IDOnlyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_ActionResult>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.DeleteTemplateRegistry.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "PruneSystem" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- System ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndJSONBodyRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndJSONBodyRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_JSONResponse` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func pruneSystem<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndJSONBodyRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_JSONResponse>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+                try response.message
+            }
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.unary(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.PruneSystem.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "StreamContainerLogs" method.
+        ///
+        /// > Source IDL Documentation:
+        /// >
+        /// > ---------- Streaming ----------
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_StreamContainerLogsRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_StreamContainerLogsRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_StreamFrame` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func streamContainerLogs<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_StreamContainerLogsRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_StreamContainerLogsRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_StreamFrame>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.StreamingClientResponse<Mobile_V1_StreamFrame>) async throws -> Result
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.serverStreaming(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.StreamContainerLogs.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "StreamContainerStats" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_EnvIDAndIDRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_StreamFrame` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func streamContainerStats<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_EnvIDAndIDRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_StreamFrame>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.StreamingClientResponse<Mobile_V1_StreamFrame>) async throws -> Result
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.serverStreaming(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.StreamContainerStats.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "StreamProjectLogs" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_StreamProjectLogsRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_StreamProjectLogsRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_StreamFrame` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func streamProjectLogs<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_StreamProjectLogsRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_StreamProjectLogsRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_StreamFrame>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.StreamingClientResponse<Mobile_V1_StreamFrame>) async throws -> Result
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.serverStreaming(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.StreamProjectLogs.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "StreamSystemStats" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_StreamSystemStatsRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_StreamSystemStatsRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_StreamFrame` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func streamSystemStats<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_StreamSystemStatsRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_StreamSystemStatsRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_StreamFrame>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.StreamingClientResponse<Mobile_V1_StreamFrame>) async throws -> Result
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.serverStreaming(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.StreamSystemStats.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "StreamPullImage" method.
+        ///
+        /// - Parameters:
+        ///   - request: A request containing a single `Mobile_V1_PullImageRequest` message.
+        ///   - serializer: A serializer for `Mobile_V1_PullImageRequest` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_StreamFrame` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func streamPullImage<Result>(
+            request: GRPCCore.ClientRequest<Mobile_V1_PullImageRequest>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_PullImageRequest>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_StreamFrame>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.StreamingClientResponse<Mobile_V1_StreamFrame>) async throws -> Result
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.serverStreaming(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.StreamPullImage.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
+
+        /// Call the "ContainerTerminal" method.
+        ///
+        /// - Parameters:
+        ///   - request: A streaming request producing `Mobile_V1_TerminalClientFrame` messages.
+        ///   - serializer: A serializer for `Mobile_V1_TerminalClientFrame` messages.
+        ///   - deserializer: A deserializer for `Mobile_V1_TerminalServerFrame` messages.
+        ///   - options: Options to apply to this RPC.
+        ///   - handleResponse: A closure which handles the response, the result of which is
+        ///       returned to the caller. Returning from the closure will cancel the RPC if it
+        ///       hasn't already finished.
+        /// - Returns: The result of `handleResponse`.
+        public func containerTerminal<Result>(
+            request: GRPCCore.StreamingClientRequest<Mobile_V1_TerminalClientFrame>,
+            serializer: some GRPCCore.MessageSerializer<Mobile_V1_TerminalClientFrame>,
+            deserializer: some GRPCCore.MessageDeserializer<Mobile_V1_TerminalServerFrame>,
+            options: GRPCCore.CallOptions = .defaults,
+            onResponse handleResponse: @Sendable @escaping (GRPCCore.StreamingClientResponse<Mobile_V1_TerminalServerFrame>) async throws -> Result
+        ) async throws -> Result where Result: Sendable {
+            try await self.client.bidirectionalStreaming(
+                request: request,
+                descriptor: Mobile_V1_MobileService.Method.ContainerTerminal.descriptor,
+                serializer: serializer,
+                deserializer: deserializer,
+                options: options,
+                onResponse: handleResponse
+            )
+        }
     }
 }
 
 // Helpers providing default arguments to 'ClientProtocol' methods.
 @available(macOS 15.0, iOS 18.0, watchOS 11.0, tvOS 18.0, visionOS 2.0, *)
 extension Mobile_V1_MobileService.ClientProtocol {
-    /// Call the "GetServerInfo" method.
-    ///
-    /// - Parameters:
-    ///   - request: A request containing a single `Mobile_V1_GetServerInfoRequest` message.
-    ///   - options: Options to apply to this RPC.
-    ///   - handleResponse: A closure which handles the response, the result of which is
-    ///       returned to the caller. Returning from the closure will cancel the RPC if it
-    ///       hasn't already finished.
-    /// - Returns: The result of `handleResponse`.
-    public func getServerInfo<Result>(
-        request: GRPCCore.ClientRequest<Mobile_V1_GetServerInfoRequest>,
-        options: GRPCCore.CallOptions = .defaults,
-        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_GetServerInfoResponse>) async throws -> Result = { response in
-            try response.message
-        }
-    ) async throws -> Result where Result: Sendable {
-        try await self.getServerInfo(
-            request: request,
-            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_GetServerInfoRequest>(),
-            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_GetServerInfoResponse>(),
-            options: options,
-            onResponse: handleResponse
-        )
-    }
-
-    /// Call the "ListContainers" method.
-    ///
-    /// - Parameters:
-    ///   - request: A request containing a single `Mobile_V1_ListContainersRequest` message.
-    ///   - options: Options to apply to this RPC.
-    ///   - handleResponse: A closure which handles the response, the result of which is
-    ///       returned to the caller. Returning from the closure will cancel the RPC if it
-    ///       hasn't already finished.
-    /// - Returns: The result of `handleResponse`.
-    public func listContainers<Result>(
-        request: GRPCCore.ClientRequest<Mobile_V1_ListContainersRequest>,
-        options: GRPCCore.CallOptions = .defaults,
-        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ListContainersResponse>) async throws -> Result = { response in
-            try response.message
-        }
-    ) async throws -> Result where Result: Sendable {
-        try await self.listContainers(
-            request: request,
-            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_ListContainersRequest>(),
-            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_ListContainersResponse>(),
-            options: options,
-            onResponse: handleResponse
-        )
-    }
-
     /// Call the "GetCurrentDevice" method.
+    ///
+    /// > Source IDL Documentation:
+    /// >
+    /// > ---------- Pairing-related ----------
     ///
     /// - Parameters:
     ///   - request: A request containing a single `Mobile_V1_GetCurrentDeviceRequest` message.
@@ -1134,35 +13985,81 @@ extension Mobile_V1_MobileService.ClientProtocol {
             onResponse: handleResponse
         )
     }
-}
 
-// Helpers providing sugared APIs for 'ClientProtocol' methods.
-@available(macOS 15.0, iOS 18.0, watchOS 11.0, tvOS 18.0, visionOS 2.0, *)
-extension Mobile_V1_MobileService.ClientProtocol {
     /// Call the "GetServerInfo" method.
     ///
+    /// > Source IDL Documentation:
+    /// >
+    /// > ---------- Server / system ----------
+    ///
     /// - Parameters:
-    ///   - message: request message to send.
-    ///   - metadata: Additional metadata to send, defaults to empty.
-    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - request: A request containing a single `Mobile_V1_GetServerInfoRequest` message.
+    ///   - options: Options to apply to this RPC.
     ///   - handleResponse: A closure which handles the response, the result of which is
     ///       returned to the caller. Returning from the closure will cancel the RPC if it
     ///       hasn't already finished.
     /// - Returns: The result of `handleResponse`.
     public func getServerInfo<Result>(
-        _ message: Mobile_V1_GetServerInfoRequest,
-        metadata: GRPCCore.Metadata = [:],
+        request: GRPCCore.ClientRequest<Mobile_V1_GetServerInfoRequest>,
         options: GRPCCore.CallOptions = .defaults,
         onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_GetServerInfoResponse>) async throws -> Result = { response in
             try response.message
         }
     ) async throws -> Result where Result: Sendable {
-        let request = GRPCCore.ClientRequest<Mobile_V1_GetServerInfoRequest>(
-            message: message,
-            metadata: metadata
-        )
-        return try await self.getServerInfo(
+        try await self.getServerInfo(
             request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_GetServerInfoRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_GetServerInfoResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "GetDockerInfo" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_GetDockerInfoRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func getDockerInfo<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_GetDockerInfoRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_GetDockerInfoResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.getDockerInfo(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_GetDockerInfoRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_GetDockerInfoResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "GetAppVersion" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_GetAppVersionRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func getAppVersion<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_GetAppVersionRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_GetAppVersionResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.getAppVersion(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_GetAppVersionRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_GetAppVersionResponse>(),
             options: options,
             onResponse: handleResponse
         )
@@ -1170,34 +14067,2273 @@ extension Mobile_V1_MobileService.ClientProtocol {
 
     /// Call the "ListContainers" method.
     ///
+    /// > Source IDL Documentation:
+    /// >
+    /// > ---------- Containers ----------
+    ///
     /// - Parameters:
-    ///   - message: request message to send.
-    ///   - metadata: Additional metadata to send, defaults to empty.
-    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - request: A request containing a single `Mobile_V1_ListContainersRequest` message.
+    ///   - options: Options to apply to this RPC.
     ///   - handleResponse: A closure which handles the response, the result of which is
     ///       returned to the caller. Returning from the closure will cancel the RPC if it
     ///       hasn't already finished.
     /// - Returns: The result of `handleResponse`.
     public func listContainers<Result>(
-        _ message: Mobile_V1_ListContainersRequest,
-        metadata: GRPCCore.Metadata = [:],
+        request: GRPCCore.ClientRequest<Mobile_V1_ListContainersRequest>,
         options: GRPCCore.CallOptions = .defaults,
         onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ListContainersResponse>) async throws -> Result = { response in
             try response.message
         }
     ) async throws -> Result where Result: Sendable {
-        let request = GRPCCore.ClientRequest<Mobile_V1_ListContainersRequest>(
-            message: message,
-            metadata: metadata
-        )
-        return try await self.listContainers(
+        try await self.listContainers(
             request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_ListContainersRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_ListContainersResponse>(),
             options: options,
             onResponse: handleResponse
         )
     }
 
+    /// Call the "InspectContainer" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_InspectContainerRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func inspectContainer<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_InspectContainerRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_InspectContainerResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.inspectContainer(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_InspectContainerRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_InspectContainerResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "StartContainer" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_ContainerActionRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func startContainer<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_ContainerActionRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.startContainer(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_ContainerActionRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_ActionResult>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "StopContainer" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_ContainerActionRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func stopContainer<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_ContainerActionRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.stopContainer(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_ContainerActionRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_ActionResult>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "RestartContainer" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_ContainerActionRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func restartContainer<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_ContainerActionRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.restartContainer(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_ContainerActionRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_ActionResult>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "RedeployContainer" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_ContainerActionRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func redeployContainer<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_ContainerActionRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.redeployContainer(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_ContainerActionRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_ActionResult>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "DeleteContainer" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_DeleteContainerRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func deleteContainer<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_DeleteContainerRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.deleteContainer(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_DeleteContainerRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_ActionResult>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "PruneContainers" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_PruneContainersRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func pruneContainers<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_PruneContainersRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_PruneResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.pruneContainers(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_PruneContainersRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_PruneResult>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "ListVolumes" method.
+    ///
+    /// > Source IDL Documentation:
+    /// >
+    /// > ---------- Volumes ----------
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_ListVolumesRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func listVolumes<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_ListVolumesRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ListVolumesResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.listVolumes(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_ListVolumesRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_ListVolumesResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "GetVolumeSizes" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_GetVolumeSizesRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func getVolumeSizes<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_GetVolumeSizesRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_GetVolumeSizesResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.getVolumeSizes(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_GetVolumeSizesRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_GetVolumeSizesResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "CreateVolume" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_CreateVolumeRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func createVolume<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_CreateVolumeRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_CreateVolumeResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.createVolume(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_CreateVolumeRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_CreateVolumeResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "DeleteVolume" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_DeleteVolumeRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func deleteVolume<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_DeleteVolumeRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.deleteVolume(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_DeleteVolumeRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_ActionResult>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "PruneVolumes" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_PruneVolumesRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func pruneVolumes<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_PruneVolumesRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_PruneResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.pruneVolumes(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_PruneVolumesRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_PruneResult>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "ListNetworks" method.
+    ///
+    /// > Source IDL Documentation:
+    /// >
+    /// > ---------- Networks ----------
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_ListNetworksRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func listNetworks<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_ListNetworksRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ListNetworksResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.listNetworks(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_ListNetworksRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_ListNetworksResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "CreateNetwork" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_CreateNetworkRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func createNetwork<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_CreateNetworkRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_CreateNetworkResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.createNetwork(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_CreateNetworkRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_CreateNetworkResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "DeleteNetwork" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_DeleteNetworkRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func deleteNetwork<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_DeleteNetworkRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.deleteNetwork(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_DeleteNetworkRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_ActionResult>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "PruneNetworks" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_PruneNetworksRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func pruneNetworks<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_PruneNetworksRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_PruneResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.pruneNetworks(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_PruneNetworksRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_PruneResult>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "PauseContainer" method.
+    ///
+    /// > Source IDL Documentation:
+    /// >
+    /// > ---------- Container extras ----------
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_ContainerActionRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func pauseContainer<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_ContainerActionRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.pauseContainer(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_ContainerActionRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_ActionResult>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "UnpauseContainer" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_ContainerActionRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func unpauseContainer<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_ContainerActionRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.unpauseContainer(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_ContainerActionRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_ActionResult>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "KillContainer" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_ContainerActionRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func killContainer<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_ContainerActionRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.killContainer(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_ContainerActionRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_ActionResult>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "RenameContainer" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_RenameContainerRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func renameContainer<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_RenameContainerRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.renameContainer(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_RenameContainerRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_ActionResult>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "ListImages" method.
+    ///
+    /// > Source IDL Documentation:
+    /// >
+    /// > ---------- Images ----------
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func listImages<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.listImages(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EnvIDOnlyRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "InspectImage" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func inspectImage<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.inspectImage(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EnvIDAndIDRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "DeleteImage" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func deleteImage<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.deleteImage(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EnvIDAndIDRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_ActionResult>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "PruneImages" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func pruneImages<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_PruneResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.pruneImages(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EnvIDOnlyRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_PruneResult>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "GetImageUpdateSummary" method.
+    ///
+    /// > Source IDL Documentation:
+    /// >
+    /// > ---------- Image updates ----------
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func getImageUpdateSummary<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.getImageUpdateSummary(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EnvIDOnlyRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "GetImageUpdatesByRefs" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_GetImageUpdatesByRefsRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func getImageUpdatesByRefs<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_GetImageUpdatesByRefsRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.getImageUpdatesByRefs(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_GetImageUpdatesByRefsRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "CheckImageUpdates" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EnvIDAndQueryRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func checkImageUpdates<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndQueryRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.checkImageUpdates(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EnvIDAndQueryRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "CheckAllImageUpdates" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func checkAllImageUpdates<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.checkAllImageUpdates(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EnvIDOnlyRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_ActionResult>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "CheckImageUpdate" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func checkImageUpdate<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.checkImageUpdate(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EnvIDAndIDRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "GetVulnerabilityScannerStatus" method.
+    ///
+    /// > Source IDL Documentation:
+    /// >
+    /// > ---------- Vulnerabilities ----------
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func getVulnerabilityScannerStatus<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.getVulnerabilityScannerStatus(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EnvIDOnlyRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "GetImageVulnerabilitySummary" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func getImageVulnerabilitySummary<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.getImageVulnerabilitySummary(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EnvIDAndIDRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "ListImageVulnerabilities" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDAndQueryRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func listImageVulnerabilities<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDAndQueryRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.listImageVulnerabilities(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EnvIDAndIDAndQueryRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "ScanImageVulnerabilities" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func scanImageVulnerabilities<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.scanImageVulnerabilities(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EnvIDAndIDRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "GetAllVulnerabilitiesSummary" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func getAllVulnerabilitiesSummary<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.getAllVulnerabilitiesSummary(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EnvIDOnlyRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "GetVulnerabilityImageOptions" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EnvIDAndQueryRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func getVulnerabilityImageOptions<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndQueryRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.getVulnerabilityImageOptions(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EnvIDAndQueryRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "ListAllVulnerabilities" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EnvIDAndQueryRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func listAllVulnerabilities<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndQueryRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.listAllVulnerabilities(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EnvIDAndQueryRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "IgnoreVulnerability" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EnvIDAndJSONBodyRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func ignoreVulnerability<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.ignoreVulnerability(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EnvIDAndJSONBodyRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "DeleteVulnerabilityIgnore" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func deleteVulnerabilityIgnore<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.deleteVulnerabilityIgnore(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EnvIDAndIDRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_ActionResult>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "ListProjects" method.
+    ///
+    /// > Source IDL Documentation:
+    /// >
+    /// > ---------- Projects (read + mutations) ----------
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_ListProjectsRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func listProjects<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_ListProjectsRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ListProjectsResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.listProjects(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_ListProjectsRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_ListProjectsResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "GetProject" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_GetProjectRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func getProject<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_GetProjectRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_GetProjectResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.getProject(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_GetProjectRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_GetProjectResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "CreateProject" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EnvIDAndJSONBodyRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func createProject<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.createProject(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EnvIDAndJSONBodyRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "UpdateProject" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDAndJSONBodyRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func updateProject<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDAndJSONBodyRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.updateProject(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EnvIDAndIDAndJSONBodyRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "DeleteProject" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func deleteProject<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.deleteProject(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EnvIDAndIDRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_ActionResult>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "StartProject" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func startProject<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.startProject(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EnvIDAndIDRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_ActionResult>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "StopProject" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func stopProject<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.stopProject(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EnvIDAndIDRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_ActionResult>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "DestroyProject" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func destroyProject<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.destroyProject(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EnvIDAndIDRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_ActionResult>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "ListEnvironments" method.
+    ///
+    /// > Source IDL Documentation:
+    /// >
+    /// > ---------- Environments ----------
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EmptyRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func listEnvironments<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EmptyRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.listEnvironments(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EmptyRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "CreateEnvironment" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_JSONBodyRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func createEnvironment<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_JSONBodyRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.createEnvironment(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONBodyRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "TestEnvironment" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func testEnvironment<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.testEnvironment(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EnvIDOnlyRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "GetSettings" method.
+    ///
+    /// > Source IDL Documentation:
+    /// >
+    /// > ---------- Settings ----------
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func getSettings<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.getSettings(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EnvIDOnlyRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "UpdateSettings" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EnvIDAndJSONBodyRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func updateSettings<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.updateSettings(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EnvIDAndJSONBodyRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "GetOidcStatus" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EmptyRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func getOidcStatus<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EmptyRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.getOidcStatus(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EmptyRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "GetNotificationSettings" method.
+    ///
+    /// > Source IDL Documentation:
+    /// >
+    /// > ---------- Notifications ----------
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func getNotificationSettings<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.getNotificationSettings(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EnvIDOnlyRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "SaveNotificationProvider" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EnvIDAndJSONBodyRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func saveNotificationProvider<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.saveNotificationProvider(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EnvIDAndJSONBodyRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "DeleteNotificationProvider" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func deleteNotificationProvider<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.deleteNotificationProvider(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EnvIDAndIDRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_ActionResult>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "TestNotificationProvider" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDAndJSONBodyRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func testNotificationProvider<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDAndJSONBodyRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.testNotificationProvider(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EnvIDAndIDAndJSONBodyRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_ActionResult>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "GetApprise" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func getApprise<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.getApprise(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EnvIDOnlyRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "UpdateApprise" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EnvIDAndJSONBodyRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func updateApprise<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.updateApprise(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EnvIDAndJSONBodyRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "TestApprise" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EnvIDAndJSONBodyRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func testApprise<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.testApprise(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EnvIDAndJSONBodyRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_ActionResult>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "ListWebhooks" method.
+    ///
+    /// > Source IDL Documentation:
+    /// >
+    /// > ---------- Webhooks ----------
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EnvIDOnlyRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func listWebhooks<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.listWebhooks(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EnvIDOnlyRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "CreateWebhook" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EnvIDAndJSONBodyRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func createWebhook<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.createWebhook(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EnvIDAndJSONBodyRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "UpdateWebhook" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDAndJSONBodyRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func updateWebhook<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDAndJSONBodyRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.updateWebhook(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EnvIDAndIDAndJSONBodyRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "DeleteWebhook" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func deleteWebhook<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.deleteWebhook(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EnvIDAndIDRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_ActionResult>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "ListUsers" method.
+    ///
+    /// > Source IDL Documentation:
+    /// >
+    /// > ---------- Users (global) ----------
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EmptyRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func listUsers<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EmptyRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.listUsers(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EmptyRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "CreateUser" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_JSONBodyRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func createUser<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_JSONBodyRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.createUser(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONBodyRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "UpdateUser" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_IDAndJSONBodyRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func updateUser<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_IDAndJSONBodyRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.updateUser(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_IDAndJSONBodyRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "DeleteUser" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_IDOnlyRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func deleteUser<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_IDOnlyRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.deleteUser(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_IDOnlyRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_ActionResult>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "ListApiKeys" method.
+    ///
+    /// > Source IDL Documentation:
+    /// >
+    /// > ---------- API keys (global) ----------
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EmptyRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func listApiKeys<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EmptyRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.listApiKeys(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EmptyRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "CreateApiKey" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_JSONBodyRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func createApiKey<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_JSONBodyRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.createApiKey(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONBodyRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "DeleteApiKey" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_IDOnlyRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func deleteApiKey<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_IDOnlyRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.deleteApiKey(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_IDOnlyRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_ActionResult>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "ListContainerRegistries" method.
+    ///
+    /// > Source IDL Documentation:
+    /// >
+    /// > ---------- Container registries (global) ----------
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EmptyRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func listContainerRegistries<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EmptyRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.listContainerRegistries(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EmptyRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "CreateContainerRegistry" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_JSONBodyRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func createContainerRegistry<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_JSONBodyRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.createContainerRegistry(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONBodyRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "UpdateContainerRegistry" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_IDAndJSONBodyRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func updateContainerRegistry<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_IDAndJSONBodyRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.updateContainerRegistry(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_IDAndJSONBodyRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "DeleteContainerRegistry" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_IDOnlyRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func deleteContainerRegistry<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_IDOnlyRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.deleteContainerRegistry(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_IDOnlyRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_ActionResult>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "ListTemplates" method.
+    ///
+    /// > Source IDL Documentation:
+    /// >
+    /// > ---------- Templates (global) ----------
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EmptyRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func listTemplates<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EmptyRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.listTemplates(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EmptyRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "GetTemplateContent" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_IDOnlyRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func getTemplateContent<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_IDOnlyRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.getTemplateContent(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_IDOnlyRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "ListTemplateRegistries" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EmptyRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func listTemplateRegistries<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EmptyRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.listTemplateRegistries(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EmptyRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "CreateTemplateRegistry" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_JSONBodyRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func createTemplateRegistry<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_JSONBodyRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.createTemplateRegistry(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_JSONBodyRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "UpdateTemplateRegistry" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_IDAndJSONBodyRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func updateTemplateRegistry<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_IDAndJSONBodyRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.updateTemplateRegistry(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_IDAndJSONBodyRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "DeleteTemplateRegistry" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_IDOnlyRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func deleteTemplateRegistry<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_IDOnlyRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.deleteTemplateRegistry(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_IDOnlyRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_ActionResult>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "PruneSystem" method.
+    ///
+    /// > Source IDL Documentation:
+    /// >
+    /// > ---------- System ----------
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EnvIDAndJSONBodyRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func pruneSystem<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndJSONBodyRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        try await self.pruneSystem(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EnvIDAndJSONBodyRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_JSONResponse>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "StreamContainerLogs" method.
+    ///
+    /// > Source IDL Documentation:
+    /// >
+    /// > ---------- Streaming ----------
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_StreamContainerLogsRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func streamContainerLogs<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_StreamContainerLogsRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.StreamingClientResponse<Mobile_V1_StreamFrame>) async throws -> Result
+    ) async throws -> Result where Result: Sendable {
+        try await self.streamContainerLogs(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_StreamContainerLogsRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_StreamFrame>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "StreamContainerStats" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_EnvIDAndIDRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func streamContainerStats<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.StreamingClientResponse<Mobile_V1_StreamFrame>) async throws -> Result
+    ) async throws -> Result where Result: Sendable {
+        try await self.streamContainerStats(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_EnvIDAndIDRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_StreamFrame>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "StreamProjectLogs" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_StreamProjectLogsRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func streamProjectLogs<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_StreamProjectLogsRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.StreamingClientResponse<Mobile_V1_StreamFrame>) async throws -> Result
+    ) async throws -> Result where Result: Sendable {
+        try await self.streamProjectLogs(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_StreamProjectLogsRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_StreamFrame>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "StreamSystemStats" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_StreamSystemStatsRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func streamSystemStats<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_StreamSystemStatsRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.StreamingClientResponse<Mobile_V1_StreamFrame>) async throws -> Result
+    ) async throws -> Result where Result: Sendable {
+        try await self.streamSystemStats(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_StreamSystemStatsRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_StreamFrame>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "StreamPullImage" method.
+    ///
+    /// - Parameters:
+    ///   - request: A request containing a single `Mobile_V1_PullImageRequest` message.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func streamPullImage<Result>(
+        request: GRPCCore.ClientRequest<Mobile_V1_PullImageRequest>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.StreamingClientResponse<Mobile_V1_StreamFrame>) async throws -> Result
+    ) async throws -> Result where Result: Sendable {
+        try await self.streamPullImage(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_PullImageRequest>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_StreamFrame>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "ContainerTerminal" method.
+    ///
+    /// - Parameters:
+    ///   - request: A streaming request producing `Mobile_V1_TerminalClientFrame` messages.
+    ///   - options: Options to apply to this RPC.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func containerTerminal<Result>(
+        request: GRPCCore.StreamingClientRequest<Mobile_V1_TerminalClientFrame>,
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.StreamingClientResponse<Mobile_V1_TerminalServerFrame>) async throws -> Result
+    ) async throws -> Result where Result: Sendable {
+        try await self.containerTerminal(
+            request: request,
+            serializer: GRPCProtobuf.ProtobufSerializer<Mobile_V1_TerminalClientFrame>(),
+            deserializer: GRPCProtobuf.ProtobufDeserializer<Mobile_V1_TerminalServerFrame>(),
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+}
+
+// Helpers providing sugared APIs for 'ClientProtocol' methods.
+@available(macOS 15.0, iOS 18.0, watchOS 11.0, tvOS 18.0, visionOS 2.0, *)
+extension Mobile_V1_MobileService.ClientProtocol {
     /// Call the "GetCurrentDevice" method.
+    ///
+    /// > Source IDL Documentation:
+    /// >
+    /// > ---------- Pairing-related ----------
     ///
     /// - Parameters:
     ///   - message: request message to send.
@@ -1249,6 +16385,2710 @@ extension Mobile_V1_MobileService.ClientProtocol {
             metadata: metadata
         )
         return try await self.revokeCurrentDevice(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "GetServerInfo" method.
+    ///
+    /// > Source IDL Documentation:
+    /// >
+    /// > ---------- Server / system ----------
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func getServerInfo<Result>(
+        _ message: Mobile_V1_GetServerInfoRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_GetServerInfoResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_GetServerInfoRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.getServerInfo(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "GetDockerInfo" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func getDockerInfo<Result>(
+        _ message: Mobile_V1_GetDockerInfoRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_GetDockerInfoResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_GetDockerInfoRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.getDockerInfo(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "GetAppVersion" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func getAppVersion<Result>(
+        _ message: Mobile_V1_GetAppVersionRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_GetAppVersionResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_GetAppVersionRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.getAppVersion(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "ListContainers" method.
+    ///
+    /// > Source IDL Documentation:
+    /// >
+    /// > ---------- Containers ----------
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func listContainers<Result>(
+        _ message: Mobile_V1_ListContainersRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ListContainersResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_ListContainersRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.listContainers(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "InspectContainer" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func inspectContainer<Result>(
+        _ message: Mobile_V1_InspectContainerRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_InspectContainerResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_InspectContainerRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.inspectContainer(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "StartContainer" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func startContainer<Result>(
+        _ message: Mobile_V1_ContainerActionRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_ContainerActionRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.startContainer(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "StopContainer" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func stopContainer<Result>(
+        _ message: Mobile_V1_ContainerActionRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_ContainerActionRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.stopContainer(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "RestartContainer" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func restartContainer<Result>(
+        _ message: Mobile_V1_ContainerActionRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_ContainerActionRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.restartContainer(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "RedeployContainer" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func redeployContainer<Result>(
+        _ message: Mobile_V1_ContainerActionRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_ContainerActionRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.redeployContainer(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "DeleteContainer" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func deleteContainer<Result>(
+        _ message: Mobile_V1_DeleteContainerRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_DeleteContainerRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.deleteContainer(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "PruneContainers" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func pruneContainers<Result>(
+        _ message: Mobile_V1_PruneContainersRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_PruneResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_PruneContainersRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.pruneContainers(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "ListVolumes" method.
+    ///
+    /// > Source IDL Documentation:
+    /// >
+    /// > ---------- Volumes ----------
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func listVolumes<Result>(
+        _ message: Mobile_V1_ListVolumesRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ListVolumesResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_ListVolumesRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.listVolumes(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "GetVolumeSizes" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func getVolumeSizes<Result>(
+        _ message: Mobile_V1_GetVolumeSizesRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_GetVolumeSizesResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_GetVolumeSizesRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.getVolumeSizes(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "CreateVolume" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func createVolume<Result>(
+        _ message: Mobile_V1_CreateVolumeRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_CreateVolumeResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_CreateVolumeRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.createVolume(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "DeleteVolume" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func deleteVolume<Result>(
+        _ message: Mobile_V1_DeleteVolumeRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_DeleteVolumeRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.deleteVolume(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "PruneVolumes" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func pruneVolumes<Result>(
+        _ message: Mobile_V1_PruneVolumesRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_PruneResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_PruneVolumesRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.pruneVolumes(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "ListNetworks" method.
+    ///
+    /// > Source IDL Documentation:
+    /// >
+    /// > ---------- Networks ----------
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func listNetworks<Result>(
+        _ message: Mobile_V1_ListNetworksRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ListNetworksResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_ListNetworksRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.listNetworks(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "CreateNetwork" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func createNetwork<Result>(
+        _ message: Mobile_V1_CreateNetworkRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_CreateNetworkResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_CreateNetworkRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.createNetwork(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "DeleteNetwork" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func deleteNetwork<Result>(
+        _ message: Mobile_V1_DeleteNetworkRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_DeleteNetworkRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.deleteNetwork(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "PruneNetworks" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func pruneNetworks<Result>(
+        _ message: Mobile_V1_PruneNetworksRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_PruneResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_PruneNetworksRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.pruneNetworks(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "PauseContainer" method.
+    ///
+    /// > Source IDL Documentation:
+    /// >
+    /// > ---------- Container extras ----------
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func pauseContainer<Result>(
+        _ message: Mobile_V1_ContainerActionRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_ContainerActionRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.pauseContainer(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "UnpauseContainer" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func unpauseContainer<Result>(
+        _ message: Mobile_V1_ContainerActionRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_ContainerActionRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.unpauseContainer(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "KillContainer" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func killContainer<Result>(
+        _ message: Mobile_V1_ContainerActionRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_ContainerActionRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.killContainer(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "RenameContainer" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func renameContainer<Result>(
+        _ message: Mobile_V1_RenameContainerRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_RenameContainerRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.renameContainer(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "ListImages" method.
+    ///
+    /// > Source IDL Documentation:
+    /// >
+    /// > ---------- Images ----------
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func listImages<Result>(
+        _ message: Mobile_V1_EnvIDOnlyRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.listImages(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "InspectImage" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func inspectImage<Result>(
+        _ message: Mobile_V1_EnvIDAndIDRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.inspectImage(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "DeleteImage" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func deleteImage<Result>(
+        _ message: Mobile_V1_EnvIDAndIDRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.deleteImage(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "PruneImages" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func pruneImages<Result>(
+        _ message: Mobile_V1_EnvIDOnlyRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_PruneResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.pruneImages(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "GetImageUpdateSummary" method.
+    ///
+    /// > Source IDL Documentation:
+    /// >
+    /// > ---------- Image updates ----------
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func getImageUpdateSummary<Result>(
+        _ message: Mobile_V1_EnvIDOnlyRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.getImageUpdateSummary(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "GetImageUpdatesByRefs" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func getImageUpdatesByRefs<Result>(
+        _ message: Mobile_V1_GetImageUpdatesByRefsRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_GetImageUpdatesByRefsRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.getImageUpdatesByRefs(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "CheckImageUpdates" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func checkImageUpdates<Result>(
+        _ message: Mobile_V1_EnvIDAndQueryRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EnvIDAndQueryRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.checkImageUpdates(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "CheckAllImageUpdates" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func checkAllImageUpdates<Result>(
+        _ message: Mobile_V1_EnvIDOnlyRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.checkAllImageUpdates(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "CheckImageUpdate" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func checkImageUpdate<Result>(
+        _ message: Mobile_V1_EnvIDAndIDRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.checkImageUpdate(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "GetVulnerabilityScannerStatus" method.
+    ///
+    /// > Source IDL Documentation:
+    /// >
+    /// > ---------- Vulnerabilities ----------
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func getVulnerabilityScannerStatus<Result>(
+        _ message: Mobile_V1_EnvIDOnlyRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.getVulnerabilityScannerStatus(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "GetImageVulnerabilitySummary" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func getImageVulnerabilitySummary<Result>(
+        _ message: Mobile_V1_EnvIDAndIDRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.getImageVulnerabilitySummary(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "ListImageVulnerabilities" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func listImageVulnerabilities<Result>(
+        _ message: Mobile_V1_EnvIDAndIDAndQueryRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDAndQueryRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.listImageVulnerabilities(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "ScanImageVulnerabilities" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func scanImageVulnerabilities<Result>(
+        _ message: Mobile_V1_EnvIDAndIDRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.scanImageVulnerabilities(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "GetAllVulnerabilitiesSummary" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func getAllVulnerabilitiesSummary<Result>(
+        _ message: Mobile_V1_EnvIDOnlyRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.getAllVulnerabilitiesSummary(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "GetVulnerabilityImageOptions" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func getVulnerabilityImageOptions<Result>(
+        _ message: Mobile_V1_EnvIDAndQueryRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EnvIDAndQueryRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.getVulnerabilityImageOptions(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "ListAllVulnerabilities" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func listAllVulnerabilities<Result>(
+        _ message: Mobile_V1_EnvIDAndQueryRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EnvIDAndQueryRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.listAllVulnerabilities(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "IgnoreVulnerability" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func ignoreVulnerability<Result>(
+        _ message: Mobile_V1_EnvIDAndJSONBodyRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EnvIDAndJSONBodyRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.ignoreVulnerability(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "DeleteVulnerabilityIgnore" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func deleteVulnerabilityIgnore<Result>(
+        _ message: Mobile_V1_EnvIDAndIDRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.deleteVulnerabilityIgnore(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "ListProjects" method.
+    ///
+    /// > Source IDL Documentation:
+    /// >
+    /// > ---------- Projects (read + mutations) ----------
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func listProjects<Result>(
+        _ message: Mobile_V1_ListProjectsRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ListProjectsResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_ListProjectsRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.listProjects(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "GetProject" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func getProject<Result>(
+        _ message: Mobile_V1_GetProjectRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_GetProjectResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_GetProjectRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.getProject(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "CreateProject" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func createProject<Result>(
+        _ message: Mobile_V1_EnvIDAndJSONBodyRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EnvIDAndJSONBodyRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.createProject(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "UpdateProject" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func updateProject<Result>(
+        _ message: Mobile_V1_EnvIDAndIDAndJSONBodyRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDAndJSONBodyRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.updateProject(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "DeleteProject" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func deleteProject<Result>(
+        _ message: Mobile_V1_EnvIDAndIDRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.deleteProject(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "StartProject" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func startProject<Result>(
+        _ message: Mobile_V1_EnvIDAndIDRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.startProject(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "StopProject" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func stopProject<Result>(
+        _ message: Mobile_V1_EnvIDAndIDRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.stopProject(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "DestroyProject" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func destroyProject<Result>(
+        _ message: Mobile_V1_EnvIDAndIDRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.destroyProject(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "ListEnvironments" method.
+    ///
+    /// > Source IDL Documentation:
+    /// >
+    /// > ---------- Environments ----------
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func listEnvironments<Result>(
+        _ message: Mobile_V1_EmptyRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EmptyRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.listEnvironments(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "CreateEnvironment" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func createEnvironment<Result>(
+        _ message: Mobile_V1_JSONBodyRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_JSONBodyRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.createEnvironment(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "TestEnvironment" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func testEnvironment<Result>(
+        _ message: Mobile_V1_EnvIDOnlyRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.testEnvironment(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "GetSettings" method.
+    ///
+    /// > Source IDL Documentation:
+    /// >
+    /// > ---------- Settings ----------
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func getSettings<Result>(
+        _ message: Mobile_V1_EnvIDOnlyRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.getSettings(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "UpdateSettings" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func updateSettings<Result>(
+        _ message: Mobile_V1_EnvIDAndJSONBodyRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EnvIDAndJSONBodyRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.updateSettings(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "GetOidcStatus" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func getOidcStatus<Result>(
+        _ message: Mobile_V1_EmptyRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EmptyRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.getOidcStatus(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "GetNotificationSettings" method.
+    ///
+    /// > Source IDL Documentation:
+    /// >
+    /// > ---------- Notifications ----------
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func getNotificationSettings<Result>(
+        _ message: Mobile_V1_EnvIDOnlyRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.getNotificationSettings(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "SaveNotificationProvider" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func saveNotificationProvider<Result>(
+        _ message: Mobile_V1_EnvIDAndJSONBodyRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EnvIDAndJSONBodyRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.saveNotificationProvider(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "DeleteNotificationProvider" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func deleteNotificationProvider<Result>(
+        _ message: Mobile_V1_EnvIDAndIDRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.deleteNotificationProvider(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "TestNotificationProvider" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func testNotificationProvider<Result>(
+        _ message: Mobile_V1_EnvIDAndIDAndJSONBodyRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDAndJSONBodyRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.testNotificationProvider(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "GetApprise" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func getApprise<Result>(
+        _ message: Mobile_V1_EnvIDOnlyRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.getApprise(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "UpdateApprise" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func updateApprise<Result>(
+        _ message: Mobile_V1_EnvIDAndJSONBodyRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EnvIDAndJSONBodyRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.updateApprise(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "TestApprise" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func testApprise<Result>(
+        _ message: Mobile_V1_EnvIDAndJSONBodyRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EnvIDAndJSONBodyRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.testApprise(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "ListWebhooks" method.
+    ///
+    /// > Source IDL Documentation:
+    /// >
+    /// > ---------- Webhooks ----------
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func listWebhooks<Result>(
+        _ message: Mobile_V1_EnvIDOnlyRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EnvIDOnlyRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.listWebhooks(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "CreateWebhook" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func createWebhook<Result>(
+        _ message: Mobile_V1_EnvIDAndJSONBodyRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EnvIDAndJSONBodyRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.createWebhook(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "UpdateWebhook" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func updateWebhook<Result>(
+        _ message: Mobile_V1_EnvIDAndIDAndJSONBodyRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDAndJSONBodyRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.updateWebhook(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "DeleteWebhook" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func deleteWebhook<Result>(
+        _ message: Mobile_V1_EnvIDAndIDRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.deleteWebhook(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "ListUsers" method.
+    ///
+    /// > Source IDL Documentation:
+    /// >
+    /// > ---------- Users (global) ----------
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func listUsers<Result>(
+        _ message: Mobile_V1_EmptyRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EmptyRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.listUsers(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "CreateUser" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func createUser<Result>(
+        _ message: Mobile_V1_JSONBodyRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_JSONBodyRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.createUser(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "UpdateUser" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func updateUser<Result>(
+        _ message: Mobile_V1_IDAndJSONBodyRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_IDAndJSONBodyRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.updateUser(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "DeleteUser" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func deleteUser<Result>(
+        _ message: Mobile_V1_IDOnlyRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_IDOnlyRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.deleteUser(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "ListApiKeys" method.
+    ///
+    /// > Source IDL Documentation:
+    /// >
+    /// > ---------- API keys (global) ----------
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func listApiKeys<Result>(
+        _ message: Mobile_V1_EmptyRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EmptyRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.listApiKeys(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "CreateApiKey" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func createApiKey<Result>(
+        _ message: Mobile_V1_JSONBodyRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_JSONBodyRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.createApiKey(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "DeleteApiKey" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func deleteApiKey<Result>(
+        _ message: Mobile_V1_IDOnlyRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_IDOnlyRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.deleteApiKey(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "ListContainerRegistries" method.
+    ///
+    /// > Source IDL Documentation:
+    /// >
+    /// > ---------- Container registries (global) ----------
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func listContainerRegistries<Result>(
+        _ message: Mobile_V1_EmptyRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EmptyRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.listContainerRegistries(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "CreateContainerRegistry" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func createContainerRegistry<Result>(
+        _ message: Mobile_V1_JSONBodyRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_JSONBodyRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.createContainerRegistry(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "UpdateContainerRegistry" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func updateContainerRegistry<Result>(
+        _ message: Mobile_V1_IDAndJSONBodyRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_IDAndJSONBodyRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.updateContainerRegistry(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "DeleteContainerRegistry" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func deleteContainerRegistry<Result>(
+        _ message: Mobile_V1_IDOnlyRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_IDOnlyRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.deleteContainerRegistry(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "ListTemplates" method.
+    ///
+    /// > Source IDL Documentation:
+    /// >
+    /// > ---------- Templates (global) ----------
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func listTemplates<Result>(
+        _ message: Mobile_V1_EmptyRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EmptyRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.listTemplates(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "GetTemplateContent" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func getTemplateContent<Result>(
+        _ message: Mobile_V1_IDOnlyRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_IDOnlyRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.getTemplateContent(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "ListTemplateRegistries" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func listTemplateRegistries<Result>(
+        _ message: Mobile_V1_EmptyRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EmptyRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.listTemplateRegistries(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "CreateTemplateRegistry" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func createTemplateRegistry<Result>(
+        _ message: Mobile_V1_JSONBodyRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_JSONBodyRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.createTemplateRegistry(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "UpdateTemplateRegistry" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func updateTemplateRegistry<Result>(
+        _ message: Mobile_V1_IDAndJSONBodyRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_IDAndJSONBodyRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.updateTemplateRegistry(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "DeleteTemplateRegistry" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func deleteTemplateRegistry<Result>(
+        _ message: Mobile_V1_IDOnlyRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_ActionResult>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_IDOnlyRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.deleteTemplateRegistry(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "PruneSystem" method.
+    ///
+    /// > Source IDL Documentation:
+    /// >
+    /// > ---------- System ----------
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func pruneSystem<Result>(
+        _ message: Mobile_V1_EnvIDAndJSONBodyRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.ClientResponse<Mobile_V1_JSONResponse>) async throws -> Result = { response in
+            try response.message
+        }
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EnvIDAndJSONBodyRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.pruneSystem(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "StreamContainerLogs" method.
+    ///
+    /// > Source IDL Documentation:
+    /// >
+    /// > ---------- Streaming ----------
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func streamContainerLogs<Result>(
+        _ message: Mobile_V1_StreamContainerLogsRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.StreamingClientResponse<Mobile_V1_StreamFrame>) async throws -> Result
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_StreamContainerLogsRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.streamContainerLogs(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "StreamContainerStats" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func streamContainerStats<Result>(
+        _ message: Mobile_V1_EnvIDAndIDRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.StreamingClientResponse<Mobile_V1_StreamFrame>) async throws -> Result
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_EnvIDAndIDRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.streamContainerStats(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "StreamProjectLogs" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func streamProjectLogs<Result>(
+        _ message: Mobile_V1_StreamProjectLogsRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.StreamingClientResponse<Mobile_V1_StreamFrame>) async throws -> Result
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_StreamProjectLogsRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.streamProjectLogs(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "StreamSystemStats" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func streamSystemStats<Result>(
+        _ message: Mobile_V1_StreamSystemStatsRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.StreamingClientResponse<Mobile_V1_StreamFrame>) async throws -> Result
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_StreamSystemStatsRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.streamSystemStats(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "StreamPullImage" method.
+    ///
+    /// - Parameters:
+    ///   - message: request message to send.
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func streamPullImage<Result>(
+        _ message: Mobile_V1_PullImageRequest,
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.StreamingClientResponse<Mobile_V1_StreamFrame>) async throws -> Result
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.ClientRequest<Mobile_V1_PullImageRequest>(
+            message: message,
+            metadata: metadata
+        )
+        return try await self.streamPullImage(
+            request: request,
+            options: options,
+            onResponse: handleResponse
+        )
+    }
+
+    /// Call the "ContainerTerminal" method.
+    ///
+    /// - Parameters:
+    ///   - metadata: Additional metadata to send, defaults to empty.
+    ///   - options: Options to apply to this RPC, defaults to `.defaults`.
+    ///   - producer: A closure producing request messages to send to the server. The request
+    ///       stream is closed when the closure returns.
+    ///   - handleResponse: A closure which handles the response, the result of which is
+    ///       returned to the caller. Returning from the closure will cancel the RPC if it
+    ///       hasn't already finished.
+    /// - Returns: The result of `handleResponse`.
+    public func containerTerminal<Result>(
+        metadata: GRPCCore.Metadata = [:],
+        options: GRPCCore.CallOptions = .defaults,
+        requestProducer producer: @Sendable @escaping (GRPCCore.RPCWriter<Mobile_V1_TerminalClientFrame>) async throws -> Void,
+        onResponse handleResponse: @Sendable @escaping (GRPCCore.StreamingClientResponse<Mobile_V1_TerminalServerFrame>) async throws -> Result
+    ) async throws -> Result where Result: Sendable {
+        let request = GRPCCore.StreamingClientRequest<Mobile_V1_TerminalClientFrame>(
+            metadata: metadata,
+            producer: producer
+        )
+        return try await self.containerTerminal(
             request: request,
             options: options,
             onResponse: handleResponse
