@@ -41,6 +41,7 @@ public struct ArcaneClient: Sendable {
     public let system: SystemService
     public let projects: ProjectsService
     public let swarm: SwarmService
+    public let updater: UpdaterService
 
     public init(configuration: Configuration) {
         self.configuration = configuration
@@ -69,6 +70,7 @@ public struct ArcaneClient: Sendable {
         self.system = SystemService(rest: rest)
         self.projects = ProjectsService(rest: rest)
         self.swarm = SwarmService(rest: rest)
+        self.updater = UpdaterService(rest: rest)
     }
 
     public func scoped(toEnvironment envID: EnvironmentID) -> ArcaneClient {
