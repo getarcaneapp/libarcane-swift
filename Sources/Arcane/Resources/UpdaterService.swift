@@ -8,11 +8,6 @@ public struct UpdaterService: Sendable {
     }
 
     public func status(envID: EnvironmentID? = nil) async throws -> UpdaterStatus {
-        let envelope: StatusEnvelope = try await rest.get(rest.environmentPath(envID, "updater/status"))
-        return envelope.data
-    }
-
-    private struct StatusEnvelope: Decodable, Sendable {
-        let data: UpdaterStatus
+        try await rest.get(rest.environmentPath(envID, "updater/status"))
     }
 }
