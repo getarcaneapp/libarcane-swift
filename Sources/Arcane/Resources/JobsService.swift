@@ -28,8 +28,10 @@ public struct JobsService: Sendable {
     /// `APIResponse<T>` unwrap and decode the body directly.
     private func fetchRaw<T: Decodable & Sendable>(_ type: T.Type, path: String) async throws -> T {
         let data = try await rest.transport.rawRequest(path, body: Optional<EmptyBody>.none)
-        return try ArcaneJSON.makeDecoder().decode(T.self, from: data)
+        do {
+            return try ArcaneJSON.makeDecoder().decode(T.self, from: data)
+        } catch {
+            throw ArcaneError.decoding(String(describing: error))
+        }
     }
 }
-
-extension JobStatus: Identifiable {}
