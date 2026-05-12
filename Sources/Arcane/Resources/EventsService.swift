@@ -14,11 +14,15 @@ public struct EventsService: Sendable {
         limit: Int = 50,
         search: String? = nil,
         severity: String? = nil,
-        type: String? = nil
+        type: String? = nil,
+        sort: String = "timestamp",
+        order: String = "desc"
     ) async throws -> [Event] {
         var query: [URLQueryItem] = []
         if start > 0 { query.append(URLQueryItem(name: "start", value: "\(start)")) }
         query.append(URLQueryItem(name: "limit", value: "\(limit)"))
+        query.append(URLQueryItem(name: "sort", value: sort))
+        query.append(URLQueryItem(name: "order", value: order))
         if let search, !search.trimmingCharacters(in: .whitespaces).isEmpty {
             query.append(URLQueryItem(name: "search", value: search))
         }
