@@ -1,5 +1,5 @@
-import Foundation
 import ArcaneAPI
+import Foundation
 import OpenAPIRuntime
 
 public struct UpdaterService: Sendable {
