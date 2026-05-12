@@ -40,6 +40,20 @@ public struct SystemService: Sendable {
         let query = current.map { [URLQueryItem(name: "current", value: $0)] } ?? []
         return try await rest.get("version", query: query)
     }
+
+    public func upgradeCheck(envID: EnvironmentID? = nil) async throws -> UpgradeCheckResultData {
+        let path = rest.environmentPath(envID, "system/upgrade/check")
+        let data = try await rest.transport.rawRequest(path, body: Optional<EmptyBody>.none)
+        do {
+            return try ArcaneJSON.makeDecoder().decode(UpgradeCheckResultData.self, from: data)
+        } catch {
+            throw ArcaneError.decoding(String(describing: error))
+        }
+    }
+
+    public func triggerUpgrade(envID: EnvironmentID? = nil) async throws -> MessageResponse {
+        try await rest.post(rest.environmentPath(envID, "system/upgrade"), body: Optional<EmptyBody>.none)
+    }
 }
 
 public struct ProjectsService: Sendable {

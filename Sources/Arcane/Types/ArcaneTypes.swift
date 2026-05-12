@@ -286,6 +286,7 @@ public typealias UpdaterOptions = Components.Schemas.UpdaterOptions
 public typealias UpdaterResourceResult = Components.Schemas.UpdaterResourceResult
 public typealias UpdaterResult = Components.Schemas.UpdaterResult
 public typealias UpdaterStatus = Components.Schemas.UpdaterStatus
+public typealias UpgradeCheckResultData = Components.Schemas.UpgradeCheckResultData
 public typealias AutoUpdateRecord = Components.Schemas.AutoUpdateRecord
 public typealias JobScheduleUpdate = Components.Schemas.JobscheduleUpdate
 public typealias PortMapping = Components.Schemas.PortPortMapping

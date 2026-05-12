@@ -18,6 +18,11 @@ public struct UpdaterService: Sendable {
         let records: [AutoUpdateRecord]? = try await rest.get(rest.environmentPath(envID, "updater/history"), query: query)
         return records ?? []
     }
+
+    public func run(envID: EnvironmentID? = nil, dryRun: Bool = false) async throws -> UpdaterResult {
+        let body = UpdaterOptions(dryRun: dryRun)
+        return try await rest.post(rest.environmentPath(envID, "updater/run"), body: Optional.some(body))
+    }
 }
 
 extension AutoUpdateRecord: Identifiable {}
