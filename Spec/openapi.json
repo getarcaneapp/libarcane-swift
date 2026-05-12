@@ -286,6 +286,9 @@
           },
           "redirectUri": {
             "type": "string"
+          },
+          "mobileRedirectUri": {
+            "type": "string"
           }
         },
         "required": [
@@ -326,6 +329,9 @@
             "type": "string"
           },
           "state": {
+            "type": "string"
+          },
+          "mobileRedirectUri": {
             "type": "string"
           }
         },

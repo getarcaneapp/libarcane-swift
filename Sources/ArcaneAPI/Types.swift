@@ -6414,21 +6414,27 @@ public enum Components {
             public var _dollar_schema: Swift.String?
             /// - Remark: Generated from `#/components/schemas/AuthOidcAuthUrlRequest/redirectUri`.
             public var redirectUri: Swift.String
+            /// - Remark: Generated from `#/components/schemas/AuthOidcAuthUrlRequest/mobileRedirectUri`.
+            public var mobileRedirectUri: Swift.String?
             /// Creates a new `AuthOidcAuthUrlRequest`.
             ///
             /// - Parameters:
             ///   - _dollar_schema: A URL to the JSON Schema for this object.
             ///   - redirectUri:
+            ///   - mobileRedirectUri:
             public init(
                 _dollar_schema: Swift.String? = nil,
-                redirectUri: Swift.String
+                redirectUri: Swift.String,
+                mobileRedirectUri: Swift.String? = nil
             ) {
                 self._dollar_schema = _dollar_schema
                 self.redirectUri = redirectUri
+                self.mobileRedirectUri = mobileRedirectUri
             }
             public enum CodingKeys: String, CodingKey {
                 case _dollar_schema = "$schema"
                 case redirectUri
+                case mobileRedirectUri
             }
             public init(from decoder: any Swift.Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -6440,9 +6446,14 @@ public enum Components {
                     Swift.String.self,
                     forKey: .redirectUri
                 )
+                self.mobileRedirectUri = try container.decodeIfPresent(
+                    Swift.String.self,
+                    forKey: .mobileRedirectUri
+                )
                 try decoder.ensureNoAdditionalProperties(knownKeys: [
                     "$schema",
-                    "redirectUri"
+                    "redirectUri",
+                    "mobileRedirectUri"
                 ])
             }
         }
@@ -6496,25 +6507,31 @@ public enum Components {
             public var code: Swift.String
             /// - Remark: Generated from `#/components/schemas/AuthOidcCallbackRequest/state`.
             public var state: Swift.String
+            /// - Remark: Generated from `#/components/schemas/AuthOidcCallbackRequest/mobileRedirectUri`.
+            public var mobileRedirectUri: Swift.String?
             /// Creates a new `AuthOidcCallbackRequest`.
             ///
             /// - Parameters:
             ///   - _dollar_schema: A URL to the JSON Schema for this object.
             ///   - code:
             ///   - state:
+            ///   - mobileRedirectUri:
             public init(
                 _dollar_schema: Swift.String? = nil,
                 code: Swift.String,
-                state: Swift.String
+                state: Swift.String,
+                mobileRedirectUri: Swift.String? = nil
             ) {
                 self._dollar_schema = _dollar_schema
                 self.code = code
                 self.state = state
+                self.mobileRedirectUri = mobileRedirectUri
             }
             public enum CodingKeys: String, CodingKey {
                 case _dollar_schema = "$schema"
                 case code
                 case state
+                case mobileRedirectUri
             }
             public init(from decoder: any Swift.Decoder) throws {
                 let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -6530,10 +6547,15 @@ public enum Components {
                     Swift.String.self,
                     forKey: .state
                 )
+                self.mobileRedirectUri = try container.decodeIfPresent(
+                    Swift.String.self,
+                    forKey: .mobileRedirectUri
+                )
                 try decoder.ensureNoAdditionalProperties(knownKeys: [
                     "$schema",
                     "code",
-                    "state"
+                    "state",
+                    "mobileRedirectUri"
                 ])
             }
         }

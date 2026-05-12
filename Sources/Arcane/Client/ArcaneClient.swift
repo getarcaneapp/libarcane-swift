@@ -66,7 +66,7 @@ public struct ArcaneClient: Sendable {
             encoder: configuration.jsonEncoder
         )
         self.rest = RESTService(transport: transport, defaultEnvironmentID: configuration.defaultEnvironmentID)
-        self.auth = AuthService(transport: transport, authManager: authManager)
+        self.auth = AuthService(transport: transport, authManager: authManager, decoder: configuration.jsonDecoder, encoder: configuration.jsonEncoder)
         self.containers = ContainersService(rest: rest)
         self.images = ImagesService(rest: rest)
         self.environments = EnvironmentsService(rest: rest)

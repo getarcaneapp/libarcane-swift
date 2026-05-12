@@ -55,6 +55,10 @@ public actor AuthManager {
             refreshToken: loginResponse.refreshToken,
             expiresAt: loginResponse.expiresAt
         )
+        try await save(tokens: tokens)
+    }
+
+    public func save(tokens: TokenPair) async throws {
         cachedTokens = tokens
         try await tokenStore.saveTokens(tokens)
     }
