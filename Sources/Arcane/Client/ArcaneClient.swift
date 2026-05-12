@@ -44,6 +44,7 @@ public struct ArcaneClient: Sendable {
     public let updater: UpdaterService
     public let events: EventsService
     public let ports: PortsService
+    public let jobs: JobsService
 
     public init(configuration: Configuration) {
         self.configuration = configuration
@@ -75,6 +76,7 @@ public struct ArcaneClient: Sendable {
         self.updater = UpdaterService(rest: rest)
         self.events = EventsService(rest: rest)
         self.ports = PortsService(rest: rest)
+        self.jobs = JobsService(rest: rest)
     }
 
     public func scoped(toEnvironment envID: EnvironmentID) -> ArcaneClient {
