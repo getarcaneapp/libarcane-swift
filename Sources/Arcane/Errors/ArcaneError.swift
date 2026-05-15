@@ -21,12 +21,28 @@ public struct APIErrorResponse: Decodable, Sendable {
     public var details: JSONValue?
 }
 
+struct HumaErrorResponse: Decodable, Sendable {
+    var title: String?
+    var status: Int?
+    var detail: String?
+    var errors: [HumaErrorDetail]?
+}
+
+struct HumaErrorDetail: Decodable, Sendable {
+    var message: String?
+    var location: String?
+    var value: JSONValue?
+}
+
 extension ArcaneError {
     static func from(statusCode: Int, data: Data, headers: [AnyHashable: Any], decoder: JSONDecoder) -> ArcaneError {
         let body = String(data: data, encoding: .utf8) ?? ""
-        let error = try? decoder.decode(APIErrorResponse.self, from: data)
-        let message = error?.error ?? error?.message ?? body
-        let code = error?.code ?? httpCode(statusCode)
+        let arcaneError = try? decoder.decode(APIErrorResponse.self, from: data)
+        let arcaneHasFields = arcaneError?.error != nil || arcaneError?.message != nil || arcaneError?.code != nil
+        let humaError: HumaErrorResponse? = arcaneHasFields ? nil : try? decoder.decode(HumaErrorResponse.self, from: data)
+        let humaMessage = humaError?.detail ?? humaError?.title
+        let message = arcaneError?.error ?? arcaneError?.message ?? humaMessage ?? body
+        let code = arcaneError?.code ?? httpCode(statusCode)
 
         switch statusCode {
         case 401:
@@ -38,14 +54,22 @@ extension ArcaneError {
         case 409:
             return .conflict(message: message.isEmpty ? nil : message)
         case 400 where code == "VALIDATION_ERROR":
-            return .validation(fields: validationFields(from: error?.details))
+            return .validation(fields: validationFields(from: arcaneError?.details))
+        case 422:
+            if let humaErrors = humaError?.errors, !humaErrors.isEmpty {
+                return .validation(fields: validationFields(fromHuma: humaErrors))
+            }
+            return .server(code: code, message: humaMessage ?? message)
         case 429:
             return .rateLimited(retryAfter: retryAfter(from: headers))
         case 500...599:
             return .server(code: code, message: message)
         default:
-            if let error, let code = error.code {
+            if let arcaneError, let code = arcaneError.code {
                 return .server(code: code, message: message)
+            }
+            if let humaMessage, !humaMessage.isEmpty {
+                return .server(code: code, message: humaMessage)
             }
             return .unknown(statusCode: statusCode, body: body)
         }
@@ -89,6 +113,25 @@ extension ArcaneError {
             }
         }
         return fields
+    }
+
+    private static func validationFields(fromHuma errors: [HumaErrorDetail]) -> [String: [String]] {
+        var fields: [String: [String]] = [:]
+        for detail in errors {
+            let name = stripLocationPrefix(detail.location ?? "request")
+            let message = detail.message ?? "Invalid value"
+            fields[name, default: []].append(message)
+        }
+        return fields
+    }
+
+    private static func stripLocationPrefix(_ location: String) -> String {
+        for prefix in ["body.", "query.", "path.", "header.", "cookie."] {
+            if location.hasPrefix(prefix) {
+                return String(location.dropFirst(prefix.count))
+            }
+        }
+        return location
     }
 }
 
