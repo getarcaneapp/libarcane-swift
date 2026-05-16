@@ -199,7 +199,8 @@ public struct ProjectsService: Sendable {
     }
 
     /// Pull all images for a project. The server streams progress as NDJSON;
-    /// the call resolves once the pull is complete.
+    /// the call resolves once the pull is complete. Use ``pullImagesStream``
+    /// for live progress.
     public func pullImages(
         envID: EnvironmentID? = nil,
         projectID: String,
@@ -213,7 +214,7 @@ public struct ProjectsService: Sendable {
 
     /// Build compose services that declare a ``build`` directive. The server
     /// streams build progress as NDJSON; this call resolves once the build is
-    /// complete.
+    /// complete. Use ``buildStream`` for live progress.
     public func build(
         envID: EnvironmentID? = nil,
         projectID: String,
@@ -223,6 +224,84 @@ public struct ProjectsService: Sendable {
             rest.environmentPath(envID, "projects/\(projectID)/build"),
             body: request
         )
+    }
+
+    // MARK: - NDJSON progress streams
+
+    /// Deploy a project and stream NDJSON progress events.
+    public func deployStream(
+        envID: EnvironmentID? = nil,
+        projectID: String,
+        options: DeployOptions? = nil
+    ) throws -> NDJSONStream<PullProgressEvent> {
+        let body = try encodeOrNil(options)
+        return NDJSONStream(
+            transport: rest.transport,
+            path: rest.environmentPath(envID, "projects/\(projectID)/up"),
+            method: "POST",
+            body: body
+        )
+    }
+
+    /// Tear down a project and stream NDJSON progress events.
+    public func downStream(
+        envID: EnvironmentID? = nil,
+        projectID: String
+    ) -> NDJSONStream<PullProgressEvent> {
+        NDJSONStream(
+            transport: rest.transport,
+            path: rest.environmentPath(envID, "projects/\(projectID)/down"),
+            method: "POST",
+            body: nil
+        )
+    }
+
+    /// Redeploy a project and stream NDJSON progress events.
+    public func redeployStream(
+        envID: EnvironmentID? = nil,
+        projectID: String
+    ) -> NDJSONStream<PullProgressEvent> {
+        NDJSONStream(
+            transport: rest.transport,
+            path: rest.environmentPath(envID, "projects/\(projectID)/redeploy"),
+            method: "POST",
+            body: nil
+        )
+    }
+
+    /// Pull a project's images and stream NDJSON progress events.
+    public func pullImagesStream(
+        envID: EnvironmentID? = nil,
+        projectID: String,
+        request: ImagePullRequest? = nil
+    ) throws -> NDJSONStream<PullProgressEvent> {
+        let body = try encodeOrNil(request)
+        return NDJSONStream(
+            transport: rest.transport,
+            path: rest.environmentPath(envID, "projects/\(projectID)/pull"),
+            method: "POST",
+            body: body
+        )
+    }
+
+    /// Build a project's images and stream NDJSON progress events.
+    public func buildStream(
+        envID: EnvironmentID? = nil,
+        projectID: String,
+        request: BuildProjectRequest? = nil
+    ) throws -> NDJSONStream<PullProgressEvent> {
+        let body = try encodeOrNil(request)
+        return NDJSONStream(
+            transport: rest.transport,
+            path: rest.environmentPath(envID, "projects/\(projectID)/build"),
+            method: "POST",
+            body: body
+        )
+    }
+
+    private func encodeOrNil<T: Encodable>(_ value: T?) throws -> Data? {
+        guard let value else { return nil }
+        return try ArcaneJSON.makeEncoder().encode(value)
     }
 
     // MARK: - Streaming

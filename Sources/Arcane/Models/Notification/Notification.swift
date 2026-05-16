@@ -1,7 +1,7 @@
 import Foundation
 
 /// Identifiers for notification providers.
-public enum NotificationProvider: String, Codable, Hashable, Sendable {
+public enum NotificationProvider: String, Codable, Hashable, Sendable, CaseIterable {
     case discord
     case email
     case telegram
@@ -9,6 +9,7 @@ public enum NotificationProvider: String, Codable, Hashable, Sendable {
     case slack
     case ntfy
     case pushover
+    case gotify
     case matrix
     case generic
 }

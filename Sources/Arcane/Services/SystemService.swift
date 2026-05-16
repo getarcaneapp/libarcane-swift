@@ -123,4 +123,9 @@ public struct SystemService: Sendable {
     public func statsStream(envID: EnvironmentID? = nil) -> StatsStream<SystemStats> {
         StatsStream(transport: rest.transport, path: rest.environmentPath(envID, "ws/system/stats"))
     }
+
+    /// Download the manager's edge mTLS CA certificate (used by agents).
+    public func downloadEdgeMTLSCA() async throws -> Data {
+        try await rest.transport.downloadRaw("edge-mtls/ca", authorized: false)
+    }
 }

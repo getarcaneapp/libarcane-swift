@@ -84,6 +84,34 @@ public struct ContainersService: Sendable {
         try await rest.post(rest.environmentPath(envID, "containers/\(id)/redeploy"), body: Optional<EmptyBody>.none)
     }
 
+    /// Pause a running container.
+    public func pause(envID: EnvironmentID? = nil, id: String) async throws {
+        try await rest.postVoid(rest.environmentPath(envID, "containers/\(id)/pause"), body: Optional<EmptyBody>.none)
+    }
+
+    /// Resume a paused container.
+    public func unpause(envID: EnvironmentID? = nil, id: String) async throws {
+        try await rest.postVoid(rest.environmentPath(envID, "containers/\(id)/unpause"), body: Optional<EmptyBody>.none)
+    }
+
+    /// Send a signal to a running container (default: SIGKILL).
+    public func kill(envID: EnvironmentID? = nil, id: String, signal: String = "SIGKILL") async throws {
+        try await rest.postVoid(
+            rest.environmentPath(envID, "containers/\(id)/kill"),
+            body: Optional<EmptyBody>.none,
+            query: [URLQueryItem(name: "signal", value: signal)]
+        )
+    }
+
+    /// Rename an existing container.
+    public func rename(envID: EnvironmentID? = nil, id: String, newName: String) async throws {
+        try await rest.postVoid(
+            rest.environmentPath(envID, "containers/\(id)/rename"),
+            body: Optional<EmptyBody>.none,
+            query: [URLQueryItem(name: "name", value: newName)]
+        )
+    }
+
     /// Enable or disable auto-update for a specific container.
     public func setAutoUpdate(envID: EnvironmentID? = nil, id: String, enabled: Bool) async throws {
         struct Body: Encodable, Sendable {

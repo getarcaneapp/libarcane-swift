@@ -34,4 +34,31 @@ public struct BuildsService: Sendable {
         let query = [URLQueryItem(name: "path", value: path)]
         try await rest.deleteVoid(rest.environmentPath(envID, "builds/browse"), query: query)
     }
+
+    /// Upload a file into the build workspace at `path`.
+    public func upload(
+        path: String,
+        fileURL: URL,
+        filename: String? = nil,
+        envID: EnvironmentID? = nil
+    ) async throws {
+        let part = MultipartFile(
+            fieldName: "file",
+            filename: filename ?? fileURL.lastPathComponent,
+            fileURL: fileURL
+        )
+        let _: MessageResponse = try await rest.transport.multipartUpload(
+            rest.environmentPath(envID, "builds/browse/upload"),
+            query: [URLQueryItem(name: "path", value: path)],
+            files: [part]
+        )
+    }
+
+    /// Download the raw bytes of a file in the build workspace.
+    public func downloadFile(path: String, envID: EnvironmentID? = nil) async throws -> Data {
+        try await rest.transport.downloadRaw(
+            rest.environmentPath(envID, "builds/browse/download"),
+            query: [URLQueryItem(name: "path", value: path)]
+        )
+    }
 }

@@ -40,17 +40,77 @@ public struct ImagesService: Sendable {
 
     // MARK: - Pull / Build (streaming endpoints)
 
-    /// Initiate an image pull. The server streams NDJSON progress events; this method
-    /// returns once the request is accepted but does not surface progress.
-    /// For progress, parse the `huma.StreamResponse` body via the lower-level transport.
+    /// Initiate an image pull and consume nothing of the progress stream — returns
+    /// once the server has accepted the request. Use `pullStream` for progress.
     public func pull(envID: EnvironmentID? = nil, options: ImagePullOptions) async throws {
         try await rest.postVoid(rest.environmentPath(envID, "images/pull"), body: options)
     }
 
-    /// Initiate an image build. The server streams NDJSON progress events; this method
-    /// returns once the request is accepted.
+    /// Initiate an image pull and stream NDJSON progress frames as they arrive.
+    public func pullStream(
+        envID: EnvironmentID? = nil,
+        options: ImagePullOptions
+    ) throws -> NDJSONStream<PullProgressEvent> {
+        let body = try ArcaneJSON.makeEncoder().encode(options)
+        return NDJSONStream(
+            transport: rest.transport,
+            path: rest.environmentPath(envID, "images/pull"),
+            method: "POST",
+            body: body
+        )
+    }
+
+    /// Initiate an image build. Use `buildStream` for progress.
     public func build(envID: EnvironmentID? = nil, request: ImageBuildRequest) async throws {
         try await rest.postVoid(rest.environmentPath(envID, "images/build"), body: request)
+    }
+
+    /// Initiate an image build and stream NDJSON progress frames as they arrive.
+    public func buildStream(
+        envID: EnvironmentID? = nil,
+        request: ImageBuildRequest
+    ) throws -> NDJSONStream<ImageProgressEvent> {
+        let body = try ArcaneJSON.makeEncoder().encode(request)
+        return NDJSONStream(
+            transport: rest.transport,
+            path: rest.environmentPath(envID, "images/build"),
+            method: "POST",
+            body: body
+        )
+    }
+
+    // MARK: - Upload
+
+    /// Upload a Docker image tarball as a multipart file. Returns the result of
+    /// loading the image into the local registry.
+    public func upload(
+        envID: EnvironmentID? = nil,
+        fileURL: URL,
+        filename: String? = nil,
+        fieldName: String = "image"
+    ) async throws -> ImageLoadResult {
+        let name = filename ?? fileURL.lastPathComponent
+        let part = MultipartFile(fieldName: fieldName, filename: name, fileURL: fileURL)
+        return try await rest.transport.multipartUpload(
+            rest.environmentPath(envID, "images/upload"),
+            files: [part]
+        )
+    }
+
+    /// Upload a Docker image tarball and stream NDJSON progress frames as the
+    /// server loads the layers.
+    public func uploadStream(
+        envID: EnvironmentID? = nil,
+        fileURL: URL,
+        filename: String? = nil,
+        fieldName: String = "image"
+    ) -> NDJSONStream<ImageProgressEvent> {
+        let name = filename ?? fileURL.lastPathComponent
+        let part = MultipartFile(fieldName: fieldName, filename: name, fileURL: fileURL)
+        return rest.transport.multipartUploadStream(
+            rest.environmentPath(envID, "images/upload"),
+            files: [part]
+        )
     }
 
     // MARK: - Build history

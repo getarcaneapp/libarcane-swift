@@ -16,7 +16,10 @@ public struct VolumeUsageData: Codable, Hashable, Sendable {
     }
 }
 
-/// Volume represents a Docker volume.
+/// Volume represents a Docker volume. Several fields are decoded leniently
+/// (defaulting to empty / false / 0) because the Docker daemon often emits
+/// `null` for empty labels/options/containers and the backend forwards that
+/// through unchanged.
 public struct Volume: Codable, Hashable, Sendable, Identifiable {
     public var id: String
     public var name: String
@@ -57,6 +60,27 @@ public struct Volume: Codable, Hashable, Sendable, Identifiable {
         self.usageData = usageData
         self.size = size
         self.containers = containers
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case id, name, driver, mountpoint, scope, options, labels, createdAt
+        case inUse, usageData, size, containers
+    }
+
+    public init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id = try c.decode(String.self, forKey: .id)
+        name = try c.decodeIfPresent(String.self, forKey: .name) ?? ""
+        driver = try c.decodeIfPresent(String.self, forKey: .driver) ?? ""
+        mountpoint = try c.decodeIfPresent(String.self, forKey: .mountpoint) ?? ""
+        scope = try c.decodeIfPresent(String.self, forKey: .scope) ?? ""
+        options = try c.decodeIfPresent([String: String].self, forKey: .options) ?? [:]
+        labels = try c.decodeIfPresent([String: String].self, forKey: .labels) ?? [:]
+        createdAt = try c.decodeIfPresent(String.self, forKey: .createdAt) ?? ""
+        inUse = try c.decodeIfPresent(Bool.self, forKey: .inUse) ?? false
+        usageData = try c.decodeIfPresent(VolumeUsageData.self, forKey: .usageData)
+        size = try c.decodeIfPresent(Int64.self, forKey: .size) ?? 0
+        containers = try c.decodeIfPresent([String].self, forKey: .containers) ?? []
     }
 }
 

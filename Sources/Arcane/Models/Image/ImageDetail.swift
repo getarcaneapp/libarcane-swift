@@ -5,24 +5,33 @@ public struct ImageDetailConfig: Codable, Hashable, Sendable {
     public var exposedPorts: [String: JSONValue]?
     public var env: [String]?
     public var cmd: [String]?
+    public var entrypoint: [String]?
+    public var user: String?
     public var volumes: [String: JSONValue]?
     public var workingDir: String?
     public var argsEscaped: Bool?
+    public var labels: [String: String]?
 
     public init(
         exposedPorts: [String: JSONValue]? = nil,
         env: [String]? = nil,
         cmd: [String]? = nil,
+        entrypoint: [String]? = nil,
+        user: String? = nil,
         volumes: [String: JSONValue]? = nil,
         workingDir: String? = nil,
-        argsEscaped: Bool? = nil
+        argsEscaped: Bool? = nil,
+        labels: [String: String]? = nil
     ) {
         self.exposedPorts = exposedPorts
         self.env = env
         self.cmd = cmd
+        self.entrypoint = entrypoint
+        self.user = user
         self.volumes = volumes
         self.workingDir = workingDir
         self.argsEscaped = argsEscaped
+        self.labels = labels
     }
 }
 

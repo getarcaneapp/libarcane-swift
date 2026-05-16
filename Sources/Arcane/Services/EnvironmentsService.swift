@@ -171,4 +171,14 @@ public struct EnvironmentsService: Sendable {
     public func deploymentSnippets(id: EnvironmentID) async throws -> DeploymentSnippet {
         try await rest.get("environments/\(id.rawValue)/deployment")
     }
+
+    /// Download the mTLS certificate bundle (zip) for an environment.
+    public func downloadMTLSBundle(id: EnvironmentID) async throws -> Data {
+        try await rest.transport.downloadRaw("environments/\(id.rawValue)/deployment/mtls/bundle")
+    }
+
+    /// Download a single mTLS file (PEM/key/etc.) for an environment.
+    public func downloadMTLSFile(id: EnvironmentID, fileName: String) async throws -> Data {
+        try await rest.transport.downloadRaw("environments/\(id.rawValue)/deployment/mtls/\(fileName)")
+    }
 }

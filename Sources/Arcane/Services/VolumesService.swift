@@ -185,4 +185,59 @@ public struct VolumesService: Sendable {
     public func listBackupFiles(envID: EnvironmentID? = nil, backupID: String) async throws -> [String] {
         try await rest.get(rest.environmentPath(envID, "volumes/backups/\(backupID)/files"))
     }
+
+    // MARK: - Binary uploads & downloads
+
+    /// Upload a file or directory into a volume at `path` (multipart upload).
+    public func uploadFile(
+        envID: EnvironmentID? = nil,
+        name: String,
+        path: String,
+        fileURL: URL,
+        filename: String? = nil
+    ) async throws {
+        let part = MultipartFile(
+            fieldName: "file",
+            filename: filename ?? fileURL.lastPathComponent,
+            fileURL: fileURL
+        )
+        let _: MessageResponse = try await rest.transport.multipartUpload(
+            rest.environmentPath(envID, "volumes/\(name)/browse/upload"),
+            query: [URLQueryItem(name: "path", value: path)],
+            files: [part]
+        )
+    }
+
+    /// Upload a backup tarball to a volume.
+    public func uploadBackup(
+        envID: EnvironmentID? = nil,
+        name: String,
+        fileURL: URL,
+        filename: String? = nil
+    ) async throws -> BackupEntry {
+        let part = MultipartFile(
+            fieldName: "backup",
+            filename: filename ?? fileURL.lastPathComponent,
+            fileURL: fileURL
+        )
+        return try await rest.transport.multipartUpload(
+            rest.environmentPath(envID, "volumes/\(name)/backups/upload"),
+            files: [part]
+        )
+    }
+
+    /// Download the raw bytes of a file inside a volume.
+    public func downloadFile(envID: EnvironmentID? = nil, name: String, path: String) async throws -> Data {
+        try await rest.transport.downloadRaw(
+            rest.environmentPath(envID, "volumes/\(name)/browse/download"),
+            query: [URLQueryItem(name: "path", value: path)]
+        )
+    }
+
+    /// Download a backup tarball as raw bytes.
+    public func downloadBackup(envID: EnvironmentID? = nil, backupID: String) async throws -> Data {
+        try await rest.transport.downloadRaw(
+            rest.environmentPath(envID, "volumes/backups/\(backupID)/download")
+        )
+    }
 }
