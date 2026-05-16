@@ -90,16 +90,11 @@ extension ArcaneURLSessionTransport {
 
             let source = try FileHandle(forReadingFrom: file.fileURL)
             defer { try? source.close() }
-            while autoreleasepool(invoking: {
-                let chunk = source.availableData
-                if chunk.isEmpty { return false }
-                do {
-                    try handle.write(contentsOf: chunk)
-                    return true
-                } catch {
-                    return false
-                }
-            }) {}
+            while true {
+                let chunk = autoreleasepool { source.availableData }
+                if chunk.isEmpty { break }
+                try handle.write(contentsOf: chunk)
+            }
 
             try handle.write(contentsOf: Data("\r\n".utf8))
         }

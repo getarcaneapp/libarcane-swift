@@ -67,12 +67,18 @@ public struct NDJSONStream<Element: Decodable & Sendable>: AsyncSequence, Sendab
                         let trimmed = line.trimmingCharacters(in: .whitespaces)
                         guard !trimmed.isEmpty,
                               let data = trimmed.data(using: .utf8) else { continue }
+                        let looksLikeJSON = trimmed.hasPrefix("{") || trimmed.hasPrefix("[")
                         do {
                             let element = try decoder.decode(Element.self, from: data)
                             continuation.yield(element)
                         } catch {
-                            // Skip malformed lines silently — NDJSON streams sometimes
-                            // include heartbeat or comment lines that won't decode.
+                            // Lines that don't look like JSON (heartbeats, comments,
+                            // status text) are intentionally skipped. Lines that
+                            // *do* look like JSON but fail to decode indicate a
+                            // schema mismatch the caller needs to know about.
+                            if looksLikeJSON {
+                                throw ArcaneError.decoding(String(describing: error))
+                            }
                             continue
                         }
                     }
