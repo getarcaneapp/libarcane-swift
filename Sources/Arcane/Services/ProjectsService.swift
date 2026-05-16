@@ -24,7 +24,7 @@ public struct ProjectsService: Sendable {
         updates: String? = nil,
         archived: String? = nil
     ) async throws -> PaginatedResponse<ProjectDetails> {
-        var items = query.queryItems
+        var items = query.nonPaginationQueryItems
         if let status {
             items.append(URLQueryItem(name: "status", value: status))
         }

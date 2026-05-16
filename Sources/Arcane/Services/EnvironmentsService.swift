@@ -80,7 +80,7 @@ public struct EnvironmentsService: Sendable {
         query: SearchPaginationSort = .init(),
         type: String? = nil
     ) async throws -> PaginatedResponse<Environment> {
-        var items = query.queryItems
+        var items = query.nonPaginationQueryItems
         if let type {
             items.append(URLQueryItem(name: "type", value: type))
         }

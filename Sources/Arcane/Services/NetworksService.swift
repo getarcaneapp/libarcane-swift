@@ -15,7 +15,7 @@ public struct NetworksService: Sendable {
         query: SearchPaginationSort = .init(),
         inUse: Bool? = nil
     ) async throws -> PaginatedResponse<NetworkSummary> {
-        var items = query.queryItems
+        var items = query.nonPaginationQueryItems
         if let inUse {
             items.append(URLQueryItem(name: "inUse", value: inUse ? "true" : "false"))
         }

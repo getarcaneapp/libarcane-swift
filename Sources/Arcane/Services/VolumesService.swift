@@ -18,7 +18,7 @@ public struct VolumesService: Sendable {
         inUse: Bool? = nil,
         includeInternal: Bool = false
     ) async throws -> PaginatedResponse<Volume> {
-        var items = query.queryItems
+        var items = query.nonPaginationQueryItems
         if let inUse {
             items.append(URLQueryItem(name: "inUse", value: inUse ? "true" : "false"))
         }
@@ -131,7 +131,7 @@ public struct VolumesService: Sendable {
             rest.environmentPath(envID, "volumes/\(name)/backups"),
             start: query.start ?? 0,
             limit: query.limit ?? 20,
-            query: query.queryItems
+            query: query.nonPaginationQueryItems
         )
     }
 

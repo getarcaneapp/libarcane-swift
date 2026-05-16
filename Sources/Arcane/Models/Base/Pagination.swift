@@ -54,6 +54,17 @@ public struct SearchPaginationSort: Sendable {
         if let sortOrder { items.append(URLQueryItem(name: "order", value: sortOrder.rawValue)) }
         return items
     }
+
+    /// `queryItems` minus the pagination fields. Use this when the `start` and
+    /// `limit` are passed as explicit arguments to `rest.paginated(...)` to
+    /// avoid duplicate query parameters on the wire.
+    public var nonPaginationQueryItems: [URLQueryItem] {
+        var items: [URLQueryItem] = []
+        if let search { items.append(URLQueryItem(name: "search", value: search)) }
+        if let sortBy { items.append(URLQueryItem(name: "sort", value: sortBy)) }
+        if let sortOrder { items.append(URLQueryItem(name: "order", value: sortOrder.rawValue)) }
+        return items
+    }
 }
 
 public enum SortOrder: String, Codable, Hashable, Sendable {

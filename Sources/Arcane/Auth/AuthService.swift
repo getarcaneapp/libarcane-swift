@@ -41,7 +41,7 @@ public struct AuthService: Sendable {
 
     public func changePassword(currentPassword: String?, newPassword: String) async throws {
         let body = PasswordChange(currentPassword: currentPassword, newPassword: newPassword)
-        let _: MessageResponse = try await transport.request("auth/password", method: "PUT", body: body)
+        let _: MessageResponse = try await transport.request("auth/password", method: "POST", body: body)
     }
 
     // MARK: - OIDC

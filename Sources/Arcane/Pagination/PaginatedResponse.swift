@@ -30,7 +30,6 @@ public struct ArcanePaginator<Element: Decodable & Sendable>: AsyncSequence, Sen
         private let limit: Int
         private let fetch: @Sendable (_ start: Int, _ limit: Int) async throws -> PaginatedResponse<Element>
         private var start = 0
-        private var totalItems: Int64?
         private var buffer: [Element] = []
         private var index = 0
         private var finished = false
@@ -53,7 +52,6 @@ public struct ArcanePaginator<Element: Decodable & Sendable>: AsyncSequence, Sen
             buffer = response.data
             index = 0
             start += response.data.count
-            totalItems = response.pagination.totalItems
             finished = buffer.isEmpty || Int64(start) >= response.pagination.totalItems
             return try await next()
         }
