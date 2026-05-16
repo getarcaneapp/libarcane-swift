@@ -364,19 +364,25 @@ public struct PullProgressEvent: Codable, Hashable, Sendable {
     public var progress: String?
     public var progressDetail: Detail?
     public var error: String?
+    /// Human-readable build/lifecycle output emitted by Docker Compose
+    /// operations (deploy, build, pull-images). Absent for pure image-pull
+    /// layer frames.
+    public var stream: String?
 
     public init(
         status: String? = nil,
         id: String? = nil,
         progress: String? = nil,
         progressDetail: Detail? = nil,
-        error: String? = nil
+        error: String? = nil,
+        stream: String? = nil
     ) {
         self.status = status
         self.id = id
         self.progress = progress
         self.progressDetail = progressDetail
         self.error = error
+        self.stream = stream
     }
 }
 

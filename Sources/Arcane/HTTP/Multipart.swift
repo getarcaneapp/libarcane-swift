@@ -41,23 +41,31 @@ extension ArcaneURLSessionTransport {
         query: [URLQueryItem],
         file prepared: PreparedMultipart
     ) async throws -> (URLSession.AsyncBytes, HTTPURLResponse) {
-        var request = URLRequest(url: baseURL.appendingAPIPath(path).withQueryItems(query))
-        request.httpMethod = method
-        request.setValue("application/x-ndjson, application/x-json-stream, application/json", forHTTPHeaderField: "Accept")
-        request.setValue("multipart/form-data; boundary=\(prepared.boundary)", forHTTPHeaderField: "Content-Type")
-        for (key, value) in try await authManager.authenticationHeaders() {
-            request.setValue(value, forHTTPHeaderField: key)
+        var didRefresh = false
+        while true {
+            var request = URLRequest(url: baseURL.appendingAPIPath(path).withQueryItems(query))
+            request.httpMethod = method
+            request.setValue("application/x-ndjson, application/x-json-stream, application/json", forHTTPHeaderField: "Accept")
+            request.setValue("multipart/form-data; boundary=\(prepared.boundary)", forHTTPHeaderField: "Content-Type")
+            for (key, value) in try await authManager.authenticationHeaders() {
+                request.setValue(value, forHTTPHeaderField: key)
+            }
+            let attrs = try FileManager.default.attributesOfItem(atPath: prepared.url.path)
+            if let size = attrs[.size] as? Int {
+                request.setValue("\(size)", forHTTPHeaderField: "Content-Length")
+            }
+            request.httpBodyStream = InputStream(url: prepared.url)
+            let (bytes, response) = try await session.bytes(for: request)
+            guard let http = response as? HTTPURLResponse else {
+                throw ArcaneError.transport("Multipart upload did not return an HTTP response")
+            }
+            if http.statusCode == 401, !didRefresh, try await authManager.hasRefreshCredential() {
+                _ = try await authManager.refreshTokens()
+                didRefresh = true
+                continue
+            }
+            return (bytes, http)
         }
-        let attrs = try FileManager.default.attributesOfItem(atPath: prepared.url.path)
-        if let size = attrs[.size] as? Int {
-            request.setValue("\(size)", forHTTPHeaderField: "Content-Length")
-        }
-        request.httpBodyStream = InputStream(url: prepared.url)
-        let (bytes, response) = try await session.bytes(for: request)
-        guard let http = response as? HTTPURLResponse else {
-            throw ArcaneError.transport("Multipart upload did not return an HTTP response")
-        }
-        return (bytes, http)
     }
 }
 
@@ -72,35 +80,41 @@ extension ArcaneURLSessionTransport {
         let boundary = "----ArcaneSwiftBoundary\(UUID().uuidString)"
         let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent("arcane-multipart-\(UUID().uuidString).bin")
         FileManager.default.createFile(atPath: tempURL.path, contents: nil)
-        let handle = try FileHandle(forWritingTo: tempURL)
-        defer { try? handle.close() }
 
-        // Text fields first
-        for (name, value) in fields {
-            let header = "--\(boundary)\r\nContent-Disposition: form-data; name=\"\(name)\"\r\n\r\n"
-            try handle.write(contentsOf: Data(header.utf8))
-            try handle.write(contentsOf: Data(value.utf8))
-            try handle.write(contentsOf: Data("\r\n".utf8))
-        }
+        do {
+            let handle = try FileHandle(forWritingTo: tempURL)
+            defer { try? handle.close() }
 
-        // File parts
-        for file in files {
-            let header = "--\(boundary)\r\nContent-Disposition: form-data; name=\"\(file.fieldName)\"; filename=\"\(file.filename)\"\r\nContent-Type: \(file.contentType)\r\n\r\n"
-            try handle.write(contentsOf: Data(header.utf8))
-
-            let source = try FileHandle(forReadingFrom: file.fileURL)
-            defer { try? source.close() }
-            while true {
-                let chunk = autoreleasepool { source.availableData }
-                if chunk.isEmpty { break }
-                try handle.write(contentsOf: chunk)
+            // Text fields first
+            for (name, value) in fields {
+                let header = "--\(boundary)\r\nContent-Disposition: form-data; name=\"\(name)\"\r\n\r\n"
+                try handle.write(contentsOf: Data(header.utf8))
+                try handle.write(contentsOf: Data(value.utf8))
+                try handle.write(contentsOf: Data("\r\n".utf8))
             }
 
-            try handle.write(contentsOf: Data("\r\n".utf8))
-        }
+            // File parts
+            for file in files {
+                let header = "--\(boundary)\r\nContent-Disposition: form-data; name=\"\(file.fieldName)\"; filename=\"\(file.filename)\"\r\nContent-Type: \(file.contentType)\r\n\r\n"
+                try handle.write(contentsOf: Data(header.utf8))
 
-        // Final boundary
-        try handle.write(contentsOf: Data("--\(boundary)--\r\n".utf8))
+                let source = try FileHandle(forReadingFrom: file.fileURL)
+                defer { try? source.close() }
+                while true {
+                    let chunk = autoreleasepool { source.availableData }
+                    if chunk.isEmpty { break }
+                    try handle.write(contentsOf: chunk)
+                }
+
+                try handle.write(contentsOf: Data("\r\n".utf8))
+            }
+
+            // Final boundary
+            try handle.write(contentsOf: Data("--\(boundary)--\r\n".utf8))
+        } catch {
+            try? FileManager.default.removeItem(at: tempURL)
+            throw error
+        }
         return PreparedMultipart(url: tempURL, boundary: boundary)
     }
 }

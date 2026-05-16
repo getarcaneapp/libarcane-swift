@@ -137,25 +137,33 @@ public final class ArcaneURLSessionTransport: @unchecked Sendable {
         accept: String = "application/x-ndjson, application/x-json-stream, application/json",
         authorized: Bool = true
     ) async throws -> (URLSession.AsyncBytes, HTTPURLResponse) {
-        var request = URLRequest(url: baseURL.appendingAPIPath(path).withQueryItems(query))
-        request.httpMethod = method
-        request.setValue(accept, forHTTPHeaderField: "Accept")
-        if authorized {
-            for (key, value) in try await authManager.authenticationHeaders() {
-                request.setValue(value, forHTTPHeaderField: key)
+        var didRefresh = false
+        while true {
+            var request = URLRequest(url: baseURL.appendingAPIPath(path).withQueryItems(query))
+            request.httpMethod = method
+            request.setValue(accept, forHTTPHeaderField: "Accept")
+            if authorized {
+                for (key, value) in try await authManager.authenticationHeaders() {
+                    request.setValue(value, forHTTPHeaderField: key)
+                }
             }
-        }
-        if let body {
-            if let contentType {
-                request.setValue(contentType, forHTTPHeaderField: "Content-Type")
+            if let body {
+                if let contentType {
+                    request.setValue(contentType, forHTTPHeaderField: "Content-Type")
+                }
+                request.httpBody = body
             }
-            request.httpBody = body
+            let (bytes, response) = try await session.bytes(for: request)
+            guard let http = response as? HTTPURLResponse else {
+                throw ArcaneError.transport("Request did not return an HTTP response")
+            }
+            if http.statusCode == 401, authorized, !didRefresh, try await authManager.hasRefreshCredential() {
+                _ = try await authManager.refreshTokens()
+                didRefresh = true
+                continue
+            }
+            return (bytes, http)
         }
-        let (bytes, response) = try await session.bytes(for: request)
-        guard let http = response as? HTTPURLResponse else {
-            throw ArcaneError.transport("Request did not return an HTTP response")
-        }
-        return (bytes, http)
     }
 
     /// Uploads a multipart/form-data request from a tempfile (streamed from disk to
@@ -171,24 +179,32 @@ public final class ArcaneURLSessionTransport: @unchecked Sendable {
         let prepared = try makeMultipartTempFile(fields: fields, files: files)
         defer { try? FileManager.default.removeItem(at: prepared.url) }
 
-        var request = URLRequest(url: baseURL.appendingAPIPath(path).withQueryItems(query))
-        request.httpMethod = method
-        request.setValue("application/json", forHTTPHeaderField: "Accept")
-        request.setValue("multipart/form-data; boundary=\(prepared.boundary)", forHTTPHeaderField: "Content-Type")
-        for (key, value) in try await authManager.authenticationHeaders() {
-            request.setValue(value, forHTTPHeaderField: key)
-        }
-        let (data, response) = try await session.upload(for: request, fromFile: prepared.url)
-        guard let http = response as? HTTPURLResponse else {
-            throw ArcaneError.transport("Upload did not return an HTTP response")
-        }
-        guard (200..<300).contains(http.statusCode) else {
-            throw ArcaneError.from(statusCode: http.statusCode, data: data, headers: http.allHeaderFields, decoder: decoder)
-        }
-        do {
-            return try decoder.decode(APIResponse<T>.self, from: data).data
-        } catch {
-            throw ArcaneError.decoding(String(describing: error))
+        var didRefresh = false
+        while true {
+            var request = URLRequest(url: baseURL.appendingAPIPath(path).withQueryItems(query))
+            request.httpMethod = method
+            request.setValue("application/json", forHTTPHeaderField: "Accept")
+            request.setValue("multipart/form-data; boundary=\(prepared.boundary)", forHTTPHeaderField: "Content-Type")
+            for (key, value) in try await authManager.authenticationHeaders() {
+                request.setValue(value, forHTTPHeaderField: key)
+            }
+            let (data, response) = try await session.upload(for: request, fromFile: prepared.url)
+            guard let http = response as? HTTPURLResponse else {
+                throw ArcaneError.transport("Upload did not return an HTTP response")
+            }
+            if http.statusCode == 401, !didRefresh, try await authManager.hasRefreshCredential() {
+                _ = try await authManager.refreshTokens()
+                didRefresh = true
+                continue
+            }
+            guard (200..<300).contains(http.statusCode) else {
+                throw ArcaneError.from(statusCode: http.statusCode, data: data, headers: http.allHeaderFields, decoder: decoder)
+            }
+            do {
+                return try decoder.decode(APIResponse<T>.self, from: data).data
+            } catch {
+                throw ArcaneError.decoding(String(describing: error))
+            }
         }
     }
 
