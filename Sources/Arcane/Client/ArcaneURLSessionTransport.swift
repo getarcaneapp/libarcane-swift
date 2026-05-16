@@ -51,13 +51,13 @@ public final class ArcaneURLSessionTransport: @unchecked Sendable {
 
     public func paginated<T: Decodable & Sendable>(
         _ path: String,
-        page: Int,
-        pageSize: Int,
+        start: Int,
+        limit: Int,
         query: [URLQueryItem] = []
     ) async throws -> PaginatedResponse<T> {
         var items = query
-        items.append(URLQueryItem(name: "page", value: "\(page)"))
-        items.append(URLQueryItem(name: "itemsPerPage", value: "\(pageSize)"))
+        items.append(URLQueryItem(name: "start", value: "\(max(0, start))"))
+        items.append(URLQueryItem(name: "limit", value: "\(limit)"))
         let data = try await rawRequest(path, query: items, body: Optional<EmptyBody>.none, authorized: true)
         do {
             return try decoder.decode(PaginatedResponse<T>.self, from: data)

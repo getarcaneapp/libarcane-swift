@@ -6,27 +6,40 @@ public struct PaginatedResponse<T: Decodable & Sendable>: Decodable, Sendable {
     public var pagination: PaginationResponse
 }
 
+/// An async sequence that walks a paginated endpoint, fetching successive
+/// `limit`-sized pages until `pagination.totalItems` is exhausted.
 public struct ArcanePaginator<Element: Decodable & Sendable>: AsyncSequence, Sendable {
     public typealias AsyncIterator = Iterator
 
-    private let fetch: @Sendable (Int) async throws -> PaginatedResponse<Element>
+    private let limit: Int
+    private let fetch: @Sendable (_ start: Int, _ limit: Int) async throws -> PaginatedResponse<Element>
 
-    public init(fetch: @escaping @Sendable (Int) async throws -> PaginatedResponse<Element>) {
+    public init(
+        limit: Int = 50,
+        fetch: @escaping @Sendable (_ start: Int, _ limit: Int) async throws -> PaginatedResponse<Element>
+    ) {
+        self.limit = Swift.max(1, limit)
         self.fetch = fetch
     }
 
     public func makeAsyncIterator() -> Iterator {
-        Iterator(fetch: fetch)
+        Iterator(limit: limit, fetch: fetch)
     }
 
     public struct Iterator: AsyncIteratorProtocol {
-        private let fetch: @Sendable (Int) async throws -> PaginatedResponse<Element>
-        private var page = 1
+        private let limit: Int
+        private let fetch: @Sendable (_ start: Int, _ limit: Int) async throws -> PaginatedResponse<Element>
+        private var start = 0
+        private var totalItems: Int64?
         private var buffer: [Element] = []
         private var index = 0
         private var finished = false
 
-        init(fetch: @escaping @Sendable (Int) async throws -> PaginatedResponse<Element>) {
+        init(
+            limit: Int,
+            fetch: @escaping @Sendable (_ start: Int, _ limit: Int) async throws -> PaginatedResponse<Element>
+        ) {
+            self.limit = limit
             self.fetch = fetch
         }
 
@@ -35,14 +48,13 @@ public struct ArcanePaginator<Element: Decodable & Sendable>: AsyncSequence, Sen
                 defer { index += 1 }
                 return buffer[index]
             }
-            guard !finished else {
-                return nil
-            }
-            let response = try await fetch(page)
+            guard !finished else { return nil }
+            let response = try await fetch(start, limit)
             buffer = response.data
             index = 0
-            finished = Int64(page) >= response.pagination.totalPages || buffer.isEmpty
-            page += 1
+            start += response.data.count
+            totalItems = response.pagination.totalItems
+            finished = buffer.isEmpty || Int64(start) >= response.pagination.totalItems
             return try await next()
         }
     }

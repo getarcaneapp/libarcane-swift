@@ -1,0 +1,188 @@
+import Foundation
+
+/// VolumesService groups all volume, browse, and backup endpoints registered
+/// under ``/environments/{id}/volumes``.
+public struct VolumesService: Sendable {
+    private let rest: RESTService
+
+    init(rest: RESTService) {
+        self.rest = rest
+    }
+
+    // MARK: - Volumes
+
+    /// Paginated list of Docker volumes for the environment.
+    public func list(
+        envID: EnvironmentID? = nil,
+        query: SearchPaginationSort = .init(),
+        inUse: Bool? = nil,
+        includeInternal: Bool = false
+    ) async throws -> PaginatedResponse<Volume> {
+        var items = query.queryItems
+        if let inUse {
+            items.append(URLQueryItem(name: "inUse", value: inUse ? "true" : "false"))
+        }
+        if includeInternal {
+            items.append(URLQueryItem(name: "includeInternal", value: "true"))
+        }
+        return try await rest.paginated(
+            rest.environmentPath(envID, "volumes"),
+            start: query.start ?? 0,
+            limit: query.limit ?? 20,
+            query: items
+        )
+    }
+
+    /// Get a single volume by name.
+    public func inspect(envID: EnvironmentID? = nil, name: String) async throws -> Volume {
+        try await rest.get(rest.environmentPath(envID, "volumes/\(name)"))
+    }
+
+    /// Create a new Docker volume.
+    public func create(envID: EnvironmentID? = nil, request: CreateVolume) async throws -> Volume {
+        try await rest.post(rest.environmentPath(envID, "volumes"), body: request)
+    }
+
+    /// Remove a volume, optionally forcing removal even if it is in use.
+    public func remove(envID: EnvironmentID? = nil, name: String, force: Bool = false) async throws {
+        var items: [URLQueryItem] = []
+        if force {
+            items.append(URLQueryItem(name: "force", value: "true"))
+        }
+        try await rest.deleteVoid(rest.environmentPath(envID, "volumes/\(name)"), query: items)
+    }
+
+    /// Prune unused volumes and return the prune report.
+    public func prune(envID: EnvironmentID? = nil) async throws -> VolumePruneReport {
+        try await rest.post(rest.environmentPath(envID, "volumes/prune"), body: EmptyBody?.none)
+    }
+
+    /// Get container usage information for a single volume.
+    public func usage(envID: EnvironmentID? = nil, name: String) async throws -> VolumeUsage {
+        try await rest.get(rest.environmentPath(envID, "volumes/\(name)/usage"))
+    }
+
+    /// Get aggregate usage counts (in use / unused / total).
+    public func counts(envID: EnvironmentID? = nil, includeInternal: Bool = false) async throws -> VolumeUsageCounts {
+        var items: [URLQueryItem] = []
+        if includeInternal {
+            items.append(URLQueryItem(name: "includeInternal", value: "true"))
+        }
+        return try await rest.get(rest.environmentPath(envID, "volumes/counts"), query: items)
+    }
+
+    /// Compute disk usage sizes for all volumes (slow).
+    public func sizes(envID: EnvironmentID? = nil) async throws -> [VolumeSizeInfo] {
+        try await rest.get(rest.environmentPath(envID, "volumes/sizes"))
+    }
+
+    // MARK: - Browse
+
+    /// List directory entries inside a volume.
+    public func browse(envID: EnvironmentID? = nil, name: String, path: String = "/") async throws -> [FileEntry] {
+        try await rest.get(
+            rest.environmentPath(envID, "volumes/\(name)/browse"),
+            query: [URLQueryItem(name: "path", value: path)]
+        )
+    }
+
+    /// Get a preview of a file in a volume.
+    public func fileContent(
+        envID: EnvironmentID? = nil,
+        name: String,
+        path: String,
+        maxBytes: Int64 = 1_048_576
+    ) async throws -> FileContent {
+        try await rest.get(
+            rest.environmentPath(envID, "volumes/\(name)/browse/content"),
+            query: [
+                URLQueryItem(name: "path", value: path),
+                URLQueryItem(name: "maxBytes", value: "\(maxBytes)"),
+            ]
+        )
+    }
+
+    /// Create a new directory inside a volume.
+    public func createDirectory(envID: EnvironmentID? = nil, name: String, path: String) async throws {
+        try await rest.postVoid(
+            rest.environmentPath(envID, "volumes/\(name)/browse/mkdir"),
+            body: EmptyBody?.none,
+            query: [URLQueryItem(name: "path", value: path)]
+        )
+    }
+
+    /// Delete a file or directory inside a volume.
+    public func deleteFile(envID: EnvironmentID? = nil, name: String, path: String) async throws {
+        try await rest.deleteVoid(
+            rest.environmentPath(envID, "volumes/\(name)/browse"),
+            query: [URLQueryItem(name: "path", value: path)]
+        )
+    }
+
+    // MARK: - Backups
+
+    /// Paginated list of backups for a volume.
+    public func listBackups(
+        envID: EnvironmentID? = nil,
+        name: String,
+        query: SearchPaginationSort = .init()
+    ) async throws -> PaginatedResponse<BackupEntry> {
+        try await rest.paginated(
+            rest.environmentPath(envID, "volumes/\(name)/backups"),
+            start: query.start ?? 0,
+            limit: query.limit ?? 20,
+            query: query.queryItems
+        )
+    }
+
+    /// Create a new backup of a volume.
+    public func createBackup(envID: EnvironmentID? = nil, name: String) async throws -> BackupEntry {
+        try await rest.post(
+            rest.environmentPath(envID, "volumes/\(name)/backups"),
+            body: EmptyBody?.none
+        )
+    }
+
+    /// Restore an entire backup over a volume.
+    public func restoreBackup(envID: EnvironmentID? = nil, name: String, backupID: String) async throws {
+        try await rest.postVoid(
+            rest.environmentPath(envID, "volumes/\(name)/backups/\(backupID)/restore"),
+            body: EmptyBody?.none
+        )
+    }
+
+    /// Restore selected files from a backup.
+    public func restoreBackupFiles(
+        envID: EnvironmentID? = nil,
+        name: String,
+        backupID: String,
+        paths: [String]
+    ) async throws {
+        try await rest.postVoid(
+            rest.environmentPath(envID, "volumes/\(name)/backups/\(backupID)/restore-files"),
+            body: RestoreBackupFilesRequest(paths: paths)
+        )
+    }
+
+    /// Delete a backup.
+    public func deleteBackup(envID: EnvironmentID? = nil, backupID: String) async throws {
+        try await rest.deleteVoid(rest.environmentPath(envID, "volumes/backups/\(backupID)"))
+    }
+
+    /// Check whether a backup contains the given path.
+    public func backupHasPath(
+        envID: EnvironmentID? = nil,
+        backupID: String,
+        path: String
+    ) async throws -> BackupHasPath {
+        try await rest.get(
+            rest.environmentPath(envID, "volumes/backups/\(backupID)/has-path"),
+            query: [URLQueryItem(name: "path", value: path)]
+        )
+    }
+
+    /// List the files contained inside a backup.
+    public func listBackupFiles(envID: EnvironmentID? = nil, backupID: String) async throws -> [String] {
+        try await rest.get(rest.environmentPath(envID, "volumes/backups/\(backupID)/files"))
+    }
+}
