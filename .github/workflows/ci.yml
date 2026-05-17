@@ -14,5 +14,3 @@ jobs:
         run: swift build
       - name: Test
         run: swift test
-      - name: Validate OpenAPI version
-        run: jq -e '.openapi == "3.0.3"' Spec/openapi.json

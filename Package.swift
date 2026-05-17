@@ -10,28 +10,15 @@ let package = Package(
     ],
     products: [
         .library(name: "Arcane", targets: ["Arcane"]),
-        .library(name: "ArcaneAPI", targets: ["ArcaneAPI"]),
         .library(name: "ArcaneOIDC", targets: ["ArcaneOIDC"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-openapi-runtime", from: "1.8.2"),
-        .package(url: "https://github.com/apple/swift-openapi-urlsession", from: "1.1.0"),
         .package(url: "https://github.com/apple/swift-http-types", from: "1.5.1"),
     ],
     targets: [
         .target(
-            name: "ArcaneAPI",
-            dependencies: [
-                .product(name: "OpenAPIRuntime", package: "swift-openapi-runtime"),
-                .product(name: "OpenAPIURLSession", package: "swift-openapi-urlsession"),
-            ]
-        ),
-        .target(
             name: "Arcane",
             dependencies: [
-                "ArcaneAPI",
-                .product(name: "OpenAPIRuntime", package: "swift-openapi-runtime"),
-                .product(name: "OpenAPIURLSession", package: "swift-openapi-urlsession"),
                 .product(name: "HTTPTypes", package: "swift-http-types"),
             ],
             swiftSettings: [

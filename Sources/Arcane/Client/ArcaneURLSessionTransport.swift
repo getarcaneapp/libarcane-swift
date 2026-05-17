@@ -1,12 +1,12 @@
 import Foundation
 
 public final class ArcaneURLSessionTransport: @unchecked Sendable {
-    private let baseURL: URL
-    private let session: URLSession
-    private let authManager: AuthManager
+    let baseURL: URL
+    let session: URLSession
+    let authManager: AuthManager
     private let retryPolicy: RetryPolicy
-    private let decoder: JSONDecoder
-    private let encoder: JSONEncoder
+    let decoder: JSONDecoder
+    let encoder: JSONEncoder
 
     init(
         baseURL: URL,
@@ -51,13 +51,13 @@ public final class ArcaneURLSessionTransport: @unchecked Sendable {
 
     public func paginated<T: Decodable & Sendable>(
         _ path: String,
-        page: Int,
-        pageSize: Int,
+        start: Int,
+        limit: Int,
         query: [URLQueryItem] = []
     ) async throws -> PaginatedResponse<T> {
         var items = query
-        items.append(URLQueryItem(name: "page", value: "\(page)"))
-        items.append(URLQueryItem(name: "itemsPerPage", value: "\(pageSize)"))
+        items.append(URLQueryItem(name: "start", value: "\(max(0, start))"))
+        items.append(URLQueryItem(name: "limit", value: "\(limit)"))
         let data = try await rawRequest(path, query: items, body: Optional<EmptyBody>.none, authorized: true)
         do {
             return try decoder.decode(PaginatedResponse<T>.self, from: data)
@@ -122,6 +122,119 @@ public final class ArcaneURLSessionTransport: @unchecked Sendable {
             request.setValue(value, forHTTPHeaderField: key)
         }
         return request
+    }
+
+    /// Returns the bytes of an HTTP response as an async sequence, plus the response
+    /// metadata. Used by NDJSON streams and binary downloads. The caller is responsible
+    /// for checking `http.statusCode` and consuming the bytes — this method does not
+    /// validate the response status.
+    public func byteStream(
+        path: String,
+        method: String = "GET",
+        query: [URLQueryItem] = [],
+        body: Data? = nil,
+        contentType: String? = nil,
+        accept: String = "application/x-ndjson, application/x-json-stream, application/json",
+        authorized: Bool = true
+    ) async throws -> (URLSession.AsyncBytes, HTTPURLResponse) {
+        var didRefresh = false
+        while true {
+            var request = URLRequest(url: baseURL.appendingAPIPath(path).withQueryItems(query))
+            request.httpMethod = method
+            request.setValue(accept, forHTTPHeaderField: "Accept")
+            if authorized {
+                for (key, value) in try await authManager.authenticationHeaders() {
+                    request.setValue(value, forHTTPHeaderField: key)
+                }
+            }
+            if let body {
+                if let contentType {
+                    request.setValue(contentType, forHTTPHeaderField: "Content-Type")
+                }
+                request.httpBody = body
+            }
+            let (bytes, response) = try await session.bytes(for: request)
+            guard let http = response as? HTTPURLResponse else {
+                throw ArcaneError.transport("Request did not return an HTTP response")
+            }
+            if http.statusCode == 401, authorized, !didRefresh, try await authManager.hasRefreshCredential() {
+                _ = try await authManager.refreshTokens()
+                didRefresh = true
+                continue
+            }
+            return (bytes, http)
+        }
+    }
+
+    /// Uploads a multipart/form-data request from a tempfile (streamed from disk to
+    /// avoid loading large files into memory). The response is decoded as the
+    /// standard `APIResponse<T>` envelope.
+    public func multipartUpload<T: Decodable & Sendable>(
+        _ path: String,
+        method: String = "POST",
+        query: [URLQueryItem] = [],
+        fields: [String: String] = [:],
+        files: [MultipartFile]
+    ) async throws -> T {
+        let prepared = try makeMultipartTempFile(fields: fields, files: files)
+        defer { try? FileManager.default.removeItem(at: prepared.url) }
+
+        var didRefresh = false
+        while true {
+            var request = URLRequest(url: baseURL.appendingAPIPath(path).withQueryItems(query))
+            request.httpMethod = method
+            request.setValue("application/json", forHTTPHeaderField: "Accept")
+            request.setValue("multipart/form-data; boundary=\(prepared.boundary)", forHTTPHeaderField: "Content-Type")
+            for (key, value) in try await authManager.authenticationHeaders() {
+                request.setValue(value, forHTTPHeaderField: key)
+            }
+            let (data, response) = try await session.upload(for: request, fromFile: prepared.url)
+            guard let http = response as? HTTPURLResponse else {
+                throw ArcaneError.transport("Upload did not return an HTTP response")
+            }
+            if http.statusCode == 401, !didRefresh, try await authManager.hasRefreshCredential() {
+                _ = try await authManager.refreshTokens()
+                didRefresh = true
+                continue
+            }
+            guard (200..<300).contains(http.statusCode) else {
+                throw ArcaneError.from(statusCode: http.statusCode, data: data, headers: http.allHeaderFields, decoder: decoder)
+            }
+            do {
+                return try decoder.decode(APIResponse<T>.self, from: data).data
+            } catch {
+                throw ArcaneError.decoding(String(describing: error))
+            }
+        }
+    }
+
+    /// Uploads a multipart/form-data request and streams an NDJSON response back.
+    /// Used by endpoints like `POST /images/upload` that accept a tarball and stream
+    /// progress events as the load proceeds.
+    public func multipartUploadStream<Element: Decodable & Sendable>(
+        _ path: String,
+        method: String = "POST",
+        query: [URLQueryItem] = [],
+        fields: [String: String] = [:],
+        files: [MultipartFile]
+    ) -> NDJSONStream<Element> {
+        // The actual upload and streaming happen lazily inside the AsyncSequence's
+        // iterator so the caller can `for try await` directly. The body is the
+        // assembled multipart tempfile; the stream owns the tempfile lifecycle.
+        let endpoint = MultipartEndpoint(path: path, method: method, query: query, fields: fields, files: files)
+        return NDJSONStream(transport: self, multipart: endpoint)
+    }
+
+    /// Returns the raw bytes of a `GET` response. Used for binary downloads
+    /// (mTLS bundles, volume backups, file contents). The auth/retry path is
+    /// the same as `rawRequest` but the result is unwrapped binary instead of
+    /// an `APIResponse<T>` envelope.
+    public func downloadRaw(
+        _ path: String,
+        query: [URLQueryItem] = [],
+        authorized: Bool = true
+    ) async throws -> Data {
+        try await rawRequest(path, query: query, body: Optional<EmptyBody>.none, authorized: authorized)
     }
 
     private func makeRequest<Body: Encodable & Sendable>(

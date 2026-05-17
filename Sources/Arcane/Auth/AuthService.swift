@@ -18,7 +18,7 @@ public struct AuthService: Sendable {
         let response: LoginResponse = try await transport.request(
             "auth/login",
             method: "POST",
-            body: LoginRequest(password: password, username: username),
+            body: LoginRequest(username: username, password: password),
             authorized: false
         )
         try await authManager.save(loginResponse: response)
@@ -39,28 +39,54 @@ public struct AuthService: Sendable {
         try await authManager.refreshTokens()
     }
 
+    public func changePassword(currentPassword: String?, newPassword: String) async throws {
+        let body = PasswordChange(currentPassword: currentPassword, newPassword: newPassword)
+        let _: MessageResponse = try await transport.request("auth/password", method: "POST", body: body)
+    }
+
     // MARK: - OIDC
 
     // The OIDC endpoints return their response body directly (not wrapped in
     // the standard `{ success, data }` envelope), so we use `rawRequest` and
     // decode the body type ourselves.
 
-    public func oidcStatus() async throws -> OidcStatusInfo {
+    public func oidcStatus() async throws -> OIDCStatusInfo {
         let data = try await transport.rawRequest("oidc/status", body: Optional<EmptyBody>.none, authorized: false)
-        return try decodeOIDC(OidcStatusInfo.self, from: data)
+        return try decodeOIDC(OIDCStatusInfo.self, from: data)
     }
 
-    public func oidcAuthURL(mobileRedirectURI: String, redirectTo: String = "/") async throws -> OidcAuthUrlResponse {
-        let body = OidcAuthUrlRequest(redirectUri: redirectTo, mobileRedirectUri: mobileRedirectURI)
+    public func oidcConfig() async throws -> OIDCConfigResponse {
+        let data = try await transport.rawRequest("oidc/config", body: Optional<EmptyBody>.none, authorized: false)
+        return try decodeOIDC(OIDCConfigResponse.self, from: data)
+    }
+
+    public func oidcAuthURL(mobileRedirectURI: String, redirectTo: String = "/") async throws -> OIDCAuthURLResponse {
+        let body = OIDCAuthURLRequest(redirectUri: redirectTo, mobileRedirectUri: mobileRedirectURI)
         let data = try await transport.rawRequest("oidc/url", method: "POST", body: body, authorized: false)
-        return try decodeOIDC(OidcAuthUrlResponse.self, from: data)
+        return try decodeOIDC(OIDCAuthURLResponse.self, from: data)
     }
 
     @discardableResult
-    public func oidcCallback(code: String, state: String, mobileRedirectURI: String) async throws -> OidcCallbackResponse {
-        let body = OidcCallbackRequest(code: code, state: state, mobileRedirectUri: mobileRedirectURI)
+    public func oidcCallback(code: String, state: String, mobileRedirectURI: String) async throws -> OIDCCallbackResponse {
+        let body = OIDCCallbackRequest(code: code, state: state, mobileRedirectUri: mobileRedirectURI)
         let data = try await transport.rawRequest("oidc/callback", method: "POST", body: body, authorized: false)
-        let response = try decodeOIDC(OidcCallbackResponse.self, from: data)
+        let response = try decodeOIDC(OIDCCallbackResponse.self, from: data)
+        let tokens = TokenPair(accessToken: response.token, refreshToken: response.refreshToken, expiresAt: response.expiresAt)
+        try await authManager.save(tokens: tokens)
+        return response
+    }
+
+    public func oidcDeviceCode() async throws -> OIDCDeviceAuthResponse {
+        let body = OIDCDeviceAuthRequest()
+        let data = try await transport.rawRequest("oidc/device/code", method: "POST", body: body, authorized: false)
+        return try decodeOIDC(OIDCDeviceAuthResponse.self, from: data)
+    }
+
+    @discardableResult
+    public func oidcDeviceToken(deviceCode: String) async throws -> OIDCDeviceTokenResponse {
+        let body = OIDCDeviceTokenRequest(deviceCode: deviceCode)
+        let data = try await transport.rawRequest("oidc/device/token", method: "POST", body: body, authorized: false)
+        let response = try decodeOIDC(OIDCDeviceTokenResponse.self, from: data)
         let tokens = TokenPair(accessToken: response.token, refreshToken: response.refreshToken, expiresAt: response.expiresAt)
         try await authManager.save(tokens: tokens)
         return response
@@ -74,5 +100,3 @@ public struct AuthService: Sendable {
         }
     }
 }
-
-struct EmptyBody: Encodable, Sendable {}

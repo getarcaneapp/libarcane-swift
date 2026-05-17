@@ -1,15 +1,17 @@
 # Arcane Swift
 
-Swift SDK for the Arcane API, designed for iOS and macOS apps that need to talk to an Arcane manager or agent.
+Hand-written Swift SDK for the [Arcane](https://github.com/getarcaneapp/arcane) API, for iOS and macOS apps that talk to an Arcane manager or agent.
 
-This package has two layers:
+## Overview
 
-- `ArcaneAPI`: generated from `Spec/openapi.json` with Apple's `swift-openapi-generator` and checked in as static Swift source.
-- `Arcane`: a hand-written SDK facade with auth, token storage, environment scoping, generic REST helpers, and WebSocket streams.
+`libarcane-swift` is a single-layer, idiomatic Swift client built directly on `URLSession`. There is no code generation: every DTO and every endpoint method is hand-crafted to mirror the Arcane Go types and HTTP surface.
 
-`ArcaneOIDC` is a separate product for browser-based OIDC sign-in so apps that only use API keys or username/password auth do not link `AuthenticationServices`.
+Two products:
 
-The generated OpenAPI Swift files are checked in under `Sources/ArcaneAPI`. App consumers do not need the OpenAPI generator installed and do not run code generation during their builds.
+- **`Arcane`** — the core client. Auth, token storage, environment scoping, REST helpers, WebSocket streams, and per-resource services.
+- **`ArcaneOIDC`** — optional, for browser-based OIDC sign-in. Apps that only use API keys or username/password auth can skip linking `AuthenticationServices`.
+
+The type and module layout closely mirrors the Go packages under `arcane/types/`, so engineers moving between the two repos pay no translation tax.
 
 ## Quickstart
 
@@ -26,7 +28,7 @@ let client = ArcaneClient(
 
 try await client.auth.login(username: "admin", password: "password")
 
-let containers: [ContainerSummary] = try await client.containers.list(envID: "0")
+let containers = try await client.containers.list(envID: "0")
 try await client.containers.start(envID: "0", id: containers[0].id)
 
 for try await line in client.containers.logs(envID: "0", id: containers[0].id, follow: true) {
@@ -34,54 +36,98 @@ for try await line in client.containers.logs(envID: "0", id: containers[0].id, f
 }
 ```
 
-## Generated API
+## Services
 
-The complete OpenAPI client is generated from `Spec/openapi.json` and checked in under `Sources/ArcaneAPI`. Consumers do not need `swift-openapi-generator`; only maintainers need it when refreshing the spec.
+Each resource is exposed as a service on `ArcaneClient`:
 
-The `Arcane` product exports top-level Swift aliases for the generated DTOs that correspond to the `github.com/getarcaneapp/arcane/types` go package and the Arcane API.
+| Service | Endpoints |
+| --- | --- |
+| `client.auth` | login, logout, refresh, me, password change, OIDC flow |
+| `client.users` | user CRUD |
+| `client.apiKeys` | API key CRUD |
+| `client.environments` | environment CRUD, agent pairing, mTLS bundle |
+| `client.containers` | list, inspect, lifecycle, logs, stats, exec |
+| `client.images` | list, inspect, pull, build, prune, upload |
+| `client.volumes` | volumes, browse, backups |
+| `client.networks` | list, inspect, create, prune, topology |
+| `client.projects` | compose projects: up/down/restart/redeploy/build/pull/destroy/archive |
+| `client.swarm` | swarm: nodes, services, stacks, configs, secrets, tasks |
+| `client.system` | docker info, prune, convert, upgrade, bulk actions |
+| `client.dashboard` | env overview, action items |
+| `client.events` | audit events |
+| `client.webhooks` | webhook CRUD |
+| `client.notifications` | settings, providers, apprise, dispatch |
+| `client.templates` | templates, registries, default templates |
+| `client.registries` | container registries CRUD + test + sync |
+| `client.gitops` | repos, syncs, files |
+| `client.builds` | build workspace browse |
+| `client.jobs` | job executions and schedules |
+| `client.settings` | settings search, categories |
+| `client.updater` | updater status, run, history |
+| `client.vulnerabilities` | image scans, summaries, ignored |
+| `client.ports` | port mappings |
+| `client.version` | version info |
+
+Drop down to `client.transport` or `client.rest` for any endpoint that's not yet wrapped, or to build custom request flows.
+
+## Authentication
+
+Three parallel paths:
 
 ```swift
-let user: User
-let container: ContainerSummary
-let image: ImageSummary
-let env: Environment
-let volume: Volume
-let webhook: WebhookSummary
-```
+// 1. API key
+let client = ArcaneClient(configuration: .init(
+    baseURL: url,
+    apiKey: "my-static-api-key"
+))
 
-These are aliases to the generated OpenAPI schemas, not hand-written approximations, so fields stay aligned with the backend spec.
+// 2. Username/password (returns access + refresh token pair)
+try await client.auth.login(username: "admin", password: "password")
 
-Use the hand-written facade for common SDK workflows:
-
-```swift
-let containers = try await client.containers.list()
-```
-
-Drop to the generated client when you need an endpoint that does not have a facade wrapper yet:
-
-```swift
-let generated = client.generated
-let response = try await generated.listContainers(
-    .init(path: .init(id: "0"))
+// 3. OIDC (uses ArcaneOIDC product)
+import ArcaneOIDC
+let oidc = OIDCAuthenticator(client: client)
+let result = try await oidc.signIn(
+    callbackURLScheme: "arcane-mobile",
+    redirectURI: "arcane-mobile://oidc-callback",
+    presenting: anchor
 )
 ```
 
-You can also add the `ArcaneAPI` product directly in Xcode if you want to work against only the generated OpenAPI module.
+The `AuthManager` actor caches and refreshes tokens automatically; it deduplicates concurrent refresh attempts and falls back through your configured `TokenStore`. Two stores ship with the package: `InMemoryTokenStore` and `KeychainTokenStore`.
 
-## Spec Sync
+## Streaming
 
-The checked-in spec is generated from the sibling Arcane repo:
+WebSocket endpoints surface as `AsyncSequence`:
 
-```sh
-Scripts/update-spec.sh
+```swift
+for try await line in client.containers.logs(envID: "0", id: containerID) {
+    print(line.text)
+}
+
+for try await frame in client.containers.stats(envID: "0", id: containerID) {
+    print(frame)
+}
+
+let terminal = try await client.containers.terminal(envID: "0", id: containerID)
+try await terminal.send("ls -la\n")
+for try await chunk in terminal.output { print(chunk) }
 ```
 
-The backend JSON path currently emits OpenAPI 3.1 even when `--downgrade` is passed, so the script intentionally asks the backend for downgraded YAML and converts it to JSON. It then regenerates the static Swift sources in `Sources/ArcaneAPI`.
+## Errors
 
-Maintainers need `swift-openapi-generator` on `PATH` to run the script:
+`ArcaneError` is a flat enum that maps both Arcane envelopes and Huma's RFC-7807 422 responses to typed cases:
 
-```sh
-mint install apple/swift-openapi-generator
+```swift
+do {
+    try await client.containers.start(id: id)
+} catch ArcaneError.unauthorized {
+    // ...
+} catch ArcaneError.validation(let fields) {
+    // fields: [String: [String]]
+} catch ArcaneError.rateLimited(let retryAfter) {
+    // ...
+}
 ```
 
 ## Development
@@ -91,24 +137,22 @@ swift build
 swift test
 ```
 
-Integration tests are skipped unless `ARCANE_TEST_URL` is set.
+Integration tests skip themselves unless `ARCANE_TEST_URL` is set:
 
-## Linting
+```sh
+ARCANE_TEST_URL=https://my-arcane.example.com swift test
+```
 
-Install SwiftLint:
+### Linting
 
 ```sh
 brew install swiftlint
-```
-
-Run it from the repository root:
-
-```sh
 swiftlint lint
-```
-
-Auto-correct safe style fixes:
-
-```sh
 swiftlint --fix
 ```
+
+### Keeping types in sync with Arcane
+
+The Swift types in `Sources/Arcane/Models/<Domain>/` mirror the Go types in `arcane/types/<package>/`. When the backend changes shape, port the change by hand into the corresponding Swift file. There is no code generator to re-run.
+
+The version of Arcane this SDK currently targets is recorded in `BACKEND_VERSION`.

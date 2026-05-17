@@ -33,18 +33,33 @@ public struct ArcaneClient: Sendable {
     public let configuration: Configuration
     public let authManager: AuthManager
     public let transport: ArcaneURLSessionTransport
-    public let auth: AuthService
     public let rest: RESTService
+
+    public let auth: AuthService
+    public let users: UsersService
+    public let apiKeys: APIKeysService
+    public let environments: EnvironmentsService
     public let containers: ContainersService
     public let images: ImagesService
-    public let environments: EnvironmentsService
-    public let system: SystemService
+    public let volumes: VolumesService
+    public let networks: NetworksService
     public let projects: ProjectsService
     public let swarm: SwarmService
-    public let updater: UpdaterService
+    public let system: SystemService
+    public let dashboard: DashboardService
     public let events: EventsService
-    public let ports: PortsService
+    public let webhooks: WebhooksService
+    public let notifications: NotificationsService
+    public let templates: TemplatesService
+    public let registries: ContainerRegistriesService
+    public let gitops: GitOpsService
+    public let builds: BuildsService
     public let jobs: JobsService
+    public let settings: SettingsService
+    public let updater: UpdaterService
+    public let vulnerabilities: VulnerabilitiesService
+    public let ports: PortsService
+    public let version: VersionService
 
     public init(configuration: Configuration) {
         self.configuration = configuration
@@ -66,17 +81,36 @@ public struct ArcaneClient: Sendable {
             encoder: configuration.jsonEncoder
         )
         self.rest = RESTService(transport: transport, defaultEnvironmentID: configuration.defaultEnvironmentID)
-        self.auth = AuthService(transport: transport, authManager: authManager, decoder: configuration.jsonDecoder, encoder: configuration.jsonEncoder)
+        self.auth = AuthService(
+            transport: transport,
+            authManager: authManager,
+            decoder: configuration.jsonDecoder,
+            encoder: configuration.jsonEncoder
+        )
+        self.users = UsersService(rest: rest)
+        self.apiKeys = APIKeysService(rest: rest)
+        self.environments = EnvironmentsService(rest: rest)
         self.containers = ContainersService(rest: rest)
         self.images = ImagesService(rest: rest)
-        self.environments = EnvironmentsService(rest: rest)
-        self.system = SystemService(rest: rest)
+        self.volumes = VolumesService(rest: rest)
+        self.networks = NetworksService(rest: rest)
         self.projects = ProjectsService(rest: rest)
         self.swarm = SwarmService(rest: rest)
-        self.updater = UpdaterService(rest: rest)
+        self.system = SystemService(rest: rest)
+        self.dashboard = DashboardService(rest: rest)
         self.events = EventsService(rest: rest)
-        self.ports = PortsService(rest: rest)
+        self.webhooks = WebhooksService(rest: rest)
+        self.notifications = NotificationsService(rest: rest)
+        self.templates = TemplatesService(rest: rest)
+        self.registries = ContainerRegistriesService(rest: rest)
+        self.gitops = GitOpsService(rest: rest)
+        self.builds = BuildsService(rest: rest)
         self.jobs = JobsService(rest: rest)
+        self.settings = SettingsService(rest: rest)
+        self.updater = UpdaterService(rest: rest)
+        self.vulnerabilities = VulnerabilitiesService(rest: rest)
+        self.ports = PortsService(rest: rest)
+        self.version = VersionService(rest: rest)
     }
 
     public func scoped(toEnvironment envID: EnvironmentID) -> ArcaneClient {
@@ -95,6 +129,11 @@ public enum ArcaneJSON {
             let formatter = ISO8601DateFormatter()
             formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
             if let date = formatter.date(from: raw) {
+                return date
+            }
+            let fallback = ISO8601DateFormatter()
+            fallback.formatOptions = [.withInternetDateTime]
+            if let date = fallback.date(from: raw) {
                 return date
             }
             throw DecodingError.dataCorruptedError(in: container, debugDescription: "Invalid ISO8601 date: \(raw)")
