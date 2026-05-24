@@ -16,10 +16,20 @@ public struct ImagesService: Sendable {
         inUse: String? = nil,
         updates: String? = nil
     ) async throws -> ImageListResponse {
-        var items = query.queryItems
+        var items = query.nonPaginationQueryItems
         if let inUse { items.append(URLQueryItem(name: "inUse", value: inUse)) }
         if let updates { items.append(URLQueryItem(name: "updates", value: updates)) }
-        return try await rest.get(rest.environmentPath(envID, "images"), query: items)
+        let response: PaginatedResponse<ImageSummary> = try await rest.paginated(
+            rest.environmentPath(envID, "images"),
+            start: query.start ?? 0,
+            limit: query.limit ?? 20,
+            query: items
+        )
+        return ImageListResponse(
+            success: response.success,
+            data: response.data,
+            pagination: response.pagination
+        )
     }
 
     /// Aggregate counts of images (in use / unused / total / total size).
