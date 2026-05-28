@@ -47,4 +47,24 @@ public struct UsersService: Sendable {
     public func changePassword(_ body: PasswordChange) async throws {
         try await rest.postVoid("auth/password", body: body)
     }
+
+    /// List a user's role assignments (v2 only).
+    /// Reserved for global admins server-side.
+    public func getRoleAssignments(userId: String) async throws -> [RoleAssignment] {
+        try await rest.get("users/\(userId)/role-assignments")
+    }
+
+    /// Replace a user's manual role assignments (v2 only).
+    /// `source == "oidc"` assignments are preserved by the server.
+    /// May throw `.conflict` if the change would remove the last global admin.
+    @discardableResult
+    public func setRoleAssignments(
+        userId: String,
+        assignments: [UserAssignmentInput]
+    ) async throws -> [RoleAssignment] {
+        try await rest.put(
+            "users/\(userId)/role-assignments",
+            body: SetUserAssignments(assignments: assignments)
+        )
+    }
 }

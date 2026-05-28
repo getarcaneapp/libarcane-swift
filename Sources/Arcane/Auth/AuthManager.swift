@@ -9,6 +9,7 @@ public actor AuthManager {
     private let encoder: JSONEncoder
     private var cachedTokens: TokenPair?
     private var refreshTask: Task<TokenPair, Error>?
+    private var capabilities: ServerCapabilities = .unknown
 
     public init(
         baseURL: URL,
@@ -66,7 +67,18 @@ public actor AuthManager {
     public func clear() async throws {
         cachedTokens = nil
         refreshTask = nil
+        capabilities = .unknown
         try await tokenStore.clearTokens()
+    }
+
+    public func currentCapabilities() -> ServerCapabilities { capabilities }
+
+    /// Records detected capabilities from a freshly decoded `User`. Ignores
+    /// `.unknown` detections so a stale signal never clobbers a known mode.
+    public func recordCapabilities(from user: User) {
+        let detected = ServerCapabilities.detect(from: user)
+        guard detected != .unknown else { return }
+        capabilities = ServerCapabilities(mode: detected)
     }
 
     public func refreshTokens() async throws -> TokenPair {

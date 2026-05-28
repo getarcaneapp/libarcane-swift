@@ -22,6 +22,7 @@ public struct AuthService: Sendable {
             authorized: false
         )
         try await authManager.save(loginResponse: response)
+        await authManager.recordCapabilities(from: response.user)
         return response
     }
 
@@ -31,7 +32,9 @@ public struct AuthService: Sendable {
     }
 
     public func me() async throws -> User {
-        try await transport.request("auth/me")
+        let user: User = try await transport.request("auth/me")
+        await authManager.recordCapabilities(from: user)
+        return user
     }
 
     @discardableResult
@@ -73,6 +76,7 @@ public struct AuthService: Sendable {
         let response = try decodeOIDC(OIDCCallbackResponse.self, from: data)
         let tokens = TokenPair(accessToken: response.token, refreshToken: response.refreshToken, expiresAt: response.expiresAt)
         try await authManager.save(tokens: tokens)
+        await authManager.recordCapabilities(from: response.user)
         return response
     }
 
@@ -89,6 +93,7 @@ public struct AuthService: Sendable {
         let response = try decodeOIDC(OIDCDeviceTokenResponse.self, from: data)
         let tokens = TokenPair(accessToken: response.token, refreshToken: response.refreshToken, expiresAt: response.expiresAt)
         try await authManager.save(tokens: tokens)
+        await authManager.recordCapabilities(from: response.user)
         return response
     }
 

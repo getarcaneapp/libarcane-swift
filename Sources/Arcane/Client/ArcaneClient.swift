@@ -38,6 +38,8 @@ public struct ArcaneClient: Sendable {
     public let auth: AuthService
     public let users: UsersService
     public let apiKeys: APIKeysService
+    public let roles: RolesService
+    public let oidcRoleMappings: OidcRoleMappingsService
     public let environments: EnvironmentsService
     public let containers: ContainersService
     public let images: ImagesService
@@ -89,6 +91,8 @@ public struct ArcaneClient: Sendable {
         )
         self.users = UsersService(rest: rest)
         self.apiKeys = APIKeysService(rest: rest)
+        self.roles = RolesService(rest: rest)
+        self.oidcRoleMappings = OidcRoleMappingsService(rest: rest)
         self.environments = EnvironmentsService(rest: rest)
         self.containers = ContainersService(rest: rest)
         self.images = ImagesService(rest: rest)
@@ -117,6 +121,14 @@ public struct ArcaneClient: Sendable {
         var scoped = configuration
         scoped.defaultEnvironmentID = envID
         return ArcaneClient(configuration: scoped)
+    }
+
+    /// Snapshot of the server's API shape. `.unknown` until the SDK decodes
+    /// its first authenticated `User` payload (login, `auth/me`, or an OIDC
+    /// callback). Apps that gate UI on RBAC support should check
+    /// `.supportsRoleManagement` once the user is authenticated.
+    public func serverCapabilities() async -> ServerCapabilities {
+        await authManager.currentCapabilities()
     }
 }
 
