@@ -12,6 +12,18 @@ public struct NetworkSummary: Codable, Hashable, Sendable, Identifiable {
     public var inUse: Bool
     public var isDefault: Bool
 
+    private enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case driver
+        case scope
+        case created
+        case options
+        case labels
+        case inUse
+        case isDefault
+    }
+
     public init(
         id: String,
         name: String,
@@ -32,6 +44,19 @@ public struct NetworkSummary: Codable, Hashable, Sendable, Identifiable {
         self.labels = labels
         self.inUse = inUse
         self.isDefault = isDefault
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(String.self, forKey: .id)
+        name = try container.decode(String.self, forKey: .name)
+        driver = try container.decode(String.self, forKey: .driver)
+        scope = try container.decode(String.self, forKey: .scope)
+        created = try container.decode(Date.self, forKey: .created)
+        options = try container.decodeEmptyDictionaryIfPresent([String: String].self, forKey: .options)
+        labels = try container.decodeEmptyDictionaryIfPresent([String: String].self, forKey: .labels)
+        inUse = try container.decode(Bool.self, forKey: .inUse)
+        isDefault = try container.decode(Bool.self, forKey: .isDefault)
     }
 }
 
@@ -133,6 +158,28 @@ public struct NetworkInspect: Codable, Hashable, Sendable, Identifiable {
     public var services: [String: JSONValue]?
     public var containersList: [NetworkContainerEndpoint]
 
+    private enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case driver
+        case scope
+        case created
+        case enableIPv4
+        case enableIPv6
+        case ipam
+        case `internal`
+        case attachable
+        case ingress
+        case configFrom
+        case configOnly
+        case containers
+        case options
+        case labels
+        case peers
+        case services
+        case containersList
+    }
+
     public init(
         id: String,
         name: String,
@@ -173,6 +220,29 @@ public struct NetworkInspect: Codable, Hashable, Sendable, Identifiable {
         self.peers = peers
         self.services = services
         self.containersList = containersList
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(String.self, forKey: .id)
+        name = try container.decode(String.self, forKey: .name)
+        driver = try container.decode(String.self, forKey: .driver)
+        scope = try container.decode(String.self, forKey: .scope)
+        created = try container.decode(Date.self, forKey: .created)
+        enableIPv4 = try container.decode(Bool.self, forKey: .enableIPv4)
+        enableIPv6 = try container.decode(Bool.self, forKey: .enableIPv6)
+        ipam = try container.decode(IPAM.self, forKey: .ipam)
+        self.internal = try container.decode(Bool.self, forKey: .internal)
+        attachable = try container.decode(Bool.self, forKey: .attachable)
+        ingress = try container.decode(Bool.self, forKey: .ingress)
+        configFrom = try container.decodeIfPresent([String: JSONValue].self, forKey: .configFrom)
+        configOnly = try container.decode(Bool.self, forKey: .configOnly)
+        containers = try container.decodeEmptyDictionaryIfPresent([String: JSONValue].self, forKey: .containers)
+        options = try container.decodeEmptyDictionaryIfPresent([String: String].self, forKey: .options)
+        labels = try container.decodeEmptyDictionaryIfPresent([String: String].self, forKey: .labels)
+        peers = try container.decodeIfPresent([JSONValue].self, forKey: .peers)
+        services = try container.decodeIfPresent([String: JSONValue].self, forKey: .services)
+        containersList = try container.decode([NetworkContainerEndpoint].self, forKey: .containersList)
     }
 }
 

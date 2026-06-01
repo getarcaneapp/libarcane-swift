@@ -18,6 +18,24 @@ public struct ContainerSummary: Codable, Hashable, Sendable, Identifiable {
     public var updateInfo: ImageUpdateInfo?
     public var redeployDisabled: Bool?
 
+    private enum CodingKeys: String, CodingKey {
+        case id
+        case names
+        case image
+        case imageId
+        case command
+        case created
+        case ports
+        case labels
+        case state
+        case status
+        case hostConfig
+        case networkSettings
+        case mounts
+        case updateInfo
+        case redeployDisabled
+    }
+
     public init(
         id: String,
         names: [String] = [],
@@ -50,6 +68,25 @@ public struct ContainerSummary: Codable, Hashable, Sendable, Identifiable {
         self.mounts = mounts
         self.updateInfo = updateInfo
         self.redeployDisabled = redeployDisabled
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(String.self, forKey: .id)
+        names = try container.decode([String].self, forKey: .names)
+        image = try container.decode(String.self, forKey: .image)
+        imageId = try container.decode(String.self, forKey: .imageId)
+        command = try container.decode(String.self, forKey: .command)
+        created = try container.decode(Int64.self, forKey: .created)
+        ports = try container.decode([ContainerPort].self, forKey: .ports)
+        labels = try container.decodeEmptyDictionaryIfPresent([String: String].self, forKey: .labels)
+        state = try container.decode(String.self, forKey: .state)
+        status = try container.decode(String.self, forKey: .status)
+        hostConfig = try container.decode(ContainerHostConfig.self, forKey: .hostConfig)
+        networkSettings = try container.decode(ContainerNetworkSettings.self, forKey: .networkSettings)
+        mounts = try container.decode([ContainerMount].self, forKey: .mounts)
+        updateInfo = try container.decodeIfPresent(ImageUpdateInfo.self, forKey: .updateInfo)
+        redeployDisabled = try container.decodeIfPresent(Bool.self, forKey: .redeployDisabled)
     }
 }
 

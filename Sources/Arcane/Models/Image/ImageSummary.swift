@@ -29,6 +29,22 @@ public struct ImageSummary: Codable, Hashable, Sendable, Identifiable {
     public var updateInfo: ImageUpdateInfo?
     public var vulnerabilityScan: VulnerabilityScanSummary?
 
+    private enum CodingKeys: String, CodingKey {
+        case id
+        case repoTags
+        case repoDigests
+        case created
+        case size
+        case virtualSize
+        case labels
+        case inUse
+        case usedBy
+        case repo
+        case tag
+        case updateInfo
+        case vulnerabilityScan
+    }
+
     public init(
         id: String,
         repoTags: [String] = [],
@@ -57,6 +73,23 @@ public struct ImageSummary: Codable, Hashable, Sendable, Identifiable {
         self.tag = tag
         self.updateInfo = updateInfo
         self.vulnerabilityScan = vulnerabilityScan
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(String.self, forKey: .id)
+        repoTags = try container.decode([String].self, forKey: .repoTags)
+        repoDigests = try container.decode([String].self, forKey: .repoDigests)
+        created = try container.decode(Int64.self, forKey: .created)
+        size = try container.decode(Int64.self, forKey: .size)
+        virtualSize = try container.decode(Int64.self, forKey: .virtualSize)
+        labels = try container.decodeEmptyDictionaryIfPresent([String: JSONValue].self, forKey: .labels)
+        inUse = try container.decode(Bool.self, forKey: .inUse)
+        usedBy = try container.decodeIfPresent([ImageUsedBy].self, forKey: .usedBy)
+        repo = try container.decode(String.self, forKey: .repo)
+        tag = try container.decode(String.self, forKey: .tag)
+        updateInfo = try container.decodeIfPresent(ImageUpdateInfo.self, forKey: .updateInfo)
+        vulnerabilityScan = try container.decodeIfPresent(VulnerabilityScanSummary.self, forKey: .vulnerabilityScan)
     }
 }
 

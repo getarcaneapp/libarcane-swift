@@ -112,6 +112,15 @@ public struct ContainerNetworkSettings: Codable, Hashable, Sendable {
     public init(networks: [String: ContainerNetworkEndpoint] = [:]) {
         self.networks = networks
     }
+
+    private enum CodingKeys: String, CodingKey {
+        case networks
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        networks = try container.decodeEmptyDictionaryIfPresent([String: ContainerNetworkEndpoint].self, forKey: .networks)
+    }
 }
 
 /// Host configuration for a container.

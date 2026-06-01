@@ -68,19 +68,19 @@ public struct Volume: Codable, Hashable, Sendable, Identifiable {
     }
 
     public init(from decoder: Decoder) throws {
-        let c = try decoder.container(keyedBy: CodingKeys.self)
-        id = try c.decode(String.self, forKey: .id)
-        name = try c.decodeIfPresent(String.self, forKey: .name) ?? ""
-        driver = try c.decodeIfPresent(String.self, forKey: .driver) ?? ""
-        mountpoint = try c.decodeIfPresent(String.self, forKey: .mountpoint) ?? ""
-        scope = try c.decodeIfPresent(String.self, forKey: .scope) ?? ""
-        options = try c.decodeIfPresent([String: String].self, forKey: .options) ?? [:]
-        labels = try c.decodeIfPresent([String: String].self, forKey: .labels) ?? [:]
-        createdAt = try c.decodeIfPresent(String.self, forKey: .createdAt) ?? ""
-        inUse = try c.decodeIfPresent(Bool.self, forKey: .inUse) ?? false
-        usageData = try c.decodeIfPresent(VolumeUsageData.self, forKey: .usageData)
-        size = try c.decodeIfPresent(Int64.self, forKey: .size) ?? 0
-        containers = try c.decodeIfPresent([String].self, forKey: .containers) ?? []
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(String.self, forKey: .id)
+        name = try container.decodeIfPresent(String.self, forKey: .name) ?? ""
+        driver = try container.decodeIfPresent(String.self, forKey: .driver) ?? ""
+        mountpoint = try container.decodeIfPresent(String.self, forKey: .mountpoint) ?? ""
+        scope = try container.decodeIfPresent(String.self, forKey: .scope) ?? ""
+        options = try container.decodeEmptyDictionaryIfPresent([String: String].self, forKey: .options)
+        labels = try container.decodeEmptyDictionaryIfPresent([String: String].self, forKey: .labels)
+        createdAt = try container.decodeIfPresent(String.self, forKey: .createdAt) ?? ""
+        inUse = try container.decodeIfPresent(Bool.self, forKey: .inUse) ?? false
+        usageData = try container.decodeIfPresent(VolumeUsageData.self, forKey: .usageData)
+        size = try container.decodeIfPresent(Int64.self, forKey: .size) ?? 0
+        containers = try container.decodeIfPresent([String].self, forKey: .containers) ?? []
     }
 }
 
