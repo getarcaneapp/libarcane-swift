@@ -49,6 +49,7 @@ public struct ArcaneClient: Sendable {
     public let swarm: SwarmService
     public let system: SystemService
     public let dashboard: DashboardService
+    public let activities: ActivitiesService
     public let events: EventsService
     public let webhooks: WebhooksService
     public let notifications: NotificationsService
@@ -102,6 +103,7 @@ public struct ArcaneClient: Sendable {
         self.swarm = SwarmService(rest: rest)
         self.system = SystemService(rest: rest)
         self.dashboard = DashboardService(rest: rest)
+        self.activities = ActivitiesService(rest: rest)
         self.events = EventsService(rest: rest)
         self.webhooks = WebhooksService(rest: rest)
         self.notifications = NotificationsService(rest: rest)

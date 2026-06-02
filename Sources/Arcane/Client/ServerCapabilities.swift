@@ -25,6 +25,9 @@ public struct ServerCapabilities: Hashable, Sendable {
     /// True iff the server exposes the v2 RBAC endpoints.
     public var supportsRoleManagement: Bool { mode == .rbac }
 
+    /// True iff the server exposes the v2 background activity endpoints.
+    public var supportsActivities: Bool { mode == .rbac }
+
     /// True iff payloads include `permissionsByEnv` so per-permission queries
     /// return non-trivial answers for non-admin users.
     public var supportsPermissionQueries: Bool { mode == .rbac }
