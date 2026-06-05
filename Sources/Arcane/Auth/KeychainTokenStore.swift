@@ -34,10 +34,18 @@ public struct KeychainTokenStore: TokenStore {
     public func saveTokens(_ tokens: TokenPair) async throws {
         let data = try JSONEncoder().encode(tokens)
         var query = baseQuery()
-        let attributes = [kSecValueData as String: data]
+        // Keep tokens readable while the device is locked (after the first unlock
+        // following a reboot) so a locked device never costs the user their
+        // session. `loadTokens`/`clearTokens` don't filter on accessibility, so
+        // items saved under the old default migrate to this on the next save.
+        let attributes: [String: Any] = [
+            kSecValueData as String: data,
+            kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlock
+        ]
         let status = SecItemUpdate(query as CFDictionary, attributes as CFDictionary)
         if status == errSecItemNotFound {
             query[kSecValueData as String] = data
+            query[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlock
             let addStatus = SecItemAdd(query as CFDictionary, nil)
             guard addStatus == errSecSuccess else {
                 throw KeychainError(status: addStatus)

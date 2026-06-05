@@ -132,7 +132,16 @@ public actor AuthManager {
             return tokens
         } catch {
             refreshTask = nil
-            try? await clear()
+            // Only discard the stored credential when the server explicitly
+            // rejects the refresh token (it's revoked/expired). Transient
+            // failures — offline, timeout, 5xx — must NOT sign the user out; keep
+            // the credential so a later attempt can succeed.
+            switch error {
+            case ArcaneError.unauthorized, ArcaneError.forbidden:
+                try? await clear()
+            default:
+                break
+            }
             throw error
         }
     }
