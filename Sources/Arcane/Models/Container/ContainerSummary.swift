@@ -15,6 +15,8 @@ public struct ContainerSummary: Codable, Hashable, Sendable, Identifiable {
     public var hostConfig: ContainerHostConfig
     public var networkSettings: ContainerNetworkSettings
     public var mounts: [ContainerMount]
+    public var iconLightUrl: String?
+    public var iconDarkUrl: String?
     public var updateInfo: ImageUpdateInfo?
     public var redeployDisabled: Bool?
 
@@ -32,6 +34,8 @@ public struct ContainerSummary: Codable, Hashable, Sendable, Identifiable {
         case hostConfig
         case networkSettings
         case mounts
+        case iconLightUrl
+        case iconDarkUrl
         case updateInfo
         case redeployDisabled
     }
@@ -50,6 +54,8 @@ public struct ContainerSummary: Codable, Hashable, Sendable, Identifiable {
         hostConfig: ContainerHostConfig = .init(),
         networkSettings: ContainerNetworkSettings = .init(),
         mounts: [ContainerMount] = [],
+        iconLightUrl: String? = nil,
+        iconDarkUrl: String? = nil,
         updateInfo: ImageUpdateInfo? = nil,
         redeployDisabled: Bool? = nil
     ) {
@@ -66,6 +72,8 @@ public struct ContainerSummary: Codable, Hashable, Sendable, Identifiable {
         self.hostConfig = hostConfig
         self.networkSettings = networkSettings
         self.mounts = mounts
+        self.iconLightUrl = iconLightUrl
+        self.iconDarkUrl = iconDarkUrl
         self.updateInfo = updateInfo
         self.redeployDisabled = redeployDisabled
     }
@@ -85,6 +93,8 @@ public struct ContainerSummary: Codable, Hashable, Sendable, Identifiable {
         hostConfig = try container.decode(ContainerHostConfig.self, forKey: .hostConfig)
         networkSettings = try container.decode(ContainerNetworkSettings.self, forKey: .networkSettings)
         mounts = try container.decode([ContainerMount].self, forKey: .mounts)
+        iconLightUrl = try container.decodeIfPresent(String.self, forKey: .iconLightUrl)
+        iconDarkUrl = try container.decodeIfPresent(String.self, forKey: .iconDarkUrl)
         updateInfo = try container.decodeIfPresent(ImageUpdateInfo.self, forKey: .updateInfo)
         redeployDisabled = try container.decodeIfPresent(Bool.self, forKey: .redeployDisabled)
     }

@@ -76,6 +76,8 @@ public struct RuntimeService: Codable, Hashable, Sendable {
     public var ports: [String]?
     public var health: String?
     public var iconUrl: String?
+    public var iconLightUrl: String?
+    public var iconDarkUrl: String?
     public var serviceConfig: [String: JSONValue]?
     public var redeployDisabled: Bool?
 
@@ -88,6 +90,8 @@ public struct RuntimeService: Codable, Hashable, Sendable {
         ports: [String]? = nil,
         health: String? = nil,
         iconUrl: String? = nil,
+        iconLightUrl: String? = nil,
+        iconDarkUrl: String? = nil,
         serviceConfig: [String: JSONValue]? = nil,
         redeployDisabled: Bool? = nil
     ) {
@@ -99,6 +103,8 @@ public struct RuntimeService: Codable, Hashable, Sendable {
         self.ports = ports
         self.health = health
         self.iconUrl = iconUrl
+        self.iconLightUrl = iconLightUrl
+        self.iconDarkUrl = iconDarkUrl
         self.serviceConfig = serviceConfig
         self.redeployDisabled = redeployDisabled
     }
@@ -200,6 +206,8 @@ public struct ProjectDetails: Codable, Hashable, Sendable, Identifiable {
     public var relativePath: String?
     public var path: String
     public var iconUrl: String?
+    public var iconLightUrl: String?
+    public var iconDarkUrl: String?
     public var urls: [String]?
     public var composeContent: String?
     public var composeFileName: String?
@@ -231,6 +239,8 @@ public struct ProjectDetails: Codable, Hashable, Sendable, Identifiable {
         relativePath: String? = nil,
         path: String,
         iconUrl: String? = nil,
+        iconLightUrl: String? = nil,
+        iconDarkUrl: String? = nil,
         urls: [String]? = nil,
         composeContent: String? = nil,
         composeFileName: String? = nil,
@@ -261,6 +271,8 @@ public struct ProjectDetails: Codable, Hashable, Sendable, Identifiable {
         self.relativePath = relativePath
         self.path = path
         self.iconUrl = iconUrl
+        self.iconLightUrl = iconLightUrl
+        self.iconDarkUrl = iconDarkUrl
         self.urls = urls
         self.composeContent = composeContent
         self.composeFileName = composeFileName

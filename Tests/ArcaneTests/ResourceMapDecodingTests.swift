@@ -29,6 +29,99 @@ final class ResourceMapDecodingTests: XCTestCase {
         XCTAssertEqual(container.labels, [:])
     }
 
+    func testContainerSummaryDecodesThemedIconUrls() throws {
+        let json = #"""
+        {
+            "id": "container-id",
+            "names": ["/app"],
+            "image": "example/app:latest",
+            "imageId": "sha256:image",
+            "command": "",
+            "created": 0,
+            "ports": [],
+            "labels": {},
+            "state": "running",
+            "status": "Up",
+            "hostConfig": {},
+            "networkSettings": { "networks": {} },
+            "mounts": [],
+            "iconLightUrl": "https://cdn.example/app-light.png",
+            "iconDarkUrl": "https://cdn.example/app-dark.png"
+        }
+        """#
+
+        let container = try decoder.decode(ContainerSummary.self, from: Data(json.utf8))
+
+        XCTAssertEqual(container.iconLightUrl, "https://cdn.example/app-light.png")
+        XCTAssertEqual(container.iconDarkUrl, "https://cdn.example/app-dark.png")
+    }
+
+    func testContainerDetailsDecodesThemedIconUrls() throws {
+        let json = #"""
+        {
+            "id": "container-id",
+            "name": "/app",
+            "image": "example/app:latest",
+            "imageId": "sha256:image",
+            "created": "2026-06-06T00:00:00Z",
+            "state": { "status": "running", "running": true },
+            "config": {},
+            "hostConfig": {},
+            "networkSettings": { "networks": {} },
+            "ports": [],
+            "mounts": [],
+            "labels": {},
+            "iconLightUrl": "https://cdn.example/detail-light.png",
+            "iconDarkUrl": "https://cdn.example/detail-dark.png"
+        }
+        """#
+
+        let container = try decoder.decode(ContainerDetails.self, from: Data(json.utf8))
+
+        XCTAssertEqual(container.iconLightUrl, "https://cdn.example/detail-light.png")
+        XCTAssertEqual(container.iconDarkUrl, "https://cdn.example/detail-dark.png")
+    }
+
+    func testProjectDetailsDecodesThemedIconUrls() throws {
+        let json = #"""
+        {
+            "id": "project-id",
+            "name": "Project",
+            "path": "/srv/projects/project",
+            "status": "running",
+            "serviceCount": 1,
+            "runningCount": 1,
+            "isArchived": false,
+            "createdAt": "2026-06-06T00:00:00Z",
+            "updatedAt": "2026-06-06T00:00:00Z",
+            "iconLightUrl": "https://cdn.example/project-light.png",
+            "iconDarkUrl": "https://cdn.example/project-dark.png"
+        }
+        """#
+
+        let project = try decoder.decode(ProjectDetails.self, from: Data(json.utf8))
+
+        XCTAssertEqual(project.iconLightUrl, "https://cdn.example/project-light.png")
+        XCTAssertEqual(project.iconDarkUrl, "https://cdn.example/project-dark.png")
+    }
+
+    func testRuntimeServiceDecodesThemedIconUrls() throws {
+        let json = #"""
+        {
+            "name": "app",
+            "image": "example/app:latest",
+            "status": "running",
+            "iconLightUrl": "https://cdn.example/service-light.png",
+            "iconDarkUrl": "https://cdn.example/service-dark.png"
+        }
+        """#
+
+        let service = try decoder.decode(RuntimeService.self, from: Data(json.utf8))
+
+        XCTAssertEqual(service.iconLightUrl, "https://cdn.example/service-light.png")
+        XCTAssertEqual(service.iconDarkUrl, "https://cdn.example/service-dark.png")
+    }
+
     func testContainerNetworkSettingsDecodesNullNetworksAsEmptyDictionary() throws {
         let settings = try decoder.decode(ContainerNetworkSettings.self, from: Data(#"{"networks":null}"#.utf8))
 

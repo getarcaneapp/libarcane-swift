@@ -15,6 +15,8 @@ public struct ContainerDetails: Codable, Hashable, Sendable, Identifiable {
     public var mounts: [ContainerMount]
     public var labels: [String: String]?
     public var composeInfo: ContainerComposeInfo?
+    public var iconLightUrl: String?
+    public var iconDarkUrl: String?
     public var redeployDisabled: Bool?
 
     public init(
@@ -31,6 +33,8 @@ public struct ContainerDetails: Codable, Hashable, Sendable, Identifiable {
         mounts: [ContainerMount] = [],
         labels: [String: String]? = nil,
         composeInfo: ContainerComposeInfo? = nil,
+        iconLightUrl: String? = nil,
+        iconDarkUrl: String? = nil,
         redeployDisabled: Bool? = nil
     ) {
         self.id = id
@@ -46,6 +50,8 @@ public struct ContainerDetails: Codable, Hashable, Sendable, Identifiable {
         self.mounts = mounts
         self.labels = labels
         self.composeInfo = composeInfo
+        self.iconLightUrl = iconLightUrl
+        self.iconDarkUrl = iconDarkUrl
         self.redeployDisabled = redeployDisabled
     }
 }
