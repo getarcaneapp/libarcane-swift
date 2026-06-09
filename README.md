@@ -13,6 +13,14 @@ Two products:
 
 The type and module layout closely mirrors the Go packages under `arcane/types/`, so engineers moving between the two repos pay no translation tax.
 
+## Requirements
+
+- Swift toolchain: `6.3` or newer
+- Swift Package Manager manifest: `// swift-tools-version: 6.3`
+- Deployment targets declared by this package:
+  - `iOS 18`
+  - `macOS 26`
+
 ## Quickstart
 
 ```swift
@@ -70,6 +78,32 @@ Each resource is exposed as a service on `ArcaneClient`:
 
 Drop down to `client.transport` or `client.rest` for any endpoint that's not yet wrapped, or to build custom request flows.
 
+## Configuration
+
+`ArcaneClient.Configuration` is the single place to tune how the SDK talks to Arcane:
+
+- `baseURL`: Manager or agent root URL.
+- `tokenStore`: Persistent or in-memory credential storage.
+- `apiKey`: Optional static API key instead of token-based auth.
+- `defaultEnvironmentID`: Default environment used by `envID: nil` service calls.
+- `urlSession`: Inject an app-owned session when you need custom connectivity, cookie, caching, proxy, certificate, or timeout behavior.
+- `retryPolicy`: Retry budget for idempotent transport calls.
+
+Recommended for production apps: create and inject your own `URLSession` instead of relying on `URLSession.shared`. The SDK uses that session for regular HTTP requests, byte streams, multipart uploads, and websocket streams.
+
+```swift
+let sessionConfiguration = URLSessionConfiguration.default
+sessionConfiguration.waitsForConnectivity = true
+sessionConfiguration.requestCachePolicy = .reloadIgnoringLocalCacheData
+
+let session = URLSession(configuration: sessionConfiguration)
+let client = ArcaneClient(configuration: .init(
+    baseURL: url,
+    tokenStore: KeychainTokenStore(service: "com.example.app.arcane"),
+    urlSession: session
+))
+```
+
 ## Authentication
 
 Three parallel paths:
@@ -96,6 +130,8 @@ let result = try await oidc.signIn(
 
 The `AuthManager` actor caches and refreshes tokens automatically; it deduplicates concurrent refresh attempts and falls back through your configured `TokenStore`. Two stores ship with the package: `InMemoryTokenStore` and `KeychainTokenStore`.
 
+`ArcaneOIDC` builds on the same `ArcaneClient` instance. `OIDCAuthenticator` handles the browser handoff, then persists the returned tokens through the client's `AuthManager` so subsequent service calls use the same auth state.
+
 ## Streaming
 
 WebSocket endpoints surface as `AsyncSequence`:
@@ -109,10 +145,21 @@ for try await frame in client.containers.stats(envID: "0", id: containerID) {
     print(frame)
 }
 
-let terminal = try await client.containers.terminal(envID: "0", id: containerID)
+let terminal = try await client.containers.exec(envID: "0", id: containerID)
 try await terminal.send("ls -la\n")
-for try await chunk in terminal.output { print(chunk) }
+for try await chunk in terminal.output {
+    print(String(decoding: chunk, as: UTF8.self))
+}
 ```
+
+`LogStream`, `StatsStream`, `NDJSONStream`, and `TerminalSession` are all `AsyncSequence`-driven surfaces. Stop iterating or cancel the consuming task when you no longer need the stream so the underlying request or websocket can close promptly.
+
+## Low-Level Escape Hatches
+
+When the backend grows faster than the hand-written SDK surface, use the existing lower-level layers instead of reimplementing auth, retries, or environment path handling:
+
+- `client.rest`: standard Arcane JSON endpoints that return the usual `{ success, data }` envelope.
+- `client.transport`: raw requests, byte streams, multipart uploads, and websocket request construction.
 
 ## Errors
 
@@ -135,6 +182,7 @@ do {
 ```sh
 swift build
 swift test
+swiftlint lint
 ```
 
 Integration tests skip themselves unless `ARCANE_TEST_URL` is set:
@@ -148,7 +196,6 @@ ARCANE_TEST_URL=https://my-arcane.example.com swift test
 ```sh
 brew install swiftlint
 swiftlint lint
-swiftlint --fix
 ```
 
 ### Keeping types in sync with Arcane

@@ -1,4 +1,4 @@
-// swift-tools-version: 6.2
+// swift-tools-version: 6.3
 
 import PackageDescription
 
@@ -13,7 +13,7 @@ let package = Package(
         .library(name: "ArcaneOIDC", targets: ["ArcaneOIDC"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-http-types", from: "1.5.1"),
+        .package(url: "https://github.com/apple/swift-http-types", from: "1.6.0"),
     ],
     targets: [
         .target(

@@ -88,6 +88,9 @@ public actor AuthManager {
         if cachedTokens == nil {
             cachedTokens = try await tokenStore.loadTokens()
         }
+        if let refreshTask {
+            return try await refreshTask.value
+        }
         guard let refreshToken = cachedTokens?.refreshToken, !refreshToken.isEmpty else {
             throw ArcaneError.unauthorized
         }

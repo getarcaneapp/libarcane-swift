@@ -1,6 +1,6 @@
 import Foundation
 
-public final class ArcaneURLSessionTransport: @unchecked Sendable {
+public final class ArcaneURLSessionTransport: Sendable {
     let baseURL: URL
     let session: URLSession
     let authManager: AuthManager
@@ -84,9 +84,11 @@ public final class ArcaneURLSessionTransport: @unchecked Sendable {
                     throw ArcaneError.transport("Request did not return an HTTP response")
                 }
 
-                if http.statusCode == 401, authorized, !didRefresh, try await authManager.hasRefreshCredential() {
-                    _ = try await authManager.refreshTokens()
-                    didRefresh = true
+                if try await refreshAuthorizationIfNeeded(
+                    statusCode: http.statusCode,
+                    authorized: authorized,
+                    didRefresh: &didRefresh
+                ) {
                     continue
                 }
 
@@ -118,9 +120,7 @@ public final class ArcaneURLSessionTransport: @unchecked Sendable {
 
     public func websocketRequest(path: String, query: [URLQueryItem] = []) async throws -> URLRequest {
         var request = URLRequest(url: baseURL.appendingAPIPath(path).withQueryItems(query).webSocketURL())
-        for (key, value) in try await authManager.authenticationHeaders() {
-            request.setValue(value, forHTTPHeaderField: key)
-        }
+        try await applyAuthenticationHeaders(to: &request)
         return request
     }
 
@@ -142,11 +142,7 @@ public final class ArcaneURLSessionTransport: @unchecked Sendable {
             var request = URLRequest(url: baseURL.appendingAPIPath(path).withQueryItems(query))
             request.httpMethod = method
             request.setValue(accept, forHTTPHeaderField: "Accept")
-            if authorized {
-                for (key, value) in try await authManager.authenticationHeaders() {
-                    request.setValue(value, forHTTPHeaderField: key)
-                }
-            }
+            try await applyAuthenticationHeaders(to: &request, authorized: authorized)
             if let body {
                 if let contentType {
                     request.setValue(contentType, forHTTPHeaderField: "Content-Type")
@@ -157,9 +153,11 @@ public final class ArcaneURLSessionTransport: @unchecked Sendable {
             guard let http = response as? HTTPURLResponse else {
                 throw ArcaneError.transport("Request did not return an HTTP response")
             }
-            if http.statusCode == 401, authorized, !didRefresh, try await authManager.hasRefreshCredential() {
-                _ = try await authManager.refreshTokens()
-                didRefresh = true
+            if try await refreshAuthorizationIfNeeded(
+                statusCode: http.statusCode,
+                authorized: authorized,
+                didRefresh: &didRefresh
+            ) {
                 continue
             }
             return (bytes, http)
@@ -181,20 +179,22 @@ public final class ArcaneURLSessionTransport: @unchecked Sendable {
 
         var didRefresh = false
         while true {
-            var request = URLRequest(url: baseURL.appendingAPIPath(path).withQueryItems(query))
-            request.httpMethod = method
-            request.setValue("application/json", forHTTPHeaderField: "Accept")
-            request.setValue("multipart/form-data; boundary=\(prepared.boundary)", forHTTPHeaderField: "Content-Type")
-            for (key, value) in try await authManager.authenticationHeaders() {
-                request.setValue(value, forHTTPHeaderField: key)
-            }
+            let request = try await makeMultipartRequest(
+                path: path,
+                method: method,
+                query: query,
+                prepared: prepared,
+                accept: "application/json"
+            )
             let (data, response) = try await session.upload(for: request, fromFile: prepared.url)
             guard let http = response as? HTTPURLResponse else {
                 throw ArcaneError.transport("Upload did not return an HTTP response")
             }
-            if http.statusCode == 401, !didRefresh, try await authManager.hasRefreshCredential() {
-                _ = try await authManager.refreshTokens()
-                didRefresh = true
+            if try await refreshAuthorizationIfNeeded(
+                statusCode: http.statusCode,
+                authorized: true,
+                didRefresh: &didRefresh
+            ) {
                 continue
             }
             guard (200..<300).contains(http.statusCode) else {
@@ -248,14 +248,58 @@ public final class ArcaneURLSessionTransport: @unchecked Sendable {
         request.httpMethod = method
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         if authorized {
-            for (key, value) in try await authManager.authenticationHeaders() {
-                request.setValue(value, forHTTPHeaderField: key)
-            }
+            try await applyAuthenticationHeaders(to: &request)
         }
         if let body {
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             request.httpBody = try encoder.encode(body)
         }
+        return request
+    }
+
+    func applyAuthenticationHeaders(
+        to request: inout URLRequest,
+        authorized: Bool = true
+    ) async throws {
+        guard authorized else {
+            return
+        }
+        for (key, value) in try await authManager.authenticationHeaders() {
+            request.setValue(value, forHTTPHeaderField: key)
+        }
+    }
+
+    func refreshAuthorizationIfNeeded(
+        statusCode: Int,
+        authorized: Bool,
+        didRefresh: inout Bool
+    ) async throws -> Bool {
+        guard statusCode == 401,
+              authorized,
+              !didRefresh,
+              try await authManager.hasRefreshCredential() else {
+            return false
+        }
+        _ = try await authManager.refreshTokens()
+        didRefresh = true
+        return true
+    }
+
+    func makeMultipartRequest(
+        path: String,
+        method: String,
+        query: [URLQueryItem],
+        prepared: PreparedMultipart,
+        accept: String
+    ) async throws -> URLRequest {
+        var request = URLRequest(url: baseURL.appendingAPIPath(path).withQueryItems(query))
+        request.httpMethod = method
+        request.setValue(accept, forHTTPHeaderField: "Accept")
+        request.setValue(
+            "multipart/form-data; boundary=\(prepared.boundary)",
+            forHTTPHeaderField: "Content-Type"
+        )
+        try await applyAuthenticationHeaders(to: &request)
         return request
     }
 
