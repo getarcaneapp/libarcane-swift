@@ -42,6 +42,7 @@ public struct LogStream: AsyncSequence, Sendable {
                     let request = try await transport.websocketRequest(path: path, query: query)
                     let channel = WebSocketChannel<Never, LogLine>(
                         request: request,
+                        session: transport.session,
                         encodeOutbound: { _ in fatalError("Log streams are receive-only") },
                         decodeInbound: { message in
                             switch message {
@@ -122,6 +123,7 @@ public struct StatsStream<Element: Decodable & Sendable>: AsyncSequence, Sendabl
                     let decoder = ArcaneJSON.makeDecoder()
                     let channel = WebSocketChannel<Never, Element>(
                         request: request,
+                        session: transport.session,
                         encodeOutbound: { _ in fatalError("Stats streams are receive-only") },
                         decodeInbound: { message in
                             switch message {

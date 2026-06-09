@@ -1,11 +1,16 @@
 import Foundation
 
 public struct ArcaneClient: Sendable {
+    /// Package-wide client configuration shared by all service entry points.
+    /// Most apps only need `baseURL`, a `TokenStore`, and optionally a custom
+    /// `URLSession` tuned for their networking environment.
     public struct Configuration: Sendable {
         public var baseURL: URL
         public var tokenStore: any TokenStore
         public var apiKey: String?
         public var defaultEnvironmentID: EnvironmentID
+        /// Inject an app-owned session when you need custom connectivity,
+        /// caching, cookies, or TLS behavior instead of relying on `.shared`.
         public var urlSession: URLSession
         public var retryPolicy: RetryPolicy
         public var jsonDecoder: JSONDecoder
@@ -32,7 +37,12 @@ public struct ArcaneClient: Sendable {
 
     public let configuration: Configuration
     public let authManager: AuthManager
+    /// Low-level request/response transport used by the SDK's higher-level
+    /// services. Reach for this when you need raw bytes, multipart uploads, or
+    /// a not-yet-wrapped endpoint without re-implementing auth and retry logic.
     public let transport: ArcaneURLSessionTransport
+    /// Convenience REST facade over `transport` for standard Arcane JSON
+    /// endpoints that already follow the `{ success, data }` response envelope.
     public let rest: RESTService
 
     public let auth: AuthService
@@ -135,19 +145,35 @@ public struct ArcaneClient: Sendable {
 }
 
 public enum ArcaneJSON {
+    private final class ISO8601ParserCache: @unchecked Sendable {
+        private let lock = NSLock()
+        private let withFractionalSeconds: ISO8601DateFormatter = {
+            let formatter = ISO8601DateFormatter()
+            formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+            return formatter
+        }()
+        private let withoutFractionalSeconds: ISO8601DateFormatter = {
+            let formatter = ISO8601DateFormatter()
+            formatter.formatOptions = [.withInternetDateTime]
+            return formatter
+        }()
+
+        func parse(_ raw: String) -> Date? {
+            lock.lock()
+            defer { lock.unlock() }
+            return withFractionalSeconds.date(from: raw)
+                ?? withoutFractionalSeconds.date(from: raw)
+        }
+    }
+
+    private static let iso8601Parsers = ISO8601ParserCache()
+
     public static func makeDecoder() -> JSONDecoder {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .custom { decoder in
             let container = try decoder.singleValueContainer()
             let raw = try container.decode(String.self)
-            let formatter = ISO8601DateFormatter()
-            formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-            if let date = formatter.date(from: raw) {
-                return date
-            }
-            let fallback = ISO8601DateFormatter()
-            fallback.formatOptions = [.withInternetDateTime]
-            if let date = fallback.date(from: raw) {
+            if let date = iso8601Parsers.parse(raw) {
                 return date
             }
             throw DecodingError.dataCorruptedError(in: container, debugDescription: "Invalid ISO8601 date: \(raw)")

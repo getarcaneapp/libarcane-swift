@@ -5,6 +5,24 @@ All notable changes to libarcane-swift will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- The package manifest now requires Swift `6.3`, and the documented toolchain
+  floor matches the current CI contract.
+- Transport and websocket internals now centralize auth header application and
+  refresh retry behavior without adding parallel helper paths, and websocket
+  streams close their underlying connection promptly when iteration stops.
+- Websocket log, stats, and terminal streams now use the configured
+  `ArcaneClient.Configuration.urlSession`, matching the rest of the transport
+  path for direct HTTP and local-network environments.
+- `ArcaneJSON` reuses a synchronized ISO-8601 parser cache instead of creating
+  fresh formatters for every decoded date string while preserving the existing
+  fractional-seconds fallback behavior.
+- CI verification now prints the active Swift toolchain and runs `swift build`,
+  `swift test`, and `swiftlint lint` before success is claimed.
+
 ## [0.1.7] - 2026-05-27
 
 ### Added

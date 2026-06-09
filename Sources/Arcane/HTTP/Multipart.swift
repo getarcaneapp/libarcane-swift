@@ -43,13 +43,13 @@ extension ArcaneURLSessionTransport {
     ) async throws -> (URLSession.AsyncBytes, HTTPURLResponse) {
         var didRefresh = false
         while true {
-            var request = URLRequest(url: baseURL.appendingAPIPath(path).withQueryItems(query))
-            request.httpMethod = method
-            request.setValue("application/x-ndjson, application/x-json-stream, application/json", forHTTPHeaderField: "Accept")
-            request.setValue("multipart/form-data; boundary=\(prepared.boundary)", forHTTPHeaderField: "Content-Type")
-            for (key, value) in try await authManager.authenticationHeaders() {
-                request.setValue(value, forHTTPHeaderField: key)
-            }
+            var request = try await makeMultipartRequest(
+                path: path,
+                method: method,
+                query: query,
+                prepared: prepared,
+                accept: "application/x-ndjson, application/x-json-stream, application/json"
+            )
             let attrs = try FileManager.default.attributesOfItem(atPath: prepared.url.path)
             if let size = attrs[.size] as? Int {
                 request.setValue("\(size)", forHTTPHeaderField: "Content-Length")
@@ -59,9 +59,11 @@ extension ArcaneURLSessionTransport {
             guard let http = response as? HTTPURLResponse else {
                 throw ArcaneError.transport("Multipart upload did not return an HTTP response")
             }
-            if http.statusCode == 401, !didRefresh, try await authManager.hasRefreshCredential() {
-                _ = try await authManager.refreshTokens()
-                didRefresh = true
+            if try await refreshAuthorizationIfNeeded(
+                statusCode: http.statusCode,
+                authorized: true,
+                didRefresh: &didRefresh
+            ) {
                 continue
             }
             return (bytes, http)
@@ -95,7 +97,9 @@ extension ArcaneURLSessionTransport {
 
             // File parts
             for file in files {
-                let header = "--\(boundary)\r\nContent-Disposition: form-data; name=\"\(file.fieldName)\"; filename=\"\(file.filename)\"\r\nContent-Type: \(file.contentType)\r\n\r\n"
+                let header = "--\(boundary)\r\n" +
+                    "Content-Disposition: form-data; name=\"\(file.fieldName)\"; filename=\"\(file.filename)\"\r\n" +
+                    "Content-Type: \(file.contentType)\r\n\r\n"
                 try handle.write(contentsOf: Data(header.utf8))
 
                 let source = try FileHandle(forReadingFrom: file.fileURL)
@@ -118,4 +122,3 @@ extension ArcaneURLSessionTransport {
         return PreparedMultipart(url: tempURL, boundary: boundary)
     }
 }
-

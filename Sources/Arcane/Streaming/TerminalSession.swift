@@ -1,6 +1,6 @@
 import Foundation
 
-public final class TerminalSession: @unchecked Sendable {
+public final class TerminalSession: Sendable {
     private let channel: WebSocketChannel<String, Data>
 
     private init(channel: WebSocketChannel<String, Data>) {
@@ -15,6 +15,7 @@ public final class TerminalSession: @unchecked Sendable {
         let request = try await transport.websocketRequest(path: path, query: [URLQueryItem(name: "shell", value: shell)])
         let channel = WebSocketChannel<String, Data>(
             request: request,
+            session: transport.session,
             encodeOutbound: { .string($0) },
             decodeInbound: { message in
                 switch message {
