@@ -7,7 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `DashboardService.stream(debugAllGood:)` — consumes the aggregated
+  `GET /dashboard/stream` NDJSON endpoint (Arcane #2901), multiplexing
+  per-environment dashboard snapshots over one connection.
+- `DashboardStreamEvent`, `DashboardStreamEventType`, and
+  `DashboardStreamErrorCode` models (unknown-tolerant enums; `agent_incompatible`
+  and `unreachable` error codes mapped).
+- `DashboardSnapshot.versionInfo` — optional per-environment Arcane version
+  metadata (`VersionInfo`) carried by snapshots.
+- `Environment.lastEdgeTransport` — most recently used edge tunnel transport,
+  persisted server-side across disconnects.
+
 ### Changed
+
+- `DashboardSnapshotContainers.data` and `DashboardSnapshotImages.data` now
+  tolerate the explicit JSON `null` sent by trimmed stream snapshots, decoding
+  to an empty array.
+- `ActionItemKind` and `ActionItemSeverity` are now unknown-tolerant enums
+  (new `.unknown(String)` case) so action items from newer servers can never
+  fail snapshot decoding — a single undecodable line ends an NDJSON stream.
+  Exhaustive switches over these enums need an `.unknown` case.
 
 - The package manifest now requires Swift `6.3`, and the documented toolchain
   floor matches the current CI contract.

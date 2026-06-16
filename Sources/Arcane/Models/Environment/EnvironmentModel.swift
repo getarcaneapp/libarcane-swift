@@ -34,6 +34,9 @@ public struct Environment: Codable, Hashable, Sendable, Identifiable {
     public var isEdge: Bool
     public var lastSeen: Date?
     public var edgeTransport: String?
+    /// Most recently used tunnel transport ("grpc" | "websocket"), persisted so
+    /// it stays known while the tunnel is down or the agent is poll-only.
+    public var lastEdgeTransport: String?
     public var edgeSecurityMode: String?
     public var edgeSessionId: String?
     public var edgeAgentInstance: String?
@@ -54,6 +57,7 @@ public struct Environment: Codable, Hashable, Sendable, Identifiable {
         isEdge: Bool = false,
         lastSeen: Date? = nil,
         edgeTransport: String? = nil,
+        lastEdgeTransport: String? = nil,
         edgeSecurityMode: String? = nil,
         edgeSessionId: String? = nil,
         edgeAgentInstance: String? = nil,
@@ -73,6 +77,7 @@ public struct Environment: Codable, Hashable, Sendable, Identifiable {
         self.isEdge = isEdge
         self.lastSeen = lastSeen
         self.edgeTransport = edgeTransport
+        self.lastEdgeTransport = lastEdgeTransport
         self.edgeSecurityMode = edgeSecurityMode
         self.edgeSessionId = edgeSessionId
         self.edgeAgentInstance = edgeAgentInstance

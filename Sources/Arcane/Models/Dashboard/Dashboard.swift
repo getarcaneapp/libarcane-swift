@@ -1,16 +1,75 @@
 import Foundation
 
-/// Kinds of dashboard action items.
-public enum ActionItemKind: String, Codable, Hashable, Sendable {
-    case stoppedContainers = "stopped_containers"
-    case imageUpdates = "image_updates"
-    case actionableVulnerabilities = "actionable_vulnerabilities"
-    case expiringKeys = "expiring_keys"
+/// Kinds of dashboard action items. Unknown kinds from newer servers decode
+/// to `.unknown` instead of failing the whole snapshot — the dashboard stream
+/// dies wholesale on any undecodable line, so action items must never poison it.
+public enum ActionItemKind: Hashable, Sendable, Codable {
+    case stoppedContainers
+    case imageUpdates
+    case actionableVulnerabilities
+    case expiringKeys
+    case unknown(String)
+
+    public var rawValue: String {
+        switch self {
+        case .stoppedContainers: return "stopped_containers"
+        case .imageUpdates: return "image_updates"
+        case .actionableVulnerabilities: return "actionable_vulnerabilities"
+        case .expiringKeys: return "expiring_keys"
+        case let .unknown(value): return value
+        }
+    }
+
+    public init(rawValue: String) {
+        switch rawValue {
+        case "stopped_containers": self = .stoppedContainers
+        case "image_updates": self = .imageUpdates
+        case "actionable_vulnerabilities": self = .actionableVulnerabilities
+        case "expiring_keys": self = .expiringKeys
+        default: self = .unknown(rawValue)
+        }
+    }
+
+    public init(from decoder: Decoder) throws {
+        self.init(rawValue: try decoder.singleValueContainer().decode(String.self))
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(rawValue)
+    }
 }
 
-public enum ActionItemSeverity: String, Codable, Hashable, Sendable {
+/// Severity of a dashboard action item; unknown severities decode to `.unknown`.
+public enum ActionItemSeverity: Hashable, Sendable, Codable {
     case warning
     case critical
+    case unknown(String)
+
+    public var rawValue: String {
+        switch self {
+        case .warning: return "warning"
+        case .critical: return "critical"
+        case let .unknown(value): return value
+        }
+    }
+
+    public init(rawValue: String) {
+        switch rawValue {
+        case "warning": self = .warning
+        case "critical": self = .critical
+        default: self = .unknown(rawValue)
+        }
+    }
+
+    public init(from decoder: Decoder) throws {
+        self.init(rawValue: try decoder.singleValueContainer().decode(String.self))
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(rawValue)
+    }
 }
 
 /// A single attention item rendered on the dashboard.
@@ -147,6 +206,19 @@ public struct DashboardSnapshotContainers: Codable, Hashable, Sendable {
         self.counts = counts
         self.pagination = pagination
     }
+
+    enum CodingKeys: String, CodingKey {
+        case data, counts, pagination
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        // Stream events trim the table rows to JSON null ("data": null) — only
+        // the aggregate counts are meaningful there.
+        data = try container.decodeIfPresent([ContainerSummary].self, forKey: .data) ?? []
+        counts = try container.decode(ContainerStatusCounts.self, forKey: .counts)
+        pagination = try container.decode(PaginationResponse.self, forKey: .pagination)
+    }
 }
 
 /// Image table payload on the dashboard. Images are kept as opaque JSON until
@@ -159,6 +231,17 @@ public struct DashboardSnapshotImages: Codable, Hashable, Sendable {
         self.data = data
         self.pagination = pagination
     }
+
+    enum CodingKeys: String, CodingKey {
+        case data, pagination
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        // Stream events trim the table rows to JSON null ("data": null).
+        data = try container.decodeIfPresent([JSONValue].self, forKey: .data) ?? []
+        pagination = try container.decode(PaginationResponse.self, forKey: .pagination)
+    }
 }
 
 /// Top-level dashboard first-paint snapshot.
@@ -168,18 +251,22 @@ public struct DashboardSnapshot: Codable, Hashable, Sendable {
     public var imageUsageCounts: ImageUsageCounts
     public var actionItems: ActionItems
     public var settings: DashboardSnapshotSettings
+    /// Application version metadata for the environment, when available.
+    public var versionInfo: VersionInfo?
 
     public init(
         containers: DashboardSnapshotContainers,
         images: DashboardSnapshotImages,
         imageUsageCounts: ImageUsageCounts,
         actionItems: ActionItems,
-        settings: DashboardSnapshotSettings
+        settings: DashboardSnapshotSettings,
+        versionInfo: VersionInfo? = nil
     ) {
         self.containers = containers
         self.images = images
         self.imageUsageCounts = imageUsageCounts
         self.actionItems = actionItems
         self.settings = settings
+        self.versionInfo = versionInfo
     }
 }

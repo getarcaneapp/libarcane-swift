@@ -29,6 +29,22 @@ public struct DashboardService: Sendable {
         try await rest.get("dashboard/environments", query: Self.debugQuery(debugAllGood))
     }
 
+    /// Stream dashboard snapshot updates for the local environment and every
+    /// enabled remote environment as NDJSON over a single connection. Global
+    /// endpoint — not environment-scoped. Snapshot events have their
+    /// container/image table rows trimmed; only the aggregate counts,
+    /// action items, settings, and version info are populated.
+    public func stream(debugAllGood: Bool = false) -> NDJSONStream<DashboardStreamEvent> {
+        NDJSONStream(
+            transport: rest.transport,
+            path: "dashboard/stream",
+            method: "GET",
+            body: nil,
+            contentType: nil,
+            query: Self.debugQuery(debugAllGood)
+        )
+    }
+
     private static func debugQuery(_ debugAllGood: Bool) -> [URLQueryItem] {
         guard debugAllGood else { return [] }
         return [URLQueryItem(name: "debugAllGood", value: "true")]
