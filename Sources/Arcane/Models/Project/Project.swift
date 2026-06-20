@@ -19,11 +19,18 @@ public struct CreateProject: Codable, Hashable, Sendable {
     public var name: String
     public var composeContent: String
     public var envContent: String?
+    public var projectFiles: [ProjectFileDraft]?
 
-    public init(name: String, composeContent: String, envContent: String? = nil) {
+    public init(
+        name: String,
+        composeContent: String,
+        envContent: String? = nil,
+        projectFiles: [ProjectFileDraft]? = nil
+    ) {
         self.name = name
         self.composeContent = composeContent
         self.envContent = envContent
+        self.projectFiles = projectFiles
     }
 }
 
@@ -32,15 +39,21 @@ public struct UpdateProject: Codable, Hashable, Sendable {
     public var name: String?
     public var composeContent: String?
     public var envContent: String?
+    public var fileTreeRevision: String?
+    public var fileChanges: [ProjectFileChange]?
 
     public init(
         name: String? = nil,
         composeContent: String? = nil,
-        envContent: String? = nil
+        envContent: String? = nil,
+        fileTreeRevision: String? = nil,
+        fileChanges: [ProjectFileChange]? = nil
     ) {
         self.name = name
         self.composeContent = composeContent
         self.envContent = envContent
+        self.fileTreeRevision = fileTreeRevision
+        self.fileChanges = fileChanges
     }
 }
 
@@ -214,6 +227,8 @@ public struct ProjectDetails: Codable, Hashable, Sendable, Identifiable {
     public var envContent: String?
     public var includeFiles: [IncludeFile]?
     public var directoryFiles: [IncludeFile]?
+    public var projectFiles: [ProjectFile]?
+    public var fileTreeRevision: String?
     public var status: String
     public var statusReason: String?
     public var serviceCount: Int
@@ -247,6 +262,8 @@ public struct ProjectDetails: Codable, Hashable, Sendable, Identifiable {
         envContent: String? = nil,
         includeFiles: [IncludeFile]? = nil,
         directoryFiles: [IncludeFile]? = nil,
+        projectFiles: [ProjectFile]? = nil,
+        fileTreeRevision: String? = nil,
         status: String,
         statusReason: String? = nil,
         serviceCount: Int = 0,
@@ -279,6 +296,8 @@ public struct ProjectDetails: Codable, Hashable, Sendable, Identifiable {
         self.envContent = envContent
         self.includeFiles = includeFiles
         self.directoryFiles = directoryFiles
+        self.projectFiles = projectFiles
+        self.fileTreeRevision = fileTreeRevision
         self.status = status
         self.statusReason = statusReason
         self.serviceCount = serviceCount
