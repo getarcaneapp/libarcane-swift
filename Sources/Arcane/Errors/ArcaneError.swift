@@ -2,6 +2,12 @@ import Foundation
 
 public enum ArcaneError: Error, Sendable, Equatable {
     case unauthorized
+    /// A 401 that did NOT originate from Arcane — the request was intercepted by
+    /// a reverse-proxy external auth provider (e.g. Traefik ForwardAuth +
+    /// Authelia) before reaching Arcane. Distinct from `.unauthorized` so callers
+    /// can route to a provider sign-in flow instead of treating it as a rejected
+    /// Arcane credential, and so the transport does NOT wipe stored tokens.
+    case externalAuth
     case forbidden
     case notFound
     case conflict(message: String?)
@@ -46,7 +52,15 @@ extension ArcaneError {
 
         switch statusCode {
         case 401:
-            return .unauthorized
+            // A genuine Arcane 401 carries a JSON error envelope (Arcane or Huma
+            // fields). A reverse-proxy intercept returns an HTML portal page or a
+            // plain/empty body with none of those — surface it as `.externalAuth`
+            // so the caller can start a provider sign-in instead of assuming a bad
+            // credential (and so tokens are not cleared).
+            let humaHasFields = humaError?.detail != nil
+                || humaError?.title != nil
+                || (humaError?.errors?.isEmpty == false)
+            return (arcaneHasFields || humaHasFields) ? .unauthorized : .externalAuth
         case 403:
             return .forbidden
         case 404:

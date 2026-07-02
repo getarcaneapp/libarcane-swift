@@ -13,6 +13,11 @@ public struct ArcaneClient: Sendable {
         /// caching, cookies, or TLS behavior instead of relying on `.shared`.
         public var urlSession: URLSession
         public var retryPolicy: RetryPolicy
+        /// Extra headers sent on every request (REST, streams, uploads, and
+        /// WebSocket handshakes). Intended for reverse-proxy auth such as
+        /// `Proxy-Authorization` when Arcane sits behind Traefik ForwardAuth.
+        /// Applied before Arcane's own auth headers, which take precedence.
+        public var additionalHeaders: [String: String]
         public var jsonDecoder: JSONDecoder
         public var jsonEncoder: JSONEncoder
 
@@ -22,7 +27,8 @@ public struct ArcaneClient: Sendable {
             apiKey: String? = nil,
             defaultEnvironmentID: EnvironmentID = .localDocker,
             urlSession: URLSession = .shared,
-            retryPolicy: RetryPolicy = .default
+            retryPolicy: RetryPolicy = .default,
+            additionalHeaders: [String: String] = [:]
         ) {
             self.baseURL = baseURL
             self.tokenStore = tokenStore
@@ -30,6 +36,7 @@ public struct ArcaneClient: Sendable {
             self.defaultEnvironmentID = defaultEnvironmentID
             self.urlSession = urlSession
             self.retryPolicy = retryPolicy
+            self.additionalHeaders = additionalHeaders
             self.jsonDecoder = ArcaneJSON.makeDecoder()
             self.jsonEncoder = ArcaneJSON.makeEncoder()
         }
@@ -81,6 +88,7 @@ public struct ArcaneClient: Sendable {
             tokenStore: configuration.tokenStore,
             apiKey: configuration.apiKey,
             urlSession: configuration.urlSession,
+            additionalHeaders: configuration.additionalHeaders,
             decoder: configuration.jsonDecoder,
             encoder: configuration.jsonEncoder
         )
@@ -90,6 +98,7 @@ public struct ArcaneClient: Sendable {
             session: configuration.urlSession,
             authManager: authManager,
             retryPolicy: configuration.retryPolicy,
+            additionalHeaders: configuration.additionalHeaders,
             decoder: configuration.jsonDecoder,
             encoder: configuration.jsonEncoder
         )

@@ -5,6 +5,7 @@ public final class ArcaneURLSessionTransport: Sendable {
     let session: URLSession
     let authManager: AuthManager
     private let retryPolicy: RetryPolicy
+    private let additionalHeaders: [String: String]
     let decoder: JSONDecoder
     let encoder: JSONEncoder
 
@@ -13,6 +14,7 @@ public final class ArcaneURLSessionTransport: Sendable {
         session: URLSession,
         authManager: AuthManager,
         retryPolicy: RetryPolicy,
+        additionalHeaders: [String: String] = [:],
         decoder: JSONDecoder,
         encoder: JSONEncoder
     ) {
@@ -20,8 +22,17 @@ public final class ArcaneURLSessionTransport: Sendable {
         self.session = session
         self.authManager = authManager
         self.retryPolicy = retryPolicy
+        self.additionalHeaders = additionalHeaders
         self.decoder = decoder
         self.encoder = encoder
+    }
+
+    /// Applies caller-supplied reverse-proxy headers. Called before Arcane's own
+    /// auth headers so those always win on a key collision.
+    private func applyAdditionalHeaders(to request: inout URLRequest) {
+        for (key, value) in additionalHeaders {
+            request.setValue(value, forHTTPHeaderField: key)
+        }
     }
 
     public func request<T: Decodable & Sendable, Body: Encodable & Sendable>(
@@ -84,7 +95,17 @@ public final class ArcaneURLSessionTransport: Sendable {
                     throw ArcaneError.transport("Request did not return an HTTP response")
                 }
 
-                if try await refreshAuthorizationIfNeeded(
+                // Classify a 401 once, up front. A reverse-proxy external-auth
+                // intercept (Traefik ForwardAuth / Authelia) surfaces as
+                // `.externalAuth`; it must NOT trigger a token refresh (the
+                // refresh call would be intercepted too) nor clear stored Arcane
+                // tokens (they're still valid — the proxy session lapsed).
+                let error401: ArcaneError? = http.statusCode == 401
+                    ? ArcaneError.from(statusCode: 401, data: data, headers: http.allHeaderFields, decoder: decoder)
+                    : nil
+                let isExternalAuth401 = error401 == .externalAuth
+
+                if !isExternalAuth401, try await refreshAuthorizationIfNeeded(
                     statusCode: http.statusCode,
                     authorized: authorized,
                     didRefresh: &didRefresh
@@ -99,10 +120,10 @@ public final class ArcaneURLSessionTransport: Sendable {
                 }
 
                 guard (200..<300).contains(http.statusCode) else {
-                    if http.statusCode == 401 {
+                    if http.statusCode == 401, !isExternalAuth401 {
                         try? await authManager.clear()
                     }
-                    throw ArcaneError.from(statusCode: http.statusCode, data: data, headers: http.allHeaderFields, decoder: decoder)
+                    throw error401 ?? ArcaneError.from(statusCode: http.statusCode, data: data, headers: http.allHeaderFields, decoder: decoder)
                 }
                 return data
             } catch let error as ArcaneError {
@@ -120,6 +141,7 @@ public final class ArcaneURLSessionTransport: Sendable {
 
     public func websocketRequest(path: String, query: [URLQueryItem] = []) async throws -> URLRequest {
         var request = URLRequest(url: baseURL.appendingAPIPath(path).withQueryItems(query).webSocketURL())
+        applyAdditionalHeaders(to: &request)
         try await applyAuthenticationHeaders(to: &request)
         return request
     }
@@ -142,6 +164,7 @@ public final class ArcaneURLSessionTransport: Sendable {
             var request = URLRequest(url: baseURL.appendingAPIPath(path).withQueryItems(query))
             request.httpMethod = method
             request.setValue(accept, forHTTPHeaderField: "Accept")
+            applyAdditionalHeaders(to: &request)
             try await applyAuthenticationHeaders(to: &request, authorized: authorized)
             if let body {
                 if let contentType {
@@ -247,6 +270,9 @@ public final class ArcaneURLSessionTransport: Sendable {
         var request = URLRequest(url: baseURL.appendingAPIPath(path).withQueryItems(query))
         request.httpMethod = method
         request.setValue("application/json", forHTTPHeaderField: "Accept")
+        // Proxy headers ride on unauthorized requests too (login, public
+        // settings) since the reverse proxy fronts every path.
+        applyAdditionalHeaders(to: &request)
         if authorized {
             try await applyAuthenticationHeaders(to: &request)
         }
@@ -299,6 +325,7 @@ public final class ArcaneURLSessionTransport: Sendable {
             "multipart/form-data; boundary=\(prepared.boundary)",
             forHTTPHeaderField: "Content-Type"
         )
+        applyAdditionalHeaders(to: &request)
         try await applyAuthenticationHeaders(to: &request)
         return request
     }

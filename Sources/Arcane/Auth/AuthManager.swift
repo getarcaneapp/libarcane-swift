@@ -5,6 +5,7 @@ public actor AuthManager {
     private let tokenStore: any TokenStore
     private let apiKey: String?
     private let urlSession: URLSession
+    private let additionalHeaders: [String: String]
     private let decoder: JSONDecoder
     private let encoder: JSONEncoder
     private var cachedTokens: TokenPair?
@@ -16,6 +17,7 @@ public actor AuthManager {
         tokenStore: any TokenStore,
         apiKey: String?,
         urlSession: URLSession,
+        additionalHeaders: [String: String] = [:],
         decoder: JSONDecoder,
         encoder: JSONEncoder
     ) {
@@ -23,6 +25,7 @@ public actor AuthManager {
         self.tokenStore = tokenStore
         self.apiKey = apiKey
         self.urlSession = urlSession
+        self.additionalHeaders = additionalHeaders
         self.decoder = decoder
         self.encoder = encoder
     }
@@ -100,6 +103,9 @@ public actor AuthManager {
             request.httpMethod = "POST"
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             request.setValue("application/json", forHTTPHeaderField: "Accept")
+            for (key, value) in additionalHeaders {
+                request.setValue(value, forHTTPHeaderField: key)
+            }
             request.httpBody = try encoder.encode(RefreshRequest(refreshToken: refreshToken))
 
             do {
