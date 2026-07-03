@@ -52,9 +52,9 @@ final class RoleModelsTests: XCTestCase {
             "createdAt": "2026-01-01T00:00:00Z"
         }
         """#
-        let a = try decoder.decode(RoleAssignment.self, from: Data(json.utf8))
-        XCTAssertEqual(a.environmentId, "3")
-        XCTAssertEqual(a.sourceKind, .manual)
+        let assignment = try decoder.decode(RoleAssignment.self, from: Data(json.utf8))
+        XCTAssertEqual(assignment.environmentId, "3")
+        XCTAssertEqual(assignment.sourceKind, .manual)
     }
 
     func testDecodeGlobalRoleAssignment() throws {
@@ -67,9 +67,9 @@ final class RoleModelsTests: XCTestCase {
             "createdAt": "2026-01-01T00:00:00Z"
         }
         """#
-        let a = try decoder.decode(RoleAssignment.self, from: Data(json.utf8))
-        XCTAssertNil(a.environmentId)
-        XCTAssertEqual(a.sourceKind, .oidc)
+        let assignment = try decoder.decode(RoleAssignment.self, from: Data(json.utf8))
+        XCTAssertNil(assignment.environmentId)
+        XCTAssertEqual(assignment.sourceKind, .oidc)
     }
 
     func testDecodeOidcRoleMapping() throws {
@@ -82,10 +82,10 @@ final class RoleModelsTests: XCTestCase {
             "createdAt": "2026-01-01T00:00:00Z"
         }
         """#
-        let m = try decoder.decode(OidcRoleMapping.self, from: Data(json.utf8))
-        XCTAssertEqual(m.claimValue, "docker-admins")
-        XCTAssertNil(m.environmentId)
-        XCTAssertEqual(m.sourceKind, .manual)
+        let mapping = try decoder.decode(OidcRoleMapping.self, from: Data(json.utf8))
+        XCTAssertEqual(mapping.claimValue, "docker-admins")
+        XCTAssertNil(mapping.environmentId)
+        XCTAssertEqual(mapping.sourceKind, .manual)
     }
 
     func testDecodeEnvDeclaredOidcMapping() throws {
@@ -99,9 +99,9 @@ final class RoleModelsTests: XCTestCase {
             "createdAt": "2026-01-01T00:00:00Z"
         }
         """#
-        let m = try decoder.decode(OidcRoleMapping.self, from: Data(json.utf8))
-        XCTAssertEqual(m.sourceKind, .env)
-        XCTAssertEqual(m.environmentId, "3")
+        let mapping = try decoder.decode(OidcRoleMapping.self, from: Data(json.utf8))
+        XCTAssertEqual(mapping.sourceKind, .env)
+        XCTAssertEqual(mapping.environmentId, "3")
     }
 
     func testDecodePermissionsManifest() throws {

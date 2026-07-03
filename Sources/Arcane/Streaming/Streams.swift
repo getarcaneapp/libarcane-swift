@@ -40,6 +40,7 @@ public struct LogStream: AsyncSequence, Sendable {
             Task {
                 do {
                     let request = try await transport.websocketRequest(path: path, query: query)
+                    let decoder = ArcaneJSON.makeDecoder()
                     let channel = WebSocketChannel<Never, LogLine>(
                         request: request,
                         session: transport.session,
@@ -48,7 +49,7 @@ public struct LogStream: AsyncSequence, Sendable {
                             switch message {
                             case let .string(text):
                                 if let data = text.data(using: .utf8),
-                                   let json = try? ArcaneJSON.makeDecoder().decode(LogLineMessage.self, from: data) {
+                                   let json = try? decoder.decode(LogLineMessage.self, from: data) {
                                     return LogLine(
                                         text: json.message,
                                         seq: json.seq,
@@ -59,7 +60,7 @@ public struct LogStream: AsyncSequence, Sendable {
                                 }
                                 return LogLine(text: text)
                             case let .data(data):
-                                let json = try ArcaneJSON.makeDecoder().decode(LogLineMessage.self, from: data)
+                                let json = try decoder.decode(LogLineMessage.self, from: data)
                                 return LogLine(
                                     text: json.message,
                                     seq: json.seq,

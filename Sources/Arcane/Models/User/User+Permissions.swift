@@ -10,8 +10,8 @@ extension User {
     /// `"admin"` in the legacy `roles` array (v1).
     public var isGlobalAdmin: Bool {
         if let assignments = roleAssignments {
-            let adminGlobally = assignments.contains { a in
-                a.roleId == Role.BuiltIn.admin && a.environmentId == nil
+            let adminGlobally = assignments.contains { assignment in
+                assignment.roleId == Role.BuiltIn.admin && assignment.environmentId == nil
             }
             if adminGlobally { return true }
         }

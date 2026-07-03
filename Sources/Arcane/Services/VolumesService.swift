@@ -97,7 +97,7 @@ public struct VolumesService: Sendable {
             rest.environmentPath(envID, "volumes/\(name)/browse/content"),
             query: [
                 URLQueryItem(name: "path", value: path),
-                URLQueryItem(name: "maxBytes", value: "\(maxBytes)"),
+                URLQueryItem(name: "maxBytes", value: "\(maxBytes)")
             ]
         )
     }

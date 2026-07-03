@@ -99,9 +99,9 @@ final class DashboardStreamModelsTests: XCTestCase {
     }
 
     func testDecodeErrorEvents() throws {
-        let incompatible = #"""
-        {"type":"error","environmentId":"env_9","error":"agent dashboard endpoint missing","errorCode":"agent_incompatible","timestamp":"2026-06-10T17:00:00Z"}
-        """#
+        let incompatible =
+            #"{"type":"error","environmentId":"env_9","error":"agent dashboard endpoint missing","# +
+            #""errorCode":"agent_incompatible","timestamp":"2026-06-10T17:00:00Z"}"#
         let event = try decoder.decode(DashboardStreamEvent.self, from: Data(incompatible.utf8))
         XCTAssertEqual(event.type, .error)
         XCTAssertEqual(event.environmentID, "env_9")

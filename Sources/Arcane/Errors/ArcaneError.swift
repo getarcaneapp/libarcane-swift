@@ -65,14 +65,31 @@ extension ArcaneError {
         case 500...599:
             return .server(code: code, message: message)
         default:
-            if let arcaneError, let code = arcaneError.code {
-                return .server(code: code, message: message)
-            }
-            if let humaMessage, !humaMessage.isEmpty {
-                return .server(code: code, message: humaMessage)
-            }
-            return .unknown(statusCode: statusCode, body: body)
+            return fallbackError(
+                statusCode: statusCode,
+                message: message,
+                arcaneError: arcaneError,
+                humaMessage: humaMessage,
+                body: body
+            )
         }
+    }
+
+    private static func fallbackError(
+        statusCode: Int,
+        message: String,
+        arcaneError: APIErrorResponse?,
+        humaMessage: String?,
+        body: String
+    ) -> ArcaneError {
+        let code = arcaneError?.code ?? httpCode(statusCode)
+        if let arcaneError, let code = arcaneError.code {
+            return .server(code: code, message: message)
+        }
+        if let humaMessage, !humaMessage.isEmpty {
+            return .server(code: code, message: humaMessage)
+        }
+        return .unknown(statusCode: statusCode, body: body)
     }
 
     private static func httpCode(_ statusCode: Int) -> String {
@@ -126,12 +143,9 @@ extension ArcaneError {
     }
 
     private static func stripLocationPrefix(_ location: String) -> String {
-        for prefix in ["body.", "query.", "path.", "header.", "cookie."] {
-            if location.hasPrefix(prefix) {
-                return String(location.dropFirst(prefix.count))
-            }
+        for prefix in ["body.", "query.", "path.", "header.", "cookie."] where location.hasPrefix(prefix) {
+            return String(location.dropFirst(prefix.count))
         }
         return location
     }
 }
-

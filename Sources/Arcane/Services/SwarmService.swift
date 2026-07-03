@@ -87,7 +87,9 @@ public struct SwarmService: Sendable {
     ) async throws -> PaginatedResponse<SwarmServiceSummary> {
         try await rest.transport.paginated(
             rest.environmentPath(envID, "swarm/services"),
-            start: start,            limit: limit,            query: Self.startLimitQuery(search: search, sort: sort, order: order, start: start, limit: limit)
+            start: start,
+            limit: limit,
+            query: Self.startLimitQuery(search: search, sort: sort, order: order, start: start, limit: limit)
         )
     }
 
@@ -97,12 +99,19 @@ public struct SwarmService: Sendable {
     }
 
     /// Creates a new swarm service.
-    public func createService(_ request: SwarmServiceCreateRequest, envID: EnvironmentID? = nil) async throws -> SwarmServiceCreateResponse {
+    public func createService(
+        _ request: SwarmServiceCreateRequest,
+        envID: EnvironmentID? = nil
+    ) async throws -> SwarmServiceCreateResponse {
         try await rest.post(rest.environmentPath(envID, "swarm/services"), body: request)
     }
 
     /// Updates an existing swarm service.
-    public func updateService(_ serviceId: String, _ request: SwarmServiceUpdateRequest, envID: EnvironmentID? = nil) async throws -> SwarmServiceUpdateResponse {
+    public func updateService(
+        _ serviceId: String,
+        _ request: SwarmServiceUpdateRequest,
+        envID: EnvironmentID? = nil
+    ) async throws -> SwarmServiceUpdateResponse {
         try await rest.put(rest.environmentPath(envID, "swarm/services/\(serviceId)"), body: request)
     }
 
@@ -123,7 +132,9 @@ public struct SwarmService: Sendable {
     ) async throws -> PaginatedResponse<SwarmTaskSummary> {
         try await rest.transport.paginated(
             rest.environmentPath(envID, "swarm/services/\(serviceId)/tasks"),
-            start: start,            limit: limit,            query: Self.startLimitQuery(search: search, sort: sort, order: order, start: start, limit: limit)
+            start: start,
+            limit: limit,
+            query: Self.startLimitQuery(search: search, sort: sort, order: order, start: start, limit: limit)
         )
     }
 
@@ -133,7 +144,11 @@ public struct SwarmService: Sendable {
     }
 
     /// Scales a replicated swarm service.
-    public func scaleService(_ serviceId: String, replicas: UInt64, envID: EnvironmentID? = nil) async throws -> SwarmServiceUpdateResponse {
+    public func scaleService(
+        _ serviceId: String,
+        replicas: UInt64,
+        envID: EnvironmentID? = nil
+    ) async throws -> SwarmServiceUpdateResponse {
         try await rest.post(
             rest.environmentPath(envID, "swarm/services/\(serviceId)/scale"),
             body: SwarmServiceScaleRequest(replicas: replicas)
@@ -153,7 +168,9 @@ public struct SwarmService: Sendable {
     ) async throws -> PaginatedResponse<SwarmNode> {
         try await rest.transport.paginated(
             rest.environmentPath(envID, "swarm/nodes"),
-            start: start,            limit: limit,            query: Self.startLimitQuery(search: search, sort: sort, order: order, start: start, limit: limit)
+            start: start,
+            limit: limit,
+            query: Self.startLimitQuery(search: search, sort: sort, order: order, start: start, limit: limit)
         )
     }
 
@@ -218,7 +235,9 @@ public struct SwarmService: Sendable {
     ) async throws -> PaginatedResponse<SwarmTaskSummary> {
         try await rest.transport.paginated(
             rest.environmentPath(envID, "swarm/nodes/\(nodeId)/tasks"),
-            start: start,            limit: limit,            query: Self.startLimitQuery(search: search, sort: sort, order: order, start: start, limit: limit)
+            start: start,
+            limit: limit,
+            query: Self.startLimitQuery(search: search, sort: sort, order: order, start: start, limit: limit)
         )
     }
 
@@ -235,7 +254,9 @@ public struct SwarmService: Sendable {
     ) async throws -> PaginatedResponse<SwarmTaskSummary> {
         try await rest.transport.paginated(
             rest.environmentPath(envID, "swarm/tasks"),
-            start: start,            limit: limit,            query: Self.startLimitQuery(search: search, sort: sort, order: order, start: start, limit: limit)
+            start: start,
+            limit: limit,
+            query: Self.startLimitQuery(search: search, sort: sort, order: order, start: start, limit: limit)
         )
     }
 
@@ -252,7 +273,9 @@ public struct SwarmService: Sendable {
     ) async throws -> PaginatedResponse<SwarmStackSummary> {
         try await rest.transport.paginated(
             rest.environmentPath(envID, "swarm/stacks"),
-            start: start,            limit: limit,            query: Self.startLimitQuery(search: search, sort: sort, order: order, start: start, limit: limit)
+            start: start,
+            limit: limit,
+            query: Self.startLimitQuery(search: search, sort: sort, order: order, start: start, limit: limit)
         )
     }
 
@@ -297,7 +320,9 @@ public struct SwarmService: Sendable {
     ) async throws -> PaginatedResponse<SwarmServiceSummary> {
         try await rest.transport.paginated(
             rest.environmentPath(envID, "swarm/stacks/\(name)/services"),
-            start: start,            limit: limit,            query: Self.startLimitQuery(search: search, sort: sort, order: order, start: start, limit: limit)
+            start: start,
+            limit: limit,
+            query: Self.startLimitQuery(search: search, sort: sort, order: order, start: start, limit: limit)
         )
     }
 
@@ -313,12 +338,17 @@ public struct SwarmService: Sendable {
     ) async throws -> PaginatedResponse<SwarmTaskSummary> {
         try await rest.transport.paginated(
             rest.environmentPath(envID, "swarm/stacks/\(name)/tasks"),
-            start: start,            limit: limit,            query: Self.startLimitQuery(search: search, sort: sort, order: order, start: start, limit: limit)
+            start: start,
+            limit: limit,
+            query: Self.startLimitQuery(search: search, sort: sort, order: order, start: start, limit: limit)
         )
     }
 
     /// Renders / validates a compose document without deploying it.
-    public func renderStackConfig(_ request: SwarmStackRenderConfigRequest, envID: EnvironmentID? = nil) async throws -> SwarmStackRenderConfigResponse {
+    public func renderStackConfig(
+        _ request: SwarmStackRenderConfigRequest,
+        envID: EnvironmentID? = nil
+    ) async throws -> SwarmStackRenderConfigResponse {
         try await rest.post(rest.environmentPath(envID, "swarm/stacks/config/render"), body: request)
     }
 
@@ -340,7 +370,11 @@ public struct SwarmService: Sendable {
     }
 
     /// Updates a swarm config.
-    public func updateConfig(_ configId: String, _ request: SwarmConfigUpdateRequest, envID: EnvironmentID? = nil) async throws -> SwarmConfigSummary {
+    public func updateConfig(
+        _ configId: String,
+        _ request: SwarmConfigUpdateRequest,
+        envID: EnvironmentID? = nil
+    ) async throws -> SwarmConfigSummary {
         try await rest.put(rest.environmentPath(envID, "swarm/configs/\(configId)"), body: request)
     }
 
@@ -367,7 +401,11 @@ public struct SwarmService: Sendable {
     }
 
     /// Updates a swarm secret.
-    public func updateSecret(_ secretId: String, _ request: SwarmSecretUpdateRequest, envID: EnvironmentID? = nil) async throws -> SwarmSecretSummary {
+    public func updateSecret(
+        _ secretId: String,
+        _ request: SwarmSecretUpdateRequest,
+        envID: EnvironmentID? = nil
+    ) async throws -> SwarmSecretSummary {
         try await rest.put(rest.environmentPath(envID, "swarm/secrets/\(secretId)"), body: request)
     }
 

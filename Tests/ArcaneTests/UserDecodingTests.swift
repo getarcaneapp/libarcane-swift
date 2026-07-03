@@ -195,7 +195,7 @@ final class UserDecodingTests: XCTestCase {
     func testCreateUserOmitsNilRoles() throws {
         let body = CreateUser(username: "alice", password: "12345678", roles: nil)
         let data = try encoder.encode(body)
-        let json = String(decoding: data, as: UTF8.self)
+        let json = String(bytes: data, encoding: .utf8) ?? ""
         XCTAssertFalse(json.contains("\"roles\""), "Expected no roles key when nil; got: \(json)")
         XCTAssertTrue(json.contains("\"username\""))
         XCTAssertTrue(json.contains("\"password\""))
@@ -204,7 +204,7 @@ final class UserDecodingTests: XCTestCase {
     func testCreateUserIncludesRolesWhenSet() throws {
         let body = CreateUser(username: "alice", password: "12345678", roles: ["admin"])
         let data = try encoder.encode(body)
-        let json = String(decoding: data, as: UTF8.self)
+        let json = String(bytes: data, encoding: .utf8) ?? ""
         XCTAssertTrue(json.contains("\"roles\""))
         XCTAssertTrue(json.contains("\"admin\""))
     }
@@ -212,7 +212,7 @@ final class UserDecodingTests: XCTestCase {
     func testUpdateUserOmitsNilRoles() throws {
         let body = UpdateUser(displayName: "Alice", roles: nil)
         let data = try encoder.encode(body)
-        let json = String(decoding: data, as: UTF8.self)
+        let json = String(bytes: data, encoding: .utf8) ?? ""
         XCTAssertFalse(json.contains("\"roles\""))
     }
 

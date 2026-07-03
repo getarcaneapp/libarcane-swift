@@ -41,28 +41,28 @@ public struct NDJSONStream<Element: Decodable & Sendable>: AsyncSequence, Sendab
         return AsyncThrowingStream<Element, Error> { continuation in
             let task = Task {
                 do {
-                    let (bytes, http, cleanup) = try await Self.openByteStream(
+                    let result = try await Self.openByteStream(
                         transport: transport,
                         path: path,
                         source: source
                     )
-                    defer { cleanup() }
+                    defer { result.cleanup() }
 
-                    guard (200..<300).contains(http.statusCode) else {
+                    guard (200..<300).contains(result.http.statusCode) else {
                         var snippet = Data()
-                        for try await byte in bytes {
+                        for try await byte in result.bytes {
                             snippet.append(byte)
                             if snippet.count > 4096 { break }
                         }
                         throw ArcaneError.from(
-                            statusCode: http.statusCode,
+                            statusCode: result.http.statusCode,
                             data: snippet,
-                            headers: http.allHeaderFields,
+                            headers: result.http.allHeaderFields,
                             decoder: ArcaneJSON.makeDecoder()
                         )
                     }
                     let decoder = ArcaneJSON.makeDecoder()
-                    for try await line in bytes.lines {
+                    for try await line in result.bytes.lines {
                         if Task.isCancelled { break }
                         let trimmed = line.trimmingCharacters(in: .whitespaces)
                         guard !trimmed.isEmpty,
@@ -91,11 +91,17 @@ public struct NDJSONStream<Element: Decodable & Sendable>: AsyncSequence, Sendab
         }.makeAsyncIterator()
     }
 
+    private struct ByteStreamResult: Sendable {
+        let bytes: URLSession.AsyncBytes
+        let http: HTTPURLResponse
+        let cleanup: @Sendable () -> Void
+    }
+
     private static func openByteStream(
         transport: ArcaneURLSessionTransport,
         path: String,
         source: Source
-    ) async throws -> (URLSession.AsyncBytes, HTTPURLResponse, @Sendable () -> Void) {
+    ) async throws -> ByteStreamResult {
         switch source {
         case let .body(method, body, contentType, query):
             let (bytes, http) = try await transport.byteStream(
@@ -105,7 +111,7 @@ public struct NDJSONStream<Element: Decodable & Sendable>: AsyncSequence, Sendab
                 body: body,
                 contentType: contentType
             )
-            return (bytes, http, {})
+            return ByteStreamResult(bytes: bytes, http: http, cleanup: {})
         case let .multipart(endpoint):
             let prepared = try transport.makeMultipartTempFile(fields: endpoint.fields, files: endpoint.files)
             let cleanup: @Sendable () -> Void = {
@@ -118,7 +124,7 @@ public struct NDJSONStream<Element: Decodable & Sendable>: AsyncSequence, Sendab
                     query: endpoint.query,
                     file: prepared
                 )
-                return (bytes, http, cleanup)
+                return ByteStreamResult(bytes: bytes, http: http, cleanup: cleanup)
             } catch {
                 cleanup()
                 throw error

@@ -61,21 +61,21 @@ public struct User: Codable, Hashable, Sendable, Identifiable {
     }
 
     public init(from decoder: Decoder) throws {
-        let c = try decoder.container(keyedBy: CodingKeys.self)
-        id = try c.decode(String.self, forKey: .id)
-        username = try c.decode(String.self, forKey: .username)
-        displayName = try c.decodeIfPresent(String.self, forKey: .displayName)
-        email = try c.decodeIfPresent(String.self, forKey: .email)
-        canDelete = try c.decodeIfPresent(Bool.self, forKey: .canDelete) ?? false
-        oidcSubjectId = try c.decodeIfPresent(String.self, forKey: .oidcSubjectId)
-        locale = try c.decodeIfPresent(String.self, forKey: .locale)
-        createdAt = try c.decodeIfPresent(String.self, forKey: .createdAt)
-        updatedAt = try c.decodeIfPresent(String.self, forKey: .updatedAt)
-        requiresPasswordChange = try c.decodeIfPresent(Bool.self, forKey: .requiresPasswordChange) ?? false
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(String.self, forKey: .id)
+        username = try container.decode(String.self, forKey: .username)
+        displayName = try container.decodeIfPresent(String.self, forKey: .displayName)
+        email = try container.decodeIfPresent(String.self, forKey: .email)
+        canDelete = try container.decodeIfPresent(Bool.self, forKey: .canDelete) ?? false
+        oidcSubjectId = try container.decodeIfPresent(String.self, forKey: .oidcSubjectId)
+        locale = try container.decodeIfPresent(String.self, forKey: .locale)
+        createdAt = try container.decodeIfPresent(String.self, forKey: .createdAt)
+        updatedAt = try container.decodeIfPresent(String.self, forKey: .updatedAt)
+        requiresPasswordChange = try container.decodeIfPresent(Bool.self, forKey: .requiresPasswordChange) ?? false
 
-        let decodedRoles = try c.decodeIfPresent([String].self, forKey: .roles)
-        let decodedAssignments = try c.decodeIfPresent([RoleAssignmentSummary].self, forKey: .roleAssignments)
-        let decodedPerms = try c.decodeIfPresent([String: [String]].self, forKey: .permissionsByEnv)
+        let decodedRoles = try container.decodeIfPresent([String].self, forKey: .roles)
+        let decodedAssignments = try container.decodeIfPresent([RoleAssignmentSummary].self, forKey: .roleAssignments)
+        let decodedPerms = try container.decodeIfPresent([String: [String]].self, forKey: .permissionsByEnv)
 
         roleAssignments = decodedAssignments
         permissionsByEnv = decodedPerms
@@ -84,8 +84,8 @@ public struct User: Codable, Hashable, Sendable, Identifiable {
             roles = decodedRoles
         } else if let decodedAssignments {
             var seen = Set<String>()
-            roles = decodedAssignments.compactMap { a in
-                seen.insert(a.roleId).inserted ? a.roleId : nil
+            roles = decodedAssignments.compactMap { assignment in
+                seen.insert(assignment.roleId).inserted ? assignment.roleId : nil
             }
         } else {
             roles = []

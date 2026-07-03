@@ -18,15 +18,13 @@ public struct EventsService: Sendable {
         severity: String? = nil,
         type: String? = nil
     ) async throws -> PaginatedResponse<Event> {
-        let query = buildEventQuery(
+        let query = EventListOptions(
             search: search,
             sort: sort,
             order: order,
-            start: start,
-            limit: limit,
             severity: severity,
             type: type
-        )
+        ).queryItems
         return try await rest.transport.paginated("events", start: start, limit: limit, query: query)
     }
 
@@ -41,15 +39,13 @@ public struct EventsService: Sendable {
         severity: String? = nil,
         type: String? = nil
     ) async throws -> PaginatedResponse<Event> {
-        let query = buildEventQuery(
+        let query = EventListOptions(
             search: search,
             sort: sort,
             order: order,
-            start: start,
-            limit: limit,
             severity: severity,
             type: type
-        )
+        ).queryItems
         return try await rest.transport.paginated("events/environment/\(environmentID)", start: start, limit: limit, query: query)
     }
 
@@ -63,21 +59,21 @@ public struct EventsService: Sendable {
         try await rest.deleteVoid("events/\(id)")
     }
 
-    private func buildEventQuery(
-        search: String?,
-        sort: String?,
-        order: SortOrder?,
-        start: Int,
-        limit: Int,
-        severity: String?,
-        type: String?
-    ) -> [URLQueryItem] {
-        var query: [URLQueryItem] = []
-        if let search { query.append(URLQueryItem(name: "search", value: search)) }
-        if let sort { query.append(URLQueryItem(name: "sort", value: sort)) }
-        if let order { query.append(URLQueryItem(name: "order", value: order.rawValue)) }
-        if let severity { query.append(URLQueryItem(name: "severity", value: severity)) }
-        if let type { query.append(URLQueryItem(name: "type", value: type)) }
-        return query
+    private struct EventListOptions {
+        let search: String?
+        let sort: String?
+        let order: SortOrder?
+        let severity: String?
+        let type: String?
+
+        var queryItems: [URLQueryItem] {
+            var query: [URLQueryItem] = []
+            if let search { query.append(URLQueryItem(name: "search", value: search)) }
+            if let sort { query.append(URLQueryItem(name: "sort", value: sort)) }
+            if let order { query.append(URLQueryItem(name: "order", value: order.rawValue)) }
+            if let severity { query.append(URLQueryItem(name: "severity", value: severity)) }
+            if let type { query.append(URLQueryItem(name: "type", value: type)) }
+            return query
+        }
     }
 }

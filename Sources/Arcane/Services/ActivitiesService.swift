@@ -25,14 +25,14 @@ public struct ActivitiesService: Sendable {
             rest.environmentPath(envID, "activities"),
             start: start,
             limit: limit,
-            query: queryItems(
+            query: ActivityListFilters(
                 search: search,
                 sort: sort,
                 order: order,
                 status: status,
                 type: type,
                 resourceType: resourceType
-            )
+            ).queryItems
         )
     }
 
@@ -85,23 +85,25 @@ public struct ActivitiesService: Sendable {
         try await rest.delete(rest.environmentPath(envID, "activities/history"))
     }
 
-    private func queryItems(
-        search: String?,
-        sort: String?,
-        order: SortOrder?,
-        status: ActivityStatus?,
-        type: ActivityType?,
-        resourceType: String?
-    ) -> [URLQueryItem] {
-        var items: [URLQueryItem] = []
-        if let search, !search.isEmpty { items.append(URLQueryItem(name: "search", value: search)) }
-        if let sort, !sort.isEmpty { items.append(URLQueryItem(name: "sort", value: sort)) }
-        if let order { items.append(URLQueryItem(name: "order", value: order.rawValue)) }
-        if let status { items.append(URLQueryItem(name: "status", value: status.rawValue)) }
-        if let type { items.append(URLQueryItem(name: "type", value: type.rawValue)) }
-        if let resourceType, !resourceType.isEmpty {
-            items.append(URLQueryItem(name: "resourceType", value: resourceType))
+    private struct ActivityListFilters {
+        let search: String?
+        let sort: String?
+        let order: SortOrder?
+        let status: ActivityStatus?
+        let type: ActivityType?
+        let resourceType: String?
+
+        var queryItems: [URLQueryItem] {
+            var items: [URLQueryItem] = []
+            if let search, !search.isEmpty { items.append(URLQueryItem(name: "search", value: search)) }
+            if let sort, !sort.isEmpty { items.append(URLQueryItem(name: "sort", value: sort)) }
+            if let order { items.append(URLQueryItem(name: "order", value: order.rawValue)) }
+            if let status { items.append(URLQueryItem(name: "status", value: status.rawValue)) }
+            if let type { items.append(URLQueryItem(name: "type", value: type.rawValue)) }
+            if let resourceType, !resourceType.isEmpty {
+                items.append(URLQueryItem(name: "resourceType", value: resourceType))
+            }
+            return items
         }
-        return items
     }
 }

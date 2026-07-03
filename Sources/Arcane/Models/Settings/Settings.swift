@@ -126,6 +126,7 @@ public struct UpdateSettings: Codable, Hashable, Sendable {
     public var depotToken: String?
     public var oledMode: String?
 
+    // swiftlint:disable:next function_body_length
     public init(
         projectsDirectory: String? = nil,
         followProjectSymlinks: String? = nil,

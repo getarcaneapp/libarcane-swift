@@ -87,29 +87,30 @@ public enum ActivityType: Hashable, Sendable, Codable {
         }
     }
 
+    private static let rawValueMap: [String: ActivityType] = [
+        "image_pull": .imagePull,
+        "image_build": .imageBuild,
+        "image_update_check": .imageUpdateCheck,
+        "project_pull": .projectPull,
+        "project_build": .projectBuild,
+        "project_deploy": .projectDeploy,
+        "project_redeploy": .projectRedeploy,
+        "project_down": .projectDown,
+        "project_restart": .projectRestart,
+        "project_destroy": .projectDestroy,
+        "container_start": .containerStart,
+        "container_stop": .containerStop,
+        "container_restart": .containerRestart,
+        "container_redeploy": .containerRedeploy,
+        "container_delete": .containerDelete,
+        "vulnerability_scan": .vulnerabilityScan,
+        "auto_update": .autoUpdate,
+        "system_prune": .systemPrune,
+        "resource_action": .resourceAction
+    ]
+
     public init(rawValue: String) {
-        switch rawValue {
-        case "image_pull": self = .imagePull
-        case "image_build": self = .imageBuild
-        case "image_update_check": self = .imageUpdateCheck
-        case "project_pull": self = .projectPull
-        case "project_build": self = .projectBuild
-        case "project_deploy": self = .projectDeploy
-        case "project_redeploy": self = .projectRedeploy
-        case "project_down": self = .projectDown
-        case "project_restart": self = .projectRestart
-        case "project_destroy": self = .projectDestroy
-        case "container_start": self = .containerStart
-        case "container_stop": self = .containerStop
-        case "container_restart": self = .containerRestart
-        case "container_redeploy": self = .containerRedeploy
-        case "container_delete": self = .containerDelete
-        case "vulnerability_scan": self = .vulnerabilityScan
-        case "auto_update": self = .autoUpdate
-        case "system_prune": self = .systemPrune
-        case "resource_action": self = .resourceAction
-        default: self = .unknown(rawValue)
-        }
+        self = ActivityType.rawValueMap[rawValue] ?? .unknown(rawValue)
     }
 
     public init(from decoder: Decoder) throws {

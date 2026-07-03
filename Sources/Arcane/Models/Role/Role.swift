@@ -35,15 +35,15 @@ public struct Role: Codable, Hashable, Sendable, Identifiable {
     }
 
     public init(from decoder: Decoder) throws {
-        let c = try decoder.container(keyedBy: CodingKeys.self)
-        id = try c.decode(String.self, forKey: .id)
-        name = try c.decode(String.self, forKey: .name)
-        description = try c.decodeIfPresent(String.self, forKey: .description)
-        permissions = try c.decodeIfPresent([String].self, forKey: .permissions) ?? []
-        builtIn = try c.decodeIfPresent(Bool.self, forKey: .builtIn) ?? false
-        assignedUserCount = try c.decodeIfPresent(Int.self, forKey: .assignedUserCount) ?? 0
-        createdAt = try c.decode(Date.self, forKey: .createdAt)
-        updatedAt = try c.decodeIfPresent(Date.self, forKey: .updatedAt)
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(String.self, forKey: .id)
+        name = try container.decode(String.self, forKey: .name)
+        description = try container.decodeIfPresent(String.self, forKey: .description)
+        permissions = try container.decodeIfPresent([String].self, forKey: .permissions) ?? []
+        builtIn = try container.decodeIfPresent(Bool.self, forKey: .builtIn) ?? false
+        assignedUserCount = try container.decodeIfPresent(Int.self, forKey: .assignedUserCount) ?? 0
+        createdAt = try container.decode(Date.self, forKey: .createdAt)
+        updatedAt = try container.decodeIfPresent(Date.self, forKey: .updatedAt)
     }
 
     /// Stable built-in role IDs seeded by the v2 backend migration. Custom

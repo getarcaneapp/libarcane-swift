@@ -191,6 +191,7 @@ final class TransportBehaviorTests: XCTestCase {
             operations: .init(
                 receive: { try await probe.receive() },
                 send: { _ in XCTFail("Unexpected send on receive-only channel") },
+                sendPing: { XCTFail("Unexpected ping on receive-only channel") },
                 close: { code, reason in await probe.close(code: code, reason: reason) }
             ),
             encodeOutbound: { _ in fatalError("Receive-only channel") },

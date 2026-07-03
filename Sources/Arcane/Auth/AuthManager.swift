@@ -96,34 +96,7 @@ public actor AuthManager {
         }
 
         let task = Task<TokenPair, Error> {
-            var request = URLRequest(url: baseURL.appendingAPIPath("auth/refresh"))
-            request.httpMethod = "POST"
-            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            request.setValue("application/json", forHTTPHeaderField: "Accept")
-            request.httpBody = try encoder.encode(RefreshRequest(refreshToken: refreshToken))
-
-            do {
-                let (data, response) = try await urlSession.data(for: request)
-                guard let http = response as? HTTPURLResponse else {
-                    throw ArcaneError.transport("Refresh did not return an HTTP response")
-                }
-                guard (200..<300).contains(http.statusCode) else {
-                    throw ArcaneError.from(statusCode: http.statusCode, data: data, headers: http.allHeaderFields, decoder: decoder)
-                }
-                let envelope = try decoder.decode(APIResponse<TokenRefreshResponse>.self, from: data)
-                let refreshResponse = envelope.data
-                return TokenPair(
-                    accessToken: refreshResponse.token,
-                    refreshToken: refreshResponse.refreshToken,
-                    expiresAt: refreshResponse.expiresAt
-                )
-            } catch let error as ArcaneError {
-                throw error
-            } catch let error as URLError {
-                throw ArcaneError.transport(error.localizedDescription)
-            } catch {
-                throw ArcaneError.decoding(String(describing: error))
-            }
+            try await performRefreshRequest(refreshToken: refreshToken)
         }
 
         refreshTask = task
@@ -146,6 +119,37 @@ public actor AuthManager {
                 break
             }
             throw error
+        }
+    }
+
+    private func performRefreshRequest(refreshToken: String) async throws -> TokenPair {
+        var request = URLRequest(url: baseURL.appendingAPIPath("auth/refresh"))
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        request.httpBody = try encoder.encode(RefreshRequest(refreshToken: refreshToken))
+
+        do {
+            let (data, response) = try await urlSession.data(for: request)
+            guard let http = response as? HTTPURLResponse else {
+                throw ArcaneError.transport("Refresh did not return an HTTP response")
+            }
+            guard (200..<300).contains(http.statusCode) else {
+                throw ArcaneError.from(statusCode: http.statusCode, data: data, headers: http.allHeaderFields, decoder: decoder)
+            }
+            let envelope = try decoder.decode(APIResponse<TokenRefreshResponse>.self, from: data)
+            let refreshResponse = envelope.data
+            return TokenPair(
+                accessToken: refreshResponse.token,
+                refreshToken: refreshResponse.refreshToken,
+                expiresAt: refreshResponse.expiresAt
+            )
+        } catch let error as ArcaneError {
+            throw error
+        } catch let error as URLError {
+            throw ArcaneError.transport(error.localizedDescription)
+        } catch {
+            throw ArcaneError.decoding(String(describing: error))
         }
     }
 }
