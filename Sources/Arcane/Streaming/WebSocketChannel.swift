@@ -15,6 +15,23 @@ struct WebSocketOperations: Sendable {
     let close: @Sendable (URLSessionWebSocketTask.CloseCode, Data?) async -> Void
 }
 
+/// One-shot claim flag for continuation-bridged callbacks that the system may
+/// invoke more than once. Lock-based because the callback arrives on an
+/// arbitrary URLSession queue.
+private final class ContinuationResumeGuard: @unchecked Sendable {
+    private let lock = NSLock()
+    private var claimed = false
+
+    /// True exactly once; every later call returns false.
+    func tryClaim() -> Bool {
+        lock.lock()
+        defer { lock.unlock() }
+        if claimed { return false }
+        claimed = true
+        return true
+    }
+}
+
 private actor WebSocketTaskDriver {
     private let task: URLSessionWebSocketTask
 
@@ -31,8 +48,15 @@ private actor WebSocketTaskDriver {
     }
 
     func sendPing() async throws {
+        // URLSessionWebSocketTask.sendPing can invoke its completion handler
+        // more than once when the connection resets mid-ping (long-standing
+        // Foundation bug — surfaces as "Connection reset by peer" followed by
+        // a SWIFT TASK CONTINUATION MISUSE crash). Only the first callback may
+        // resume the continuation; later ones are dropped.
+        let resumeGuard = ContinuationResumeGuard()
         try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
             task.sendPing { error in
+                guard resumeGuard.tryClaim() else { return }
                 if let error {
                     continuation.resume(throwing: error)
                 } else {
