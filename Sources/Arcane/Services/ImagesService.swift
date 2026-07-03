@@ -42,6 +42,26 @@ public struct ImagesService: Sendable {
     try await rest.get(rest.environmentPath(envID, "images/\(id)"))
   }
 
+  /// In-toto attestation statements attached to an image (provenance, SBOM, ...).
+  ///
+  /// - Parameters:
+  ///   - platform: restrict to one platform (e.g. `linux/amd64`).
+  ///   - predicateType: restrict to one predicate type URI.
+  ///   - includeStatement: also return the full statement payloads.
+  public func attestations(
+    envID: EnvironmentID? = nil,
+    id: String,
+    platform: String? = nil,
+    predicateType: String? = nil,
+    includeStatement: Bool = false
+  ) async throws -> ImageAttestationList {
+    var items: [URLQueryItem] = []
+    if let platform { items.append(URLQueryItem(name: "platform", value: platform)) }
+    if let predicateType { items.append(URLQueryItem(name: "predicateType", value: predicateType)) }
+    if includeStatement { items.append(URLQueryItem(name: "statement", value: "true")) }
+    return try await rest.get(rest.environmentPath(envID, "images/\(id)/attestations"), query: items)
+  }
+
   /// Remove an image, optionally forcing removal even if in use.
   public func remove(envID: EnvironmentID? = nil, id: String, force: Bool = false) async throws {
     let query = [URLQueryItem(name: "force", value: force ? "true" : "false")]
