@@ -6,11 +6,11 @@ import Foundation
 /// key is created, the server validates that the caller holds every
 /// permission being granted.
 public struct ApiKeyPermissionGrant: Codable, Hashable, Sendable {
-    public var permission: String
-    public var environmentId: String?
+  public var permission: String
+  public var environmentId: String?
 
-    public init(permission: String, environmentId: String? = nil) {
-        self.permission = permission
-        self.environmentId = environmentId
-    }
+  public init(permission: String, environmentId: String? = nil) {
+    self.permission = permission
+    self.environmentId = environmentId
+  }
 }
