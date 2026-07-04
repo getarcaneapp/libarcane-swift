@@ -43,6 +43,19 @@ public struct UsersService: Sendable {
     try await rest.deleteVoid("users/\(id)")
   }
 
+  /// Fetch a user's custom profile picture as raw image bytes.
+  /// Returns `nil` when the user has no custom avatar (the server 404s).
+  public func getAvatar(userId: String) async throws -> Data? {
+    do {
+      return try await rest.transport.rawRequest(
+        "users/\(userId)/avatar",
+        body: Optional<String>.none
+      )
+    } catch ArcaneError.notFound {
+      return nil
+    }
+  }
+
   /// Change the current user's password.
   public func changePassword(_ body: PasswordChange) async throws {
     try await rest.postVoid("auth/password", body: body)
