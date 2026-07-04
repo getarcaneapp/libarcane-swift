@@ -82,10 +82,20 @@ public actor AuthManager {
   }
 
   public func refreshTokens() async throws -> TokenPair {
+    try await refreshTokens(isRetry: false)
+  }
+
+  private func refreshTokens(isRetry: Bool) async throws -> TokenPair {
     if let refreshTask {
       return try await refreshTask.value
     }
-    if cachedTokens == nil {
+    // The store, not the in-memory cache, is the source of truth going into
+    // a refresh: another process sharing the token store (widget/intents
+    // extension) may have rotated the pair while this process was suspended,
+    // and the server invalidates the old refresh token immediately.
+    if let stored = try? await tokenStore.loadTokens() {
+      cachedTokens = stored
+    } else if cachedTokens == nil {
       cachedTokens = try await tokenStore.loadTokens()
     }
     if let refreshTask {
@@ -114,7 +124,25 @@ public actor AuthManager {
       // the credential so a later attempt can succeed.
       switch error {
       case ArcaneError.unauthorized, ArcaneError.forbidden:
-        try? await clear()
+        // Single-use rotation race: if a concurrent process just rotated
+        // this token, the store now holds a newer, valid pair — retry with
+        // it instead of wiping the session.
+        if !isRetry,
+          let latest = try? await tokenStore.loadTokens(),
+          !latest.refreshToken.isEmpty,
+          latest.refreshToken != refreshToken
+        {
+          cachedTokens = latest
+          return try await refreshTokens(isRetry: true)
+        }
+        // Only clear when the store verifiably still holds the token the
+        // server just rejected — an unreadable store (locked keychain)
+        // must never cost the user their session.
+        if let current = try? await tokenStore.loadTokens(),
+          current.refreshToken == refreshToken
+        {
+          try? await clear()
+        }
       default:
         break
       }
