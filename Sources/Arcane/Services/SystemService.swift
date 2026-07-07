@@ -132,6 +132,22 @@ public struct SystemService: Sendable {
       rest.environmentPath(envID, "system/upgrade"), body: Optional<EmptyBody>.none)
   }
 
+  /// Triggers a fleet-wide Arcane upgrade: online remote agents are upgraded
+  /// first, then the manager itself (which restarts). Manager-only — the
+  /// server responds 409 when a job is already running and 400 when running
+  /// in agent mode. The environment path segment is ignored server-side;
+  /// callers conventionally pass the manager environment (`"0"`).
+  public func triggerUpdateAll(envID: EnvironmentID? = nil) async throws -> EnvironmentUpdateJob {
+    try await rest.post(
+      rest.environmentPath(envID, "system/upgrade/all"), body: Optional<EmptyBody>.none)
+  }
+
+  /// Returns the most recent fleet-wide update-all job. Throws
+  /// `ArcaneError.notFound` when no job has ever run.
+  public func updateAllStatus(envID: EnvironmentID? = nil) async throws -> EnvironmentUpdateJob {
+    try await rest.get(rest.environmentPath(envID, "system/upgrade/all/status"))
+  }
+
   // MARK: - WebSocket streams
 
   /// Streams live system stats over a WebSocket connection.
