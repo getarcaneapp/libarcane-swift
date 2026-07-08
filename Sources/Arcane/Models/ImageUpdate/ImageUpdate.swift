@@ -8,13 +8,16 @@ public struct ImageUpdateResponse: Codable, Hashable, Sendable {
   public var latestVersion: String?
   public var currentDigest: String?
   public var latestDigest: String?
-  public var checkTime: Date
+  /// Optional so responses from servers that omit the timestamp still decode.
+  public var checkTime: Date?
   public var responseTimeMs: Int
   public var error: String?
   public var authMethod: String?
   public var authUsername: String?
   public var authRegistry: String?
   public var usedCredential: Bool?
+  /// Background activity that tracked this check (v2 servers).
+  public var activityId: String?
 
   public init(
     hasUpdate: Bool = false,
@@ -23,13 +26,14 @@ public struct ImageUpdateResponse: Codable, Hashable, Sendable {
     latestVersion: String? = nil,
     currentDigest: String? = nil,
     latestDigest: String? = nil,
-    checkTime: Date = Date(),
+    checkTime: Date? = nil,
     responseTimeMs: Int = 0,
     error: String? = nil,
     authMethod: String? = nil,
     authUsername: String? = nil,
     authRegistry: String? = nil,
-    usedCredential: Bool? = nil
+    usedCredential: Bool? = nil,
+    activityId: String? = nil
   ) {
     self.hasUpdate = hasUpdate
     self.updateType = updateType
@@ -44,6 +48,7 @@ public struct ImageUpdateResponse: Codable, Hashable, Sendable {
     self.authUsername = authUsername
     self.authRegistry = authRegistry
     self.usedCredential = usedCredential
+    self.activityId = activityId
   }
 }
 
