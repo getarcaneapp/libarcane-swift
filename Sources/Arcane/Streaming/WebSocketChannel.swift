@@ -13,6 +13,30 @@ struct WebSocketOperations: Sendable {
   let send: @Sendable (URLSessionWebSocketTask.Message) async throws -> Void
   let sendPing: @Sendable () async throws -> Void
   let close: @Sendable (URLSessionWebSocketTask.CloseCode, Data?) async -> Void
+  /// Synchronous close for termination paths that cannot await. Defaults to
+  /// hopping to `close` in a detached task; the live channel overrides it
+  /// with a direct `URLSessionWebSocketTask.cancel(with:reason:)` (which is
+  /// thread-safe) so the socket is released before any replacement connects.
+  let closeImmediately: @Sendable (URLSessionWebSocketTask.CloseCode, Data?) -> Void
+
+  init(
+    receive: @escaping @Sendable () async throws -> URLSessionWebSocketTask.Message,
+    send: @escaping @Sendable (URLSessionWebSocketTask.Message) async throws -> Void,
+    sendPing: @escaping @Sendable () async throws -> Void,
+    close: @escaping @Sendable (URLSessionWebSocketTask.CloseCode, Data?) async -> Void,
+    closeImmediately: (@Sendable (URLSessionWebSocketTask.CloseCode, Data?) -> Void)? = nil
+  ) {
+    self.receive = receive
+    self.send = send
+    self.sendPing = sendPing
+    self.close = close
+    self.closeImmediately =
+      closeImmediately ?? { code, reason in
+        Task {
+          await close(code, reason)
+        }
+      }
+  }
 }
 
 /// One-shot claim flag for continuation-bridged callbacks that the system may
@@ -91,7 +115,12 @@ public final class WebSocketChannel<Outbound: Sendable, Inbound: Sendable>: Send
       receive: { try await driver.receive() },
       send: { try await driver.send($0) },
       sendPing: { try await driver.sendPing() },
-      close: { code, reason in await driver.close(code: code, reason: reason) }
+      close: { code, reason in await driver.close(code: code, reason: reason) },
+      // Skip the actor hop on termination: cancel(with:reason:) is
+      // thread-safe, and closing synchronously stops a dying socket from
+      // lingering (and counting against server-side per-IP connection caps)
+      // while its replacement is already connecting.
+      closeImmediately: { code, reason in task.cancel(with: code, reason: reason) }
     )
     self.encodeOutbound = encodeOutbound
     self.decodeInbound = decodeInbound
@@ -153,9 +182,7 @@ public final class WebSocketChannel<Outbound: Sendable, Inbound: Sendable>: Send
       continuation.onTermination = { [operations] _ in
         reader.cancel()
         pinger?.cancel()
-        Task {
-          await operations.close(.normalClosure, nil)
-        }
+        operations.closeImmediately(.normalClosure, nil)
       }
     }
   }

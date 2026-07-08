@@ -1,6 +1,17 @@
 import Foundation
 
 public actor AuthManager {
+  /// Access tokens within this window of expiry are treated as expired and
+  /// refreshed proactively. HTTP requests can recover reactively from a 401,
+  /// but a WebSocket handshake cannot — a rejected upgrade surfaces as
+  /// URLError -1011 with no inspectable status, so the token must be valid
+  /// before the request goes out.
+  private static let expirySkew: TimeInterval = 45
+  /// Minimum spacing between failed proactive refresh attempts, so persistent
+  /// clock skew or an offline device doesn't turn every request into a
+  /// refresh call.
+  private static let failedProactiveRefreshBackoff: TimeInterval = 30
+
   private let baseURL: URL
   private let tokenStore: any TokenStore
   private let apiKey: String?
@@ -10,6 +21,7 @@ public actor AuthManager {
   private var cachedTokens: TokenPair?
   private var refreshTask: Task<TokenPair, Error>?
   private var capabilities: ServerCapabilities = .unknown
+  private var lastFailedProactiveRefresh: Date?
 
   public init(
     baseURL: URL,
@@ -33,6 +45,23 @@ public actor AuthManager {
     }
     if cachedTokens == nil {
       cachedTokens = try await tokenStore.loadTokens()
+    }
+    if let tokens = cachedTokens,
+      !tokens.refreshToken.isEmpty,
+      tokens.expiresAt.timeIntervalSinceNow < Self.expirySkew,
+      lastFailedProactiveRefresh.map({
+        Date().timeIntervalSince($0) > Self.failedProactiveRefreshBackoff
+      }) ?? true
+    {
+      do {
+        cachedTokens = try await refreshTokens()
+        lastFailedProactiveRefresh = nil
+      } catch {
+        // Fall back to the existing token: HTTP callers still get the
+        // reactive 401 path; a transient refresh failure must not turn an
+        // otherwise-valid request into a hard error.
+        lastFailedProactiveRefresh = Date()
+      }
     }
     guard let accessToken = cachedTokens?.accessToken, !accessToken.isEmpty else {
       return [:]

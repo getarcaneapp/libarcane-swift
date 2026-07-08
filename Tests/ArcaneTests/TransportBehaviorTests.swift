@@ -140,6 +140,136 @@ final class TransportBehaviorTests: XCTestCase {
     XCTAssertEqual(storedTokens, originalTokens)
   }
 
+  func testAuthenticationHeadersProactivelyRefreshExpiredToken() async throws {
+    struct ResponseEnvelope: Encodable {
+      let success: Bool
+      let data: TokenRefreshResponse
+    }
+
+    await MockURLProtocol.reset()
+    let session = makeMockURLSession()
+    let expiredTokens = TokenPair(
+      accessToken: "expired-access-token",
+      refreshToken: "refresh-token",
+      expiresAt: Date(timeIntervalSinceNow: -60)
+    )
+    // Whole seconds: the pair round-trips through JSON, which drops
+    // sub-millisecond precision and would fail an exact Date comparison.
+    let refreshedTokens = TokenPair(
+      accessToken: "fresh-access-token",
+      refreshToken: "fresh-refresh-token",
+      expiresAt: Date(timeIntervalSince1970: Date().timeIntervalSince1970.rounded() + 3600)
+    )
+    let store = InMemoryTokenStore(tokens: expiredTokens)
+    let authManager = AuthManager(
+      baseURL: URL(string: "https://arcane.example.com")!,
+      tokenStore: store,
+      apiKey: nil,
+      urlSession: session,
+      decoder: ArcaneJSON.makeDecoder(),
+      encoder: ArcaneJSON.makeEncoder()
+    )
+
+    await MockURLProtocol.setHandler { request in
+      let response = try XCTUnwrap(
+        HTTPURLResponse(
+          url: XCTUnwrap(request.url),
+          statusCode: 200,
+          httpVersion: nil,
+          headerFields: ["Content-Type": "application/json"]
+        )
+      )
+      let envelope = ResponseEnvelope(
+        success: true,
+        data: TokenRefreshResponse(
+          token: refreshedTokens.accessToken,
+          refreshToken: refreshedTokens.refreshToken,
+          expiresAt: refreshedTokens.expiresAt
+        )
+      )
+      return (response, try ArcaneJSON.makeEncoder().encode(envelope))
+    }
+
+    let headers = try await authManager.authenticationHeaders()
+    let requestCount = await MockURLProtocol.requestCount()
+    let storedTokens = try await store.loadTokens()
+
+    XCTAssertEqual(requestCount, 1)
+    XCTAssertEqual(headers["Authorization"], "Bearer \(refreshedTokens.accessToken)")
+    XCTAssertEqual(storedTokens, refreshedTokens)
+  }
+
+  func testAuthenticationHeadersFallBackToStaleTokenWhenRefreshFails() async throws {
+    await MockURLProtocol.reset()
+    let session = makeMockURLSession()
+    let expiredTokens = TokenPair(
+      accessToken: "expired-access-token",
+      refreshToken: "refresh-token",
+      expiresAt: Date(timeIntervalSinceNow: -60)
+    )
+    let store = InMemoryTokenStore(tokens: expiredTokens)
+    let authManager = AuthManager(
+      baseURL: URL(string: "https://arcane.example.com")!,
+      tokenStore: store,
+      apiKey: nil,
+      urlSession: session,
+      decoder: ArcaneJSON.makeDecoder(),
+      encoder: ArcaneJSON.makeEncoder()
+    )
+
+    await MockURLProtocol.setHandler { request in
+      let response = try XCTUnwrap(
+        HTTPURLResponse(
+          url: XCTUnwrap(request.url),
+          statusCode: 503,
+          httpVersion: nil,
+          headerFields: ["Content-Type": "application/json"]
+        )
+      )
+      return (response, Data(#"{"message":"try again later"}"#.utf8))
+    }
+
+    let headers = try await authManager.authenticationHeaders()
+    let firstRequestCount = await MockURLProtocol.requestCount()
+    XCTAssertEqual(headers["Authorization"], "Bearer \(expiredTokens.accessToken)")
+    XCTAssertEqual(firstRequestCount, 1)
+
+    // A failed proactive refresh is throttled: an immediate follow-up call
+    // must not hit the refresh endpoint again.
+    let secondHeaders = try await authManager.authenticationHeaders()
+    let secondRequestCount = await MockURLProtocol.requestCount()
+    XCTAssertEqual(secondHeaders["Authorization"], "Bearer \(expiredTokens.accessToken)")
+    XCTAssertEqual(secondRequestCount, 1)
+  }
+
+  func testAuthenticationHeadersDoNotRefreshValidToken() async throws {
+    await MockURLProtocol.reset()
+    let session = makeMockURLSession()
+    let validTokens = TokenPair(
+      accessToken: "valid-access-token",
+      refreshToken: "refresh-token",
+      expiresAt: Date(timeIntervalSinceNow: 3600)
+    )
+    let authManager = AuthManager(
+      baseURL: URL(string: "https://arcane.example.com")!,
+      tokenStore: InMemoryTokenStore(tokens: validTokens),
+      apiKey: nil,
+      urlSession: session,
+      decoder: ArcaneJSON.makeDecoder(),
+      encoder: ArcaneJSON.makeEncoder()
+    )
+
+    await MockURLProtocol.setHandler { request in
+      XCTFail("No network request expected for a non-expired token")
+      throw ArcaneError.transport("unexpected request")
+    }
+
+    let headers = try await authManager.authenticationHeaders()
+    let requestCount = await MockURLProtocol.requestCount()
+    XCTAssertEqual(headers["Authorization"], "Bearer \(validTokens.accessToken)")
+    XCTAssertEqual(requestCount, 0)
+  }
+
   func testMultipartUploadStreamRemovesPreparedTempFileWhenOpenFails() async throws {
     let inputURL = FileManager.default.temporaryDirectory
       .appendingPathComponent("arcane-upload-input-\(UUID().uuidString).txt")
