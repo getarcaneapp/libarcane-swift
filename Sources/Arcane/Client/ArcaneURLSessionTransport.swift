@@ -1,10 +1,15 @@
 import Foundation
 
 public final class ArcaneURLSessionTransport: Sendable {
+  struct AuthenticatedRequest: Sendable {
+    let request: URLRequest
+    let credentialGeneration: UInt64?
+  }
+
   let baseURL: URL
   let session: URLSession
   let authManager: AuthManager
-  private let retryPolicy: RetryPolicy
+  let retryPolicy: RetryPolicy
   let decoder: JSONDecoder
   let encoder: JSONEncoder
 
@@ -79,10 +84,10 @@ public final class ArcaneURLSessionTransport: Sendable {
     var attempt = 1
 
     while true {
-      let request = try await makeRequest(
+      let prepared = try await makeRequest(
         path, method: method, query: query, body: body, authorized: authorized)
       do {
-        let (data, response) = try await session.data(for: request)
+        let (data, response) = try await session.data(for: prepared.request)
         guard let http = response as? HTTPURLResponse else {
           throw ArcaneError.transport("Request did not return an HTTP response")
         }
@@ -104,8 +109,8 @@ public final class ArcaneURLSessionTransport: Sendable {
         }
 
         guard (200..<300).contains(http.statusCode) else {
-          if http.statusCode == 401 {
-            try? await authManager.clear()
+          if http.statusCode == 401, let generation = prepared.credentialGeneration {
+            try? await authManager.clear(ifCredentialGenerationMatches: generation)
           }
           throw ArcaneError.from(
             statusCode: http.statusCode, data: data, headers: http.allHeaderFields, decoder: decoder
@@ -114,13 +119,15 @@ public final class ArcaneURLSessionTransport: Sendable {
         return data
       } catch let error as ArcaneError {
         throw error
+      } catch is CancellationError {
+        throw CancellationError()
       } catch let error as URLError {
         if shouldRetry(method: method, error: error), attempt < retryPolicy.maxAttempts {
           try await sleepBeforeRetry(attempt: attempt)
           attempt += 1
           continue
         }
-        throw ArcaneError.transport(error.localizedDescription)
+        throw normalizedTransportError(error)
       }
     }
   }
@@ -129,7 +136,7 @@ public final class ArcaneURLSessionTransport: Sendable {
   {
     var request = URLRequest(
       url: baseURL.appendingAPIPath(path).withQueryItems(query).webSocketURL())
-    try await applyAuthenticationHeaders(to: &request)
+    _ = try await applyAuthenticationHeaders(to: &request)
     return request
   }
 
@@ -151,14 +158,19 @@ public final class ArcaneURLSessionTransport: Sendable {
       var request = URLRequest(url: baseURL.appendingAPIPath(path).withQueryItems(query))
       request.httpMethod = method
       request.setValue(accept, forHTTPHeaderField: "Accept")
-      try await applyAuthenticationHeaders(to: &request, authorized: authorized)
+      let generation = try await applyAuthenticationHeaders(to: &request, authorized: authorized)
       if let body {
         if let contentType {
           request.setValue(contentType, forHTTPHeaderField: "Content-Type")
         }
         request.httpBody = body
       }
-      let (bytes, response) = try await session.bytes(for: request)
+      let (bytes, response): (URLSession.AsyncBytes, URLResponse)
+      do {
+        (bytes, response) = try await session.bytes(for: request)
+      } catch {
+        throw normalizedTransportError(error)
+      }
       guard let http = response as? HTTPURLResponse else {
         throw ArcaneError.transport("Request did not return an HTTP response")
       }
@@ -168,6 +180,9 @@ public final class ArcaneURLSessionTransport: Sendable {
         didRefresh: &didRefresh
       ) {
         continue
+      }
+      if http.statusCode == 401, let generation {
+        try? await authManager.clear(ifCredentialGenerationMatches: generation)
       }
       return (bytes, http)
     }
@@ -188,14 +203,22 @@ public final class ArcaneURLSessionTransport: Sendable {
 
     var didRefresh = false
     while true {
-      let request = try await makeMultipartRequest(
+      let preparedRequest = try await makeMultipartRequest(
         path: path,
         method: method,
         query: query,
         prepared: prepared,
         accept: "application/json"
       )
-      let (data, response) = try await session.upload(for: request, fromFile: prepared.url)
+      let (data, response): (Data, URLResponse)
+      do {
+        (data, response) = try await session.upload(
+          for: preparedRequest.request,
+          fromFile: prepared.url
+        )
+      } catch {
+        throw normalizedTransportError(error)
+      }
       guard let http = response as? HTTPURLResponse else {
         throw ArcaneError.transport("Upload did not return an HTTP response")
       }
@@ -207,6 +230,9 @@ public final class ArcaneURLSessionTransport: Sendable {
         continue
       }
       guard (200..<300).contains(http.statusCode) else {
+        if http.statusCode == 401, let generation = preparedRequest.credentialGeneration {
+          try? await authManager.clear(ifCredentialGenerationMatches: generation)
+        }
         throw ArcaneError.from(
           statusCode: http.statusCode, data: data, headers: http.allHeaderFields, decoder: decoder)
       }
@@ -254,30 +280,31 @@ public final class ArcaneURLSessionTransport: Sendable {
     query: [URLQueryItem],
     body: Body?,
     authorized: Bool
-  ) async throws -> URLRequest {
+  ) async throws -> AuthenticatedRequest {
     var request = URLRequest(url: baseURL.appendingAPIPath(path).withQueryItems(query))
     request.httpMethod = method
     request.setValue("application/json", forHTTPHeaderField: "Accept")
-    if authorized {
-      try await applyAuthenticationHeaders(to: &request)
-    }
+    let generation = try await applyAuthenticationHeaders(to: &request, authorized: authorized)
     if let body {
       request.setValue("application/json", forHTTPHeaderField: "Content-Type")
       request.httpBody = try encoder.encode(body)
     }
-    return request
+    return AuthenticatedRequest(request: request, credentialGeneration: generation)
   }
 
+  @discardableResult
   func applyAuthenticationHeaders(
     to request: inout URLRequest,
     authorized: Bool = true
-  ) async throws {
+  ) async throws -> UInt64? {
     guard authorized else {
-      return
+      return nil
     }
-    for (key, value) in try await authManager.authenticationHeaders() {
+    let context = try await authManager.authenticationContext()
+    for (key, value) in context.headers {
       request.setValue(value, forHTTPHeaderField: key)
     }
+    return context.headers["Authorization"] == nil ? nil : context.credentialGeneration
   }
 
   func refreshAuthorizationIfNeeded(
@@ -303,7 +330,7 @@ public final class ArcaneURLSessionTransport: Sendable {
     query: [URLQueryItem],
     prepared: PreparedMultipart,
     accept: String
-  ) async throws -> URLRequest {
+  ) async throws -> AuthenticatedRequest {
     var request = URLRequest(url: baseURL.appendingAPIPath(path).withQueryItems(query))
     request.httpMethod = method
     request.setValue(accept, forHTTPHeaderField: "Accept")
@@ -311,25 +338,25 @@ public final class ArcaneURLSessionTransport: Sendable {
       "multipart/form-data; boundary=\(prepared.boundary)",
       forHTTPHeaderField: "Content-Type"
     )
-    try await applyAuthenticationHeaders(to: &request)
-    return request
+    let generation = try await applyAuthenticationHeaders(to: &request)
+    return AuthenticatedRequest(request: request, credentialGeneration: generation)
   }
 
-  private func shouldRetry(method: String, statusCode: Int) -> Bool {
+  func shouldRetry(method: String, statusCode: Int) -> Bool {
     guard ["GET", "HEAD", "OPTIONS", "PUT", "DELETE"].contains(method.uppercased()) else {
       return false
     }
     return [429, 502, 503, 504].contains(statusCode)
   }
 
-  private func shouldRetry(method: String, error: URLError) -> Bool {
+  func shouldRetry(method: String, error: URLError) -> Bool {
     guard ["GET", "HEAD", "OPTIONS", "PUT", "DELETE"].contains(method.uppercased()) else {
       return false
     }
     return error.code != .cancelled
   }
 
-  private func sleepBeforeRetry(attempt: Int) async throws {
+  func sleepBeforeRetry(attempt: Int) async throws {
     let multiplier = 1 << max(0, attempt - 1)
     let base =
       retryPolicy.baseBackoff.components.attoseconds / 1_000_000_000

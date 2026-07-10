@@ -46,19 +46,25 @@ extension ArcaneURLSessionTransport {
   ) async throws -> (URLSession.AsyncBytes, HTTPURLResponse) {
     var didRefresh = false
     while true {
-      var request = try await makeMultipartRequest(
+      let preparedRequest = try await makeMultipartRequest(
         path: path,
         method: method,
         query: query,
         prepared: prepared,
         accept: "application/x-ndjson, application/x-json-stream, application/json"
       )
+      var request = preparedRequest.request
       let attrs = try FileManager.default.attributesOfItem(atPath: prepared.url.path)
       if let size = attrs[.size] as? Int {
         request.setValue("\(size)", forHTTPHeaderField: "Content-Length")
       }
       request.httpBodyStream = InputStream(url: prepared.url)
-      let (bytes, response) = try await session.bytes(for: request)
+      let (bytes, response): (URLSession.AsyncBytes, URLResponse)
+      do {
+        (bytes, response) = try await session.bytes(for: request)
+      } catch {
+        throw normalizedTransportError(error)
+      }
       guard let http = response as? HTTPURLResponse else {
         throw ArcaneError.transport("Multipart upload did not return an HTTP response")
       }
@@ -68,6 +74,9 @@ extension ArcaneURLSessionTransport {
         didRefresh: &didRefresh
       ) {
         continue
+      }
+      if http.statusCode == 401, let generation = preparedRequest.credentialGeneration {
+        try? await authManager.clear(ifCredentialGenerationMatches: generation)
       }
       return (bytes, http)
     }

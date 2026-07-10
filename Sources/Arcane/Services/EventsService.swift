@@ -50,11 +50,6 @@ public struct EventsService: Sendable {
       "events/environment/\(environmentID)", start: start, limit: limit, query: query)
   }
 
-  /// Create a new event.
-  public func create(_ body: CreateEvent) async throws -> Event {
-    try await rest.post("events", body: body)
-  }
-
   /// Delete an event by ID.
   public func delete(id: String) async throws {
     try await rest.deleteVoid("events/\(id)")

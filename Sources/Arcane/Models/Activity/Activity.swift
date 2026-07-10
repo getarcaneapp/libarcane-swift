@@ -165,6 +165,8 @@ public enum ActivityStreamEventType: Hashable, Sendable, Codable {
   case activity
   case message
   case missed
+  case error
+  case heartbeat
   case unknown(String)
 
   public var rawValue: String {
@@ -173,6 +175,8 @@ public enum ActivityStreamEventType: Hashable, Sendable, Codable {
     case .activity: return "activity"
     case .message: return "message"
     case .missed: return "missed"
+    case .error: return "error"
+    case .heartbeat: return "heartbeat"
     case .unknown(let value): return value
     }
   }
@@ -183,6 +187,8 @@ public enum ActivityStreamEventType: Hashable, Sendable, Codable {
     case "activity": self = .activity
     case "message": self = .message
     case "missed": self = .missed
+    case "error": self = .error
+    case "heartbeat": self = .heartbeat
     default: self = .unknown(rawValue)
     }
   }
@@ -345,44 +351,54 @@ public struct ActivityDetail: Codable, Hashable, Sendable {
 
 public struct ActivityStreamEvent: Codable, Hashable, Sendable {
   public var type: ActivityStreamEventType
+  public var environmentID: String?
   public var activityID: String?
   public var activity: Activity?
   public var activities: [Activity]
   public var message: ActivityMessage?
+  public var error: String?
   public var timestamp: Date
 
   public enum CodingKeys: String, CodingKey {
     case type
+    case environmentID = "environmentId"
     case activityID = "activityId"
     case activity
     case activities
     case message
+    case error
     case timestamp
   }
 
   public init(
     type: ActivityStreamEventType,
+    environmentID: String? = nil,
     activityID: String? = nil,
     activity: Activity? = nil,
     activities: [Activity] = [],
     message: ActivityMessage? = nil,
+    error: String? = nil,
     timestamp: Date
   ) {
     self.type = type
+    self.environmentID = environmentID
     self.activityID = activityID
     self.activity = activity
     self.activities = activities
     self.message = message
+    self.error = error
     self.timestamp = timestamp
   }
 
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     type = try container.decode(ActivityStreamEventType.self, forKey: .type)
+    environmentID = try container.decodeIfPresent(String.self, forKey: .environmentID)
     activityID = try container.decodeIfPresent(String.self, forKey: .activityID)
     activity = try container.decodeIfPresent(Activity.self, forKey: .activity)
     activities = try container.decodeIfPresent([Activity].self, forKey: .activities) ?? []
     message = try container.decodeIfPresent(ActivityMessage.self, forKey: .message)
+    error = try container.decodeIfPresent(String.self, forKey: .error)
     timestamp = try container.decode(Date.self, forKey: .timestamp)
   }
 }

@@ -56,6 +56,19 @@ private final class ContinuationResumeGuard: @unchecked Sendable {
   }
 }
 
+private final class WebSocketCloseGuard: @unchecked Sendable {
+  private let lock = NSLock()
+  private var closed = false
+
+  func claim() -> Bool {
+    lock.lock()
+    defer { lock.unlock() }
+    guard !closed else { return false }
+    closed = true
+    return true
+  }
+}
+
 private actor WebSocketTaskDriver {
   private let task: URLSessionWebSocketTask
 
@@ -100,6 +113,7 @@ public final class WebSocketChannel<Outbound: Sendable, Inbound: Sendable>: Send
   private let encodeOutbound: @Sendable (Outbound) throws -> URLSessionWebSocketTask.Message
   private let decodeInbound: @Sendable (URLSessionWebSocketTask.Message) throws -> Inbound
   private let pingInterval: Duration?
+  private let closeGuard = WebSocketCloseGuard()
 
   public init(
     request: URLRequest,
@@ -145,7 +159,19 @@ public final class WebSocketChannel<Outbound: Sendable, Inbound: Sendable>: Send
   /// terminates, the channel closes the underlying websocket task. Create a new
   /// channel for reconnect or retry attempts.
   public var messages: AsyncThrowingStream<Inbound, Error> {
-    AsyncThrowingStream { continuation in
+    messages(bufferingPolicy: .unbounded)
+  }
+
+  /// A single-consumer stream with an explicit buffering policy.
+  ///
+  /// Logs and terminal output should retain the default unbounded delivery so
+  /// bytes are never dropped. Snapshot-style streams such as container stats
+  /// can use `.bufferingNewest(1)` to avoid queueing obsolete frames behind a
+  /// slow consumer.
+  public func messages(
+    bufferingPolicy: AsyncThrowingStream<Inbound, Error>.Continuation.BufferingPolicy
+  ) -> AsyncThrowingStream<Inbound, Error> {
+    AsyncThrowingStream(bufferingPolicy: bufferingPolicy) { continuation in
       let reader = Task {
         do {
           while !Task.isCancelled {
@@ -153,10 +179,13 @@ public final class WebSocketChannel<Outbound: Sendable, Inbound: Sendable>: Send
             continuation.yield(try decodeInbound(message))
           }
           continuation.finish()
-        } catch is CancellationError {
-          continuation.finish()
         } catch {
-          continuation.finish(throwing: error)
+          let normalized = normalizedTransportError(error)
+          if normalized is CancellationError {
+            continuation.finish()
+          } else {
+            continuation.finish(throwing: normalized)
+          }
         }
       }
       let pinger: Task<Void, Never>?
@@ -171,7 +200,12 @@ public final class WebSocketChannel<Outbound: Sendable, Inbound: Sendable>: Send
               // Ping failure means the connection is dead — surface
               // it so the consumer can reconnect instead of hanging
               // on a silently-dropped socket.
-              continuation.finish(throwing: error)
+              let normalized = normalizedTransportError(error)
+              if normalized is CancellationError {
+                continuation.finish()
+              } else {
+                continuation.finish(throwing: normalized)
+              }
               break
             }
           }
@@ -182,7 +216,9 @@ public final class WebSocketChannel<Outbound: Sendable, Inbound: Sendable>: Send
       continuation.onTermination = { [operations] _ in
         reader.cancel()
         pinger?.cancel()
-        operations.closeImmediately(.normalClosure, nil)
+        if self.closeGuard.claim() {
+          operations.closeImmediately(.normalClosure, nil)
+        }
       }
     }
   }
@@ -194,6 +230,19 @@ public final class WebSocketChannel<Outbound: Sendable, Inbound: Sendable>: Send
   public func close(code: URLSessionWebSocketTask.CloseCode = .normalClosure, reason: Data? = nil)
     async
   {
+    guard closeGuard.claim() else { return }
     await operations.close(code, reason)
+  }
+
+  func closeImmediately(
+    code: URLSessionWebSocketTask.CloseCode = .normalClosure,
+    reason: Data? = nil
+  ) {
+    guard closeGuard.claim() else { return }
+    operations.closeImmediately(code, reason)
+  }
+
+  deinit {
+    closeImmediately()
   }
 }

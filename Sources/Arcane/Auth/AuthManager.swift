@@ -1,6 +1,11 @@
 import Foundation
 
 public actor AuthManager {
+  struct AuthenticationContext: Sendable {
+    let headers: [String: String]
+    let credentialGeneration: UInt64?
+  }
+
   /// Access tokens within this window of expiry are treated as expired and
   /// refreshed proactively. HTTP requests can recover reactively from a 401,
   /// but a WebSocket handshake cannot — a rejected upgrade surfaces as
@@ -22,6 +27,7 @@ public actor AuthManager {
   private var refreshTask: Task<TokenPair, Error>?
   private var capabilities: ServerCapabilities = .unknown
   private var lastFailedProactiveRefresh: Date?
+  private var credentialGeneration: UInt64 = 0
 
   public init(
     baseURL: URL,
@@ -40,8 +46,12 @@ public actor AuthManager {
   }
 
   public func authenticationHeaders() async throws -> [String: String] {
+    try await authenticationContext().headers
+  }
+
+  func authenticationContext() async throws -> AuthenticationContext {
     if let apiKey, !apiKey.isEmpty {
-      return ["X-API-Key": apiKey]
+      return AuthenticationContext(headers: ["X-API-Key": apiKey], credentialGeneration: nil)
     }
     if cachedTokens == nil {
       cachedTokens = try await tokenStore.loadTokens()
@@ -64,9 +74,12 @@ public actor AuthManager {
       }
     }
     guard let accessToken = cachedTokens?.accessToken, !accessToken.isEmpty else {
-      return [:]
+      return AuthenticationContext(headers: [:], credentialGeneration: nil)
     }
-    return ["Authorization": "Bearer \(accessToken)"]
+    return AuthenticationContext(
+      headers: ["Authorization": "Bearer \(accessToken)"],
+      credentialGeneration: credentialGeneration
+    )
   }
 
   public func hasRefreshCredential() async throws -> Bool {
@@ -89,15 +102,25 @@ public actor AuthManager {
   }
 
   public func save(tokens: TokenPair) async throws {
+    credentialGeneration &+= 1
+    refreshTask?.cancel()
+    refreshTask = nil
     cachedTokens = tokens
     try await tokenStore.saveTokens(tokens)
   }
 
   public func clear() async throws {
+    credentialGeneration &+= 1
+    refreshTask?.cancel()
     cachedTokens = nil
     refreshTask = nil
     capabilities = .unknown
     try await tokenStore.clearTokens()
+  }
+
+  func clear(ifCredentialGenerationMatches generation: UInt64) async throws {
+    guard generation == credentialGeneration else { return }
+    try await clear()
   }
 
   public func currentCapabilities() -> ServerCapabilities { capabilities }
@@ -133,50 +156,90 @@ public actor AuthManager {
     guard let refreshToken = cachedTokens?.refreshToken, !refreshToken.isEmpty else {
       throw ArcaneError.unauthorized
     }
+    let generation = credentialGeneration
 
     let task = Task<TokenPair, Error> {
-      try await performRefreshRequest(refreshToken: refreshToken)
+      try await performRefreshAndPersist(
+        refreshToken: refreshToken,
+        credentialGeneration: generation
+      )
     }
 
     refreshTask = task
     do {
       let tokens = try await task.value
-      cachedTokens = tokens
-      try await tokenStore.saveTokens(tokens)
-      refreshTask = nil
+      if generation == credentialGeneration {
+        refreshTask = nil
+      }
       return tokens
     } catch {
-      refreshTask = nil
-      // Only discard the stored credential when the server explicitly
-      // rejects the refresh token (it's revoked/expired). Transient
-      // failures — offline, timeout, 5xx — must NOT sign the user out; keep
-      // the credential so a later attempt can succeed.
-      switch error {
-      case ArcaneError.unauthorized, ArcaneError.forbidden:
-        // Single-use rotation race: if a concurrent process just rotated
-        // this token, the store now holds a newer, valid pair — retry with
-        // it instead of wiping the session.
-        if !isRetry,
-          let latest = try? await tokenStore.loadTokens(),
-          !latest.refreshToken.isEmpty,
-          latest.refreshToken != refreshToken
-        {
-          cachedTokens = latest
-          return try await refreshTokens(isRetry: true)
-        }
-        // Only clear when the store verifiably still holds the token the
-        // server just rejected — an unreadable store (locked keychain)
-        // must never cost the user their session.
-        if let current = try? await tokenStore.loadTokens(),
-          current.refreshToken == refreshToken
-        {
-          try? await clear()
-        }
-      default:
-        break
+      if generation == credentialGeneration {
+        refreshTask = nil
       }
+      if error is CancellationError || generation != credentialGeneration {
+        throw CancellationError()
+      }
+      return try await handleRefreshFailure(
+        error,
+        rejectedRefreshToken: refreshToken,
+        isRetry: isRetry
+      )
+    }
+  }
+
+  private func handleRefreshFailure(
+    _ error: Error,
+    rejectedRefreshToken: String,
+    isRetry: Bool
+  ) async throws -> TokenPair {
+    // Only discard the stored credential when the server explicitly rejects
+    // the refresh token. Transient failures must retain it for a later retry.
+    guard error as? ArcaneError == .unauthorized || error as? ArcaneError == .forbidden else {
       throw error
     }
+
+    // A second process may have won the single-use rotation race.
+    if !isRetry,
+      let latest = try? await tokenStore.loadTokens(),
+      !latest.refreshToken.isEmpty,
+      latest.refreshToken != rejectedRefreshToken
+    {
+      cachedTokens = latest
+      return try await refreshTokens(isRetry: true)
+    }
+
+    // An unreadable store must never cost the user their session.
+    if let current = try? await tokenStore.loadTokens(),
+      current.refreshToken == rejectedRefreshToken
+    {
+      try? await clear()
+    }
+    throw error
+  }
+
+  private func performRefreshAndPersist(
+    refreshToken: String,
+    credentialGeneration generation: UInt64
+  ) async throws -> TokenPair {
+    let tokens = try await performRefreshRequest(refreshToken: refreshToken)
+    try Task.checkCancellation()
+    guard generation == credentialGeneration else {
+      throw CancellationError()
+    }
+
+    try await tokenStore.saveTokens(tokens)
+    try Task.checkCancellation()
+    guard generation == credentialGeneration else {
+      // A clear/save may have won while the token-store write was suspended.
+      // Remove only our stale refresh result; never delete a newer login.
+      if let current = try? await tokenStore.loadTokens(), current == tokens {
+        try? await tokenStore.clearTokens()
+      }
+      throw CancellationError()
+    }
+
+    cachedTokens = tokens
+    return tokens
   }
 
   private func performRefreshRequest(refreshToken: String) async throws -> TokenPair {
@@ -205,7 +268,7 @@ public actor AuthManager {
     } catch let error as ArcaneError {
       throw error
     } catch let error as URLError {
-      throw ArcaneError.transport(error.localizedDescription)
+      throw normalizedTransportError(error)
     } catch {
       throw ArcaneError.decoding(String(describing: error))
     }

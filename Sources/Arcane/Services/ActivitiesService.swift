@@ -49,13 +49,10 @@ public struct ActivitiesService: Sendable {
   }
 
   /// Stream activity snapshots and updates as NDJSON.
-  public func stream(
-    envID: EnvironmentID? = nil,
-    limit: Int = 50
-  ) -> NDJSONStream<ActivityStreamEvent> {
+  public func stream(limit: Int = 50) -> NDJSONStream<ActivityStreamEvent> {
     NDJSONStream(
       transport: rest.transport,
-      path: rest.environmentPath(envID, "activities/stream"),
+      path: "activities/stream",
       method: "GET",
       body: nil,
       contentType: nil,

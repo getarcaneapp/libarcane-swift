@@ -78,4 +78,57 @@ final class ActivityModelsTests: XCTestCase {
     XCTAssertEqual(event.activityID, "act_1")
     XCTAssertEqual(event.message?.level, .success)
   }
+
+  func testDecodeAggregateActivityStreamVariants() throws {
+    let error = try decoder.decode(
+      ActivityStreamEvent.self,
+      from: Data(
+        #"{"type":"error","environmentId":"edge-1","error":"offline","timestamp":"2026-06-01T15:01:00Z"}"#
+          .utf8
+      )
+    )
+    XCTAssertEqual(error.type, .error)
+    XCTAssertEqual(error.environmentID, "edge-1")
+    XCTAssertEqual(error.error, "offline")
+
+    let heartbeat = try decoder.decode(
+      ActivityStreamEvent.self,
+      from: Data(
+        #"{"type":"heartbeat","timestamp":"2026-06-01T15:01:00Z"}"#.utf8
+      )
+    )
+    XCTAssertEqual(heartbeat.type, .heartbeat)
+    XCTAssertNil(heartbeat.environmentID)
+  }
+
+  func testActivitiesStreamUsesGlobalEndpoint() async throws {
+    await MockURLProtocol.reset()
+    let configuration = URLSessionConfiguration.ephemeral
+    configuration.protocolClasses = [MockURLProtocol.self]
+    let client = ArcaneClient(
+      configuration: .init(
+        baseURL: URL(string: "https://arcane.example.com/base")!,
+        urlSession: URLSession(configuration: configuration)
+      )
+    )
+
+    await MockURLProtocol.setHandler { request in
+      XCTAssertEqual(request.url?.path, "/base/api/activities/stream")
+      XCTAssertEqual(request.url?.query, "limit=17")
+      let response = try XCTUnwrap(
+        HTTPURLResponse(
+          url: XCTUnwrap(request.url),
+          statusCode: 200,
+          httpVersion: nil,
+          headerFields: ["Content-Type": "application/x-ndjson"]
+        )
+      )
+      let body = Data("{\"type\":\"heartbeat\",\"timestamp\":\"2026-06-01T15:01:00Z\"}\n".utf8)
+      return (response, body)
+    }
+
+    var iterator = client.activities.stream(limit: 17).makeAsyncIterator()
+    let event = try await iterator.next()
+    XCTAssertEqual(event?.type, .heartbeat)
+  }
 }

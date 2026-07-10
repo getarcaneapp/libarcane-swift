@@ -259,7 +259,7 @@ final class TransportBehaviorTests: XCTestCase {
       encoder: ArcaneJSON.makeEncoder()
     )
 
-    await MockURLProtocol.setHandler { request in
+    await MockURLProtocol.setHandler { _ in
       XCTFail("No network request expected for a non-expired token")
       throw ArcaneError.transport("unexpected request")
     }
@@ -351,6 +351,50 @@ final class TransportBehaviorTests: XCTestCase {
     let firstMessage = try await reader.value
     XCTAssertEqual(firstMessage, "hello")
     try await waitForCloseCount(probe, expectedCount: 1)
+    let closeCount = await probe.closeCount()
+    XCTAssertEqual(closeCount, 1)
+  }
+
+  func testWebSocketChannelCanKeepOnlyNewestSnapshot() async throws {
+    let probe = WebSocketProbe()
+    let channel = WebSocketChannel<Never, String>(
+      operations: .init(
+        receive: { try await probe.receive() },
+        send: { _ in },
+        sendPing: {},
+        close: { code, reason in await probe.close(code: code, reason: reason) }
+      ),
+      encodeOutbound: { _ in fatalError("Receive-only channel") },
+      decodeInbound: { message in
+        switch message {
+        case .string(let text): return text
+        case .data(let data):
+          guard let text = String(bytes: data, encoding: .utf8) else {
+            throw ArcaneError.decoding("Test frame was not valid UTF-8")
+          }
+          return text
+        @unknown default: throw ArcaneError.transport("Unsupported frame")
+        }
+      }
+    )
+
+    var iterator: AsyncThrowingStream<String, Error>.Iterator? =
+      channel
+      .messages(bufferingPolicy: .bufferingNewest(1))
+      .makeAsyncIterator()
+    await probe.enqueue(.string("first"))
+    await probe.enqueue(.string("second"))
+    await probe.enqueue(.string("latest"))
+    // The reader asks for a fourth frame only after yielding all three queued
+    // values, which proves the buffer has settled on the newest snapshot.
+    try await waitForReceiveCount(probe, expectedCount: 4)
+
+    let value = try await iterator?.next()
+    XCTAssertEqual(value, "latest")
+    iterator = nil
+    try await waitForCloseCount(probe, expectedCount: 1)
+    let closeCount = await probe.closeCount()
+    XCTAssertEqual(closeCount, 1)
   }
 
   func testWebSocketStreamsUseConfiguredURLSession() async throws {
@@ -364,20 +408,21 @@ final class TransportBehaviorTests: XCTestCase {
           maxAttempts: 1, baseBackoff: .milliseconds(1), maxBackoff: .milliseconds(1))
       ))
 
-    var logIterator: LogStream.AsyncIterator? = client.containers
-      .logs(envID: "0", id: "container-id")
-      .makeAsyncIterator()
-    XCTAssertNotNil(logIterator)
+    let logTask = Task {
+      let iterator = client.containers.logs(envID: "0", id: "container-id").makeAsyncIterator()
+      return try await iterator.next()
+    }
     try await waitForWebSocketTasks(session, expectedCount: 1)
-    logIterator = nil
+    logTask.cancel()
 
-    var statsIterator: AsyncThrowingStream<ContainerStatsPayload, Error>.Iterator? = client
-      .containers
-      .stats(envID: "0", id: "container-id")
-      .makeAsyncIterator()
-    XCTAssertNotNil(statsIterator)
+    let statsTask = Task {
+      let iterator = client.containers
+        .stats(envID: "0", id: "container-id")
+        .makeAsyncIterator()
+      return try await iterator.next()
+    }
     try await waitForWebSocketTasks(session, expectedCount: 2)
-    statsIterator = nil
+    statsTask.cancel()
 
     let terminal = try await client.containers.exec(envID: "0", id: "container-id")
     try await waitForWebSocketTasks(session, expectedCount: 3)
@@ -448,6 +493,18 @@ final class TransportBehaviorTests: XCTestCase {
     let closeCount = await probe.closeCount()
     XCTAssertGreaterThanOrEqual(closeCount, expectedCount)
   }
+
+  private func waitForReceiveCount(
+    _ probe: WebSocketProbe,
+    expectedCount: Int
+  ) async throws {
+    let deadline = Date().addingTimeInterval(1)
+    while await probe.receiveCount() < expectedCount, Date() < deadline {
+      try await Task.sleep(for: .milliseconds(10))
+    }
+    let receiveCount = await probe.receiveCount()
+    XCTAssertEqual(receiveCount, expectedCount)
+  }
 }
 
 private final class RecordingWebSocketSession: URLSession, @unchecked Sendable {
@@ -473,6 +530,7 @@ private actor WebSocketProbe {
   private var bufferedMessages: [URLSessionWebSocketTask.Message] = []
   private var pendingReceivers: [CheckedContinuation<URLSessionWebSocketTask.Message, Error>] = []
   private var closeCalls = 0
+  private var receiveCalls = 0
 
   func enqueue(_ message: URLSessionWebSocketTask.Message) {
     if pendingReceivers.isEmpty {
@@ -484,6 +542,7 @@ private actor WebSocketProbe {
   }
 
   func receive() async throws -> URLSessionWebSocketTask.Message {
+    receiveCalls += 1
     if !bufferedMessages.isEmpty {
       return bufferedMessages.removeFirst()
     }
@@ -505,5 +564,9 @@ private actor WebSocketProbe {
 
   func closeCount() -> Int {
     closeCalls
+  }
+
+  func receiveCount() -> Int {
+    receiveCalls
   }
 }

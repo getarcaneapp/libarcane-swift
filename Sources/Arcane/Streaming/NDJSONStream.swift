@@ -85,7 +85,7 @@ public struct NDJSONStream<Element: Decodable & Sendable>: AsyncSequence, Sendab
           }
           continuation.finish()
         } catch {
-          continuation.finish(throwing: error)
+          continuation.finish(throwing: normalizedTransportError(error))
         }
       }
       continuation.onTermination = { _ in task.cancel() }

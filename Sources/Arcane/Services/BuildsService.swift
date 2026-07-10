@@ -58,10 +58,24 @@ public struct BuildsService: Sendable {
   }
 
   /// Download the raw bytes of a file in the build workspace.
+  @available(*, deprecated, message: "Use downloadFile(..., to:) for potentially large files.")
   public func downloadFile(path: String, envID: EnvironmentID? = nil) async throws -> Data {
     try await rest.transport.downloadRaw(
       rest.environmentPath(envID, "builds/browse/download"),
       query: [URLQueryItem(name: "path", value: path)]
+    )
+  }
+
+  /// Download a build-workspace file directly to a destination URL.
+  public func downloadFile(
+    path: String,
+    envID: EnvironmentID? = nil,
+    to destinationURL: URL
+  ) async throws {
+    try await rest.transport.downloadRaw(
+      rest.environmentPath(envID, "builds/browse/download"),
+      query: [URLQueryItem(name: "path", value: path)],
+      to: destinationURL
     )
   }
 }

@@ -30,9 +30,25 @@ public struct AuthService: Sendable {
   }
 
   public func logout() async throws {
-    let _: MessageResponse = try await transport.request(
-      "auth/logout", method: "POST", body: Optional<EmptyBody>.none)
-    try await authManager.clear()
+    var remoteError: Error?
+    do {
+      let _: MessageResponse = try await transport.request(
+        "auth/logout", method: "POST", body: Optional<EmptyBody>.none)
+    } catch {
+      remoteError = error
+    }
+
+    do {
+      try await authManager.clear()
+    } catch {
+      // Local credential removal is the security-critical outcome. If both
+      // operations fail, report this failure rather than the revocation error.
+      throw error
+    }
+
+    if let remoteError {
+      throw remoteError
+    }
   }
 
   public func me() async throws -> User {

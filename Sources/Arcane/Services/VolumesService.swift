@@ -236,6 +236,7 @@ public struct VolumesService: Sendable {
   }
 
   /// Download the raw bytes of a file inside a volume.
+  @available(*, deprecated, message: "Use downloadFile(..., to:) for potentially large files.")
   public func downloadFile(envID: EnvironmentID? = nil, name: String, path: String) async throws
     -> Data
   {
@@ -245,10 +246,37 @@ public struct VolumesService: Sendable {
     )
   }
 
+  /// Download a file inside a volume directly to a destination URL.
+  public func downloadFile(
+    envID: EnvironmentID? = nil,
+    name: String,
+    path: String,
+    to destinationURL: URL
+  ) async throws {
+    try await rest.transport.downloadRaw(
+      rest.environmentPath(envID, "volumes/\(name)/browse/download"),
+      query: [URLQueryItem(name: "path", value: path)],
+      to: destinationURL
+    )
+  }
+
   /// Download a backup tarball as raw bytes.
+  @available(*, deprecated, message: "Use downloadBackup(..., to:) for large backup archives.")
   public func downloadBackup(envID: EnvironmentID? = nil, backupID: String) async throws -> Data {
     try await rest.transport.downloadRaw(
       rest.environmentPath(envID, "volumes/backups/\(backupID)/download")
+    )
+  }
+
+  /// Download a backup tarball directly to a destination URL.
+  public func downloadBackup(
+    envID: EnvironmentID? = nil,
+    backupID: String,
+    to destinationURL: URL
+  ) async throws {
+    try await rest.transport.downloadRaw(
+      rest.environmentPath(envID, "volumes/backups/\(backupID)/download"),
+      to: destinationURL
     )
   }
 }

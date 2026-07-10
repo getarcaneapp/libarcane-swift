@@ -13,6 +13,22 @@ public enum ArcaneError: Error, Sendable, Equatable {
   case unknown(statusCode: Int, body: String)
 }
 
+func normalizedTransportError(_ error: Error) -> Error {
+  if error is CancellationError {
+    return CancellationError()
+  }
+  if let urlError = error as? URLError, urlError.code == .cancelled {
+    return CancellationError()
+  }
+  if let arcaneError = error as? ArcaneError {
+    return arcaneError
+  }
+  if let urlError = error as? URLError {
+    return ArcaneError.transport(urlError.localizedDescription)
+  }
+  return error
+}
+
 public struct APIErrorResponse: Decodable, Sendable {
   public var success: Bool?
   public var error: String?
