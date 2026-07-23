@@ -12,6 +12,7 @@ public final class ArcaneURLSessionTransport: Sendable {
   let retryPolicy: RetryPolicy
   let decoder: JSONDecoder
   let encoder: JSONEncoder
+  let defaultRequestOptions: ArcaneRequestOptions
 
   init(
     baseURL: URL,
@@ -19,7 +20,8 @@ public final class ArcaneURLSessionTransport: Sendable {
     authManager: AuthManager,
     retryPolicy: RetryPolicy,
     decoder: JSONDecoder,
-    encoder: JSONEncoder
+    encoder: JSONEncoder,
+    defaultRequestOptions: ArcaneRequestOptions = .init()
   ) {
     self.baseURL = baseURL
     self.session = session
@@ -27,6 +29,7 @@ public final class ArcaneURLSessionTransport: Sendable {
     self.retryPolicy = retryPolicy
     self.decoder = decoder
     self.encoder = encoder
+    self.defaultRequestOptions = defaultRequestOptions
   }
 
   public func request<T: Decodable & Sendable, Body: Encodable & Sendable>(
@@ -34,10 +37,11 @@ public final class ArcaneURLSessionTransport: Sendable {
     method: String = "GET",
     query: [URLQueryItem] = [],
     body: Body? = nil,
-    authorized: Bool = true
+    authorized: Bool = true,
+    options: ArcaneRequestOptions? = nil
   ) async throws -> T {
     let data = try await rawRequest(
-      path, method: method, query: query, body: body, authorized: authorized)
+      path, method: method, query: query, body: body, authorized: authorized, options: options)
     do {
       return try decoder.decode(APIResponse<T>.self, from: data).data
     } catch {
@@ -49,23 +53,26 @@ public final class ArcaneURLSessionTransport: Sendable {
     _ path: String,
     method: String = "GET",
     query: [URLQueryItem] = [],
-    authorized: Bool = true
+    authorized: Bool = true,
+    options: ArcaneRequestOptions? = nil
   ) async throws -> T {
     let body: EmptyBody? = nil
-    return try await request(path, method: method, query: query, body: body, authorized: authorized)
+    return try await request(
+      path, method: method, query: query, body: body, authorized: authorized, options: options)
   }
 
   public func paginated<T: Decodable & Sendable>(
     _ path: String,
     start: Int,
     limit: Int,
-    query: [URLQueryItem] = []
+    query: [URLQueryItem] = [],
+    options: ArcaneRequestOptions? = nil
   ) async throws -> PaginatedResponse<T> {
     var items = query
     items.append(URLQueryItem(name: "start", value: "\(max(0, start))"))
     items.append(URLQueryItem(name: "limit", value: "\(limit)"))
     let data = try await rawRequest(
-      path, query: items, body: Optional<EmptyBody>.none, authorized: true)
+      path, query: items, body: Optional<EmptyBody>.none, authorized: true, options: options)
     do {
       return try decoder.decode(PaginatedResponse<T>.self, from: data)
     } catch {
@@ -78,14 +85,21 @@ public final class ArcaneURLSessionTransport: Sendable {
     method: String = "GET",
     query: [URLQueryItem] = [],
     body: Body? = nil,
-    authorized: Bool = true
+    authorized: Bool = true,
+    options: ArcaneRequestOptions? = nil
   ) async throws -> Data {
     var didRefresh = false
     var attempt = 1
+    let requestOptions = resolvedRequestOptions(options)
 
     while true {
       let prepared = try await makeRequest(
-        path, method: method, query: query, body: body, authorized: authorized)
+        path,
+        method: method,
+        query: query,
+        body: body,
+        authorized: authorized,
+        options: requestOptions)
       do {
         let (data, response) = try await session.data(for: prepared.request)
         guard let http = response as? HTTPURLResponse else {
@@ -132,10 +146,15 @@ public final class ArcaneURLSessionTransport: Sendable {
     }
   }
 
-  public func websocketRequest(path: String, query: [URLQueryItem] = []) async throws -> URLRequest
+  public func websocketRequest(
+    path: String,
+    query: [URLQueryItem] = [],
+    options: ArcaneRequestOptions? = nil
+  ) async throws -> URLRequest
   {
     var request = URLRequest(
       url: baseURL.appendingAPIPath(path).withQueryItems(query).webSocketURL())
+    applyRequestOptions(to: &request, options: resolvedRequestOptions(options))
     _ = try await applyAuthenticationHeaders(to: &request)
     return request
   }
@@ -151,13 +170,16 @@ public final class ArcaneURLSessionTransport: Sendable {
     body: Data? = nil,
     contentType: String? = nil,
     accept: String = "application/x-ndjson, application/x-json-stream, application/json",
-    authorized: Bool = true
+    authorized: Bool = true,
+    options: ArcaneRequestOptions? = nil
   ) async throws -> (URLSession.AsyncBytes, HTTPURLResponse) {
     var didRefresh = false
+    let requestOptions = resolvedRequestOptions(options)
     while true {
       var request = URLRequest(url: baseURL.appendingAPIPath(path).withQueryItems(query))
       request.httpMethod = method
       request.setValue(accept, forHTTPHeaderField: "Accept")
+      applyRequestOptions(to: &request, options: requestOptions)
       let generation = try await applyAuthenticationHeaders(to: &request, authorized: authorized)
       if let body {
         if let contentType {
@@ -196,19 +218,22 @@ public final class ArcaneURLSessionTransport: Sendable {
     method: String = "POST",
     query: [URLQueryItem] = [],
     fields: [String: String] = [:],
-    files: [MultipartFile]
+    files: [MultipartFile],
+    options: ArcaneRequestOptions? = nil
   ) async throws -> T {
     let prepared = try makeMultipartTempFile(fields: fields, files: files)
     defer { try? FileManager.default.removeItem(at: prepared.url) }
 
     var didRefresh = false
+    let requestOptions = resolvedRequestOptions(options)
     while true {
       let preparedRequest = try await makeMultipartRequest(
         path: path,
         method: method,
         query: query,
         prepared: prepared,
-        accept: "application/json"
+        accept: "application/json",
+        options: requestOptions
       )
       let (data, response): (Data, URLResponse)
       do {
@@ -252,14 +277,16 @@ public final class ArcaneURLSessionTransport: Sendable {
     method: String = "POST",
     query: [URLQueryItem] = [],
     fields: [String: String] = [:],
-    files: [MultipartFile]
+    files: [MultipartFile],
+    options: ArcaneRequestOptions? = nil
   ) -> NDJSONStream<Element> {
     // The actual upload and streaming happen lazily inside the AsyncSequence's
     // iterator so the caller can `for try await` directly. The body is the
     // assembled multipart tempfile; the stream owns the tempfile lifecycle.
     let endpoint = MultipartEndpoint(
       path: path, method: method, query: query, fields: fields, files: files)
-    return NDJSONStream(transport: self, multipart: endpoint)
+    let streamTransport = options.map(withRequestOptions) ?? self
+    return NDJSONStream(transport: streamTransport, multipart: endpoint)
   }
 
   /// Returns the raw bytes of a `GET` response. Used for binary downloads
@@ -269,9 +296,15 @@ public final class ArcaneURLSessionTransport: Sendable {
   public func downloadRaw(
     _ path: String,
     query: [URLQueryItem] = [],
-    authorized: Bool = true
+    authorized: Bool = true,
+    options: ArcaneRequestOptions? = nil
   ) async throws -> Data {
-    try await rawRequest(path, query: query, body: Optional<EmptyBody>.none, authorized: authorized)
+    try await rawRequest(
+      path,
+      query: query,
+      body: Optional<EmptyBody>.none,
+      authorized: authorized,
+      options: options)
   }
 
   private func makeRequest<Body: Encodable & Sendable>(
@@ -279,11 +312,13 @@ public final class ArcaneURLSessionTransport: Sendable {
     method: String,
     query: [URLQueryItem],
     body: Body?,
-    authorized: Bool
+    authorized: Bool,
+    options: ArcaneRequestOptions
   ) async throws -> AuthenticatedRequest {
     var request = URLRequest(url: baseURL.appendingAPIPath(path).withQueryItems(query))
     request.httpMethod = method
     request.setValue("application/json", forHTTPHeaderField: "Accept")
+    applyRequestOptions(to: &request, options: options)
     let generation = try await applyAuthenticationHeaders(to: &request, authorized: authorized)
     if let body {
       request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -329,7 +364,8 @@ public final class ArcaneURLSessionTransport: Sendable {
     method: String,
     query: [URLQueryItem],
     prepared: PreparedMultipart,
-    accept: String
+    accept: String,
+    options: ArcaneRequestOptions? = nil
   ) async throws -> AuthenticatedRequest {
     var request = URLRequest(url: baseURL.appendingAPIPath(path).withQueryItems(query))
     request.httpMethod = method
@@ -338,8 +374,34 @@ public final class ArcaneURLSessionTransport: Sendable {
       "multipart/form-data; boundary=\(prepared.boundary)",
       forHTTPHeaderField: "Content-Type"
     )
+    applyRequestOptions(to: &request, options: resolvedRequestOptions(options))
     let generation = try await applyAuthenticationHeaders(to: &request)
     return AuthenticatedRequest(request: request, credentialGeneration: generation)
+  }
+
+  func withRequestOptions(_ options: ArcaneRequestOptions) -> ArcaneURLSessionTransport {
+    ArcaneURLSessionTransport(
+      baseURL: baseURL,
+      session: session,
+      authManager: authManager,
+      retryPolicy: retryPolicy,
+      decoder: decoder,
+      encoder: encoder,
+      defaultRequestOptions: options
+    )
+  }
+
+  func resolvedRequestOptions(_ options: ArcaneRequestOptions?) -> ArcaneRequestOptions {
+    options ?? defaultRequestOptions
+  }
+
+  func applyRequestOptions(
+    to request: inout URLRequest,
+    options: ArcaneRequestOptions
+  ) {
+    if let activityBatchID = options.activityBatchID {
+      request.setValue(activityBatchID, forHTTPHeaderField: "X-Arcane-Batch-Id")
+    }
   }
 
   func shouldRetry(method: String, statusCode: Int) -> Bool {

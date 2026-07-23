@@ -22,6 +22,8 @@ public struct User: Codable, Hashable, Sendable, Identifiable {
   /// `"global"` holds permissions that apply across every environment and
   /// to org-level endpoints. `nil` on a v1 server.
   public var permissionsByEnv: [String: [String]]?
+  /// Backend-authoritative administrator classification. Nil on older servers.
+  public var serverIsGlobalAdmin: Bool?
 
   public init(
     id: String,
@@ -36,7 +38,8 @@ public struct User: Codable, Hashable, Sendable, Identifiable {
     updatedAt: String? = nil,
     requiresPasswordChange: Bool = false,
     roleAssignments: [RoleAssignmentSummary]? = nil,
-    permissionsByEnv: [String: [String]]? = nil
+    permissionsByEnv: [String: [String]]? = nil,
+    serverIsGlobalAdmin: Bool? = nil
   ) {
     self.id = id
     self.username = username
@@ -51,6 +54,7 @@ public struct User: Codable, Hashable, Sendable, Identifiable {
     self.requiresPasswordChange = requiresPasswordChange
     self.roleAssignments = roleAssignments
     self.permissionsByEnv = permissionsByEnv
+    self.serverIsGlobalAdmin = serverIsGlobalAdmin
   }
 
   private enum CodingKeys: String, CodingKey {
@@ -58,6 +62,7 @@ public struct User: Codable, Hashable, Sendable, Identifiable {
     case roles
     case canDelete, oidcSubjectId, locale, createdAt, updatedAt, requiresPasswordChange
     case roleAssignments, permissionsByEnv
+    case serverIsGlobalAdmin = "isGlobalAdmin"
   }
 
   public init(from decoder: Decoder) throws {
@@ -79,6 +84,7 @@ public struct User: Codable, Hashable, Sendable, Identifiable {
       [RoleAssignmentSummary].self, forKey: .roleAssignments)
     let decodedPerms = try container.decodeIfPresent(
       [String: [String]].self, forKey: .permissionsByEnv)
+    serverIsGlobalAdmin = try container.decodeIfPresent(Bool.self, forKey: .serverIsGlobalAdmin)
 
     roleAssignments = decodedAssignments
     permissionsByEnv = decodedPerms

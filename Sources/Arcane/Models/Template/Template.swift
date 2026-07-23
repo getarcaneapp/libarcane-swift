@@ -1,5 +1,20 @@
 import Foundation
 
+/// Source of templates returned by the merged template list.
+public enum TemplateSourceFilter: String, Codable, Hashable, Sendable {
+  case all
+  case local
+  case remote
+
+  var queryValue: String? {
+    switch self {
+    case .all: nil
+    case .local: "false"
+    case .remote: "true"
+    }
+  }
+}
+
 public struct Template: Codable, Hashable, Sendable, Identifiable {
   public var id: String
   public var name: String

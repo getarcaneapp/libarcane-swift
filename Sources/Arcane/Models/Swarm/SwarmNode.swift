@@ -1,40 +1,164 @@
 import Foundation
 
 /// State of the Arcane node-agent reporting back from a swarm node.
-public enum SwarmNodeAgentState: String, Codable, Hashable, Sendable {
+public enum SwarmNodeAgentState: Hashable, Sendable, RawRepresentable, Codable {
   case none
   case pending
   case offline
   case connected
   case mismatched
+  case ambiguous
+  case unknown(String)
+
+  public init?(rawValue: String) {
+    switch rawValue {
+    case "none": self = .none
+    case "pending": self = .pending
+    case "offline": self = .offline
+    case "connected": self = .connected
+    case "mismatched": self = .mismatched
+    case "ambiguous": self = .ambiguous
+    default: self = .unknown(rawValue)
+    }
+  }
+
+  public var rawValue: String {
+    switch self {
+    case .none: "none"
+    case .pending: "pending"
+    case .offline: "offline"
+    case .connected: "connected"
+    case .mismatched: "mismatched"
+    case .ambiguous: "ambiguous"
+    case .unknown(let value): value
+    }
+  }
+
+  public init(from decoder: Decoder) throws {
+    let container = try decoder.singleValueContainer()
+    self = SwarmNodeAgentState(rawValue: try container.decode(String.self)) ?? .none
+  }
+
+  public func encode(to encoder: Encoder) throws {
+    var container = encoder.singleValueContainer()
+    try container.encode(rawValue)
+  }
+}
+
+public enum SwarmNodeAgentBindingKind: Hashable, Sendable, RawRepresentable, Codable {
+  case local
+  case environment
+  case dedicated
+  case unknown(String)
+
+  public init?(rawValue: String) {
+    switch rawValue {
+    case "local": self = .local
+    case "environment": self = .environment
+    case "dedicated": self = .dedicated
+    default: self = .unknown(rawValue)
+    }
+  }
+
+  public var rawValue: String {
+    switch self {
+    case .local: "local"
+    case .environment: "environment"
+    case .dedicated: "dedicated"
+    case .unknown(let value): value
+    }
+  }
+
+  public init(from decoder: Decoder) throws {
+    let container = try decoder.singleValueContainer()
+    self = SwarmNodeAgentBindingKind(rawValue: try container.decode(String.self)) ?? .unknown("")
+  }
+
+  public func encode(to encoder: Encoder) throws {
+    var container = encoder.singleValueContainer()
+    try container.encode(rawValue)
+  }
+}
+
+public struct SwarmNodeAgentCandidate: Codable, Hashable, Sendable, Identifiable {
+  public var environmentID: String
+  public var environmentName: String
+  public var environmentType: String
+
+  public var id: String { environmentID }
+
+  public enum CodingKeys: String, CodingKey {
+    case environmentID = "environmentId"
+    case environmentName, environmentType
+  }
+
+  public init(environmentID: String, environmentName: String, environmentType: String) {
+    self.environmentID = environmentID
+    self.environmentName = environmentName
+    self.environmentType = environmentType
+  }
 }
 
 /// Coverage info for a swarm node from Arcane's node-agent perspective.
 public struct SwarmNodeAgentStatus: Codable, Hashable, Sendable {
   public var state: SwarmNodeAgentState
+  public var bindingKind: SwarmNodeAgentBindingKind?
   public var environmentId: String?
+  public var environmentName: String?
+  public var environmentType: String?
   public var connected: Bool?
   public var lastHeartbeat: Date?
   public var lastPollAt: Date?
   public var reportedNodeId: String?
   public var reportedHostname: String?
+  public var candidates: [SwarmNodeAgentCandidate]
+
+  public enum CodingKeys: String, CodingKey {
+    case state, bindingKind, environmentId, environmentName, environmentType
+    case connected, lastHeartbeat, lastPollAt, reportedNodeId, reportedHostname, candidates
+  }
 
   public init(
     state: SwarmNodeAgentState,
+    bindingKind: SwarmNodeAgentBindingKind? = nil,
     environmentId: String? = nil,
+    environmentName: String? = nil,
+    environmentType: String? = nil,
     connected: Bool? = nil,
     lastHeartbeat: Date? = nil,
     lastPollAt: Date? = nil,
     reportedNodeId: String? = nil,
-    reportedHostname: String? = nil
+    reportedHostname: String? = nil,
+    candidates: [SwarmNodeAgentCandidate] = []
   ) {
     self.state = state
+    self.bindingKind = bindingKind
     self.environmentId = environmentId
+    self.environmentName = environmentName
+    self.environmentType = environmentType
     self.connected = connected
     self.lastHeartbeat = lastHeartbeat
     self.lastPollAt = lastPollAt
     self.reportedNodeId = reportedNodeId
     self.reportedHostname = reportedHostname
+    self.candidates = candidates
+  }
+
+  public init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    state = try container.decodeIfPresent(SwarmNodeAgentState.self, forKey: .state) ?? .none
+    bindingKind = try container.decodeIfPresent(
+      SwarmNodeAgentBindingKind.self, forKey: .bindingKind)
+    environmentId = try container.decodeIfPresent(String.self, forKey: .environmentId)
+    environmentName = try container.decodeIfPresent(String.self, forKey: .environmentName)
+    environmentType = try container.decodeIfPresent(String.self, forKey: .environmentType)
+    connected = try container.decodeIfPresent(Bool.self, forKey: .connected)
+    lastHeartbeat = try container.decodeIfPresent(Date.self, forKey: .lastHeartbeat)
+    lastPollAt = try container.decodeIfPresent(Date.self, forKey: .lastPollAt)
+    reportedNodeId = try container.decodeIfPresent(String.self, forKey: .reportedNodeId)
+    reportedHostname = try container.decodeIfPresent(String.self, forKey: .reportedHostname)
+    candidates =
+      try container.decodeIfPresent([SwarmNodeAgentCandidate].self, forKey: .candidates) ?? []
   }
 }
 
@@ -47,6 +171,7 @@ public struct SwarmNode: Codable, Hashable, Sendable, Identifiable {
   public var status: String
   public var address: String?
   public var managerStatus: String?
+  public var managerAddress: String?
   public var reachability: String?
   public var labels: [String: String]?
   public var systemLabels: [String: String]?
@@ -56,6 +181,11 @@ public struct SwarmNode: Codable, Hashable, Sendable, Identifiable {
   public var updatedAt: Date
   public var agent: SwarmNodeAgentStatus
 
+  public enum CodingKeys: String, CodingKey {
+    case id, hostname, role, availability, status, address, managerStatus, managerAddress
+    case reachability, labels, systemLabels, engineVersion, platform, createdAt, updatedAt, agent
+  }
+
   public init(
     id: String,
     hostname: String,
@@ -64,6 +194,7 @@ public struct SwarmNode: Codable, Hashable, Sendable, Identifiable {
     status: String,
     address: String? = nil,
     managerStatus: String? = nil,
+    managerAddress: String? = nil,
     reachability: String? = nil,
     labels: [String: String]? = nil,
     systemLabels: [String: String]? = nil,
@@ -71,7 +202,7 @@ public struct SwarmNode: Codable, Hashable, Sendable, Identifiable {
     platform: String? = nil,
     createdAt: Date,
     updatedAt: Date,
-    agent: SwarmNodeAgentStatus
+    agent: SwarmNodeAgentStatus = .init(state: .none)
   ) {
     self.id = id
     self.hostname = hostname
@@ -80,6 +211,7 @@ public struct SwarmNode: Codable, Hashable, Sendable, Identifiable {
     self.status = status
     self.address = address
     self.managerStatus = managerStatus
+    self.managerAddress = managerAddress
     self.reachability = reachability
     self.labels = labels
     self.systemLabels = systemLabels
@@ -88,6 +220,28 @@ public struct SwarmNode: Codable, Hashable, Sendable, Identifiable {
     self.createdAt = createdAt
     self.updatedAt = updatedAt
     self.agent = agent
+  }
+
+  public init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    id = try container.decode(String.self, forKey: .id)
+    hostname = try container.decode(String.self, forKey: .hostname)
+    role = try container.decode(String.self, forKey: .role)
+    availability = try container.decode(String.self, forKey: .availability)
+    status = try container.decode(String.self, forKey: .status)
+    address = try container.decodeIfPresent(String.self, forKey: .address)
+    managerStatus = try container.decodeIfPresent(String.self, forKey: .managerStatus)
+    managerAddress = try container.decodeIfPresent(String.self, forKey: .managerAddress)
+    reachability = try container.decodeIfPresent(String.self, forKey: .reachability)
+    labels = try container.decodeIfPresent([String: String].self, forKey: .labels)
+    systemLabels = try container.decodeIfPresent([String: String].self, forKey: .systemLabels)
+    engineVersion = try container.decodeIfPresent(String.self, forKey: .engineVersion)
+    platform = try container.decodeIfPresent(String.self, forKey: .platform)
+    createdAt = try container.decode(Date.self, forKey: .createdAt)
+    updatedAt = try container.decode(Date.self, forKey: .updatedAt)
+    agent =
+      try container.decodeIfPresent(SwarmNodeAgentStatus.self, forKey: .agent)
+      ?? SwarmNodeAgentStatus(state: .none)
   }
 }
 

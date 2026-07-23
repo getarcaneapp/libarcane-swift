@@ -50,6 +50,11 @@ public struct EventsService: Sendable {
       "events/environment/\(environmentID)", start: start, limit: limit, query: query)
   }
 
+  /// Returns global event counts grouped by severity.
+  public func stats() async throws -> EventSeverityCounts {
+    try await rest.get("events/stats")
+  }
+
   /// Delete an event by ID.
   public func delete(id: String) async throws {
     try await rest.deleteVoid("events/\(id)")

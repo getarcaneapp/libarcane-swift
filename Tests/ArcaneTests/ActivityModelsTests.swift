@@ -14,9 +14,10 @@ final class ActivityModelsTests: XCTestCase {
   func testDecodeActivityDetailAndStreamEvent() throws {
     let detailJSON = #"""
       {
-          "activity": {
-              "id": "act_1",
-              "environmentId": "env_1",
+              "activity": {
+                  "id": "act_1",
+                  "environmentId": "env_1",
+                  "batchId": "bulk_deploy_1",
               "sourceEnvironmentId": "edge_1",
               "sourceEnvironmentName": "Edge Node",
               "type": "project_deploy",
@@ -52,6 +53,7 @@ final class ActivityModelsTests: XCTestCase {
 
     let detail = try decoder.decode(ActivityDetail.self, from: Data(detailJSON.utf8))
     XCTAssertEqual(detail.activity.id, "act_1")
+    XCTAssertEqual(detail.activity.batchID, "bulk_deploy_1")
     XCTAssertEqual(detail.activity.status, .running)
     XCTAssertEqual(detail.activity.type, .projectDeploy)
     XCTAssertEqual(detail.activity.sourceEnvironmentName, "Edge Node")
@@ -77,6 +79,16 @@ final class ActivityModelsTests: XCTestCase {
     XCTAssertEqual(event.type, .message)
     XCTAssertEqual(event.activityID, "act_1")
     XCTAssertEqual(event.message?.level, .success)
+  }
+
+  func testDecodeMessageResponseActivityID() throws {
+    let response = try decoder.decode(
+      MessageResponse.self,
+      from: Data(#"{"message":"queued","activityId":"act_2"}"#.utf8)
+    )
+
+    XCTAssertEqual(response.message, "queued")
+    XCTAssertEqual(response.activityID, "act_2")
   }
 
   func testDecodeAggregateActivityStreamVariants() throws {

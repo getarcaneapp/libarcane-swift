@@ -9,6 +9,7 @@ extension User {
   /// the sudo wildcard `"*"` in their global permissions (v2), or has
   /// `"admin"` in the legacy `roles` array (v1).
   public var isGlobalAdmin: Bool {
+    if let serverIsGlobalAdmin { return serverIsGlobalAdmin }
     if let assignments = roleAssignments {
       let adminGlobally = assignments.contains { assignment in
         assignment.roleId == Role.BuiltIn.admin && assignment.environmentId == nil

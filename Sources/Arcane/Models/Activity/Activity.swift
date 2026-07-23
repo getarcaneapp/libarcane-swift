@@ -218,6 +218,7 @@ public struct ActivityStartedBy: Codable, Hashable, Sendable {
 public struct Activity: Codable, Hashable, Sendable, Identifiable {
   public var id: String
   public var environmentID: String
+  public var batchID: String?
   public var sourceEnvironmentID: String?
   public var sourceEnvironmentName: String?
   public var type: ActivityType
@@ -240,6 +241,7 @@ public struct Activity: Codable, Hashable, Sendable, Identifiable {
   public enum CodingKeys: String, CodingKey {
     case id
     case environmentID = "environmentId"
+    case batchID = "batchId"
     case sourceEnvironmentID = "sourceEnvironmentId"
     case sourceEnvironmentName
     case type
@@ -263,6 +265,7 @@ public struct Activity: Codable, Hashable, Sendable, Identifiable {
   public init(
     id: String,
     environmentID: String,
+    batchID: String? = nil,
     sourceEnvironmentID: String? = nil,
     sourceEnvironmentName: String? = nil,
     type: ActivityType,
@@ -284,6 +287,7 @@ public struct Activity: Codable, Hashable, Sendable, Identifiable {
   ) {
     self.id = id
     self.environmentID = environmentID
+    self.batchID = batchID
     self.sourceEnvironmentID = sourceEnvironmentID
     self.sourceEnvironmentName = sourceEnvironmentName
     self.type = type

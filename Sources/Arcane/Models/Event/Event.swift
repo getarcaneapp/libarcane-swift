@@ -69,3 +69,25 @@ public struct Event: Codable, Hashable, Sendable, Identifiable {
     self.updatedAt = updatedAt
   }
 }
+
+public struct EventSeverityCounts: Codable, Hashable, Sendable {
+  public var total: Int64
+  public var info: Int64
+  public var success: Int64
+  public var warning: Int64
+  public var error: Int64
+
+  public init(
+    total: Int64 = 0,
+    info: Int64 = 0,
+    success: Int64 = 0,
+    warning: Int64 = 0,
+    error: Int64 = 0
+  ) {
+    self.total = total
+    self.info = info
+    self.success = success
+    self.warning = warning
+    self.error = error
+  }
+}

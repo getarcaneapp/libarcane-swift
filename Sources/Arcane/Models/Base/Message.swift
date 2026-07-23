@@ -2,9 +2,16 @@ import Foundation
 
 public struct MessageResponse: Codable, Hashable, Sendable {
   public var message: String
+  public var activityID: String?
 
-  public init(message: String) {
+  public enum CodingKeys: String, CodingKey {
+    case message
+    case activityID = "activityId"
+  }
+
+  public init(message: String, activityID: String? = nil) {
     self.message = message
+    self.activityID = activityID
   }
 }
 

@@ -21,15 +21,18 @@ extension ArcaneURLSessionTransport {
     _ path: String,
     query: [URLQueryItem] = [],
     authorized: Bool = true,
+    options: ArcaneRequestOptions? = nil,
     to destinationURL: URL
   ) async throws -> URL {
     var didRefresh = false
     var attempt = 1
+    let requestOptions = resolvedRequestOptions(options)
 
     while true {
       var request = URLRequest(url: baseURL.appendingAPIPath(path).withQueryItems(query))
       request.httpMethod = "GET"
       request.setValue("application/octet-stream", forHTTPHeaderField: "Accept")
+      applyRequestOptions(to: &request, options: requestOptions)
       let generation = try await applyAuthenticationHeaders(to: &request, authorized: authorized)
       var temporaryURL: URL?
 

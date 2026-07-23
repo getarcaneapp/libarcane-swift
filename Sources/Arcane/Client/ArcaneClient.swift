@@ -64,6 +64,7 @@ public struct ArcaneClient: Sendable {
   public let webhooks: WebhooksService
   public let notifications: NotificationsService
   public let templates: TemplatesService
+  public let variables: VariablesService
   public let registries: ContainerRegistriesService
   public let gitops: GitOpsService
   public let builds: BuildsService
@@ -75,7 +76,6 @@ public struct ArcaneClient: Sendable {
   public let version: VersionService
 
   public init(configuration: Configuration) {
-    self.configuration = configuration
     let authManager = AuthManager(
       baseURL: configuration.baseURL,
       tokenStore: configuration.tokenStore,
@@ -84,8 +84,7 @@ public struct ArcaneClient: Sendable {
       decoder: configuration.jsonDecoder,
       encoder: configuration.jsonEncoder
     )
-    self.authManager = authManager
-    self.transport = ArcaneURLSessionTransport(
+    let transport = ArcaneURLSessionTransport(
       baseURL: configuration.baseURL,
       session: configuration.urlSession,
       authManager: authManager,
@@ -93,6 +92,17 @@ public struct ArcaneClient: Sendable {
       decoder: configuration.jsonDecoder,
       encoder: configuration.jsonEncoder
     )
+    self.init(configuration: configuration, authManager: authManager, transport: transport)
+  }
+
+  private init(
+    configuration: Configuration,
+    authManager: AuthManager,
+    transport: ArcaneURLSessionTransport
+  ) {
+    self.configuration = configuration
+    self.authManager = authManager
+    self.transport = transport
     self.rest = RESTService(
       transport: transport, defaultEnvironmentID: configuration.defaultEnvironmentID)
     self.auth = AuthService(
@@ -119,6 +129,7 @@ public struct ArcaneClient: Sendable {
     self.webhooks = WebhooksService(rest: rest)
     self.notifications = NotificationsService(rest: rest)
     self.templates = TemplatesService(rest: rest)
+    self.variables = VariablesService(rest: rest)
     self.registries = ContainerRegistriesService(rest: rest)
     self.gitops = GitOpsService(rest: rest)
     self.builds = BuildsService(rest: rest)
@@ -133,7 +144,20 @@ public struct ArcaneClient: Sendable {
   public func scoped(toEnvironment envID: EnvironmentID) -> ArcaneClient {
     var scoped = configuration
     scoped.defaultEnvironmentID = envID
-    return ArcaneClient(configuration: scoped)
+    return ArcaneClient(configuration: scoped, authManager: authManager, transport: transport)
+  }
+
+  /// Returns a client whose requests inherit task-scoped API metadata.
+  ///
+  /// The returned value shares this client's authentication manager and URL
+  /// session. Request options are immutable and are reapplied whenever the
+  /// transport retries or refreshes credentials.
+  public func withRequestOptions(_ options: ArcaneRequestOptions) -> ArcaneClient {
+    ArcaneClient(
+      configuration: configuration,
+      authManager: authManager,
+      transport: transport.withRequestOptions(options)
+    )
   }
 
   /// Snapshot of the server's API shape. `.unknown` until the SDK decodes

@@ -17,13 +17,18 @@ public struct TemplatesService: Sendable {
     order: SortOrder? = nil,
     start: Int = 0,
     limit: Int = 20,
-    type: String? = nil
+    type: String? = nil,
+    source: TemplateSourceFilter = .all
   ) async throws -> PaginatedResponse<Template> {
     var query: [URLQueryItem] = []
     if let search { query.append(URLQueryItem(name: "search", value: search)) }
     if let sort { query.append(URLQueryItem(name: "sort", value: sort)) }
     if let order { query.append(URLQueryItem(name: "order", value: order.rawValue)) }
-    if let type { query.append(URLQueryItem(name: "type", value: type)) }
+    if let type {
+      query.append(URLQueryItem(name: "type", value: type))
+    } else if let source = source.queryValue {
+      query.append(URLQueryItem(name: "type", value: source))
+    }
     return try await rest.transport.paginated("templates", start: start, limit: limit, query: query)
   }
 
@@ -105,11 +110,21 @@ public struct TemplatesService: Sendable {
   // MARK: - Per-environment global variables
 
   /// Get the global template variables for an environment.
+  @available(
+    *,
+    deprecated,
+    message: "Use ArcaneClient.variables for manager-owned variables. This legacy API reads materialized environment values."
+  )
   public func getGlobalVariables(envID: EnvironmentID? = nil) async throws -> [EnvVariable] {
     try await rest.get(rest.environmentPath(envID, "templates/variables"))
   }
 
   /// Update the global template variables for an environment.
+  @available(
+    *,
+    deprecated,
+    message: "Use ArcaneClient.variables for manager-owned variables. This legacy API replaces materialized environment values."
+  )
   public func updateGlobalVariables(_ variables: [EnvVariable], envID: EnvironmentID? = nil)
     async throws
   {

@@ -136,6 +136,14 @@ public enum Permission {
     public static let delete = "templates:delete"
   }
 
+  public enum Variables {
+    public static let read = "variables:read"
+    public static let create = "variables:create"
+    public static let update = "variables:update"
+    public static let delete = "variables:delete"
+    public static let sync = "variables:sync"
+  }
+
   public enum GitRepositories {
     public static let list = "git-repositories:list"
     public static let read = "git-repositories:read"
@@ -181,6 +189,7 @@ public enum Permission {
 
   public enum Events {
     public static let read = "events:read"
+    public static let delete = "events:delete"
   }
 
   public enum Dashboard {

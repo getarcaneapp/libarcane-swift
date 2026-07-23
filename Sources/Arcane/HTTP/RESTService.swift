@@ -4,67 +4,93 @@ public struct RESTService: Sendable {
   public let transport: ArcaneURLSessionTransport
   public let defaultEnvironmentID: EnvironmentID
 
-  public func get<T: Decodable & Sendable>(_ path: String, query: [URLQueryItem] = []) async throws
+  public func get<T: Decodable & Sendable>(
+    _ path: String,
+    query: [URLQueryItem] = [],
+    options: ArcaneRequestOptions? = nil
+  ) async throws
     -> T
   {
-    try await transport.request(path, query: query)
+    try await transport.request(path, query: query, options: options)
   }
 
   public func post<T: Decodable & Sendable, Body: Encodable & Sendable>(
     _ path: String,
     body: Body? = nil,
-    query: [URLQueryItem] = []
+    query: [URLQueryItem] = [],
+    options: ArcaneRequestOptions? = nil
   ) async throws -> T {
-    try await transport.request(path, method: "POST", query: query, body: body)
+    try await transport.request(
+      path, method: "POST", query: query, body: body, options: options)
   }
 
   public func put<T: Decodable & Sendable, Body: Encodable & Sendable>(
     _ path: String,
     body: Body? = nil,
-    query: [URLQueryItem] = []
+    query: [URLQueryItem] = [],
+    options: ArcaneRequestOptions? = nil
   ) async throws -> T {
-    try await transport.request(path, method: "PUT", query: query, body: body)
+    try await transport.request(path, method: "PUT", query: query, body: body, options: options)
   }
 
   public func patch<T: Decodable & Sendable, Body: Encodable & Sendable>(
     _ path: String,
     body: Body? = nil,
-    query: [URLQueryItem] = []
+    query: [URLQueryItem] = [],
+    options: ArcaneRequestOptions? = nil
   ) async throws -> T {
-    try await transport.request(path, method: "PATCH", query: query, body: body)
+    try await transport.request(
+      path, method: "PATCH", query: query, body: body, options: options)
   }
 
-  public func delete<T: Decodable & Sendable>(_ path: String, query: [URLQueryItem] = [])
+  public func delete<T: Decodable & Sendable>(
+    _ path: String,
+    query: [URLQueryItem] = [],
+    options: ArcaneRequestOptions? = nil
+  )
     async throws -> T
   {
-    try await transport.request(path, method: "DELETE", query: query)
+    try await transport.request(path, method: "DELETE", query: query, options: options)
   }
 
-  public func deleteVoid(_ path: String, query: [URLQueryItem] = []) async throws {
-    let _: MessageResponse = try await transport.request(path, method: "DELETE", query: query)
+  public func deleteVoid(
+    _ path: String,
+    query: [URLQueryItem] = [],
+    options: ArcaneRequestOptions? = nil
+  ) async throws {
+    let _: MessageResponse = try await transport.request(
+      path, method: "DELETE", query: query, options: options)
   }
 
   public func postVoid<Body: Encodable & Sendable>(
-    _ path: String, body: Body? = nil, query: [URLQueryItem] = []
+    _ path: String,
+    body: Body? = nil,
+    query: [URLQueryItem] = [],
+    options: ArcaneRequestOptions? = nil
   ) async throws {
     let _: MessageResponse = try await transport.request(
-      path, method: "POST", query: query, body: body)
+      path, method: "POST", query: query, body: body, options: options)
   }
 
   public func putVoid<Body: Encodable & Sendable>(
-    _ path: String, body: Body? = nil, query: [URLQueryItem] = []
+    _ path: String,
+    body: Body? = nil,
+    query: [URLQueryItem] = [],
+    options: ArcaneRequestOptions? = nil
   ) async throws {
     let _: MessageResponse = try await transport.request(
-      path, method: "PUT", query: query, body: body)
+      path, method: "PUT", query: query, body: body, options: options)
   }
 
   public func paginated<T: Decodable & Sendable>(
     _ path: String,
     start: Int,
     limit: Int,
-    query: [URLQueryItem] = []
+    query: [URLQueryItem] = [],
+    options: ArcaneRequestOptions? = nil
   ) async throws -> PaginatedResponse<T> {
-    try await transport.paginated(path, start: start, limit: limit, query: query)
+    try await transport.paginated(
+      path, start: start, limit: limit, query: query, options: options)
   }
 
   public func environmentPath(_ envID: EnvironmentID?, _ suffix: String) -> String {

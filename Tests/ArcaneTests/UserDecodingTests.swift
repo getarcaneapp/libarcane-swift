@@ -146,6 +146,32 @@ final class UserDecodingTests: XCTestCase {
     XCTAssertFalse(user.hasPermission(Permission.Containers.start))  // global query
   }
 
+  func testBackendGlobalAdminFalseOverridesLegacyInference() throws {
+    let user = try decoder.decode(
+      User.self,
+      from: Data(
+        #"{"id":"u-authoritative-false","username":"scoped-admin","roles":["admin"],"isGlobalAdmin":false}"#
+          .utf8
+      )
+    )
+
+    XCTAssertEqual(user.serverIsGlobalAdmin, false)
+    XCTAssertFalse(user.isGlobalAdmin)
+  }
+
+  func testBackendGlobalAdminTrueOverridesMissingLegacySignals() throws {
+    let user = try decoder.decode(
+      User.self,
+      from: Data(
+        #"{"id":"u-authoritative-true","username":"server-admin","roles":[],"isGlobalAdmin":true}"#
+          .utf8
+      )
+    )
+
+    XCTAssertEqual(user.serverIsGlobalAdmin, true)
+    XCTAssertTrue(user.isGlobalAdmin)
+  }
+
   func testV2DedupesRolesAcrossEnvs() throws {
     let json = #"""
       {

@@ -43,6 +43,26 @@ public struct SwarmService: Sendable {
     try await rest.postVoid(rest.environmentPath(envID, "swarm/join"), body: request)
   }
 
+  /// Returns enabled environments that can be joined to this manager's swarm.
+  public func joinCandidates(envID: EnvironmentID? = nil) async throws
+    -> [SwarmJoinCandidate]
+  {
+    try await rest.get(rest.environmentPath(envID, "swarm/join-candidates"))
+  }
+
+  /// Joins one or more Arcane environments without exposing swarm join tokens.
+  public func joinEnvironments(
+    _ request: SwarmJoinEnvironmentsRequest,
+    envID: EnvironmentID? = nil,
+    options: ArcaneRequestOptions? = nil
+  ) async throws -> SwarmJoinEnvironmentsResponse {
+    try await rest.post(
+      rest.environmentPath(envID, "swarm/join-environments"),
+      body: request,
+      options: options
+    )
+  }
+
   /// Removes this environment's Docker engine from the swarm.
   public func leave(force: Bool = false, envID: EnvironmentID? = nil) async throws {
     try await rest.postVoid(
@@ -203,6 +223,56 @@ public struct SwarmService: Sendable {
     try await rest.post(
       rest.environmentPath(envID, "swarm/nodes/\(nodeId)/agent/deployment"),
       body: SwarmNodeAgentDeploymentRequest(rotate: rotate)
+    )
+  }
+
+  /// Reconciles visible Arcane environment bindings for every node in a swarm.
+  public func reconcileNodeAgents(
+    envID: EnvironmentID? = nil,
+    options: ArcaneRequestOptions? = nil
+  ) async throws -> SwarmNodeAgentReconcileResponse {
+    try await rest.post(
+      rest.environmentPath(envID, "swarm/nodes/agents/reconcile"),
+      body: EmptyBody(),
+      options: options
+    )
+  }
+
+  /// Attaches an existing Arcane environment to a swarm node.
+  public func bindNodeAgent(
+    _ nodeId: String,
+    request: SwarmNodeAgentBindingRequest,
+    envID: EnvironmentID? = nil,
+    options: ArcaneRequestOptions? = nil
+  ) async throws -> SwarmNode {
+    try await rest.put(
+      rest.environmentPath(envID, "swarm/nodes/\(nodeId)/agent/binding"),
+      body: request,
+      options: options
+    )
+  }
+
+  /// Detaches the visible environment currently bound to a swarm node.
+  public func detachNodeAgent(
+    _ nodeId: String,
+    envID: EnvironmentID? = nil,
+    options: ArcaneRequestOptions? = nil
+  ) async throws -> MessageResponse {
+    try await rest.delete(
+      rest.environmentPath(envID, "swarm/nodes/\(nodeId)/agent/binding"),
+      options: options
+    )
+  }
+
+  /// Removes a dedicated hidden node-agent registration.
+  public func removeNodeAgentDeployment(
+    _ nodeId: String,
+    envID: EnvironmentID? = nil,
+    options: ArcaneRequestOptions? = nil
+  ) async throws -> MessageResponse {
+    try await rest.delete(
+      rest.environmentPath(envID, "swarm/nodes/\(nodeId)/agent/deployment"),
+      options: options
     )
   }
 
