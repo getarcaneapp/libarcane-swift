@@ -134,46 +134,6 @@ public struct ImageLoadResult: Codable, Hashable, Sendable {
   }
 }
 
-/// Standardized NDJSON envelope for pull/build/deploy streams.
-public struct ImageProgressDetail: Codable, Hashable, Sendable {
-  public var current: Int64?
-  public var total: Int64?
-
-  public init(current: Int64? = nil, total: Int64? = nil) {
-    self.current = current
-    self.total = total
-  }
-}
-
-/// A single progress event emitted by streaming image endpoints.
-public struct ImageProgressEvent: Codable, Hashable, Sendable {
-  public var type: String?
-  public var phase: String?
-  public var service: String?
-  public var status: String?
-  public var id: String?
-  public var progressDetail: ImageProgressDetail?
-  public var error: String?
-
-  public init(
-    type: String? = nil,
-    phase: String? = nil,
-    service: String? = nil,
-    status: String? = nil,
-    id: String? = nil,
-    progressDetail: ImageProgressDetail? = nil,
-    error: String? = nil
-  ) {
-    self.type = type
-    self.phase = phase
-    self.service = service
-    self.status = status
-    self.id = id
-    self.progressDetail = progressDetail
-    self.error = error
-  }
-}
-
 /// Paginated list response for images.
 public struct ImageListResponse: Decodable, Sendable {
   public var success: Bool

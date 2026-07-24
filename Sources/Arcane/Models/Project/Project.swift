@@ -177,6 +177,7 @@ public struct ProjectCreateResponse: Codable, Hashable, Sendable, Identifiable {
   public var archivedAt: Date?
   public var createdAt: String
   public var updatedAt: String
+  public var activityID: String?
 
   public init(
     id: String,
@@ -192,7 +193,8 @@ public struct ProjectCreateResponse: Codable, Hashable, Sendable, Identifiable {
     isArchived: Bool = false,
     archivedAt: Date? = nil,
     createdAt: String,
-    updatedAt: String
+    updatedAt: String,
+    activityID: String? = nil
   ) {
     self.id = id
     self.name = name
@@ -208,6 +210,14 @@ public struct ProjectCreateResponse: Codable, Hashable, Sendable, Identifiable {
     self.archivedAt = archivedAt
     self.createdAt = createdAt
     self.updatedAt = updatedAt
+    self.activityID = activityID
+  }
+
+  private enum CodingKeys: String, CodingKey {
+    case id, name, dirName, relativePath, path, status, statusReason
+    case serviceCount, runningCount, gitOpsManagedBy, isArchived, archivedAt
+    case createdAt, updatedAt
+    case activityID = "activityId"
   }
 }
 
@@ -246,6 +256,7 @@ public struct ProjectDetails: Codable, Hashable, Sendable, Identifiable {
   public var gitOpsManagedBy: String?
   public var lastSyncCommit: String?
   public var gitRepositoryURL: String?
+  public var activityID: String?
 
   public init(
     id: String,
@@ -280,7 +291,8 @@ public struct ProjectDetails: Codable, Hashable, Sendable, Identifiable {
     redeployDisabled: Bool? = nil,
     gitOpsManagedBy: String? = nil,
     lastSyncCommit: String? = nil,
-    gitRepositoryURL: String? = nil
+    gitRepositoryURL: String? = nil,
+    activityID: String? = nil
   ) {
     self.id = id
     self.name = name
@@ -315,6 +327,16 @@ public struct ProjectDetails: Codable, Hashable, Sendable, Identifiable {
     self.gitOpsManagedBy = gitOpsManagedBy
     self.lastSyncCommit = lastSyncCommit
     self.gitRepositoryURL = gitRepositoryURL
+    self.activityID = activityID
+  }
+
+  private enum CodingKeys: String, CodingKey {
+    case id, name, dirName, relativePath, path, iconUrl, iconLightUrl, iconDarkUrl, urls
+    case composeContent, composeFileName, envContent, includeFiles, directoryFiles, projectFiles
+    case fileTreeRevision, status, statusReason, serviceCount, runningCount, isArchived
+    case isDiscovered, archivedAt, createdAt, updatedAt, services, runtimeServices, updateInfo
+    case hasBuildDirective, redeployDisabled, gitOpsManagedBy, lastSyncCommit, gitRepositoryURL
+    case activityID = "activityId"
   }
 }
 
@@ -375,45 +397,6 @@ public struct BuildProjectRequest: Codable, Hashable, Sendable {
     self.provider = provider
     self.push = push
     self.load = load
-  }
-}
-
-/// PullProgressEvent is one frame of the streaming pull progress.
-public struct PullProgressEvent: Codable, Hashable, Sendable {
-  public struct Detail: Codable, Hashable, Sendable {
-    public var current: Int64?
-    public var total: Int64?
-
-    public init(current: Int64? = nil, total: Int64? = nil) {
-      self.current = current
-      self.total = total
-    }
-  }
-
-  public var status: String?
-  public var id: String?
-  public var progress: String?
-  public var progressDetail: Detail?
-  public var error: String?
-  /// Human-readable build/lifecycle output emitted by Docker Compose
-  /// operations (deploy, build, pull-images). Absent for pure image-pull
-  /// layer frames.
-  public var stream: String?
-
-  public init(
-    status: String? = nil,
-    id: String? = nil,
-    progress: String? = nil,
-    progressDetail: Detail? = nil,
-    error: String? = nil,
-    stream: String? = nil
-  ) {
-    self.status = status
-    self.id = id
-    self.progress = progress
-    self.progressDetail = progressDetail
-    self.error = error
-    self.stream = stream
   }
 }
 

@@ -297,10 +297,17 @@ public struct NetworkCreateRequest: Codable, Hashable, Sendable {
 public struct NetworkCreateResponse: Codable, Hashable, Sendable, Identifiable {
   public var id: String
   public var warning: String?
+  public var activityID: String?
 
-  public init(id: String, warning: String? = nil) {
+  public init(id: String, warning: String? = nil, activityID: String? = nil) {
     self.id = id
     self.warning = warning
+    self.activityID = activityID
+  }
+
+  private enum CodingKeys: String, CodingKey {
+    case id, warning
+    case activityID = "activityId"
   }
 }
 
@@ -308,10 +315,21 @@ public struct NetworkCreateResponse: Codable, Hashable, Sendable, Identifiable {
 public struct NetworkPruneReport: Codable, Hashable, Sendable {
   public var networksDeleted: [String]
   public var spaceReclaimed: UInt64
+  public var activityID: String?
 
-  public init(networksDeleted: [String] = [], spaceReclaimed: UInt64 = 0) {
+  public init(
+    networksDeleted: [String] = [],
+    spaceReclaimed: UInt64 = 0,
+    activityID: String? = nil
+  ) {
     self.networksDeleted = networksDeleted
     self.spaceReclaimed = spaceReclaimed
+    self.activityID = activityID
+  }
+
+  private enum CodingKeys: String, CodingKey {
+    case networksDeleted, spaceReclaimed
+    case activityID = "activityId"
   }
 }
 

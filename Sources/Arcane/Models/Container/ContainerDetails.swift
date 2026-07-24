@@ -18,6 +18,7 @@ public struct ContainerDetails: Codable, Hashable, Sendable, Identifiable {
   public var iconLightUrl: String?
   public var iconDarkUrl: String?
   public var redeployDisabled: Bool?
+  public var activityID: String?
 
   public init(
     id: String,
@@ -35,7 +36,8 @@ public struct ContainerDetails: Codable, Hashable, Sendable, Identifiable {
     composeInfo: ContainerComposeInfo? = nil,
     iconLightUrl: String? = nil,
     iconDarkUrl: String? = nil,
-    redeployDisabled: Bool? = nil
+    redeployDisabled: Bool? = nil,
+    activityID: String? = nil
   ) {
     self.id = id
     self.name = name
@@ -53,6 +55,13 @@ public struct ContainerDetails: Codable, Hashable, Sendable, Identifiable {
     self.iconLightUrl = iconLightUrl
     self.iconDarkUrl = iconDarkUrl
     self.redeployDisabled = redeployDisabled
+    self.activityID = activityID
+  }
+
+  private enum CodingKeys: String, CodingKey {
+    case id, name, image, imageId, created, state, config, hostConfig, networkSettings
+    case ports, mounts, labels, composeInfo, iconLightUrl, iconDarkUrl, redeployDisabled
+    case activityID = "activityId"
   }
 }
 

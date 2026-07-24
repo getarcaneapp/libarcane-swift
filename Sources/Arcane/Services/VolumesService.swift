@@ -44,12 +44,17 @@ public struct VolumesService: Sendable {
   }
 
   /// Remove a volume, optionally forcing removal even if it is in use.
-  public func remove(envID: EnvironmentID? = nil, name: String, force: Bool = false) async throws {
+  @discardableResult
+  public func remove(
+    envID: EnvironmentID? = nil,
+    name: String,
+    force: Bool = false
+  ) async throws -> MessageResponse {
     var items: [URLQueryItem] = []
     if force {
       items.append(URLQueryItem(name: "force", value: "true"))
     }
-    try await rest.deleteVoid(rest.environmentPath(envID, "volumes/\(name)"), query: items)
+    return try await rest.delete(rest.environmentPath(envID, "volumes/\(name)"), query: items)
   }
 
   /// Prune unused volumes and return the prune report.
@@ -107,9 +112,13 @@ public struct VolumesService: Sendable {
   }
 
   /// Create a new directory inside a volume.
-  public func createDirectory(envID: EnvironmentID? = nil, name: String, path: String) async throws
-  {
-    try await rest.postVoid(
+  @discardableResult
+  public func createDirectory(
+    envID: EnvironmentID? = nil,
+    name: String,
+    path: String
+  ) async throws -> MessageResponse {
+    try await rest.post(
       rest.environmentPath(envID, "volumes/\(name)/browse/mkdir"),
       body: EmptyBody?.none,
       query: [URLQueryItem(name: "path", value: path)]
@@ -117,8 +126,13 @@ public struct VolumesService: Sendable {
   }
 
   /// Delete a file or directory inside a volume.
-  public func deleteFile(envID: EnvironmentID? = nil, name: String, path: String) async throws {
-    try await rest.deleteVoid(
+  @discardableResult
+  public func deleteFile(
+    envID: EnvironmentID? = nil,
+    name: String,
+    path: String
+  ) async throws -> MessageResponse {
+    try await rest.delete(
       rest.environmentPath(envID, "volumes/\(name)/browse"),
       query: [URLQueryItem(name: "path", value: path)]
     )
@@ -149,31 +163,37 @@ public struct VolumesService: Sendable {
   }
 
   /// Restore an entire backup over a volume.
-  public func restoreBackup(envID: EnvironmentID? = nil, name: String, backupID: String)
-    async throws
-  {
-    try await rest.postVoid(
+  @discardableResult
+  public func restoreBackup(
+    envID: EnvironmentID? = nil,
+    name: String,
+    backupID: String
+  ) async throws -> MessageResponse {
+    try await rest.post(
       rest.environmentPath(envID, "volumes/\(name)/backups/\(backupID)/restore"),
       body: EmptyBody?.none
     )
   }
 
   /// Restore selected files from a backup.
+  @discardableResult
   public func restoreBackupFiles(
     envID: EnvironmentID? = nil,
     name: String,
     backupID: String,
     paths: [String]
-  ) async throws {
-    try await rest.postVoid(
+  ) async throws -> MessageResponse {
+    try await rest.post(
       rest.environmentPath(envID, "volumes/\(name)/backups/\(backupID)/restore-files"),
       body: RestoreBackupFilesRequest(paths: paths)
     )
   }
 
   /// Delete a backup.
-  public func deleteBackup(envID: EnvironmentID? = nil, backupID: String) async throws {
-    try await rest.deleteVoid(rest.environmentPath(envID, "volumes/backups/\(backupID)"))
+  @discardableResult
+  public func deleteBackup(envID: EnvironmentID? = nil, backupID: String) async throws
+    -> MessageResponse {
+    try await rest.delete(rest.environmentPath(envID, "volumes/backups/\(backupID)"))
   }
 
   /// Check whether a backup contains the given path.
@@ -198,19 +218,20 @@ public struct VolumesService: Sendable {
   // MARK: - Binary uploads & downloads
 
   /// Upload a file or directory into a volume at `path` (multipart upload).
+  @discardableResult
   public func uploadFile(
     envID: EnvironmentID? = nil,
     name: String,
     path: String,
     fileURL: URL,
     filename: String? = nil
-  ) async throws {
+  ) async throws -> MessageResponse {
     let part = MultipartFile(
       fieldName: "file",
       filename: filename ?? fileURL.lastPathComponent,
       fileURL: fileURL
     )
-    let _: MessageResponse = try await rest.transport.multipartUpload(
+    return try await rest.transport.multipartUpload(
       rest.environmentPath(envID, "volumes/\(name)/browse/upload"),
       query: [URLQueryItem(name: "path", value: path)],
       files: [part]

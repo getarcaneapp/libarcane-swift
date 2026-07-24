@@ -3,10 +3,9 @@ import Foundation
 /// ProjectsService exposes Docker Compose project management endpoints
 /// registered under ``/environments/{id}/projects``.
 ///
-/// The HTTP-streaming endpoints (``deploy``, ``build``, ``pullImages``) issue
-/// the request and block until the server finishes emitting its NDJSON
-/// progress stream. To consume progress events line-by-line, fetch the raw
-/// stream via ``ArcaneURLSessionTransport`` directly.
+/// The HTTP-streaming endpoints (``deploy``, ``redeploy``, ``build``,
+/// ``pullImages``) issue the request and block until the operation's terminal
+/// frame. Their corresponding stream methods expose progress line-by-line.
 public struct ProjectsService: Sendable {
   private let rest: RESTService
 
@@ -125,21 +124,21 @@ public struct ProjectsService: Sendable {
   /// Deploy a project (docker compose up).
   ///
   /// The server streams NDJSON progress; this call resolves only when the
-  /// deploy is fully complete. Use the raw transport for live progress.
+  /// deploy is fully complete. Use ``deployStream`` for live progress.
   public func deploy(
     envID: EnvironmentID? = nil,
     projectID: String,
     options: DeployOptions? = nil
   ) async throws {
-    try await rest.postVoid(
-      rest.environmentPath(envID, "projects/\(projectID)/up"),
-      body: options
-    )
+    let stream = try deployStream(envID: envID, projectID: projectID, options: options)
+    for try await _ in stream {}
   }
 
   /// Bring down a project (docker compose down).
-  public func down(envID: EnvironmentID? = nil, projectID: String) async throws {
-    try await rest.postVoid(
+  @discardableResult
+  public func down(envID: EnvironmentID? = nil, projectID: String) async throws
+    -> MessageResponse {
+    try await rest.post(
       rest.environmentPath(envID, "projects/\(projectID)/down"),
       body: EmptyBody?.none
     )
@@ -147,15 +146,14 @@ public struct ProjectsService: Sendable {
 
   /// Redeploy a project (down + up).
   public func redeploy(envID: EnvironmentID? = nil, projectID: String) async throws {
-    try await rest.postVoid(
-      rest.environmentPath(envID, "projects/\(projectID)/redeploy"),
-      body: EmptyBody?.none
-    )
+    for try await _ in redeployStream(envID: envID, projectID: projectID) {}
   }
 
   /// Restart all containers in a project.
-  public func restart(envID: EnvironmentID? = nil, projectID: String) async throws {
-    try await rest.postVoid(
+  @discardableResult
+  public func restart(envID: EnvironmentID? = nil, projectID: String) async throws
+    -> MessageResponse {
+    try await rest.post(
       rest.environmentPath(envID, "projects/\(projectID)/restart"),
       body: EmptyBody?.none
     )
@@ -165,11 +163,12 @@ public struct ProjectsService: Sendable {
   ///
   /// The destroy options are passed as URL query parameters since the
   /// shared ``RESTService`` DELETE helpers do not forward a request body.
+  @discardableResult
   public func destroy(
     envID: EnvironmentID? = nil,
     projectID: String,
     options: DestroyProject? = nil
-  ) async throws {
+  ) async throws -> MessageResponse {
     var items: [URLQueryItem] = []
     if let options {
       if let removeFiles = options.removeFiles {
@@ -179,7 +178,7 @@ public struct ProjectsService: Sendable {
         items.append(URLQueryItem(name: "removeVolumes", value: removeVolumes ? "true" : "false"))
       }
     }
-    try await rest.deleteVoid(
+    return try await rest.delete(
       rest.environmentPath(envID, "projects/\(projectID)/destroy"),
       query: items
     )
@@ -209,10 +208,8 @@ public struct ProjectsService: Sendable {
     projectID: String,
     request: ImagePullRequest? = nil
   ) async throws {
-    try await rest.postVoid(
-      rest.environmentPath(envID, "projects/\(projectID)/pull"),
-      body: request
-    )
+    let stream = try pullImagesStream(envID: envID, projectID: projectID, request: request)
+    for try await _ in stream {}
   }
 
   /// Build compose services that declare a ``build`` directive. The server
@@ -223,10 +220,8 @@ public struct ProjectsService: Sendable {
     projectID: String,
     request: BuildProjectRequest? = nil
   ) async throws {
-    try await rest.postVoid(
-      rest.environmentPath(envID, "projects/\(projectID)/build"),
-      body: request
-    )
+    let stream = try buildStream(envID: envID, projectID: projectID, request: request)
+    for try await _ in stream {}
   }
 
   // MARK: - NDJSON progress streams
@@ -236,26 +231,14 @@ public struct ProjectsService: Sendable {
     envID: EnvironmentID? = nil,
     projectID: String,
     options: DeployOptions? = nil
-  ) throws -> NDJSONStream<PullProgressEvent> {
+  ) throws -> NDJSONStream<OperationStreamEvent> {
     let body = try encodeOrNil(options)
     return NDJSONStream(
       transport: rest.transport,
       path: rest.environmentPath(envID, "projects/\(projectID)/up"),
       method: "POST",
-      body: body
-    )
-  }
-
-  /// Tear down a project and stream NDJSON progress events.
-  public func downStream(
-    envID: EnvironmentID? = nil,
-    projectID: String
-  ) -> NDJSONStream<PullProgressEvent> {
-    NDJSONStream(
-      transport: rest.transport,
-      path: rest.environmentPath(envID, "projects/\(projectID)/down"),
-      method: "POST",
-      body: nil
+      body: body,
+      terminalAction: OperationStreamEvent.terminalAction
     )
   }
 
@@ -263,12 +246,13 @@ public struct ProjectsService: Sendable {
   public func redeployStream(
     envID: EnvironmentID? = nil,
     projectID: String
-  ) -> NDJSONStream<PullProgressEvent> {
+  ) -> NDJSONStream<OperationStreamEvent> {
     NDJSONStream(
       transport: rest.transport,
       path: rest.environmentPath(envID, "projects/\(projectID)/redeploy"),
       method: "POST",
-      body: nil
+      body: nil,
+      terminalAction: OperationStreamEvent.terminalAction
     )
   }
 
@@ -277,13 +261,14 @@ public struct ProjectsService: Sendable {
     envID: EnvironmentID? = nil,
     projectID: String,
     request: ImagePullRequest? = nil
-  ) throws -> NDJSONStream<PullProgressEvent> {
+  ) throws -> NDJSONStream<OperationStreamEvent> {
     let body = try encodeOrNil(request)
     return NDJSONStream(
       transport: rest.transport,
       path: rest.environmentPath(envID, "projects/\(projectID)/pull"),
       method: "POST",
-      body: body
+      body: body,
+      terminalAction: OperationStreamEvent.terminalAction
     )
   }
 
@@ -292,13 +277,14 @@ public struct ProjectsService: Sendable {
     envID: EnvironmentID? = nil,
     projectID: String,
     request: BuildProjectRequest? = nil
-  ) throws -> NDJSONStream<PullProgressEvent> {
+  ) throws -> NDJSONStream<OperationStreamEvent> {
     let body = try encodeOrNil(request)
     return NDJSONStream(
       transport: rest.transport,
       path: rest.environmentPath(envID, "projects/\(projectID)/build"),
       method: "POST",
-      body: body
+      body: body,
+      terminalAction: OperationStreamEvent.terminalAction
     )
   }
 

@@ -116,6 +116,7 @@ public struct PruneAllResult: Codable, Hashable, Sendable {
   public var buildCacheSpaceReclaimed: UInt64?
   public var success: Bool
   public var errors: [String]?
+  public var activityID: String?
 
   public init(
     containersPruned: [String]? = nil,
@@ -128,7 +129,8 @@ public struct PruneAllResult: Codable, Hashable, Sendable {
     volumeSpaceReclaimed: UInt64? = nil,
     buildCacheSpaceReclaimed: UInt64? = nil,
     success: Bool = false,
-    errors: [String]? = nil
+    errors: [String]? = nil,
+    activityID: String? = nil
   ) {
     self.containersPruned = containersPruned
     self.imagesDeleted = imagesDeleted
@@ -141,5 +143,13 @@ public struct PruneAllResult: Codable, Hashable, Sendable {
     self.buildCacheSpaceReclaimed = buildCacheSpaceReclaimed
     self.success = success
     self.errors = errors
+    self.activityID = activityID
+  }
+
+  private enum CodingKeys: String, CodingKey {
+    case containersPruned, imagesDeleted, volumesDeleted, networksDeleted
+    case spaceReclaimed, containerSpaceReclaimed, imageSpaceReclaimed
+    case volumeSpaceReclaimed, buildCacheSpaceReclaimed, success, errors
+    case activityID = "activityId"
   }
 }

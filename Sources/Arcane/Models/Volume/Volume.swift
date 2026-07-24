@@ -33,6 +33,7 @@ public struct Volume: Codable, Hashable, Sendable, Identifiable {
   public var usageData: VolumeUsageData?
   public var size: Int64
   public var containers: [String]
+  public var activityID: String?
 
   public init(
     id: String,
@@ -46,7 +47,8 @@ public struct Volume: Codable, Hashable, Sendable, Identifiable {
     inUse: Bool = false,
     usageData: VolumeUsageData? = nil,
     size: Int64 = 0,
-    containers: [String] = []
+    containers: [String] = [],
+    activityID: String? = nil
   ) {
     self.id = id
     self.name = name
@@ -60,11 +62,13 @@ public struct Volume: Codable, Hashable, Sendable, Identifiable {
     self.usageData = usageData
     self.size = size
     self.containers = containers
+    self.activityID = activityID
   }
 
   private enum CodingKeys: String, CodingKey {
     case id, name, driver, mountpoint, scope, options, labels, createdAt
     case inUse, usageData, size, containers
+    case activityID = "activityId"
   }
 
   public init(from decoder: Decoder) throws {
@@ -81,6 +85,7 @@ public struct Volume: Codable, Hashable, Sendable, Identifiable {
     usageData = try container.decodeIfPresent(VolumeUsageData.self, forKey: .usageData)
     size = try container.decodeIfPresent(Int64.self, forKey: .size) ?? 0
     containers = try container.decodeIfPresent([String].self, forKey: .containers) ?? []
+    activityID = try container.decodeIfPresent(String.self, forKey: .activityID)
   }
 }
 
@@ -101,10 +106,21 @@ public struct VolumeUsageCounts: Codable, Hashable, Sendable {
 public struct VolumePruneReport: Codable, Hashable, Sendable {
   public var volumesDeleted: [String]
   public var spaceReclaimed: UInt64
+  public var activityID: String?
 
-  public init(volumesDeleted: [String] = [], spaceReclaimed: UInt64 = 0) {
+  public init(
+    volumesDeleted: [String] = [],
+    spaceReclaimed: UInt64 = 0,
+    activityID: String? = nil
+  ) {
     self.volumesDeleted = volumesDeleted
     self.spaceReclaimed = spaceReclaimed
+    self.activityID = activityID
+  }
+
+  private enum CodingKeys: String, CodingKey {
+    case volumesDeleted, spaceReclaimed
+    case activityID = "activityId"
   }
 }
 

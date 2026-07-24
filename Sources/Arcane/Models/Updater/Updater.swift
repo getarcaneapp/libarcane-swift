@@ -69,6 +69,7 @@ public struct UpdaterResult: Codable, Hashable, Sendable {
   public var endTime: String?
   public var duration: String
   public var items: [UpdaterResourceResult]
+  public var activityID: String?
 
   public init(
     success: Bool? = nil,
@@ -79,7 +80,8 @@ public struct UpdaterResult: Codable, Hashable, Sendable {
     startTime: String? = nil,
     endTime: String? = nil,
     duration: String = "",
-    items: [UpdaterResourceResult] = []
+    items: [UpdaterResourceResult] = [],
+    activityID: String? = nil
   ) {
     self.success = success
     self.checked = checked
@@ -90,6 +92,12 @@ public struct UpdaterResult: Codable, Hashable, Sendable {
     self.endTime = endTime
     self.duration = duration
     self.items = items
+    self.activityID = activityID
+  }
+
+  private enum CodingKeys: String, CodingKey {
+    case success, checked, updated, skipped, failed, startTime, endTime, duration, items
+    case activityID = "activityId"
   }
 }
 

@@ -269,9 +269,7 @@ public final class ArcaneURLSessionTransport: Sendable {
     }
   }
 
-  /// Uploads a multipart/form-data request and streams an NDJSON response back.
-  /// Used by endpoints like `POST /images/upload` that accept a tarball and stream
-  /// progress events as the load proceeds.
+  /// Uploads a multipart/form-data request to an endpoint that returns NDJSON.
   public func multipartUploadStream<Element: Decodable & Sendable>(
     _ path: String,
     method: String = "POST",

@@ -17,7 +17,7 @@ public struct ImageUpdateResponse: Codable, Hashable, Sendable {
   public var authRegistry: String?
   public var usedCredential: Bool?
   /// Background activity that tracked this check (v2 servers).
-  public var activityId: String?
+  public var activityID: String?
 
   public init(
     hasUpdate: Bool = false,
@@ -33,7 +33,7 @@ public struct ImageUpdateResponse: Codable, Hashable, Sendable {
     authUsername: String? = nil,
     authRegistry: String? = nil,
     usedCredential: Bool? = nil,
-    activityId: String? = nil
+    activityID: String? = nil
   ) {
     self.hasUpdate = hasUpdate
     self.updateType = updateType
@@ -48,7 +48,13 @@ public struct ImageUpdateResponse: Codable, Hashable, Sendable {
     self.authUsername = authUsername
     self.authRegistry = authRegistry
     self.usedCredential = usedCredential
-    self.activityId = activityId
+    self.activityID = activityID
+  }
+
+  private enum CodingKeys: String, CodingKey {
+    case hasUpdate, updateType, currentVersion, latestVersion, currentDigest, latestDigest
+    case checkTime, responseTimeMs, error, authMethod, authUsername, authRegistry, usedCredential
+    case activityID = "activityId"
   }
 }
 

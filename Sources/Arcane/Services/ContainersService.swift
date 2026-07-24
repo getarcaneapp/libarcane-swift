@@ -55,33 +55,37 @@ public struct ContainersService: Sendable {
   }
 
   /// Delete a container, optionally forcing removal of running containers and removing associated volumes.
+  @discardableResult
   public func delete(
     envID: EnvironmentID? = nil,
     id: String,
     force: Bool = false,
     removeVolumes: Bool = false
-  ) async throws {
+  ) async throws -> MessageResponse {
     let query: [URLQueryItem] = [
       URLQueryItem(name: "force", value: force ? "true" : "false"),
-      URLQueryItem(name: "volumes", value: removeVolumes ? "true" : "false"),
+      URLQueryItem(name: "volumes", value: removeVolumes ? "true" : "false")
     ]
-    try await rest.deleteVoid(rest.environmentPath(envID, "containers/\(id)"), query: query)
+    return try await rest.delete(rest.environmentPath(envID, "containers/\(id)"), query: query)
   }
 
   // MARK: - Lifecycle
 
-  public func start(envID: EnvironmentID? = nil, id: String) async throws {
-    try await rest.postVoid(
+  @discardableResult
+  public func start(envID: EnvironmentID? = nil, id: String) async throws -> MessageResponse {
+    try await rest.post(
       rest.environmentPath(envID, "containers/\(id)/start"), body: Optional<EmptyBody>.none)
   }
 
-  public func stop(envID: EnvironmentID? = nil, id: String) async throws {
-    try await rest.postVoid(
+  @discardableResult
+  public func stop(envID: EnvironmentID? = nil, id: String) async throws -> MessageResponse {
+    try await rest.post(
       rest.environmentPath(envID, "containers/\(id)/stop"), body: Optional<EmptyBody>.none)
   }
 
-  public func restart(envID: EnvironmentID? = nil, id: String) async throws {
-    try await rest.postVoid(
+  @discardableResult
+  public func restart(envID: EnvironmentID? = nil, id: String) async throws -> MessageResponse {
+    try await rest.post(
       rest.environmentPath(envID, "containers/\(id)/restart"), body: Optional<EmptyBody>.none)
   }
 
@@ -93,21 +97,27 @@ public struct ContainersService: Sendable {
   }
 
   /// Pause a running container.
-  public func pause(envID: EnvironmentID? = nil, id: String) async throws {
-    try await rest.postVoid(
+  @discardableResult
+  public func pause(envID: EnvironmentID? = nil, id: String) async throws -> MessageResponse {
+    try await rest.post(
       rest.environmentPath(envID, "containers/\(id)/pause"), body: Optional<EmptyBody>.none)
   }
 
   /// Resume a paused container.
-  public func unpause(envID: EnvironmentID? = nil, id: String) async throws {
-    try await rest.postVoid(
+  @discardableResult
+  public func unpause(envID: EnvironmentID? = nil, id: String) async throws -> MessageResponse {
+    try await rest.post(
       rest.environmentPath(envID, "containers/\(id)/unpause"), body: Optional<EmptyBody>.none)
   }
 
   /// Send a signal to a running container (default: SIGKILL).
-  public func kill(envID: EnvironmentID? = nil, id: String, signal: String = "SIGKILL") async throws
-  {
-    try await rest.postVoid(
+  @discardableResult
+  public func kill(
+    envID: EnvironmentID? = nil,
+    id: String,
+    signal: String = "SIGKILL"
+  ) async throws -> MessageResponse {
+    try await rest.post(
       rest.environmentPath(envID, "containers/\(id)/kill"),
       body: Optional<EmptyBody>.none,
       query: [URLQueryItem(name: "signal", value: signal)]

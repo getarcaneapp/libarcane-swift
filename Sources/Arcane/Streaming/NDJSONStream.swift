@@ -1,8 +1,14 @@
 import Foundation
 
+enum NDJSONStreamTerminalAction: Sendable {
+  case continueStreaming
+  case finish
+  case fail(ArcaneError)
+}
+
 /// An `AsyncSequence` that consumes newline-delimited JSON (NDJSON / x-json-stream)
 /// from a backend endpoint and yields decoded values. Used by streaming endpoints
-/// like image pull/build, project up/down/pull/build, and image upload.
+/// like image pull/build, project operations, dashboard snapshots, and activities.
 public struct NDJSONStream<Element: Decodable & Sendable>: AsyncSequence, Sendable {
   public typealias AsyncIterator = AsyncThrowingStream<Element, Error>.Iterator
 
@@ -14,6 +20,7 @@ public struct NDJSONStream<Element: Decodable & Sendable>: AsyncSequence, Sendab
   private let transport: ArcaneURLSessionTransport
   private let path: String
   private let source: Source
+  private let terminalAction: (@Sendable (Element) -> NDJSONStreamTerminalAction)?
 
   init(
     transport: ArcaneURLSessionTransport,
@@ -21,23 +28,27 @@ public struct NDJSONStream<Element: Decodable & Sendable>: AsyncSequence, Sendab
     method: String,
     body: Data?,
     contentType: String? = "application/json",
-    query: [URLQueryItem] = []
+    query: [URLQueryItem] = [],
+    terminalAction: (@Sendable (Element) -> NDJSONStreamTerminalAction)? = nil
   ) {
     self.transport = transport
     self.path = path
     self.source = .body(method: method, body: body, contentType: contentType, query: query)
+    self.terminalAction = terminalAction
   }
 
   init(transport: ArcaneURLSessionTransport, multipart endpoint: MultipartEndpoint) {
     self.transport = transport
     self.path = endpoint.path
     self.source = .multipart(endpoint)
+    self.terminalAction = nil
   }
 
   public func makeAsyncIterator() -> AsyncIterator {
     let transport = self.transport
     let path = self.path
     let source = self.source
+    let terminalAction = self.terminalAction
     return AsyncThrowingStream<Element, Error> { continuation in
       let task = Task {
         do {
@@ -64,23 +75,16 @@ public struct NDJSONStream<Element: Decodable & Sendable>: AsyncSequence, Sendab
           let decoder = ArcaneJSON.makeDecoder()
           for try await line in result.bytes.lines {
             if Task.isCancelled { break }
-            let trimmed = line.trimmingCharacters(in: .whitespaces)
-            guard !trimmed.isEmpty,
-              let data = trimmed.data(using: .utf8)
-            else { continue }
-            let looksLikeJSON = trimmed.hasPrefix("{") || trimmed.hasPrefix("[")
-            do {
-              let element = try decoder.decode(Element.self, from: data)
+            guard let element = try Self.decodeLine(line, using: decoder) else { continue }
+            switch terminalAction?(element) ?? .continueStreaming {
+            case .continueStreaming:
               continuation.yield(element)
-            } catch {
-              // Lines that don't look like JSON (heartbeats, comments,
-              // status text) are intentionally skipped. Lines that
-              // *do* look like JSON but fail to decode indicate a
-              // schema mismatch the caller needs to know about.
-              if looksLikeJSON {
-                throw ArcaneError.decoding(String(describing: error))
-              }
-              continue
+            case .finish:
+              continuation.yield(element)
+              continuation.finish()
+              return
+            case .fail(let error):
+              throw error
             }
           }
           continuation.finish()
@@ -90,6 +94,23 @@ public struct NDJSONStream<Element: Decodable & Sendable>: AsyncSequence, Sendab
       }
       continuation.onTermination = { _ in task.cancel() }
     }.makeAsyncIterator()
+  }
+
+  private static func decodeLine(_ line: String, using decoder: JSONDecoder) throws -> Element? {
+    let trimmed = line.trimmingCharacters(in: .whitespaces)
+    guard !trimmed.isEmpty, let data = trimmed.data(using: .utf8) else {
+      return nil
+    }
+    do {
+      return try decoder.decode(Element.self, from: data)
+    } catch {
+      // Non-JSON heartbeats, comments, and status text are intentionally
+      // skipped. JSON decode failures indicate a schema mismatch.
+      guard trimmed.hasPrefix("{") || trimmed.hasPrefix("[") else {
+        return nil
+      }
+      throw ArcaneError.decoding(String(describing: error))
+    }
   }
 
   private struct ByteStreamResult: Sendable {

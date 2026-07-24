@@ -6,12 +6,25 @@ public struct BackupEntry: Codable, Hashable, Sendable, Identifiable {
   public var volumeName: String
   public var size: Int64
   public var createdAt: String
+  public var activityID: String?
 
-  public init(id: String, volumeName: String, size: Int64, createdAt: String) {
+  public init(
+    id: String,
+    volumeName: String,
+    size: Int64,
+    createdAt: String,
+    activityID: String? = nil
+  ) {
     self.id = id
     self.volumeName = volumeName
     self.size = size
     self.createdAt = createdAt
+    self.activityID = activityID
+  }
+
+  private enum CodingKeys: String, CodingKey {
+    case id, volumeName, size, createdAt
+    case activityID = "activityId"
   }
 }
 

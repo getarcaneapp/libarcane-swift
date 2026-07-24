@@ -131,19 +131,27 @@ public struct ContainerActionResult: Codable, Hashable, Sendable {
   public var failed: [String]?
   public var success: Bool
   public var errors: [String]?
+  public var activityID: String?
 
   public init(
     started: [String]? = nil,
     stopped: [String]? = nil,
     failed: [String]? = nil,
     success: Bool = false,
-    errors: [String]? = nil
+    errors: [String]? = nil,
+    activityID: String? = nil
   ) {
     self.started = started
     self.stopped = stopped
     self.failed = failed
     self.success = success
     self.errors = errors
+    self.activityID = activityID
+  }
+
+  private enum CodingKeys: String, CodingKey {
+    case started, stopped, failed, success, errors
+    case activityID = "activityId"
   }
 }
 

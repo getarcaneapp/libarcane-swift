@@ -66,8 +66,10 @@ public struct NetworksService: Sendable {
   }
 
   /// Delete a network.
-  public func delete(envID: EnvironmentID? = nil, networkID: String) async throws {
-    try await rest.deleteVoid(rest.environmentPath(envID, "networks/\(networkID)"))
+  @discardableResult
+  public func delete(envID: EnvironmentID? = nil, networkID: String) async throws
+    -> MessageResponse {
+    try await rest.delete(rest.environmentPath(envID, "networks/\(networkID)"))
   }
 
   /// Prune unused networks.
