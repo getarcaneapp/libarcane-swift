@@ -25,7 +25,16 @@ public struct ContainersService: Sendable {
     }
     if let updates { items.append(URLQueryItem(name: "updates", value: updates)) }
     if let standalone { items.append(URLQueryItem(name: "standalone", value: standalone)) }
-    return try await rest.get(rest.environmentPath(envID, "containers"), query: items)
+    let data = try await rest.transport.rawRequest(
+      rest.environmentPath(envID, "containers"),
+      query: items,
+      body: Optional<EmptyBody>.none
+    )
+    do {
+      return try rest.transport.decoder.decode(ContainerListResponse.self, from: data)
+    } catch {
+      throw ArcaneError.decoding(String(describing: error))
+    }
   }
 
   /// Container counts by status for an environment.
@@ -49,8 +58,7 @@ public struct ContainersService: Sendable {
 
   /// Create a new container.
   public func create(envID: EnvironmentID? = nil, body: ContainerCreate) async throws
-    -> ContainerCreated
-  {
+    -> ContainerCreated {
     try await rest.post(rest.environmentPath(envID, "containers"), body: body)
   }
 
@@ -160,7 +168,7 @@ public struct ContainersService: Sendable {
     var query: [URLQueryItem] = [
       URLQueryItem(name: "follow", value: follow ? "true" : "false"),
       URLQueryItem(name: "tail", value: tail),
-      URLQueryItem(name: "timestamps", value: timestamps ? "true" : "false"),
+      URLQueryItem(name: "timestamps", value: timestamps ? "true" : "false")
     ]
     if let since {
       query.append(URLQueryItem(name: "since", value: since))

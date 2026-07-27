@@ -86,4 +86,17 @@ public struct ContainerListResponse: Decodable, Sendable {
     self.counts = counts
     self.pagination = pagination
   }
+
+  private enum CodingKeys: String, CodingKey {
+    case success, data, groups, counts, pagination
+  }
+
+  public init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    success = try container.decode(Bool.self, forKey: .success)
+    data = try container.decode(LossyContainerSummaryArray.self, forKey: .data).elements
+    groups = try container.decodeIfPresent([ContainerSummaryGroup].self, forKey: .groups)
+    counts = try container.decode(ContainerStatusCounts.self, forKey: .counts)
+    pagination = try container.decode(PaginationResponse.self, forKey: .pagination)
+  }
 }

@@ -109,6 +109,32 @@ public struct ContainerSummaryGroup: Codable, Hashable, Sendable {
     self.groupName = groupName
     self.items = items
   }
+
+  private enum CodingKeys: String, CodingKey {
+    case groupName, items
+  }
+
+  public init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    groupName = try container.decode(String.self, forKey: .groupName)
+    items = try container.decode(LossyContainerSummaryArray.self, forKey: .items).elements
+  }
+}
+
+struct LossyContainerSummaryArray: Decodable, Sendable {
+  let elements: [ContainerSummary]
+
+  init(from decoder: Decoder) throws {
+    var container = try decoder.unkeyedContainer()
+    var elements: [ContainerSummary] = []
+    while !container.isAtEnd {
+      let elementDecoder = try container.superDecoder()
+      if let element = try? ContainerSummary(from: elementDecoder) {
+        elements.append(element)
+      }
+    }
+    self.elements = elements
+  }
 }
 
 /// Counts of containers by status.

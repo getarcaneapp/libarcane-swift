@@ -55,8 +55,19 @@ public struct ArcanePaginator<Element: Decodable & Sendable>: AsyncSequence, Sen
       let response = try await fetch(start, limit)
       buffer = response.data
       index = 0
-      start += response.data.count
-      finished = buffer.isEmpty || Int64(start) >= response.pagination.totalItems
+      let pageStride = response.pagination.itemsPerPage > 0
+        ? response.pagination.itemsPerPage
+        : limit
+      start += pageStride
+
+      if response.pagination.totalItems >= 0 {
+        finished = buffer.isEmpty || Int64(start) >= response.pagination.totalItems
+      } else if response.pagination.totalPages >= 0 {
+        finished = buffer.isEmpty
+          || Int64(response.pagination.currentPage) >= response.pagination.totalPages
+      } else {
+        finished = buffer.isEmpty || buffer.count < pageStride
+      }
       return try await next()
     }
   }
