@@ -45,6 +45,10 @@ let package = Package(
       dependencies: ["Arcane"]
     ),
     .testTarget(
+      name: "ArcaneOIDCTests",
+      dependencies: ["Arcane", "ArcaneOIDC"]
+    ),
+    .testTarget(
       name: "ArcaneIntegrationTests",
       dependencies: ["Arcane"]
     ),
