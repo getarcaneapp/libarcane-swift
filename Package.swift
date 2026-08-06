@@ -11,6 +11,7 @@ let package = Package(
   products: [
     .library(name: "Arcane", targets: ["Arcane"]),
     .library(name: "ArcaneOIDC", targets: ["ArcaneOIDC"]),
+    .library(name: "ArcanePasskeys", targets: ["ArcanePasskeys"]),
   ],
   dependencies: [
     .package(url: "https://github.com/apple/swift-http-types", from: "1.6.0")
@@ -40,6 +41,19 @@ let package = Package(
         .linkedFramework("AuthenticationServices")
       ]
     ),
+    .target(
+      name: "ArcanePasskeys",
+      dependencies: [
+        "Arcane"
+      ],
+      swiftSettings: [
+        .enableUpcomingFeature("StrictConcurrency")
+      ],
+      linkerSettings: [
+        .linkedFramework("AuthenticationServices"),
+        .linkedFramework("Security"),
+      ]
+    ),
     .testTarget(
       name: "ArcaneTests",
       dependencies: ["Arcane"]
@@ -47,6 +61,10 @@ let package = Package(
     .testTarget(
       name: "ArcaneOIDCTests",
       dependencies: ["Arcane", "ArcaneOIDC"]
+    ),
+    .testTarget(
+      name: "ArcanePasskeysTests",
+      dependencies: ["Arcane", "ArcanePasskeys"]
     ),
     .testTarget(
       name: "ArcaneIntegrationTests",

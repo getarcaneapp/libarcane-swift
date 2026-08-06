@@ -61,10 +61,19 @@ public struct UpdateProject: Codable, Hashable, Sendable {
 public struct DeployOptions: Codable, Hashable, Sendable {
   public var pullPolicy: String?
   public var forceRecreate: Bool?
+  public var removeOrphans: Bool?
+  public var recreateVolumes: Bool?
 
-  public init(pullPolicy: String? = nil, forceRecreate: Bool? = nil) {
+  public init(
+    pullPolicy: String? = nil,
+    forceRecreate: Bool? = nil,
+    removeOrphans: Bool? = nil,
+    recreateVolumes: Bool? = nil
+  ) {
     self.pullPolicy = pullPolicy
     self.forceRecreate = forceRecreate
+    self.removeOrphans = removeOrphans
+    self.recreateVolumes = recreateVolumes
   }
 }
 

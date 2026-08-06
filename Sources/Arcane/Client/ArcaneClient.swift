@@ -46,6 +46,7 @@ public struct ArcaneClient: Sendable {
   public let rest: RESTService
 
   public let auth: AuthService
+  public let passkeys: PasskeysService
   public let users: UsersService
   public let apiKeys: APIKeysService
   public let roles: RolesService
@@ -111,6 +112,7 @@ public struct ArcaneClient: Sendable {
       decoder: configuration.jsonDecoder,
       encoder: configuration.jsonEncoder
     )
+    self.passkeys = PasskeysService(rest: rest, authManager: authManager)
     self.users = UsersService(rest: rest)
     self.apiKeys = APIKeysService(rest: rest)
     self.roles = RolesService(rest: rest)

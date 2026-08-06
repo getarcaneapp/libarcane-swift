@@ -18,15 +18,26 @@ public struct AuthService: Sendable {
 
   @discardableResult
   public func login(username: String, password: String) async throws -> LoginResponse {
-    let response: LoginResponse = try await transport.request(
+    switch try await authenticate(username: username, password: password) {
+    case .authenticated(let response):
+      return response
+    case .mfaRequired(let challenge):
+      throw MFARequiredError(challenge: challenge)
+    }
+  }
+
+  @discardableResult
+  public func authenticate(username: String, password: String) async throws
+    -> AuthenticationResult
+  {
+    let result: AuthenticationResult = try await transport.request(
       "auth/login",
       method: "POST",
       body: LoginRequest(username: username, password: password),
       authorized: false
     )
-    try await authManager.save(loginResponse: response)
-    await authManager.recordCapabilities(from: response.user)
-    return response
+    try await authManager.save(authenticationResult: result)
+    return result
   }
 
   public func logout() async throws {
@@ -99,16 +110,36 @@ public struct AuthService: Sendable {
   public func oidcCallback(code: String, state: String, mobileRedirectURI: String) async throws
     -> OIDCCallbackResponse
   {
+    switch try await authenticateOIDCCallback(
+      code: code,
+      state: state,
+      mobileRedirectURI: mobileRedirectURI
+    ) {
+    case .authenticated(let response):
+      return OIDCCallbackResponse(
+        success: true,
+        token: response.token,
+        refreshToken: response.refreshToken,
+        expiresAt: response.expiresAt,
+        user: response.user
+      )
+    case .mfaRequired(let challenge):
+      throw MFARequiredError(challenge: challenge)
+    }
+  }
+
+  @discardableResult
+  public func authenticateOIDCCallback(
+    code: String,
+    state: String,
+    mobileRedirectURI: String
+  ) async throws -> AuthenticationResult {
     let body = OIDCCallbackRequest(code: code, state: state, mobileRedirectUri: mobileRedirectURI)
     let data = try await transport.rawRequest(
       "oidc/callback", method: "POST", body: body, authorized: false)
-    let response = try decodeOIDC(OIDCCallbackResponse.self, from: data)
-    let tokens = TokenPair(
-      accessToken: response.token, refreshToken: response.refreshToken,
-      expiresAt: response.expiresAt)
-    try await authManager.save(tokens: tokens)
-    await authManager.recordCapabilities(from: response.user)
-    return response
+    let result = try decodeOIDC(AuthenticationResult.self, from: data)
+    try await authManager.save(authenticationResult: result)
+    return result
   }
 
   public func oidcDeviceCode() async throws -> OIDCDeviceAuthResponse {

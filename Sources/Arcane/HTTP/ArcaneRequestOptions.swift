@@ -7,9 +7,11 @@ public struct ArcaneRequestOptions: Hashable, Sendable {
   }
 
   public let activityBatchID: String?
+  let stepUpToken: String?
 
   public init() {
     self.activityBatchID = nil
+    self.stepUpToken = nil
   }
 
   public init(activityBatchID: String) throws {
@@ -17,6 +19,12 @@ public struct ArcaneRequestOptions: Hashable, Sendable {
       throw ValidationError.invalidActivityBatchID
     }
     self.activityBatchID = activityBatchID
+    self.stepUpToken = nil
+  }
+
+  init(stepUpToken: String) {
+    self.activityBatchID = nil
+    self.stepUpToken = stepUpToken
   }
 
   private static func isValidActivityBatchID(_ value: String) -> Bool {

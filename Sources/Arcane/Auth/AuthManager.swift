@@ -101,6 +101,12 @@ public actor AuthManager {
     try await save(tokens: tokens)
   }
 
+  func save(authenticationResult: AuthenticationResult) async throws {
+    guard case .authenticated(let response) = authenticationResult else { return }
+    try await save(loginResponse: response)
+    recordCapabilities(from: response.user)
+  }
+
   public func save(tokens: TokenPair) async throws {
     credentialGeneration &+= 1
     refreshTask?.cancel()

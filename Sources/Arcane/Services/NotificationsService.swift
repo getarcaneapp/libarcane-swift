@@ -12,21 +12,25 @@ public struct NotificationsService: Sendable {
 
   /// Get all notification settings for an environment.
   public func listSettings(envID: EnvironmentID? = nil) async throws -> [NotificationSettings] {
-    try await rest.get(rest.environmentPath(envID, "notifications/settings"))
+    try await rawRequest(rest.environmentPath(envID, "notifications/settings"))
   }
 
   /// Get notification settings for a specific provider.
   public func getSettings(provider: NotificationProvider, envID: EnvironmentID? = nil) async throws
     -> NotificationSettings
   {
-    try await rest.get(rest.environmentPath(envID, "notifications/settings/\(provider.rawValue)"))
+    try await rawRequest(rest.environmentPath(envID, "notifications/settings/\(provider.rawValue)"))
   }
 
   /// Create or update notification settings.
   public func upsertSettings(_ body: UpdateNotificationSettings, envID: EnvironmentID? = nil)
     async throws -> NotificationSettings
   {
-    try await rest.post(rest.environmentPath(envID, "notifications/settings"), body: body)
+    try await rawRequest(
+      rest.environmentPath(envID, "notifications/settings"),
+      method: "POST",
+      body: body
+    )
   }
 
   /// Delete notification settings for a provider.
@@ -41,10 +45,10 @@ public struct NotificationsService: Sendable {
   public func test(
     provider: NotificationProvider, type: NotificationTestType = .simple,
     envID: EnvironmentID? = nil
-  ) async throws {
+  ) async throws -> NotificationTestResponse {
     let path = rest.environmentPath(envID, "notifications/test/\(provider.rawValue)")
     let query = [URLQueryItem(name: "type", value: type.rawValue)]
-    try await rest.postVoid(path, body: EmptyBody?.none, query: query)
+    return try await rest.post(path, body: EmptyBody?.none, query: query)
   }
 
   // MARK: - Apprise
@@ -75,5 +79,22 @@ public struct NotificationsService: Sendable {
   /// Dispatch a notification from a remote agent to the manager.
   public func dispatch(_ body: NotificationDispatchRequest) async throws {
     try await rest.postVoid("notifications/dispatch", body: body)
+  }
+
+  private func rawRequest<T: Decodable & Sendable, Body: Encodable & Sendable>(
+    _ path: String,
+    method: String = "GET",
+    body: Body? = nil
+  ) async throws -> T {
+    let data = try await rest.transport.rawRequest(path, method: method, body: body)
+    do {
+      return try rest.transport.decoder.decode(T.self, from: data)
+    } catch {
+      throw ArcaneError.decoding(String(describing: error))
+    }
+  }
+
+  private func rawRequest<T: Decodable & Sendable>(_ path: String) async throws -> T {
+    try await rawRequest(path, body: Optional<EmptyBody>.none)
   }
 }

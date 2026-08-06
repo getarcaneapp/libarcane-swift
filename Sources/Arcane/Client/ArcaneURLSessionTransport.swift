@@ -150,8 +150,7 @@ public final class ArcaneURLSessionTransport: Sendable {
     path: String,
     query: [URLQueryItem] = [],
     options: ArcaneRequestOptions? = nil
-  ) async throws -> URLRequest
-  {
+  ) async throws -> URLRequest {
     var request = URLRequest(
       url: baseURL.appendingAPIPath(path).withQueryItems(query).webSocketURL())
     applyRequestOptions(to: &request, options: resolvedRequestOptions(options))
@@ -399,6 +398,9 @@ public final class ArcaneURLSessionTransport: Sendable {
   ) {
     if let activityBatchID = options.activityBatchID {
       request.setValue(activityBatchID, forHTTPHeaderField: "X-Arcane-Batch-Id")
+    }
+    if let stepUpToken = options.stepUpToken {
+      request.setValue(stepUpToken, forHTTPHeaderField: "X-Step-Up-Token")
     }
   }
 
