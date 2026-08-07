@@ -134,6 +134,11 @@ struct PasskeyFinishRequest: Codable, Hashable, Sendable {
   }
 }
 
+struct MobilePasskeyExchangeRequest: Codable, Hashable, Sendable {
+  var transactionId: String
+  var codeVerifier: String
+}
+
 struct MFAStartRequest: Codable, Hashable, Sendable {
   var transactionId: String
 }

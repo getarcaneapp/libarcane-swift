@@ -17,6 +17,17 @@ final class ArcanePasskeyAuthenticatorTests: XCTestCase {
     XCTAssertEqual(parsed["id"]?.stringValue, "credential")
   }
 
+  func testParsesBackendMobileLoginCallback() throws {
+    let url = try XCTUnwrap(
+      URL(
+        string:
+          "arcane-mobile://passkey-callback?state=\(state)&transaction=transaction-1"))
+
+    let transactionId = try ArcanePasskeyAuthenticator.parseMobileLoginCallback(
+      url, expectedState: state)
+    XCTAssertEqual(transactionId, "transaction-1")
+  }
+
   func testRejectsWrongStateOriginAndDuplicateItems() throws {
     let response = Data(#"{"id":"credential"}"#.utf8).base64URLEncodedString()
     let wrongState = try XCTUnwrap(

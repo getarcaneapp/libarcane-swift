@@ -31,6 +31,23 @@ public struct PasskeysService: Sendable {
     return result
   }
 
+  public func exchangeMobileLogin(
+    transactionId: String,
+    codeVerifier: String
+  ) async throws -> AuthenticationResult {
+    let result: AuthenticationResult = try await rest.transport.request(
+      "auth/passkey/mobile/exchange",
+      method: "POST",
+      body: MobilePasskeyExchangeRequest(
+        transactionId: transactionId,
+        codeVerifier: codeVerifier
+      ),
+      authorized: false
+    )
+    try await authManager.save(authenticationResult: result)
+    return result
+  }
+
   public func beginMFA(transactionId: String) async throws -> MFAChallenge {
     try await rest.transport.request(
       "auth/mfa/passkey/begin",

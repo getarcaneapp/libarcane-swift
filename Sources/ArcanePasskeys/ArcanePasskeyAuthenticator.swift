@@ -1,5 +1,6 @@
 import Arcane
 import AuthenticationServices
+import CryptoKit
 import Foundation
 import Security
 
@@ -80,6 +81,12 @@ public final class ArcanePasskeyAuthenticator: NSObject,
     let state: String
     let operation: Operation
     let options: [String: JSONValue]
+    let mobileLogin: MobileLoginRequest?
+  }
+
+  private struct MobileLoginRequest: Encodable {
+    let ceremonyId: String
+    let codeChallenge: String
   }
 
   private static let manifestPath = "/arcane-mobile-passkey.json"
@@ -112,14 +119,15 @@ public final class ArcanePasskeyAuthenticator: NSObject,
     -> AuthenticationResult
   {
     let challenge = try await client.passkeys.beginLogin()
-    let credential = try await performCeremony(
-      operation: .authenticate,
-      options: challenge.options,
+    let codeVerifier = try Self.makeState()
+    let transactionId = try await performMobileLoginCeremony(
+      challenge: challenge,
+      codeVerifier: codeVerifier,
       presenting: anchor
     )
-    return try await client.passkeys.finishLogin(
-      ceremonyId: challenge.ceremonyId,
-      credential: credential
+    return try await client.passkeys.exchangeMobileLogin(
+      transactionId: transactionId,
+      codeVerifier: codeVerifier
     )
   }
 
@@ -207,9 +215,43 @@ public final class ArcanePasskeyAuthenticator: NSObject,
     options: [String: JSONValue],
     presenting anchor: ASPresentationAnchor
   ) async throws -> PasskeyCredential {
-    let manifest = try await loadBridgeManifest()
     let state = try Self.makeState()
-    let request = BridgeRequest(version: 1, state: state, operation: operation, options: options)
+    let request = BridgeRequest(
+      version: 2,
+      state: state,
+      operation: operation,
+      options: options,
+      mobileLogin: nil
+    )
+    let callbackURL = try await openBridge(request: request, presenting: anchor)
+    return try Self.parseCallback(callbackURL, expectedState: state)
+  }
+
+  private func performMobileLoginCeremony(
+    challenge: PasskeyChallenge,
+    codeVerifier: String,
+    presenting anchor: ASPresentationAnchor
+  ) async throws -> String {
+    let state = try Self.makeState()
+    let request = BridgeRequest(
+      version: 2,
+      state: state,
+      operation: .authenticate,
+      options: challenge.options,
+      mobileLogin: MobileLoginRequest(
+        ceremonyId: challenge.ceremonyId,
+        codeChallenge: Self.codeChallenge(for: codeVerifier)
+      )
+    )
+    let callbackURL = try await openBridge(request: request, presenting: anchor)
+    return try Self.parseMobileLoginCallback(callbackURL, expectedState: state)
+  }
+
+  private func openBridge(
+    request: BridgeRequest,
+    presenting anchor: ASPresentationAnchor
+  ) async throws -> URL {
+    let manifest = try await loadBridgeManifest()
     let data = try ArcaneJSON.makeEncoder().encode(request)
     guard data.count <= min(manifest.maximumRequestBytes, Self.localMaximumRequestBytes) else {
       throw CeremonyError.requestTooLarge
@@ -225,9 +267,7 @@ public final class ArcanePasskeyAuthenticator: NSObject,
     guard let authorizationURL = components.url else {
       throw CeremonyError.invalidManifest
     }
-
-    let callbackURL = try await openBridge(authorizationURL: authorizationURL, presenting: anchor)
-    return try Self.parseCallback(callbackURL, expectedState: state)
+    return try await openBridge(authorizationURL: authorizationURL, presenting: anchor)
   }
 
   private func loadBridgeManifest() async throws -> BridgeManifest {
@@ -252,7 +292,7 @@ public final class ArcanePasskeyAuthenticator: NSObject,
       throw CeremonyError.invalidManifest
     }
 
-    guard manifest.version == 1,
+    guard manifest.version == 2,
       manifest.path == Self.bridgePath,
       manifest.requestFragmentParameter == "request",
       (1...Self.localMaximumRequestBytes).contains(manifest.maximumRequestBytes)
@@ -396,6 +436,50 @@ public final class ArcanePasskeyAuthenticator: NSObject,
     }
   }
 
+  static func parseMobileLoginCallback(_ url: URL, expectedState: String) throws -> String {
+    guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+      components.scheme == callbackScheme,
+      components.host == callbackHost,
+      components.path.isEmpty,
+      components.user == nil,
+      components.password == nil,
+      components.port == nil,
+      components.fragment == nil,
+      let queryItems = components.queryItems
+    else {
+      throw CeremonyError.invalidCallback
+    }
+
+    let grouped = Dictionary(grouping: queryItems, by: \.name)
+    guard grouped.values.allSatisfy({ $0.count == 1 }) else {
+      throw CeremonyError.duplicateCallbackItem
+    }
+    guard grouped["state"]?.first?.value == expectedState else {
+      throw CeremonyError.stateMismatch
+    }
+    if let errorCode = grouped["error"]?.first?.value {
+      guard Set(grouped.keys) == ["state", "error"],
+        ["invalid_request", "oversized", "unsupported", "cancelled", "failed"].contains(
+          errorCode)
+      else {
+        throw CeremonyError.invalidCallback
+      }
+      if errorCode == "cancelled" {
+        throw CeremonyError.cancelled
+      }
+      throw CeremonyError.bridgeFailure(errorCode)
+    }
+
+    guard Set(grouped.keys) == ["state", "transaction"],
+      let transactionId = grouped["transaction"]?.first?.value,
+      !transactionId.isEmpty,
+      transactionId.utf8.count <= 128
+    else {
+      throw CeremonyError.invalidCallback
+    }
+    return transactionId
+  }
+
   static func serverOrigin(from baseURL: URL) -> URL? {
     guard var components = URLComponents(url: baseURL, resolvingAgainstBaseURL: false),
       let scheme = components.scheme?.lowercased(),
@@ -425,6 +509,10 @@ public final class ArcanePasskeyAuthenticator: NSObject,
       throw CeremonyError.randomStateGenerationFailed
     }
     return Data(bytes).base64URLEncodedString()
+  }
+
+  private static func codeChallenge(for verifier: String) -> String {
+    Data(SHA256.hash(data: Data(verifier.utf8))).base64URLEncodedString()
   }
 }
 
