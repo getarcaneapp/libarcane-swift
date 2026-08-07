@@ -158,6 +158,27 @@ public struct NetworkInspect: Codable, Hashable, Sendable, Identifiable {
   public var services: [String: JSONValue]?
   public var containersList: [NetworkContainerEndpoint]
 
+  /// Valid peer entries converted from Docker's loosely typed payload.
+  public var peerList: [NetworkPeer] {
+    peers?.compactMap { value in
+      guard case .object(let object) = value,
+        let name = Self.stringInternal(in: object, keys: ["Name", "name"]),
+        let address = Self.stringInternal(in: object, keys: ["IP", "ip"])
+      else { return nil }
+      return NetworkPeer(name: name, address: address)
+    } ?? []
+  }
+
+  /// Valid service entries converted from Docker's loosely typed payload.
+  public var serviceList: [NetworkServiceAttachment] {
+    services?.compactMap { name, value in
+      guard case .object(let object) = value else { return nil }
+      let vip = Self.stringInternal(in: object, keys: ["VIP", "vip"])
+      let ports = Self.stringArrayInternal(in: object, keys: ["Ports", "ports"])
+      return NetworkServiceAttachment(name: name, vip: vip, ports: ports)
+    }.sorted { $0.name.localizedStandardCompare($1.name) == .orderedAscending } ?? []
+  }
+
   private enum CodingKeys: String, CodingKey {
     case id
     case name
@@ -244,6 +265,28 @@ public struct NetworkInspect: Codable, Hashable, Sendable, Identifiable {
     peers = try container.decodeIfPresent([JSONValue].self, forKey: .peers)
     services = try container.decodeIfPresent([String: JSONValue].self, forKey: .services)
     containersList = try container.decode([NetworkContainerEndpoint].self, forKey: .containersList)
+  }
+
+  private static func stringInternal(
+    in object: [String: JSONValue],
+    keys: [String]
+  ) -> String? {
+    for key in keys {
+      guard let value = object[key]?.stringValue, !value.isEmpty else { continue }
+      return value
+    }
+    return nil
+  }
+
+  private static func stringArrayInternal(
+    in object: [String: JSONValue],
+    keys: [String]
+  ) -> [String] {
+    for key in keys {
+      guard case .array(let values)? = object[key] else { continue }
+      return values.compactMap(\.stringValue)
+    }
+    return []
   }
 }
 

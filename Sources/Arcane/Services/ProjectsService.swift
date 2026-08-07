@@ -149,13 +149,18 @@ public struct ProjectsService: Sendable {
     for try await _ in redeployStream(envID: envID, projectID: projectID) {}
   }
 
-  /// Restart all containers in a project.
+  /// Restart all containers in a project, or only the supplied Compose services.
   @discardableResult
-  public func restart(envID: EnvironmentID? = nil, projectID: String) async throws
+  public func restart(
+    envID: EnvironmentID? = nil,
+    projectID: String,
+    services: [String] = []
+  ) async throws
     -> MessageResponse {
     try await rest.post(
       rest.environmentPath(envID, "projects/\(projectID)/restart"),
-      body: EmptyBody?.none
+      body: EmptyBody?.none,
+      query: services.map { URLQueryItem(name: "services", value: $0) }
     )
   }
 

@@ -42,6 +42,13 @@ public struct ImagesService: Sendable {
     try await rest.get(rest.environmentPath(envID, "images/\(id)"))
   }
 
+  /// Docker layer history for an image ID or reference.
+  public func history(envID: EnvironmentID? = nil, imageID: String) async throws
+    -> [ImageHistoryItem]
+  {
+    try await rest.get(rest.environmentPath(envID, "images/\(imageID)/history"))
+  }
+
   /// In-toto attestation statements attached to an image (provenance, SBOM, ...).
   ///
   /// - Parameters:

@@ -87,6 +87,7 @@ public struct ImageDetailSummary: Codable, Hashable, Sendable, Identifiable {
   public var comment: String
   public var created: String
   public var author: String
+  public var dockerVersion: String?
   public var config: ImageDetailConfig
   public var architecture: String
   public var os: String
@@ -103,6 +104,7 @@ public struct ImageDetailSummary: Codable, Hashable, Sendable, Identifiable {
     comment: String = "",
     created: String = "",
     author: String = "",
+    dockerVersion: String? = nil,
     config: ImageDetailConfig = .init(),
     architecture: String = "",
     os: String = "",
@@ -118,6 +120,7 @@ public struct ImageDetailSummary: Codable, Hashable, Sendable, Identifiable {
     self.comment = comment
     self.created = created
     self.author = author
+    self.dockerVersion = dockerVersion
     self.config = config
     self.architecture = architecture
     self.os = os
