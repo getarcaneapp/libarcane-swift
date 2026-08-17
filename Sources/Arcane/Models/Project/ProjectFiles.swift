@@ -9,6 +9,9 @@ public struct ProjectFile: Codable, Hashable, Sendable {
   public var size: Int64
   public var modTime: Date?
   public var protected: Bool?
+  public var isSymlink: Bool?
+  public var editable: Bool?
+  public var readOnlyReason: String?
   public var content: String?
 
   public init(
@@ -19,6 +22,9 @@ public struct ProjectFile: Codable, Hashable, Sendable {
     size: Int64 = 0,
     modTime: Date? = nil,
     protected: Bool? = nil,
+    isSymlink: Bool? = nil,
+    editable: Bool? = nil,
+    readOnlyReason: String? = nil,
     content: String? = nil
   ) {
     self.path = path
@@ -28,7 +34,67 @@ public struct ProjectFile: Codable, Hashable, Sendable {
     self.size = size
     self.modTime = modTime
     self.protected = protected
+    self.isSymlink = isSymlink
+    self.editable = editable
+    self.readOnlyReason = readOnlyReason
     self.content = content
+  }
+}
+
+/// ProjectWorkspace is the file tree returned by Arcane's project workspace API.
+public struct ProjectWorkspace: Codable, Hashable, Sendable {
+  public var files: [ProjectFile]
+  public var fileTreeRevision: String
+  public var fileTreeTruncated: Bool
+  public var activityID: String?
+
+  public init(
+    files: [ProjectFile],
+    fileTreeRevision: String,
+    fileTreeTruncated: Bool = false,
+    activityID: String? = nil
+  ) {
+    self.files = files
+    self.fileTreeRevision = fileTreeRevision
+    self.fileTreeTruncated = fileTreeTruncated
+    self.activityID = activityID
+  }
+
+  private enum CodingKeys: String, CodingKey {
+    case files, fileTreeRevision, fileTreeTruncated
+    case activityID = "activityId"
+  }
+}
+
+/// ProjectWorkspaceFileContent is the text payload returned for one workspace file.
+public struct ProjectWorkspaceFileContent: Codable, Hashable, Sendable {
+  public var path: String
+  public var relativePath: String
+  public var name: String
+  public var content: String?
+  public var mimeType: String?
+  public var size: Int64
+  public var editable: Bool?
+  public var readOnlyReason: String?
+
+  public init(
+    path: String,
+    relativePath: String,
+    name: String,
+    content: String? = nil,
+    mimeType: String? = nil,
+    size: Int64 = 0,
+    editable: Bool? = nil,
+    readOnlyReason: String? = nil
+  ) {
+    self.path = path
+    self.relativePath = relativePath
+    self.name = name
+    self.content = content
+    self.mimeType = mimeType
+    self.size = size
+    self.editable = editable
+    self.readOnlyReason = readOnlyReason
   }
 }
 

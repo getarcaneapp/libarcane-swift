@@ -64,6 +64,27 @@ public struct ProjectsService: Sendable {
     try await rest.get(rest.environmentPath(envID, "projects/\(projectID)/files"))
   }
 
+  /// Get the project's editable workspace file tree.
+  ///
+  /// Arcane 2.8 moved project files under `/workspace`. The legacy fallback
+  /// keeps older v1 and v2 servers viewable through the same SDK surface.
+  public func workspace(
+    envID: EnvironmentID? = nil,
+    projectID: String
+  ) async throws -> ProjectWorkspace {
+    do {
+      return try await rest.get(
+        rest.environmentPath(envID, "projects/\(projectID)/workspace")
+      )
+    } catch ArcaneError.notFound {
+      let legacy = try await files(envID: envID, projectID: projectID)
+      return ProjectWorkspace(
+        files: legacy.projectFiles ?? [],
+        fileTreeRevision: legacy.fileTreeRevision ?? ""
+      )
+    }
+  }
+
   /// Get the project's runtime service state.
   public func runtime(envID: EnvironmentID? = nil, projectID: String) async throws -> ProjectDetails
   {
@@ -86,6 +107,68 @@ public struct ProjectsService: Sendable {
       rest.environmentPath(envID, "projects/\(projectID)/file"),
       query: [URLQueryItem(name: "relativePath", value: relativePath)]
     )
+  }
+
+  /// Get the contents and editability metadata for one project workspace file.
+  /// Falls back to the pre-2.8 project file route when `/workspace/file` is absent.
+  public func workspaceFile(
+    envID: EnvironmentID? = nil,
+    projectID: String,
+    relativePath: String
+  ) async throws -> ProjectWorkspaceFileContent {
+    do {
+      return try await rest.get(
+        rest.environmentPath(envID, "projects/\(projectID)/workspace/file"),
+        query: [URLQueryItem(name: "relativePath", value: relativePath)]
+      )
+    } catch ArcaneError.notFound {
+      let legacy = try await file(
+        envID: envID,
+        projectID: projectID,
+        relativePath: relativePath
+      )
+      return ProjectWorkspaceFileContent(
+        path: legacy.path,
+        relativePath: legacy.relativePath,
+        name: URL(fileURLWithPath: legacy.relativePath).lastPathComponent,
+        content: legacy.content,
+        editable: true
+      )
+    }
+  }
+
+  /// Apply project workspace file changes.
+  ///
+  /// Current servers accept a multipart workspace manifest with file contents
+  /// as indexed uploads. Older servers receive their original JSON update
+  /// payload through the legacy project endpoint.
+  public func updateWorkspace(
+    envID: EnvironmentID? = nil,
+    projectID: String,
+    fileTreeRevision: String?,
+    changes: [ProjectFileChange]
+  ) async throws -> ProjectWorkspace {
+    do {
+      return try await updateCurrentWorkspace(
+        envID: envID,
+        projectID: projectID,
+        fileTreeRevision: fileTreeRevision ?? "",
+        changes: changes
+      )
+    } catch ArcaneError.notFound {
+      let legacy = try await update(
+        envID: envID,
+        projectID: projectID,
+        request: UpdateProject(
+          fileTreeRevision: fileTreeRevision,
+          fileChanges: changes
+        )
+      )
+      return ProjectWorkspace(
+        files: legacy.projectFiles ?? [],
+        fileTreeRevision: legacy.fileTreeRevision ?? fileTreeRevision ?? ""
+      )
+    }
   }
 
   // MARK: - Mutations
@@ -116,6 +199,92 @@ public struct ProjectsService: Sendable {
     try await rest.put(
       rest.environmentPath(envID, "projects/\(projectID)/includes"),
       body: request
+    )
+  }
+
+  private func updateCurrentWorkspace(
+    envID: EnvironmentID?,
+    projectID: String,
+    fileTreeRevision: String,
+    changes: [ProjectFileChange]
+  ) async throws -> ProjectWorkspace {
+    let temporaryDirectory = FileManager.default.temporaryDirectory.appendingPathComponent(
+      "arcane-project-workspace-\(UUID().uuidString)",
+      isDirectory: true
+    )
+    do {
+      try FileManager.default.createDirectory(
+        at: temporaryDirectory,
+        withIntermediateDirectories: true,
+        attributes: [.posixPermissions: 0o700]
+      )
+    } catch {
+      throw ArcaneError.transport("Unable to prepare project workspace upload")
+    }
+    defer { try? FileManager.default.removeItem(at: temporaryDirectory) }
+
+    var manifestChanges: [ProjectWorkspaceManifestChange] = []
+    var uploads: [MultipartFile] = []
+    for change in changes {
+      var uploadIndex: Int?
+      if change.operation == .createFile || change.operation == .updateFile {
+        guard let content = change.content else {
+          throw ArcaneError.validation(fields: [
+            "fileChanges": ["File content is required for create and update operations."]
+          ])
+        }
+        uploadIndex = uploads.count
+        let filename = URL(fileURLWithPath: change.relativePath).lastPathComponent
+        let fileURL = temporaryDirectory.appendingPathComponent(String(uploads.count))
+        do {
+          try Data(content.utf8).write(to: fileURL, options: .atomic)
+          try FileManager.default.setAttributes(
+            [.posixPermissions: 0o600],
+            ofItemAtPath: fileURL.path
+          )
+        } catch {
+          throw ArcaneError.transport("Unable to prepare project workspace file")
+        }
+        uploads.append(
+          MultipartFile(
+            fieldName: "files",
+            filename: filename.isEmpty ? "file" : filename,
+            contentType: "text/plain; charset=utf-8",
+            fileURL: fileURL
+          )
+        )
+      }
+      manifestChanges.append(
+        ProjectWorkspaceManifestChange(
+          operation: change.operation,
+          relativePath: change.relativePath,
+          newName: change.newName,
+          newParentPath: change.newParentPath,
+          uploadIndex: uploadIndex,
+          recursive: change.recursive
+        )
+      )
+    }
+
+    let manifest = ProjectWorkspaceUpdateManifest(
+      fileTreeRevision: fileTreeRevision,
+      fileChanges: manifestChanges
+    )
+    let manifestData: Data
+    do {
+      manifestData = try JSONEncoder().encode(manifest)
+    } catch {
+      throw ArcaneError.decoding("Unable to encode project workspace manifest")
+    }
+    guard let manifestJSON = String(data: manifestData, encoding: .utf8) else {
+      throw ArcaneError.decoding("Unable to encode project workspace manifest")
+    }
+
+    return try await rest.transport.multipartUpload(
+      rest.environmentPath(envID, "projects/\(projectID)/workspace"),
+      method: "PUT",
+      fields: ["manifest": manifestJSON],
+      files: uploads
     )
   }
 
@@ -315,4 +484,18 @@ public struct ProjectsService: Sendable {
       query: LogStream.query(follow: follow, tail: tail, since: since, timestamps: timestamps)
     )
   }
+}
+
+private struct ProjectWorkspaceUpdateManifest: Encodable {
+  let fileTreeRevision: String
+  let fileChanges: [ProjectWorkspaceManifestChange]
+}
+
+private struct ProjectWorkspaceManifestChange: Encodable {
+  let operation: ProjectFileChangeOperation
+  let relativePath: String
+  let newName: String?
+  let newParentPath: String?
+  let uploadIndex: Int?
+  let recursive: Bool?
 }
