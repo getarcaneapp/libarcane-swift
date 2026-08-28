@@ -33,6 +33,7 @@ public enum EnvironmentUpdateResultStatus: String, Codable, Hashable, Sendable {
   case pending
   case updating
   case updated
+  case upToDate = "up_to_date"
   case triggered
   case skippedOffline = "skipped_offline"
   case failed

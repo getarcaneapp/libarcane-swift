@@ -36,6 +36,11 @@ final class EnvironmentUpdateJobTests: XCTestCase {
                   "environmentName": "Lab",
                   "status": "failed",
                   "error": "pull failed"
+              },
+              {
+                  "environmentId": "env_4",
+                  "environmentName": "Current",
+                  "status": "up_to_date"
               }
           ]
       }
@@ -46,11 +51,12 @@ final class EnvironmentUpdateJobTests: XCTestCase {
     XCTAssertEqual(job.status, .pendingRestart)
     XCTAssertFalse(job.isTerminal)
     XCTAssertEqual(job.managerTargetVersion, "1.6.0")
-    XCTAssertEqual(job.results?.count, 3)
+    XCTAssertEqual(job.results?.count, 4)
     XCTAssertEqual(job.managerResult?.status, .updating)
     XCTAssertEqual(job.managerResult?.toVersion, "1.6.0")
     XCTAssertEqual(job.results?[1].status, .skippedOffline)
     XCTAssertEqual(job.results?[2].error, "pull failed")
+    XCTAssertEqual(job.results?[3].status, .upToDate)
   }
 
   func testDecodeMinimalJobAndTerminalStates() throws {
