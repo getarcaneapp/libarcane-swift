@@ -18,9 +18,17 @@ public struct ServerCapabilities: Hashable, Sendable {
 
   public var mode: Mode
 
-  public init(mode: Mode) {
+  /// Feature flags advertised by `/app-version` `enabledFeatures`, recorded by
+  /// `VersionService.appVersion()`.
+  public var enabledFeatures: Set<String>
+
+  public init(mode: Mode, enabledFeatures: Set<String> = []) {
     self.mode = mode
+    self.enabledFeatures = enabledFeatures
   }
+
+  /// True iff the server advertises `mobile-push-v1` (the `/apns` endpoints).
+  public var supportsMobilePush: Bool { enabledFeatures.contains(mobilePushFeature) }
 
   /// True iff the server exposes the v2 RBAC endpoints.
   public var supportsRoleManagement: Bool { mode == .rbac }

@@ -41,11 +41,14 @@ public struct VersionService: Sendable {
       body: Optional<EmptyBody>.none,
       authorized: false
     )
+    let info: VersionInfo
     do {
-      return try ArcaneJSON.makeDecoder().decode(VersionInfo.self, from: data)
+      info = try ArcaneJSON.makeDecoder().decode(VersionInfo.self, from: data)
     } catch {
       throw ArcaneError.decoding(String(describing: error))
     }
+    await rest.transport.authManager.recordEnabledFeatures(info.enabledFeatures ?? [])
+    return info
   }
 
   /// Returns the application version info for a remote environment.

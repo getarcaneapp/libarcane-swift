@@ -136,7 +136,12 @@ public actor AuthManager {
   public func recordCapabilities(from user: User) {
     let detected = ServerCapabilities.detect(from: user)
     guard detected != .unknown else { return }
-    capabilities = ServerCapabilities(mode: detected)
+    capabilities.mode = detected
+  }
+
+  /// Records the feature flags advertised by `/app-version`.
+  public func recordEnabledFeatures(_ features: [String]) {
+    capabilities.enabledFeatures = Set(features.map { $0.lowercased() })
   }
 
   public func refreshTokens() async throws -> TokenPair {

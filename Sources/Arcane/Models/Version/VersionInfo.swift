@@ -56,6 +56,11 @@ public struct VersionInfo: Codable, Hashable, Sendable {
     self.releasedAt = releasedAt
   }
 
+  /// True iff `enabledFeatures` advertises `mobile-push-v1`.
+  public var supportsMobilePush: Bool {
+    (enabledFeatures ?? []).contains { $0.lowercased() == mobilePushFeature }
+  }
+
   public var supportsPost26MobileFeatures: Bool {
     guard isSemverVersion,
       let version = SemanticVersion(currentVersion)

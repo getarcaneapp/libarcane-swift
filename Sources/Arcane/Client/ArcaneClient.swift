@@ -75,6 +75,7 @@ public struct ArcaneClient: Sendable {
   public let vulnerabilities: VulnerabilitiesService
   public let ports: PortsService
   public let version: VersionService
+  public let mobilePush: MobilePushService
 
   public init(configuration: Configuration) {
     let authManager = AuthManager(
@@ -141,6 +142,7 @@ public struct ArcaneClient: Sendable {
     self.vulnerabilities = VulnerabilitiesService(rest: rest)
     self.ports = PortsService(rest: rest)
     self.version = VersionService(rest: rest)
+    self.mobilePush = MobilePushService(rest: rest)
   }
 
   public func scoped(toEnvironment envID: EnvironmentID) -> ArcaneClient {
