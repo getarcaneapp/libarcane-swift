@@ -88,6 +88,22 @@ public final class ArcaneURLSessionTransport: Sendable {
     authorized: Bool = true,
     options: ArcaneRequestOptions? = nil
   ) async throws -> Data {
+    try await rawDataRequest(
+      path, method: method, query: query,
+      body: try body.map { try encoder.encode($0) }, contentType: "application/json",
+      authorized: authorized, options: options)
+  }
+
+  /// Sends already encoded bytes through the standard authentication and retry handling.
+  public func rawDataRequest(
+    _ path: String,
+    method: String = "PUT",
+    query: [URLQueryItem] = [],
+    body: Data?,
+    contentType: String = "application/octet-stream",
+    authorized: Bool = true,
+    options: ArcaneRequestOptions? = nil
+  ) async throws -> Data {
     var didRefresh = false
     var attempt = 1
     let requestOptions = resolvedRequestOptions(options)
@@ -98,6 +114,7 @@ public final class ArcaneURLSessionTransport: Sendable {
         method: method,
         query: query,
         body: body,
+        contentType: contentType,
         authorized: authorized,
         options: requestOptions)
       do {
@@ -304,11 +321,12 @@ public final class ArcaneURLSessionTransport: Sendable {
       options: options)
   }
 
-  private func makeRequest<Body: Encodable & Sendable>(
+  private func makeRequest(
     _ path: String,
     method: String,
     query: [URLQueryItem],
-    body: Body?,
+    body: Data?,
+    contentType: String,
     authorized: Bool,
     options: ArcaneRequestOptions
   ) async throws -> AuthenticatedRequest {
@@ -318,8 +336,8 @@ public final class ArcaneURLSessionTransport: Sendable {
     applyRequestOptions(to: &request, options: options)
     let generation = try await applyAuthenticationHeaders(to: &request, authorized: authorized)
     if let body {
-      request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-      request.httpBody = try encoder.encode(body)
+      request.setValue(contentType, forHTTPHeaderField: "Content-Type")
+      request.httpBody = body
     }
     return AuthenticatedRequest(request: request, credentialGeneration: generation)
   }

@@ -1,0 +1,2 @@
+public typealias UpdateS3Destination = CreateS3Destination
+public typealias UpdateSystemBackupPolicy = UpdateBackupPolicy

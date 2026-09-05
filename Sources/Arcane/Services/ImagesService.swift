@@ -66,13 +66,67 @@ public struct ImagesService: Sendable {
     if let platform { items.append(URLQueryItem(name: "platform", value: platform)) }
     if let predicateType { items.append(URLQueryItem(name: "predicateType", value: predicateType)) }
     if includeStatement { items.append(URLQueryItem(name: "statement", value: "true")) }
-    return try await rest.get(rest.environmentPath(envID, "images/\(id)/attestations"), query: items)
+    return try await rest.get(
+      rest.environmentPath(envID, "images/\(id)/attestations"), query: items)
   }
 
   /// Remove an image, optionally forcing removal even if in use.
   public func remove(envID: EnvironmentID? = nil, id: String, force: Bool = false) async throws {
     let query = [URLQueryItem(name: "force", value: force ? "true" : "false")]
     try await rest.deleteVoid(rest.environmentPath(envID, "images/\(id)"), query: query)
+  }
+
+  /// Search Docker Hub repositories.
+  public func search(envID: EnvironmentID? = nil, term: String) async throws -> [ImageSearchResult]
+  {
+    try await rest.get(
+      rest.environmentPath(envID, "images/search"),
+      query: [URLQueryItem(name: "term", value: term)])
+  }
+
+  /// Add a repository tag to an image identified by its Docker image ID.
+  @discardableResult
+  public func tag(envID: EnvironmentID? = nil, imageID: String, request: ImageTagRequest)
+    async throws
+    -> MessageResponse
+  {
+    try await rest.post(rest.environmentPath(envID, "images/\(imageID)/tag"), body: request)
+  }
+
+  /// Stream an image archive to disk without retaining the archive in memory.
+  public func export(envID: EnvironmentID? = nil, imageID: String, to destinationURL: URL)
+    async throws
+  {
+    try await rest.transport.downloadRaw(
+      rest.environmentPath(envID, "images/\(imageID)/export"), to: destinationURL)
+  }
+
+  /// Start a background patch. A returned `patching` record is not completion.
+  public func patch(
+    envID: EnvironmentID? = nil, imageID: String,
+    options: ImagePatchOptions = .init()
+  ) async throws -> ImagePatchRecord {
+    try await rest.post(rest.environmentPath(envID, "images/\(imageID)/patch"), body: options)
+  }
+
+  public func patchTargets(
+    envID: EnvironmentID? = nil,
+    query: SearchPaginationSort = .init()
+  ) async throws -> PaginatedResponse<ImagePatchTarget> {
+    try await rest.paginated(
+      rest.environmentPath(envID, "images/patch-targets"),
+      start: query.start ?? 0, limit: query.limit ?? 20, query: query.nonPaginationQueryItems)
+  }
+
+  public func listPatches(
+    envID: EnvironmentID? = nil, query: SearchPaginationSort = .init(),
+    status: String? = nil
+  ) async throws -> PaginatedResponse<ImagePatchRecord> {
+    var items = query.nonPaginationQueryItems
+    if let status { items.append(URLQueryItem(name: "status", value: status)) }
+    return try await rest.paginated(
+      rest.environmentPath(envID, "images/patches"),
+      start: query.start ?? 0, limit: query.limit ?? 20, query: items)
   }
 
   // MARK: - Pull / Build (streaming endpoints)

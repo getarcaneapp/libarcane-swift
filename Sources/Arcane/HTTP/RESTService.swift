@@ -93,6 +93,21 @@ public struct RESTService: Sendable {
       path, start: start, limit: limit, query: query, options: options)
   }
 
+  /// System backup and S3 endpoints use both bare payloads and API envelopes.
+  func requestPayload<T: Decodable & Sendable, Body: Encodable & Sendable>(
+    _ path: String, method: String = "POST", body: Body?, query: [URLQueryItem] = []
+  ) async throws -> T {
+    let data = try await transport.rawRequest(path, method: method, query: query, body: body)
+    do {
+      if let wrapped = try? transport.decoder.decode(APIResponse<T>.self, from: data) {
+        return wrapped.data
+      }
+      return try transport.decoder.decode(T.self, from: data)
+    } catch {
+      throw ArcaneError.decoding(String(describing: error))
+    }
+  }
+
   public func environmentPath(_ envID: EnvironmentID?, _ suffix: String) -> String {
     "environments/\((envID ?? defaultEnvironmentID).rawValue)/\(suffix.trimmingCharacters(in: CharacterSet(charactersIn: "/")))"
   }

@@ -57,6 +57,14 @@ public struct BuildsService: Sendable {
     )
   }
 
+  /// Consume a completed chunked build-workspace upload session.
+  public func upload(path: String, uploadID: String, envID: EnvironmentID? = nil) async throws {
+    struct Body: Encodable, Sendable { let uploadId: String }
+    try await rest.postVoid(
+      rest.environmentPath(envID, "builds/browse/upload"),
+      body: Body(uploadId: uploadID), query: [URLQueryItem(name: "path", value: path)])
+  }
+
   /// Download the raw bytes of a file in the build workspace.
   @available(*, deprecated, message: "Use downloadFile(..., to:) for potentially large files.")
   public func downloadFile(path: String, envID: EnvironmentID? = nil) async throws -> Data {

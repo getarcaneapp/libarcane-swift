@@ -3,7 +3,7 @@ import Foundation
 /// VolumesService groups all volume, browse, and backup endpoints registered
 /// under ``/environments/{id}/volumes``.
 public struct VolumesService: Sendable {
-  private let rest: RESTService
+  let rest: RESTService
 
   init(rest: RESTService) {
     self.rest = rest
@@ -155,10 +155,10 @@ public struct VolumesService: Sendable {
   }
 
   /// Create a new backup of a volume.
-  public func createBackup(envID: EnvironmentID? = nil, name: String) async throws -> BackupEntry {
+  public func createBackup(envID: EnvironmentID? = nil, name: String, request: CreateVolumeBackupRequest = .init()) async throws -> BackupEntry {
     try await rest.post(
       rest.environmentPath(envID, "volumes/\(name)/backups"),
-      body: EmptyBody?.none
+      body: request
     )
   }
 
@@ -239,6 +239,7 @@ public struct VolumesService: Sendable {
   }
 
   /// Upload a backup tarball to a volume.
+  @available(*, deprecated, message: "Use uploadAndRestoreBackup; this endpoint returns a restore message, not a backup record.")
   public func uploadBackup(
     envID: EnvironmentID? = nil,
     name: String,

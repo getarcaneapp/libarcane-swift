@@ -58,8 +58,37 @@ public struct ContainersService: Sendable {
 
   /// Create a new container.
   public func create(envID: EnvironmentID? = nil, body: ContainerCreate) async throws
-    -> ContainerCreated {
+    -> ContainerCreated
+  {
     try await rest.post(rest.environmentPath(envID, "containers"), body: body)
+  }
+
+  /// Load the editable configuration, including Compose ownership and edit restrictions.
+  public func editConfig(envID: EnvironmentID? = nil, id: String) async throws
+    -> ContainerEditConfig
+  {
+    try await rest.get(rest.environmentPath(envID, "containers/\(id)/edit-config"))
+  }
+
+  /// Apply the supplied fields and recreate the container. The result contains its new ID.
+  public func edit(envID: EnvironmentID? = nil, id: String, body: ContainerEdit) async throws
+    -> ContainerDetails
+  {
+    try await rest.post(rest.environmentPath(envID, "containers/\(id)/edit"), body: body)
+  }
+
+  /// Create an image from the container's filesystem.
+  public func commit(envID: EnvironmentID? = nil, id: String, body: ContainerCommitRequest)
+    async throws -> ContainerCommitResult
+  {
+    try await rest.post(rest.environmentPath(envID, "containers/\(id)/commit"), body: body)
+  }
+
+  /// Generate a Compose document from selected containers.
+  public func generateCompose(envID: EnvironmentID? = nil, body: ContainerGenerateComposeRequest)
+    async throws -> ContainerGenerateComposeResponse
+  {
+    try await rest.post(rest.environmentPath(envID, "containers/generate-compose"), body: body)
   }
 
   /// Delete a container, optionally forcing removal of running containers and removing associated volumes.
@@ -72,7 +101,7 @@ public struct ContainersService: Sendable {
   ) async throws -> MessageResponse {
     let query: [URLQueryItem] = [
       URLQueryItem(name: "force", value: force ? "true" : "false"),
-      URLQueryItem(name: "volumes", value: removeVolumes ? "true" : "false")
+      URLQueryItem(name: "volumes", value: removeVolumes ? "true" : "false"),
     ]
     return try await rest.delete(rest.environmentPath(envID, "containers/\(id)"), query: query)
   }
@@ -168,7 +197,7 @@ public struct ContainersService: Sendable {
     var query: [URLQueryItem] = [
       URLQueryItem(name: "follow", value: follow ? "true" : "false"),
       URLQueryItem(name: "tail", value: tail),
-      URLQueryItem(name: "timestamps", value: timestamps ? "true" : "false")
+      URLQueryItem(name: "timestamps", value: timestamps ? "true" : "false"),
     ]
     if let since {
       query.append(URLQueryItem(name: "since", value: since))

@@ -36,6 +36,9 @@ public struct HostConfigCreate: Codable, Hashable, Sendable {
   public var cpuShares: Int64?
   public var readonlyRootfs: Bool?
   public var publishAllPorts: Bool?
+  public var capAdd: [String]?
+  public var capDrop: [String]?
+  public var mounts: [ContainerMountCreate]?
 
   public init(
     binds: [String]? = nil,
@@ -49,7 +52,10 @@ public struct HostConfigCreate: Codable, Hashable, Sendable {
     nanoCpus: Int64? = nil,
     cpuShares: Int64? = nil,
     readonlyRootfs: Bool? = nil,
-    publishAllPorts: Bool? = nil
+    publishAllPorts: Bool? = nil,
+    capAdd: [String]? = nil,
+    capDrop: [String]? = nil,
+    mounts: [ContainerMountCreate]? = nil
   ) {
     self.binds = binds
     self.portBindings = portBindings
@@ -63,15 +69,22 @@ public struct HostConfigCreate: Codable, Hashable, Sendable {
     self.cpuShares = cpuShares
     self.readonlyRootfs = readonlyRootfs
     self.publishAllPorts = publishAllPorts
+    self.capAdd = capAdd
+    self.capDrop = capDrop
+    self.mounts = mounts
   }
 }
 
 /// Network endpoint settings for container creation.
 public struct EndpointSettingsCreate: Codable, Hashable, Sendable {
   public var aliases: [String]?
+  public var ipv4Address: String?
+  public var ipv6Address: String?
 
-  public init(aliases: [String]? = nil) {
+  public init(aliases: [String]? = nil, ipv4Address: String? = nil, ipv6Address: String? = nil) {
     self.aliases = aliases
+    self.ipv4Address = ipv4Address
+    self.ipv6Address = ipv6Address
   }
 }
 
@@ -96,6 +109,7 @@ public struct ContainerCreate: Codable, Hashable, Sendable {
   public var environment: [String]?
   public var env: [String]?
   public var labels: [String: String]?
+  public var healthcheck: ContainerHealthcheckCreate?
   public var exposedPorts: [String: JSONValue]?
   public var hostConfig: HostConfigCreate?
   public var networkingConfig: NetworkingConfigCreate?
@@ -129,6 +143,7 @@ public struct ContainerCreate: Codable, Hashable, Sendable {
     environment: [String]? = nil,
     env: [String]? = nil,
     labels: [String: String]? = nil,
+    healthcheck: ContainerHealthcheckCreate? = nil,
     exposedPorts: [String: JSONValue]? = nil,
     hostConfig: HostConfigCreate? = nil,
     networkingConfig: NetworkingConfigCreate? = nil,
@@ -161,6 +176,7 @@ public struct ContainerCreate: Codable, Hashable, Sendable {
     self.environment = environment
     self.env = env
     self.labels = labels
+    self.healthcheck = healthcheck
     self.exposedPorts = exposedPorts
     self.hostConfig = hostConfig
     self.networkingConfig = networkingConfig
