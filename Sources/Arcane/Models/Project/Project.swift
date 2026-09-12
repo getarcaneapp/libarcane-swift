@@ -241,6 +241,7 @@ public struct ProjectDetails: Codable, Hashable, Sendable, Identifiable {
   public var iconLightUrl: String?
   public var iconDarkUrl: String?
   public var urls: [String]?
+  public var tags: [ProjectTag]?
   public var composeContent: String?
   public var composeFileName: String?
   public var envContent: String?
@@ -277,6 +278,7 @@ public struct ProjectDetails: Codable, Hashable, Sendable, Identifiable {
     iconLightUrl: String? = nil,
     iconDarkUrl: String? = nil,
     urls: [String]? = nil,
+    tags: [ProjectTag]? = nil,
     composeContent: String? = nil,
     composeFileName: String? = nil,
     envContent: String? = nil,
@@ -312,6 +314,7 @@ public struct ProjectDetails: Codable, Hashable, Sendable, Identifiable {
     self.iconLightUrl = iconLightUrl
     self.iconDarkUrl = iconDarkUrl
     self.urls = urls
+    self.tags = tags
     self.composeContent = composeContent
     self.composeFileName = composeFileName
     self.envContent = envContent
@@ -341,6 +344,7 @@ public struct ProjectDetails: Codable, Hashable, Sendable, Identifiable {
 
   private enum CodingKeys: String, CodingKey {
     case id, name, dirName, relativePath, path, iconUrl, iconLightUrl, iconDarkUrl, urls
+    case tags
     case composeContent, composeFileName, envContent, includeFiles, directoryFiles, projectFiles
     case fileTreeRevision, status, statusReason, serviceCount, runningCount, isArchived
     case isDiscovered, archivedAt, createdAt, updatedAt, services, runtimeServices, updateInfo
