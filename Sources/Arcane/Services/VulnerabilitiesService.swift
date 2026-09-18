@@ -81,17 +81,75 @@ public struct VulnerabilitiesService: Sendable {
     envID: EnvironmentID? = nil,
     query: SearchPaginationSort = .init(),
     severity: String? = nil,
-    imageName: String? = nil
+    imageName: String? = nil,
+    ignored: Bool? = nil,
+    fixAvailable: Bool? = nil
   ) async throws -> PaginatedResponse<VulnerabilityWithImage> {
     var items = query.nonPaginationQueryItems
     if let severity { items.append(URLQueryItem(name: "severity", value: severity)) }
     if let imageName { items.append(URLQueryItem(name: "imageName", value: imageName)) }
+    if let ignored { items.append(URLQueryItem(name: "ignored", value: ignored ? "true" : "false")) }
+    if let fixAvailable {
+      items.append(URLQueryItem(name: "fixAvailable", value: fixAvailable ? "true" : "false"))
+    }
     return try await rest.paginated(
       rest.environmentPath(envID, "vulnerabilities/all"),
       start: query.start ?? 0,
       limit: query.limit ?? 20,
       query: items
     )
+  }
+
+  /// Download every vulnerability matching the filters as CSV raw bytes.
+  public func exportAll(
+    envID: EnvironmentID? = nil,
+    search: String? = nil,
+    sort: String? = nil,
+    order: SortOrder? = nil,
+    severity: String? = nil,
+    imageName: String? = nil,
+    ignored: Bool? = nil,
+    fixAvailable: Bool? = nil
+  ) async throws -> Data {
+    var items: [URLQueryItem] = []
+    if let search { items.append(URLQueryItem(name: "search", value: search)) }
+    if let sort { items.append(URLQueryItem(name: "sort", value: sort)) }
+    if let order { items.append(URLQueryItem(name: "order", value: order.rawValue)) }
+    if let severity { items.append(URLQueryItem(name: "severity", value: severity)) }
+    if let imageName { items.append(URLQueryItem(name: "imageName", value: imageName)) }
+    if let ignored { items.append(URLQueryItem(name: "ignored", value: ignored ? "true" : "false")) }
+    if let fixAvailable {
+      items.append(URLQueryItem(name: "fixAvailable", value: fixAvailable ? "true" : "false"))
+    }
+    return try await rest.transport.downloadRaw(
+      rest.environmentPath(envID, "vulnerabilities/export"), query: items)
+  }
+
+  /// Download the vulnerability CSV export directly to a destination URL.
+  @discardableResult
+  public func exportAll(
+    envID: EnvironmentID? = nil,
+    search: String? = nil,
+    sort: String? = nil,
+    order: SortOrder? = nil,
+    severity: String? = nil,
+    imageName: String? = nil,
+    ignored: Bool? = nil,
+    fixAvailable: Bool? = nil,
+    to destinationURL: URL
+  ) async throws -> URL {
+    var items: [URLQueryItem] = []
+    if let search { items.append(URLQueryItem(name: "search", value: search)) }
+    if let sort { items.append(URLQueryItem(name: "sort", value: sort)) }
+    if let order { items.append(URLQueryItem(name: "order", value: order.rawValue)) }
+    if let severity { items.append(URLQueryItem(name: "severity", value: severity)) }
+    if let imageName { items.append(URLQueryItem(name: "imageName", value: imageName)) }
+    if let ignored { items.append(URLQueryItem(name: "ignored", value: ignored ? "true" : "false")) }
+    if let fixAvailable {
+      items.append(URLQueryItem(name: "fixAvailable", value: fixAvailable ? "true" : "false"))
+    }
+    return try await rest.transport.downloadRaw(
+      rest.environmentPath(envID, "vulnerabilities/export"), query: items, to: destinationURL)
   }
 
   /// Distinct image names available for vulnerability filtering.

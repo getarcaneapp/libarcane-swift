@@ -15,16 +15,22 @@ public struct ContainersService: Sendable {
     query: SearchPaginationSort = .init(),
     groupBy: String? = nil,
     includeInternal: Bool? = nil,
+    includeHidden: Bool? = nil,
     updates: String? = nil,
-    standalone: String? = nil
+    standalone: String? = nil,
+    label: String? = nil
   ) async throws -> ContainerListResponse {
     var items = query.queryItems
     if let groupBy { items.append(URLQueryItem(name: "groupBy", value: groupBy)) }
     if let includeInternal {
       items.append(URLQueryItem(name: "includeInternal", value: includeInternal ? "true" : "false"))
     }
+    if let includeHidden {
+      items.append(URLQueryItem(name: "includeHidden", value: includeHidden ? "true" : "false"))
+    }
     if let updates { items.append(URLQueryItem(name: "updates", value: updates)) }
     if let standalone { items.append(URLQueryItem(name: "standalone", value: standalone)) }
+    if let label { items.append(URLQueryItem(name: "label", value: label)) }
     let data = try await rest.transport.rawRequest(
       rest.environmentPath(envID, "containers"),
       query: items,
@@ -40,11 +46,15 @@ public struct ContainersService: Sendable {
   /// Container counts by status for an environment.
   public func statusCounts(
     envID: EnvironmentID? = nil,
-    includeInternal: Bool? = nil
+    includeInternal: Bool? = nil,
+    includeHidden: Bool? = nil
   ) async throws -> ContainerStatusCounts {
     var items: [URLQueryItem] = []
     if let includeInternal {
       items.append(URLQueryItem(name: "includeInternal", value: includeInternal ? "true" : "false"))
+    }
+    if let includeHidden {
+      items.append(URLQueryItem(name: "includeHidden", value: includeHidden ? "true" : "false"))
     }
     return try await rest.get(rest.environmentPath(envID, "containers/counts"), query: items)
   }
@@ -182,6 +192,25 @@ public struct ContainersService: Sendable {
   }
 
   // MARK: - WebSocket streams
+
+  /// Download every log line Docker retains for the container as raw bytes.
+  public func downloadLogs(envID: EnvironmentID? = nil, id: String) async throws -> Data {
+    try await rest.transport.downloadRaw(
+      rest.environmentPath(envID, "containers/\(id)/logs/download"))
+  }
+
+  /// Download container logs directly to a destination URL.
+  @discardableResult
+  public func downloadLogs(
+    envID: EnvironmentID? = nil,
+    id: String,
+    to destinationURL: URL
+  ) async throws -> URL {
+    try await rest.transport.downloadRaw(
+      rest.environmentPath(envID, "containers/\(id)/logs/download"),
+      to: destinationURL
+    )
+  }
 
   /// Stream container log lines. Returns an `AsyncSequence` that finishes when the
   /// remote closes the WebSocket.

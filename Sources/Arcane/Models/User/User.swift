@@ -1,5 +1,53 @@
 import Foundation
 
+/// Per-user display/UI preferences. Every field is optional so unset values
+/// fall back to frontend defaults. Mirrors `types/user.Preferences`.
+public struct UserPreferences: Codable, Hashable, Sendable {
+  public var themeMode: String?
+  public var applicationTheme: String?
+  public var accentColor: String?
+  public var iconCatalog: String?
+  public var oledMode: Bool?
+  public var glassEffectsEnabled: Bool?
+  public var animationsEnabled: Bool?
+  public var sidebarHoverExpansion: Bool?
+  public var keyboardShortcutsEnabled: Bool?
+  public var mobileNavigationMode: String?
+  public var mobileNavigationShowLabels: Bool?
+  public var defaultLandingPage: String?
+  public var defaultProjectEditorLayout: String?
+
+  public init(
+    themeMode: String? = nil,
+    applicationTheme: String? = nil,
+    accentColor: String? = nil,
+    iconCatalog: String? = nil,
+    oledMode: Bool? = nil,
+    glassEffectsEnabled: Bool? = nil,
+    animationsEnabled: Bool? = nil,
+    sidebarHoverExpansion: Bool? = nil,
+    keyboardShortcutsEnabled: Bool? = nil,
+    mobileNavigationMode: String? = nil,
+    mobileNavigationShowLabels: Bool? = nil,
+    defaultLandingPage: String? = nil,
+    defaultProjectEditorLayout: String? = nil
+  ) {
+    self.themeMode = themeMode
+    self.applicationTheme = applicationTheme
+    self.accentColor = accentColor
+    self.iconCatalog = iconCatalog
+    self.oledMode = oledMode
+    self.glassEffectsEnabled = glassEffectsEnabled
+    self.animationsEnabled = animationsEnabled
+    self.sidebarHoverExpansion = sidebarHoverExpansion
+    self.keyboardShortcutsEnabled = keyboardShortcutsEnabled
+    self.mobileNavigationMode = mobileNavigationMode
+    self.mobileNavigationShowLabels = mobileNavigationShowLabels
+    self.defaultLandingPage = defaultLandingPage
+    self.defaultProjectEditorLayout = defaultProjectEditorLayout
+  }
+}
+
 public struct User: Codable, Hashable, Sendable, Identifiable {
   public var id: String
   public var username: String
@@ -24,6 +72,8 @@ public struct User: Codable, Hashable, Sendable, Identifiable {
   public var permissionsByEnv: [String: [String]]?
   /// Backend-authoritative administrator classification. Nil on older servers.
   public var serverIsGlobalAdmin: Bool?
+  /// Personal display/UI preferences. Nil on older servers.
+  public var preferences: UserPreferences?
 
   public init(
     id: String,
@@ -39,7 +89,8 @@ public struct User: Codable, Hashable, Sendable, Identifiable {
     requiresPasswordChange: Bool = false,
     roleAssignments: [RoleAssignmentSummary]? = nil,
     permissionsByEnv: [String: [String]]? = nil,
-    serverIsGlobalAdmin: Bool? = nil
+    serverIsGlobalAdmin: Bool? = nil,
+    preferences: UserPreferences? = nil
   ) {
     self.id = id
     self.username = username
@@ -55,6 +106,7 @@ public struct User: Codable, Hashable, Sendable, Identifiable {
     self.roleAssignments = roleAssignments
     self.permissionsByEnv = permissionsByEnv
     self.serverIsGlobalAdmin = serverIsGlobalAdmin
+    self.preferences = preferences
   }
 
   private enum CodingKeys: String, CodingKey {
@@ -63,6 +115,7 @@ public struct User: Codable, Hashable, Sendable, Identifiable {
     case canDelete, oidcSubjectId, locale, createdAt, updatedAt, requiresPasswordChange
     case roleAssignments, permissionsByEnv
     case serverIsGlobalAdmin = "isGlobalAdmin"
+    case preferences
   }
 
   public init(from decoder: Decoder) throws {
@@ -85,6 +138,7 @@ public struct User: Codable, Hashable, Sendable, Identifiable {
     let decodedPerms = try container.decodeIfPresent(
       [String: [String]].self, forKey: .permissionsByEnv)
     serverIsGlobalAdmin = try container.decodeIfPresent(Bool.self, forKey: .serverIsGlobalAdmin)
+    preferences = try container.decodeIfPresent(UserPreferences.self, forKey: .preferences)
 
     roleAssignments = decodedAssignments
     permissionsByEnv = decodedPerms

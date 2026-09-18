@@ -83,12 +83,22 @@ public struct GitOpsService: Sendable {
     order: SortOrder? = nil,
     start: Int = 0,
     limit: Int = 20,
+    mode: String? = nil,
+    projectId: String? = nil,
+    repositoryId: String? = nil,
+    autoSync: Bool? = nil,
     envID: EnvironmentID? = nil
   ) async throws -> PaginatedResponse<GitOpsSync> {
     var query: [URLQueryItem] = []
     if let search { query.append(URLQueryItem(name: "search", value: search)) }
     if let sort { query.append(URLQueryItem(name: "sort", value: sort)) }
     if let order { query.append(URLQueryItem(name: "order", value: order.rawValue)) }
+    if let mode { query.append(URLQueryItem(name: "mode", value: mode)) }
+    if let projectId { query.append(URLQueryItem(name: "projectId", value: projectId)) }
+    if let repositoryId { query.append(URLQueryItem(name: "repositoryId", value: repositoryId)) }
+    if let autoSync {
+      query.append(URLQueryItem(name: "autoSync", value: autoSync ? "true" : "false"))
+    }
     return try await rest.transport.paginated(
       rest.environmentPath(envID, "gitops-syncs"), start: start, limit: limit, query: query)
   }
@@ -145,5 +155,46 @@ public struct GitOpsService: Sendable {
     async throws -> ImportGitOpsSyncResponse
   {
     try await rest.post(rest.environmentPath(envID, "gitops-syncs/import"), body: syncs)
+  }
+
+  // MARK: - Git backup mode
+
+  /// Preview what the next Git backup would commit.
+  public func previewBackup(id: String, envID: EnvironmentID? = nil) async throws
+    -> GitBackupPreview
+  {
+    try await rest.get(rest.environmentPath(envID, "gitops-syncs/\(id)/backup/preview"))
+  }
+
+  /// List repository revisions affecting a backup directory.
+  public func backupHistory(
+    id: String,
+    limit: Int = 20,
+    envID: EnvironmentID? = nil
+  ) async throws -> GitBackupHistoryResponse {
+    try await rest.get(
+      rest.environmentPath(envID, "gitops-syncs/\(id)/backup/history"),
+      query: [URLQueryItem(name: "limit", value: "\(limit)")]
+    )
+  }
+
+  /// Get one backup revision with per-file diffs.
+  public func backupRevision(
+    id: String,
+    commit: String,
+    envID: EnvironmentID? = nil
+  ) async throws -> GitBackupRevision {
+    try await rest.get(
+      rest.environmentPath(envID, "gitops-syncs/\(id)/backup/history/\(commit)"))
+  }
+
+  /// Resolve a backup that needs attention.
+  public func resolveBackupConflict(
+    id: String,
+    body: ResolveGitBackupConflictRequest = .init(),
+    envID: EnvironmentID? = nil
+  ) async throws -> GitOpsSyncResult {
+    try await rest.post(
+      rest.environmentPath(envID, "gitops-syncs/\(id)/backup/resolve"), body: body)
   }
 }

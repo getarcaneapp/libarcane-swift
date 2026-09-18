@@ -19,6 +19,7 @@ public struct ContainerSummary: Codable, Hashable, Sendable, Identifiable {
   public var iconDarkUrl: String?
   public var updateInfo: ImageUpdateInfo?
   public var redeployDisabled: Bool?
+  public var hidden: Bool?
 
   private enum CodingKeys: String, CodingKey {
     case id
@@ -38,6 +39,7 @@ public struct ContainerSummary: Codable, Hashable, Sendable, Identifiable {
     case iconDarkUrl
     case updateInfo
     case redeployDisabled
+    case hidden
   }
 
   public init(
@@ -57,7 +59,8 @@ public struct ContainerSummary: Codable, Hashable, Sendable, Identifiable {
     iconLightUrl: String? = nil,
     iconDarkUrl: String? = nil,
     updateInfo: ImageUpdateInfo? = nil,
-    redeployDisabled: Bool? = nil
+    redeployDisabled: Bool? = nil,
+    hidden: Bool? = nil
   ) {
     self.id = id
     self.names = names
@@ -76,6 +79,7 @@ public struct ContainerSummary: Codable, Hashable, Sendable, Identifiable {
     self.iconDarkUrl = iconDarkUrl
     self.updateInfo = updateInfo
     self.redeployDisabled = redeployDisabled
+    self.hidden = hidden
   }
 
   public init(from decoder: Decoder) throws {
@@ -97,6 +101,7 @@ public struct ContainerSummary: Codable, Hashable, Sendable, Identifiable {
     iconDarkUrl = try container.decodeIfPresent(String.self, forKey: .iconDarkUrl)
     updateInfo = try container.decodeIfPresent(ImageUpdateInfo.self, forKey: .updateInfo)
     redeployDisabled = try container.decodeIfPresent(Bool.self, forKey: .redeployDisabled)
+    hidden = try container.decodeIfPresent(Bool.self, forKey: .hidden)
   }
 }
 

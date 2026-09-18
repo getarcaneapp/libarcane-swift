@@ -21,7 +21,9 @@ public struct ProjectsService: Sendable {
     query: SearchPaginationSort = .init(),
     status: String? = nil,
     updates: String? = nil,
-    archived: String? = nil
+    archived: String? = nil,
+    tags: String? = nil,
+    label: String? = nil
   ) async throws -> PaginatedResponse<ProjectDetails> {
     var items = query.nonPaginationQueryItems
     if let status {
@@ -32,6 +34,12 @@ public struct ProjectsService: Sendable {
     }
     if let archived {
       items.append(URLQueryItem(name: "archived", value: archived))
+    }
+    if let tags {
+      items.append(URLQueryItem(name: "tags", value: tags))
+    }
+    if let label {
+      items.append(URLQueryItem(name: "label", value: label))
     }
     return try await rest.paginated(
       rest.environmentPath(envID, "projects"),

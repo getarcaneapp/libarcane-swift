@@ -91,6 +91,8 @@ public struct UpdateSettings: Codable, Hashable, Sendable {
   public var trivyCpuLimit: String?
   public var trivyMemoryLimitMb: String?
   public var trivyConcurrentScanContainers: String?
+  public var trivyConfig: String?
+  public var trivyIgnore: String?
   public var authOidcConfig: String?
   public var oidcClientId: String?
   public var oidcClientSecret: String?
@@ -183,6 +185,8 @@ public struct UpdateSettings: Codable, Hashable, Sendable {
     trivyCpuLimit: String? = nil,
     trivyMemoryLimitMb: String? = nil,
     trivyConcurrentScanContainers: String? = nil,
+    trivyConfig: String? = nil,
+    trivyIgnore: String? = nil,
     authOidcConfig: String? = nil,
     oidcClientId: String? = nil,
     oidcClientSecret: String? = nil,
@@ -273,6 +277,8 @@ public struct UpdateSettings: Codable, Hashable, Sendable {
     self.trivyCpuLimit = trivyCpuLimit
     self.trivyMemoryLimitMb = trivyMemoryLimitMb
     self.trivyConcurrentScanContainers = trivyConcurrentScanContainers
+    self.trivyConfig = trivyConfig
+    self.trivyIgnore = trivyIgnore
     self.authOidcConfig = authOidcConfig
     self.oidcClientId = oidcClientId
     self.oidcClientSecret = oidcClientSecret

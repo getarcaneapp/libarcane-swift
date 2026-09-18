@@ -196,6 +196,17 @@ public struct VolumesService: Sendable {
     try await rest.delete(rest.environmentPath(envID, "volumes/backups/\(backupID)"))
   }
 
+  /// Discover volume backups stored on an S3 destination by this or other instances.
+  public func discoverBackups(
+    envID: EnvironmentID? = nil,
+    s3DestinationId: String
+  ) async throws -> DiscoverVolumeBackupsResponse {
+    try await rest.post(
+      rest.environmentPath(envID, "volumes/backups/discover"),
+      body: DiscoverVolumeBackupsRequest(s3DestinationId: s3DestinationId)
+    )
+  }
+
   /// Check whether a backup contains the given path.
   public func backupHasPath(
     envID: EnvironmentID? = nil,
