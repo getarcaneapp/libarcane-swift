@@ -76,6 +76,13 @@ public struct VulnerabilitiesService: Sendable {
     try await rest.get(rest.environmentPath(envID, "vulnerabilities/summary"))
   }
 
+  /// Environment patch priority, trend, drivers, and ranked findings and images.
+  public func riskOverview(envID: EnvironmentID? = nil) async throws
+    -> VulnerabilityRiskOverview
+  {
+    try await rest.get(rest.environmentPath(envID, "vulnerabilities/overview"))
+  }
+
   /// Paginated list of vulnerabilities across all scanned images in the environment.
   public func listAll(
     envID: EnvironmentID? = nil,
@@ -175,7 +182,8 @@ public struct VulnerabilitiesService: Sendable {
 
   /// Remove an existing ignore record.
   public func unignore(envID: EnvironmentID? = nil, ignoreId: String) async throws {
-    try await rest.deleteVoid(rest.environmentPath(envID, "vulnerabilities/ignore/\(ignoreId)"))
+    let _: EmptyVulnerabilityResponse = try await rest.delete(
+      rest.environmentPath(envID, "vulnerabilities/ignore/\(ignoreId)"))
   }
 
   /// Paginated list of currently ignored vulnerabilities.
@@ -191,3 +199,5 @@ public struct VulnerabilitiesService: Sendable {
     )
   }
 }
+
+private struct EmptyVulnerabilityResponse: Decodable, Sendable {}
