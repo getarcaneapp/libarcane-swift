@@ -172,6 +172,28 @@ import Testing
     #expect(try await store.loadTokens() == expected)
   }
 
+  @Test(arguments: KeychainOperation.allCases)
+  fileprivate func retiredKeychainScopeRejectsWorkAtEntry(operation: KeychainOperation) async throws {
+    let scope = KeychainScope()
+    let gate = AuthenticationGate()
+    let store = KeychainTokenStore(service: "arcane-test-\(UUID().uuidString)", validating: { scope.isActive })
+    let task = Task {
+      await gate.block()
+      switch operation {
+      case .load: _ = try await store.loadTokens()
+      case .save: try await store.saveTokens(tokens("retired"))
+      case .clear: try await store.clearTokens()
+      }
+    }
+    await gate.waitUntilBlocked()
+    scope.retire()
+    await gate.release()
+    do {
+      try await task.value
+      Issue.record("Retired session reached the Keychain")
+    } catch is CancellationError {}
+  }
+
   @Test func latestAuthenticationStartWins() async throws {
     let mock = MockURLProtocolSession()
     let gate = AuthenticationGate()
@@ -348,4 +370,13 @@ private actor SuspendedAuthenticationTokenStore: TokenStore {
     if tokens.accessToken == "retired" { await gate.block() }
     self.tokens = tokens
   }
+}
+
+private enum KeychainOperation: CaseIterable, Sendable { case load, save, clear }
+
+private final class KeychainScope: @unchecked Sendable {
+  private let lock = NSLock()
+  private var active = true
+  var isActive: Bool { lock.withLock { active } }
+  func retire() { lock.withLock { active = false } }
 }
