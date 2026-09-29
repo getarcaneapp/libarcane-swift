@@ -201,6 +201,47 @@ import Testing
     #expect(try await store.loadTokens()?.accessToken == "new")
   }
 
+  @Test(arguments: [AuthenticationMethod.password, .oidcDevice])
+  fileprivate func logoutCannotClearLoginAcceptedDuringRevocation(method: AuthenticationMethod) async throws {
+    let mock = MockURLProtocolSession()
+    let loginGate = AuthenticationGate()
+    let logoutGate = AuthenticationGate()
+    let store = InMemoryTokenStore(tokens: tokens("old"))
+    let client = makeClient(mock, store: store)
+    await mock.setHandler { request in
+      if !request.url!.path.hasSuffix("auth/logout") {
+        await loginGate.block()
+        let response = LoginResponse(
+          token: "new",
+          refreshToken: "new-refresh",
+          expiresAt: Date(timeIntervalSinceNow: 3_600),
+          user: User(id: "new", username: "new"))
+        if request.url!.path.contains("oidc/") {
+          let payload = try ArcaneJSON.makeEncoder().encode(OIDCDeviceTokenResponse(
+            success: true,
+            token: response.token,
+            refreshToken: response.refreshToken,
+            expiresAt: response.expiresAt,
+            user: response.user))
+          return (httpResponse(request), payload)
+        }
+        return (httpResponse(request), Data("{\"success\":true,\"data\":".utf8)
+          + (try ArcaneJSON.makeEncoder().encode(response)) + Data("}".utf8))
+      }
+      await logoutGate.block()
+      return (httpResponse(request), Data(#"{"success":true,"data":{"message":"logged out"}}"#.utf8))
+    }
+    let login = Task { try await method.authenticate(client) }
+    await loginGate.waitUntilBlocked()
+    let logout = Task { try await client.auth.logout() }
+    await logoutGate.waitUntilBlocked()
+    await loginGate.release()
+    try await login.value
+    await logoutGate.release()
+    try await logout.value
+    #expect(try await store.loadTokens()?.accessToken == "new")
+  }
+
   @Test func logoutCannotClearCredentialsAcceptedDuringRevocation() async throws {
     let mock = MockURLProtocolSession()
     let gate = AuthenticationGate()

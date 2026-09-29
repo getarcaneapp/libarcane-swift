@@ -145,6 +145,7 @@ public actor AuthManager {
     try await persist(tokens: tokens, generation: generation)
     try checkAuthenticationOperation(generation)
     cachedTokens = tokens
+    credentialGeneration &+= 1
     recordCapabilities(from: response.user)
   }
 
@@ -153,6 +154,7 @@ public actor AuthManager {
     try await persist(tokens: tokens, generation: generation)
     try checkAuthenticationOperation(generation)
     cachedTokens = tokens
+    credentialGeneration &+= 1
     recordCapabilities(from: user)
   }
 
