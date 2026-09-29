@@ -4,6 +4,7 @@ import XCTest
 @testable import Arcane
 
 final class ActivityBackedServiceTests: XCTestCase {
+  private let mock = MockURLProtocolSession()
   func testProjectAndContainerServicesPreserveActivityIDs() async throws {
     let client = await makeClient()
 
@@ -16,7 +17,7 @@ final class ActivityBackedServiceTests: XCTestCase {
     )
     let container = try await client.containers.redeploy(id: "container")
     let bulkResult = try await client.system.startAllContainers()
-    let requestCount = await MockURLProtocol.requestCount()
+    let requestCount = await mock.requestCount()
 
     XCTAssertEqual(createdProject.activityID, "activity-project-create")
     XCTAssertEqual(updatedProject.activityID, "activity-project-update")
@@ -35,7 +36,7 @@ final class ActivityBackedServiceTests: XCTestCase {
     let volume = try await client.volumes.create(request: CreateVolume(name: "volume"))
     let volumePrune = try await client.volumes.prune()
     let backup = try await client.volumes.createBackup(name: "volume")
-    let requestCount = await MockURLProtocol.requestCount()
+    let requestCount = await mock.requestCount()
 
     XCTAssertEqual(network.activityID, "activity-network")
     XCTAssertEqual(networkPrune.activityID, "activity-network-prune")
@@ -52,7 +53,7 @@ final class ActivityBackedServiceTests: XCTestCase {
     let prune = try await client.system.prune(PruneAllRequest())
     let imageUpdate = try await client.images.checkUpdateByRef(imageRef: "alpine:latest")
     let scan = try await client.vulnerabilities.scanImage(imageId: "sha256:1")
-    let requestCount = await MockURLProtocol.requestCount()
+    let requestCount = await mock.requestCount()
 
     XCTAssertEqual(updater.activityID, "activity-updater")
     XCTAssertEqual(prune.activityID, "activity-prune")
@@ -62,8 +63,8 @@ final class ActivityBackedServiceTests: XCTestCase {
   }
 
   private func makeClient() async -> ArcaneClient {
-    await MockURLProtocol.reset()
-    await MockURLProtocol.setHandler { request in
+    await mock.reset()
+    await mock.setHandler { request in
       try ActivityBackedServiceFixtures.response(for: request)
     }
 
@@ -72,7 +73,7 @@ final class ActivityBackedServiceTests: XCTestCase {
     return ArcaneClient(
       configuration: .init(
         baseURL: URL(string: "https://arcane.example.com")!,
-        urlSession: URLSession(configuration: configuration)
+        urlSession: mock.session(configuration: configuration)
       )
     )
   }

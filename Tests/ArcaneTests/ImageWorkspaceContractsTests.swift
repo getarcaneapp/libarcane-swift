@@ -3,20 +3,21 @@ import Testing
 
 @testable import Arcane
 
-@Suite(.serialized)
+@Suite
 struct ImageWorkspaceContractsTests {
+  private let mock = MockURLProtocolSession()
   private func client() -> ArcaneClient {
     let configuration = URLSessionConfiguration.ephemeral
     configuration.protocolClasses = [MockURLProtocol.self]
     return ArcaneClient(
       configuration: .init(
         baseURL: URL(string: "https://arcane.example.com")!,
-        urlSession: URLSession(configuration: configuration)))
+        urlSession: mock.session(configuration: configuration)))
   }
 
   @Test func searchPreservesSpecialCharacters() async throws {
-    await MockURLProtocol.reset()
-    await MockURLProtocol.setHandler { request in
+    await mock.reset()
+    await mock.setHandler { request in
       #expect(request.httpMethod == "GET")
       #expect(request.url?.path == "/api/environments/0/images/search")
       let query = URLComponents(url: request.url!, resolvingAgainstBaseURL: false)?.queryItems
@@ -34,12 +35,12 @@ struct ImageWorkspaceContractsTests {
   }
 
   @Test func patchReturnsRunningRecordAndEncodesScanSelection() async throws {
-    await MockURLProtocol.reset()
-    await MockURLProtocol.setHandler { request in
+    await mock.reset()
+    await mock.setHandler { request in
       #expect(request.httpMethod == "POST")
       #expect(request.url?.path == "/api/environments/0/images/sha256:abc/patch")
       let body =
-        try JSONSerialization.jsonObject(with: workspaceRequestBody(request)) as! [String: Any]
+        try JSONSerialization.jsonObject(with: mockRequestBody(request)) as! [String: Any]
       #expect(body["scanId"] as? String == "scan-1")
       #expect(body["ignoreErrors"] as? Bool == false)
       #expect(body["suffix"] == nil)
@@ -59,14 +60,14 @@ struct ImageWorkspaceContractsTests {
   }
 
   @Test func workspaceUsesMultipartManifestAndFileIndex() async throws {
-    await MockURLProtocol.reset()
+    await mock.reset()
     let file = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
     try Data("replacement".utf8).write(to: file)
     defer { try? FileManager.default.removeItem(at: file) }
-    await MockURLProtocol.setHandler { request in
+    await mock.setHandler { request in
       #expect(request.httpMethod == "PUT")
       #expect(request.url?.path == "/api/environments/0/volumes/my volume/workspace")
-      let body = String(decoding: try workspaceRequestBody(request), as: UTF8.self)
+      let body = String(decoding: try mockRequestBody(request), as: UTF8.self)
       #expect(body.contains(#"name="manifest""#))
       #expect(body.contains(#""fileTreeRevision":"rev-1""#))
       #expect(body.contains(#""uploadIndex":0"#))
@@ -91,8 +92,8 @@ struct ImageWorkspaceContractsTests {
   }
 
   @Test func workspaceFilePreservesPathAndReadOnlyReason() async throws {
-    await MockURLProtocol.reset()
-    await MockURLProtocol.setHandler { request in
+    await mock.reset()
+    await mock.setHandler { request in
       let query = URLComponents(url: request.url!, resolvingAgainstBaseURL: false)?.queryItems
       #expect(query?.first(where: { $0.name == "relativePath" })?.value == "folder/a & b.bin")
       return (
@@ -110,12 +111,12 @@ struct ImageWorkspaceContractsTests {
   }
 
   @Test func tagEncodesRepositoryReferenceInBody() async throws {
-    await MockURLProtocol.reset()
-    await MockURLProtocol.setHandler { request in
+    await mock.reset()
+    await mock.setHandler { request in
       #expect(request.httpMethod == "POST")
       #expect(request.url?.path == "/api/environments/0/images/sha256:abc/tag")
       let body =
-        try JSONSerialization.jsonObject(with: workspaceRequestBody(request)) as! [String: Any]
+        try JSONSerialization.jsonObject(with: mockRequestBody(request)) as! [String: Any]
       #expect(body["repository"] as? String == "registry:5000/team/image")
       #expect(body["tag"] == nil)
       return (
@@ -128,8 +129,8 @@ struct ImageWorkspaceContractsTests {
   }
 
   @Test func patchHistoryPreservesPaginationAndStatus() async throws {
-    await MockURLProtocol.reset()
-    await MockURLProtocol.setHandler { request in
+    await mock.reset()
+    await mock.setHandler { request in
       #expect(request.url?.path == "/api/environments/0/images/patches")
       let query = URLComponents(url: request.url!, resolvingAgainstBaseURL: false)?.queryItems ?? []
       #expect(query.filter { $0.name == "start" }.map(\.value) == ["30"])
@@ -158,20 +159,5 @@ struct ImageWorkspaceContractsTests {
           ]))
       Issue.record("Expected validation error")
     } catch ArcaneError.validation {}
-  }
-}
-
-private func workspaceRequestBody(_ request: URLRequest) throws -> Data {
-  if let data = request.httpBody { return data }
-  let stream = try #require(request.httpBodyStream)
-  stream.open()
-  defer { stream.close() }
-  var result = Data()
-  var bytes = [UInt8](repeating: 0, count: 4096)
-  while true {
-    let count = stream.read(&bytes, maxLength: bytes.count)
-    guard count >= 0 else { throw ArcaneError.transport("Unable to read test request") }
-    if count == 0 { return result }
-    result.append(bytes, count: count)
   }
 }

@@ -4,6 +4,7 @@ import XCTest
 @testable import Arcane
 
 final class ActivityModelsTests: XCTestCase {
+  private let mock = MockURLProtocolSession()
   private let decoder = ArcaneJSON.makeDecoder()
 
   func testServerCapabilitiesExposeActivitiesOnlyForV2() {
@@ -114,17 +115,17 @@ final class ActivityModelsTests: XCTestCase {
   }
 
   func testActivitiesStreamUsesGlobalEndpoint() async throws {
-    await MockURLProtocol.reset()
+    await mock.reset()
     let configuration = URLSessionConfiguration.ephemeral
     configuration.protocolClasses = [MockURLProtocol.self]
     let client = ArcaneClient(
       configuration: .init(
         baseURL: URL(string: "https://arcane.example.com/base")!,
-        urlSession: URLSession(configuration: configuration)
+        urlSession: mock.session(configuration: configuration)
       )
     )
 
-    await MockURLProtocol.setHandler { request in
+    await mock.setHandler { request in
       XCTAssertEqual(request.url?.path, "/base/api/activities/stream")
       XCTAssertEqual(request.url?.query, "limit=17")
       let response = try XCTUnwrap(

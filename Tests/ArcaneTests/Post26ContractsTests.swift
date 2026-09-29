@@ -4,6 +4,7 @@ import XCTest
 @testable import Arcane
 
 final class Post26ContractsTests: XCTestCase {
+  private let mock = MockURLProtocolSession()
   func testAuthenticationResultDecodesLegacyAndMFAResponses() throws {
     let legacy = try ArcaneJSON.makeDecoder().decode(
       AuthenticationResult.self,
@@ -47,7 +48,7 @@ final class Post26ContractsTests: XCTestCase {
   }
 
   func testPasswordMFAResponseDoesNotReplaceStoredTokensAndConvenienceThrows() async throws {
-    await MockURLProtocol.reset()
+    await mock.reset()
     let original = TokenPair(
       accessToken: "existing-access",
       refreshToken: "existing-refresh",
@@ -55,7 +56,7 @@ final class Post26ContractsTests: XCTestCase {
     )
     let store = InMemoryTokenStore(tokens: original)
     let client = makeClient(store: store)
-    await MockURLProtocol.setHandler { request in
+    await mock.setHandler { request in
       XCTAssertEqual(request.url?.path, "/api/auth/login")
       let response = HTTPURLResponse(
         url: request.url!,
@@ -90,7 +91,7 @@ final class Post26ContractsTests: XCTestCase {
   }
 
   func testOIDCMFAResponseDoesNotReplaceStoredTokensAndConvenienceThrows() async throws {
-    await MockURLProtocol.reset()
+    await mock.reset()
     let original = TokenPair(
       accessToken: "existing-access",
       refreshToken: "existing-refresh",
@@ -98,7 +99,7 @@ final class Post26ContractsTests: XCTestCase {
     )
     let store = InMemoryTokenStore(tokens: original)
     let client = makeClient(store: store)
-    await MockURLProtocol.setHandler { request in
+    await mock.setHandler { request in
       XCTAssertEqual(request.url?.path, "/api/oidc/callback")
       let response = HTTPURLResponse(
         url: request.url!,
@@ -135,7 +136,7 @@ final class Post26ContractsTests: XCTestCase {
   }
 
   func testPasskeyPublicBeginAndStepUpHeaderUseExistingWireContract() async throws {
-    await MockURLProtocol.reset()
+    await mock.reset()
     let store = InMemoryTokenStore(
       tokens: TokenPair(
         accessToken: "access",
@@ -144,7 +145,7 @@ final class Post26ContractsTests: XCTestCase {
       )
     )
     let client = makeClient(store: store)
-    await MockURLProtocol.setHandler { request in
+    await mock.setHandler { request in
       let response = HTTPURLResponse(
         url: request.url!,
         statusCode: 200,
@@ -342,7 +343,7 @@ final class Post26ContractsTests: XCTestCase {
       configuration: .init(
         baseURL: URL(string: "https://arcane.example.test/api")!,
         tokenStore: store,
-        urlSession: URLSession(configuration: configuration),
+        urlSession: mock.session(configuration: configuration),
         retryPolicy: .init(
           maxAttempts: 1,
           baseBackoff: .milliseconds(1),

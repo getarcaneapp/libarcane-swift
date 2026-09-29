@@ -28,6 +28,7 @@ public actor AuthManager {
   private var capabilities: ServerCapabilities = .unknown
   private var lastFailedProactiveRefresh: Date?
   private var credentialGeneration: UInt64 = 0
+  private var persistenceTask: Task<Void, Error>?
 
   public init(
     baseURL: URL,
@@ -54,19 +55,25 @@ public actor AuthManager {
       return AuthenticationContext(headers: ["X-API-Key": apiKey], credentialGeneration: nil)
     }
     if cachedTokens == nil {
-      cachedTokens = try await tokenStore.loadTokens()
+      let generation = credentialGeneration
+      let stored = try await tokenStore.loadTokens()
+      try checkAuthenticationOperation(generation)
+      cachedTokens = stored
     }
     if let tokens = cachedTokens,
       !tokens.refreshToken.isEmpty,
       tokens.expiresAt.timeIntervalSinceNow < Self.expirySkew,
       lastFailedProactiveRefresh.map({
         Date().timeIntervalSince($0) > Self.failedProactiveRefreshBackoff
-      }) ?? true
-    {
+      }) ?? true {
+      let generation = credentialGeneration
       do {
-        cachedTokens = try await refreshTokens()
+        let refreshed = try await refreshTokens()
+        try checkAuthenticationOperation(generation)
+        cachedTokens = refreshed
         lastFailedProactiveRefresh = nil
       } catch {
+        try checkAuthenticationOperation(generation)
         // Fall back to the existing token: HTTP callers still get the
         // reactive 401 path; a transient refresh failure must not turn an
         // otherwise-valid request into a hard error.
@@ -87,7 +94,10 @@ public actor AuthManager {
       return false
     }
     if cachedTokens == nil {
-      cachedTokens = try await tokenStore.loadTokens()
+      let generation = credentialGeneration
+      let stored = try await tokenStore.loadTokens()
+      try checkAuthenticationOperation(generation)
+      cachedTokens = stored
     }
     return !(cachedTokens?.refreshToken.isEmpty ?? true)
   }
@@ -101,28 +111,100 @@ public actor AuthManager {
     try await save(tokens: tokens)
   }
 
-  func save(authenticationResult: AuthenticationResult) async throws {
+  /// Retires outstanding authentication completions without removing the active credential.
+  public func retirePendingAuthenticationOperations() {
+    credentialGeneration &+= 1
+    refreshTask?.cancel()
+    refreshTask = nil
+  }
+
+  func beginAuthenticationOperation() async throws -> UInt64 {
+    retirePendingAuthenticationOperations()
+    let generation = credentialGeneration
+    if cachedTokens == nil {
+      let stored = try await tokenStore.loadTokens()
+      try checkAuthenticationOperation(generation)
+      cachedTokens = stored
+    }
+    return generation
+  }
+
+  func checkAuthenticationOperation(_ generation: UInt64) throws {
+    try Task.checkCancellation()
+    guard generation == credentialGeneration else { throw CancellationError() }
+  }
+
+  func save(authenticationResult: AuthenticationResult, generation: UInt64) async throws {
+    try checkAuthenticationOperation(generation)
     guard case .authenticated(let response) = authenticationResult else { return }
-    try await save(loginResponse: response)
+    let tokens = TokenPair(
+      accessToken: response.token,
+      refreshToken: response.refreshToken,
+      expiresAt: response.expiresAt
+    )
+    try await persist(tokens: tokens, generation: generation)
+    try checkAuthenticationOperation(generation)
+    cachedTokens = tokens
     recordCapabilities(from: response.user)
   }
 
-  public func save(tokens: TokenPair) async throws {
-    credentialGeneration &+= 1
-    refreshTask?.cancel()
-    refreshTask = nil
+  func save(tokens: TokenPair, user: User, generation: UInt64) async throws {
+    try checkAuthenticationOperation(generation)
+    try await persist(tokens: tokens, generation: generation)
+    try checkAuthenticationOperation(generation)
     cachedTokens = tokens
-    try await tokenStore.saveTokens(tokens)
+    recordCapabilities(from: user)
+  }
+
+  public func save(tokens: TokenPair) async throws {
+    retirePendingAuthenticationOperations()
+    let generation = credentialGeneration
+    cachedTokens = tokens
+    try await persist(tokens: tokens, generation: generation)
   }
 
   public func clear() async throws {
-    credentialGeneration &+= 1
-    refreshTask?.cancel()
+    retirePendingAuthenticationOperations()
+    let generation = credentialGeneration
     cachedTokens = nil
-    refreshTask = nil
     capabilities = .unknown
-    try await tokenStore.clearTokens()
+    try await persist(tokens: nil, generation: generation)
   }
+
+  /// Serialize writes so a token-store suspension cannot let an old write
+  /// overwrite a subsequent clear or replacement credential.
+  private func persist(tokens: TokenPair?, generation: UInt64) async throws {
+    let previous = persistenceTask
+    let task = Task {
+      _ = try? await previous?.value
+      try checkAuthenticationOperation(generation)
+      if let tokens {
+        try await tokenStore.saveTokens(tokens)
+      } else {
+        try await tokenStore.clearTokens()
+      }
+      do {
+        try checkAuthenticationOperation(generation)
+      } catch {
+        // Retiring or cancelling a completion during the write restores
+        // the accepted credential before the next mutation can run.
+        if let cachedTokens {
+          try await tokenStore.saveTokens(cachedTokens)
+        } else {
+          try await tokenStore.clearTokens()
+        }
+        throw error
+      }
+    }
+    persistenceTask = task
+    try await withTaskCancellationHandler {
+      try await task.value
+    } onCancel: {
+      task.cancel()
+    }
+  }
+
+  func currentCredentialGeneration() -> UInt64 { credentialGeneration }
 
   func clear(ifCredentialGenerationMatches generation: UInt64) async throws {
     guard generation == credentialGeneration else { return }
@@ -156,11 +238,17 @@ public actor AuthManager {
     // a refresh: another process sharing the token store (widget/intents
     // extension) may have rotated the pair while this process was suspended,
     // and the server invalidates the old refresh token immediately.
+    let readGeneration = credentialGeneration
     if let stored = try? await tokenStore.loadTokens() {
+      try checkAuthenticationOperation(readGeneration)
       cachedTokens = stored
     } else if cachedTokens == nil {
-      cachedTokens = try await tokenStore.loadTokens()
+      let generation = credentialGeneration
+      let stored = try await tokenStore.loadTokens()
+      try checkAuthenticationOperation(generation)
+      cachedTokens = stored
     }
+    try checkAuthenticationOperation(readGeneration)
     if let refreshTask {
       return try await refreshTask.value
     }
@@ -193,7 +281,8 @@ public actor AuthManager {
       return try await handleRefreshFailure(
         error,
         rejectedRefreshToken: refreshToken,
-        isRetry: isRetry
+        isRetry: isRetry,
+        generation: generation
       )
     }
   }
@@ -201,7 +290,8 @@ public actor AuthManager {
   private func handleRefreshFailure(
     _ error: Error,
     rejectedRefreshToken: String,
-    isRetry: Bool
+    isRetry: Bool,
+    generation: UInt64
   ) async throws -> TokenPair {
     // Only discard the stored credential when the server explicitly rejects
     // the refresh token. Transient failures must retain it for a later retry.
@@ -213,17 +303,16 @@ public actor AuthManager {
     if !isRetry,
       let latest = try? await tokenStore.loadTokens(),
       !latest.refreshToken.isEmpty,
-      latest.refreshToken != rejectedRefreshToken
-    {
+      latest.refreshToken != rejectedRefreshToken {
+      try checkAuthenticationOperation(generation)
       cachedTokens = latest
       return try await refreshTokens(isRetry: true)
     }
 
     // An unreadable store must never cost the user their session.
     if let current = try? await tokenStore.loadTokens(),
-      current.refreshToken == rejectedRefreshToken
-    {
-      try? await clear()
+      current.refreshToken == rejectedRefreshToken {
+      try? await clear(ifCredentialGenerationMatches: generation)
     }
     throw error
   }
@@ -238,16 +327,9 @@ public actor AuthManager {
       throw CancellationError()
     }
 
-    try await tokenStore.saveTokens(tokens)
+    try await persist(tokens: tokens, generation: generation)
     try Task.checkCancellation()
-    guard generation == credentialGeneration else {
-      // A clear/save may have won while the token-store write was suspended.
-      // Remove only our stale refresh result; never delete a newer login.
-      if let current = try? await tokenStore.loadTokens(), current == tokens {
-        try? await tokenStore.clearTokens()
-      }
-      throw CancellationError()
-    }
+    try checkAuthenticationOperation(generation)
 
     cachedTokens = tokens
     return tokens

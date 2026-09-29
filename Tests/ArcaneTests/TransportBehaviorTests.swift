@@ -4,6 +4,7 @@ import XCTest
 @testable import Arcane
 
 final class TransportBehaviorTests: XCTestCase {
+  private let mock = MockURLProtocolSession()
   func testArcaneJSONDecodesFractionalSecondsDates() throws {
     struct Payload: Decodable {
       let createdAt: Date
@@ -38,7 +39,7 @@ final class TransportBehaviorTests: XCTestCase {
       let data: TokenRefreshResponse
     }
 
-    await MockURLProtocol.reset()
+    await mock.reset()
     let session = makeMockURLSession()
     let originalTokens = TokenPair(
       accessToken: "stale-access-token",
@@ -60,7 +61,7 @@ final class TransportBehaviorTests: XCTestCase {
       encoder: ArcaneJSON.makeEncoder()
     )
 
-    await MockURLProtocol.setHandler { request in
+    await mock.setHandler { request in
       try await Task.sleep(for: .milliseconds(50))
       let response = try XCTUnwrap(
         HTTPURLResponse(
@@ -86,7 +87,7 @@ final class TransportBehaviorTests: XCTestCase {
     async let second = authManager.refreshTokens()
     let firstTokens = try await first
     let secondTokens = try await second
-    let requestCount = await MockURLProtocol.requestCount()
+    let requestCount = await mock.requestCount()
     let storedTokens = try await store.loadTokens()
 
     XCTAssertEqual(requestCount, 1)
@@ -96,7 +97,7 @@ final class TransportBehaviorTests: XCTestCase {
   }
 
   func testRefreshTokensKeepsStoredTokensOnTransientServerFailure() async throws {
-    await MockURLProtocol.reset()
+    await mock.reset()
     let session = makeMockURLSession()
     let originalTokens = TokenPair(
       accessToken: "stale-access-token",
@@ -113,7 +114,7 @@ final class TransportBehaviorTests: XCTestCase {
       encoder: ArcaneJSON.makeEncoder()
     )
 
-    await MockURLProtocol.setHandler { request in
+    await mock.setHandler { request in
       let response = try XCTUnwrap(
         HTTPURLResponse(
           url: XCTUnwrap(request.url),
@@ -146,7 +147,7 @@ final class TransportBehaviorTests: XCTestCase {
       let data: TokenRefreshResponse
     }
 
-    await MockURLProtocol.reset()
+    await mock.reset()
     let session = makeMockURLSession()
     let expiredTokens = TokenPair(
       accessToken: "expired-access-token",
@@ -170,7 +171,7 @@ final class TransportBehaviorTests: XCTestCase {
       encoder: ArcaneJSON.makeEncoder()
     )
 
-    await MockURLProtocol.setHandler { request in
+    await mock.setHandler { request in
       let response = try XCTUnwrap(
         HTTPURLResponse(
           url: XCTUnwrap(request.url),
@@ -191,7 +192,7 @@ final class TransportBehaviorTests: XCTestCase {
     }
 
     let headers = try await authManager.authenticationHeaders()
-    let requestCount = await MockURLProtocol.requestCount()
+    let requestCount = await mock.requestCount()
     let storedTokens = try await store.loadTokens()
 
     XCTAssertEqual(requestCount, 1)
@@ -200,7 +201,7 @@ final class TransportBehaviorTests: XCTestCase {
   }
 
   func testAuthenticationHeadersFallBackToStaleTokenWhenRefreshFails() async throws {
-    await MockURLProtocol.reset()
+    await mock.reset()
     let session = makeMockURLSession()
     let expiredTokens = TokenPair(
       accessToken: "expired-access-token",
@@ -217,7 +218,7 @@ final class TransportBehaviorTests: XCTestCase {
       encoder: ArcaneJSON.makeEncoder()
     )
 
-    await MockURLProtocol.setHandler { request in
+    await mock.setHandler { request in
       let response = try XCTUnwrap(
         HTTPURLResponse(
           url: XCTUnwrap(request.url),
@@ -230,20 +231,20 @@ final class TransportBehaviorTests: XCTestCase {
     }
 
     let headers = try await authManager.authenticationHeaders()
-    let firstRequestCount = await MockURLProtocol.requestCount()
+    let firstRequestCount = await mock.requestCount()
     XCTAssertEqual(headers["Authorization"], "Bearer \(expiredTokens.accessToken)")
     XCTAssertEqual(firstRequestCount, 1)
 
     // A failed proactive refresh is throttled: an immediate follow-up call
     // must not hit the refresh endpoint again.
     let secondHeaders = try await authManager.authenticationHeaders()
-    let secondRequestCount = await MockURLProtocol.requestCount()
+    let secondRequestCount = await mock.requestCount()
     XCTAssertEqual(secondHeaders["Authorization"], "Bearer \(expiredTokens.accessToken)")
     XCTAssertEqual(secondRequestCount, 1)
   }
 
   func testAuthenticationHeadersDoNotRefreshValidToken() async throws {
-    await MockURLProtocol.reset()
+    await mock.reset()
     let session = makeMockURLSession()
     let validTokens = TokenPair(
       accessToken: "valid-access-token",
@@ -259,13 +260,13 @@ final class TransportBehaviorTests: XCTestCase {
       encoder: ArcaneJSON.makeEncoder()
     )
 
-    await MockURLProtocol.setHandler { _ in
+    await mock.setHandler { _ in
       XCTFail("No network request expected for a non-expired token")
       throw ArcaneError.transport("unexpected request")
     }
 
     let headers = try await authManager.authenticationHeaders()
-    let requestCount = await MockURLProtocol.requestCount()
+    let requestCount = await mock.requestCount()
     XCTAssertEqual(headers["Authorization"], "Bearer \(validTokens.accessToken)")
     XCTAssertEqual(requestCount, 0)
   }
@@ -432,7 +433,7 @@ final class TransportBehaviorTests: XCTestCase {
   private func makeMockURLSession() -> URLSession {
     let configuration = URLSessionConfiguration.ephemeral
     configuration.protocolClasses = [MockURLProtocol.self]
-    return URLSession(configuration: configuration)
+    return mock.session(configuration: configuration)
   }
 
   private func makeLoopbackTransport() -> ArcaneURLSessionTransport {

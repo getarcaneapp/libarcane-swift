@@ -4,6 +4,7 @@ import XCTest
 @testable import Arcane
 
 final class EventTemplateModelsTests: XCTestCase {
+  private let mock = MockURLProtocolSession()
   func testDecodeEventSeverityCountsAndDeletePermission() throws {
     let counts = try ArcaneJSON.makeDecoder().decode(
       EventSeverityCounts.self,
@@ -19,10 +20,10 @@ final class EventTemplateModelsTests: XCTestCase {
   }
 
   func testTemplateSourceFilterMapsToExistingTypeQuery() async throws {
-    await MockURLProtocol.reset()
+    await mock.reset()
     let client = makeMockClient()
 
-    await MockURLProtocol.setHandler { request in
+    await mock.setHandler { request in
       let components = try XCTUnwrap(URLComponents(url: XCTUnwrap(request.url), resolvingAgainstBaseURL: false))
       let query = Dictionary(uniqueKeysWithValues: (components.queryItems ?? []).map { ($0.name, $0.value) })
       XCTAssertEqual(query["type"], "true")
@@ -48,10 +49,10 @@ final class EventTemplateModelsTests: XCTestCase {
   }
 
   func testEventStatsEndpointUsesExactPath() async throws {
-    await MockURLProtocol.reset()
+    await mock.reset()
     let client = makeMockClient()
 
-    await MockURLProtocol.setHandler { request in
+    await mock.setHandler { request in
       XCTAssertEqual(request.httpMethod, "GET")
       XCTAssertEqual(request.url?.path, "/api/events/stats")
       XCTAssertNil(request.url?.query)
@@ -81,7 +82,7 @@ final class EventTemplateModelsTests: XCTestCase {
     return ArcaneClient(
       configuration: .init(
         baseURL: URL(string: "https://arcane.example.com")!,
-        urlSession: URLSession(configuration: configuration)
+        urlSession: mock.session(configuration: configuration)
       )
     )
   }

@@ -3,10 +3,11 @@ import Testing
 
 @testable import Arcane
 
-@Suite(.serialized) struct VulnerabilitiesServiceTests {
+@Suite struct VulnerabilitiesServiceTests {
+  private let mock = MockURLProtocolSession()
   @Test func overviewUsesEnvironmentRouteAndDecodesRankings() async throws {
-    await MockURLProtocol.reset()
-    await MockURLProtocol.setHandler { request in
+    await mock.reset()
+    await mock.setHandler { request in
       #expect(request.httpMethod == "GET")
       #expect(request.url?.path == "/api/environments/testing/vulnerabilities/overview")
       let body = #"""
@@ -54,7 +55,7 @@ import Testing
     configuration.protocolClasses = [MockURLProtocol.self]
     let client = ArcaneClient(configuration: .init(
       baseURL: URL(string: "https://vulnerability-contract.example")!,
-      urlSession: URLSession(configuration: configuration)))
+      urlSession: mock.session(configuration: configuration)))
 
     let overview = try await client.vulnerabilities.riskOverview(envID: .init(rawValue: "testing"))
     #expect(overview.riskScore == 72)
@@ -66,8 +67,8 @@ import Testing
   }
 
   @Test func unignoreAcceptsEmptyResponse() async throws {
-    await MockURLProtocol.reset()
-    await MockURLProtocol.setHandler { request in
+    await mock.reset()
+    await mock.setHandler { request in
       #expect(request.httpMethod == "DELETE")
       #expect(request.url?.path == "/api/environments/testing/vulnerabilities/ignore/ignore-1")
       let response = try #require(HTTPURLResponse(
@@ -80,7 +81,7 @@ import Testing
     configuration.protocolClasses = [MockURLProtocol.self]
     let client = ArcaneClient(configuration: .init(
       baseURL: URL(string: "https://vulnerability-contract.example")!,
-      urlSession: URLSession(configuration: configuration)))
+      urlSession: mock.session(configuration: configuration)))
 
     try await client.vulnerabilities.unignore(envID: .init(rawValue: "testing"), ignoreId: "ignore-1")
   }

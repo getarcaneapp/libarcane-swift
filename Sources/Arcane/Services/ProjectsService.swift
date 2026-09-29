@@ -342,27 +342,17 @@ public struct ProjectsService: Sendable {
   }
 
   /// Destroy a project, optionally removing files and/or volumes.
-  ///
-  /// The destroy options are passed as URL query parameters since the
-  /// shared ``RESTService`` DELETE helpers do not forward a request body.
+  /// Options are encoded in the DELETE body to preserve the server's safety contract.
   @discardableResult
   public func destroy(
     envID: EnvironmentID? = nil,
     projectID: String,
     options: DestroyProject? = nil
   ) async throws -> MessageResponse {
-    var items: [URLQueryItem] = []
-    if let options {
-      if let removeFiles = options.removeFiles {
-        items.append(URLQueryItem(name: "removeFiles", value: removeFiles ? "true" : "false"))
-      }
-      if let removeVolumes = options.removeVolumes {
-        items.append(URLQueryItem(name: "removeVolumes", value: removeVolumes ? "true" : "false"))
-      }
-    }
-    return try await rest.delete(
+    try await rest.transport.request(
       rest.environmentPath(envID, "projects/\(projectID)/destroy"),
-      query: items
+      method: "DELETE",
+      body: options
     )
   }
 

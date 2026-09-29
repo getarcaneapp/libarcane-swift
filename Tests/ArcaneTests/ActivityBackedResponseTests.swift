@@ -4,6 +4,7 @@ import XCTest
 @testable import Arcane
 
 final class ActivityBackedResponseTests: XCTestCase {
+  private let mock = MockURLProtocolSession()
   private let decoder = ArcaneJSON.makeDecoder()
 
   func testProjectContainerAndNetworkResponsesDecodeActivityID() throws {
@@ -115,9 +116,9 @@ final class ActivityBackedResponseTests: XCTestCase {
   }
 
   func testActivityBackedMessageMutationsReturnResponses() async throws {
-    await MockURLProtocol.reset()
+    await mock.reset()
     let client = makeClient()
-    await MockURLProtocol.setHandler { request in
+    await mock.setHandler { request in
       let response = try XCTUnwrap(
         HTTPURLResponse(
           url: XCTUnwrap(request.url),
@@ -190,7 +191,7 @@ final class ActivityBackedResponseTests: XCTestCase {
     return ArcaneClient(
       configuration: .init(
         baseURL: URL(string: "https://arcane.example.com")!,
-        urlSession: URLSession(configuration: configuration)
+        urlSession: mock.session(configuration: configuration)
       )
     )
   }

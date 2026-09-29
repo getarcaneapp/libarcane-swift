@@ -1,4 +1,7 @@
 import Foundation
+import Testing
+
+@testable import Arcane
 
 enum MockURLProtocolResult: Sendable {
   case complete(HTTPURLResponse, Data)
@@ -16,10 +19,12 @@ actor MockURLProtocolHandlerStore {
 
   private var handler: Handler?
   private var requestCount = 0
+  private var stopLoadingCount = 0
 
   func reset() {
     handler = nil
     requestCount = 0
+    stopLoadingCount = 0
   }
 
   func setHandler(_ handler: @escaping Handler) {
@@ -34,23 +39,34 @@ actor MockURLProtocolHandlerStore {
     return try await handler(request)
   }
 
+  func recordStopLoading() { stopLoadingCount += 1 }
+  func recordedStopLoadingCount() -> Int { stopLoadingCount }
+
   func recordedRequestCount() -> Int {
     requestCount
   }
 }
 
-final class MockURLProtocol: URLProtocol, @unchecked Sendable {
-  private static let store = MockURLProtocolHandlerStore()
-  private static let stopLoadingLock = NSLock()
-  nonisolated(unsafe) private static var recordedStopLoadingCount = 0
-  private var loadingTask: Task<Void, Never>?
+/// Each test owns a scope; the session header selects its transport state.
+/// The registry only routes requests and never shares handlers or counters.
+final class MockURLProtocolSession: Sendable {
+  private let id = UUID().uuidString
+  private let store = MockURLProtocolHandlerStore()
 
-  static func reset() async {
-    await store.reset()
-    resetRecordedStopLoadingCount()
+  init() { MockURLProtocol.registry.register(store, id: id) }
+  deinit { MockURLProtocol.registry.remove(id: id) }
+
+  func session(configuration: URLSessionConfiguration = .ephemeral) -> URLSession {
+    configuration.protocolClasses = [MockURLProtocol.self]
+    var headers = configuration.httpAdditionalHeaders ?? [:]
+    headers[MockURLProtocol.scopeHeader] = id
+    configuration.httpAdditionalHeaders = headers
+    return URLSession(configuration: configuration)
   }
 
-  static func setHandler(
+  func reset() async { await store.reset() }
+
+  func setHandler(
     _ handler: @escaping @Sendable (URLRequest) async throws -> (HTTPURLResponse, Data)
   ) async {
     await store.setHandler { request in
@@ -59,7 +75,7 @@ final class MockURLProtocol: URLProtocol, @unchecked Sendable {
     }
   }
 
-  static func setStreamingHandler(
+  func setStreamingHandler(
     _ handler: @escaping @Sendable (URLRequest) async throws -> MockURLProtocolStreamResponse
   ) async {
     await store.setHandler { request in
@@ -68,40 +84,51 @@ final class MockURLProtocol: URLProtocol, @unchecked Sendable {
     }
   }
 
-  static func requestCount() async -> Int {
-    await store.recordedRequestCount()
+  func requestCount() async -> Int { await store.recordedRequestCount() }
+  func stopLoadingCount() async -> Int { await store.recordedStopLoadingCount() }
+}
+
+final class MockURLProtocolRegistry: @unchecked Sendable {
+  private let lock = NSLock()
+  private var stores: [String: MockURLProtocolHandlerStore] = [:]
+
+  func register(_ store: MockURLProtocolHandlerStore, id: String) {
+    lock.lock()
+    defer { lock.unlock() }
+    stores[id] = store
   }
 
-  static func stopLoadingCount() async -> Int {
-    recordedStopCount()
+  func remove(id: String) {
+    lock.lock()
+    defer { lock.unlock() }
+    stores.removeValue(forKey: id)
   }
 
-  private static func resetRecordedStopLoadingCount() {
-    stopLoadingLock.lock()
-    recordedStopLoadingCount = 0
-    stopLoadingLock.unlock()
+  func store(for id: String?) -> MockURLProtocolHandlerStore? {
+    lock.lock()
+    defer { lock.unlock() }
+    return id.flatMap { stores[$0] }
   }
+}
 
-  private static func recordedStopCount() -> Int {
-    stopLoadingLock.lock()
-    defer { stopLoadingLock.unlock() }
-    return recordedStopLoadingCount
-  }
+final class MockURLProtocol: URLProtocol, @unchecked Sendable {
+  static let registry = MockURLProtocolRegistry()
+  static let scopeHeader = "X-Arcane-Test-Scope"
+  private var loadingTask: Task<Void, Never>?
+  private var store: MockURLProtocolHandlerStore?
 
   // swiftlint:disable static_over_final_class
-  override class func canInit(with request: URLRequest) -> Bool {
-    true
-  }
-
-  override class func canonicalRequest(for request: URLRequest) -> URLRequest {
-    request
-  }
+  override class func canInit(with request: URLRequest) -> Bool { true }
+  override class func canonicalRequest(for request: URLRequest) -> URLRequest { request }
   // swiftlint:enable static_over_final_class
 
   override func startLoading() {
+    let store = Self.registry.store(for: request.value(forHTTPHeaderField: Self.scopeHeader))
+    self.store = store
     loadingTask = Task {
       do {
-        let result = try await Self.store.handle(request)
+        guard let store else { throw URLError(.badServerResponse) }
+        let result = try await store.handle(request)
         let response: HTTPURLResponse
         let chunks: [Data]
         let holdOpen: Bool
@@ -122,11 +149,7 @@ final class MockURLProtocol: URLProtocol, @unchecked Sendable {
           await Task.yield()
         }
         if holdOpen {
-          do {
-            try await Task.sleep(for: .seconds(3_600))
-          } catch {
-            return
-          }
+          do { try await Task.sleep(for: .seconds(3_600)) } catch { return }
         }
         guard !Task.isCancelled else { return }
         client?.urlProtocolDidFinishLoading(self)
@@ -140,8 +163,21 @@ final class MockURLProtocol: URLProtocol, @unchecked Sendable {
   override func stopLoading() {
     loadingTask?.cancel()
     loadingTask = nil
-    Self.stopLoadingLock.lock()
-    Self.recordedStopLoadingCount += 1
-    Self.stopLoadingLock.unlock()
+    if let store { Task { await store.recordStopLoading() } }
+  }
+}
+
+func mockRequestBody(_ request: URLRequest) throws -> Data {
+  if let data = request.httpBody { return data }
+  let stream = try #require(request.httpBodyStream)
+  stream.open()
+  defer { stream.close() }
+  var result = Data()
+  var bytes = [UInt8](repeating: 0, count: 4096)
+  while true {
+    let count = stream.read(&bytes, maxLength: bytes.count)
+    guard count >= 0 else { throw ArcaneError.transport("Unable to read test request") }
+    if count == 0 { return result }
+    result.append(bytes, count: count)
   }
 }

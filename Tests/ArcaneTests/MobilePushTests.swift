@@ -4,14 +4,15 @@ import XCTest
 @testable import Arcane
 
 final class MobilePushTests: XCTestCase {
+  private let mock = MockURLProtocolSession()
   func testCapabilityFlagFromEnabledFeatures() {
     XCTAssertFalse(ServerCapabilities(mode: .rbac).supportsMobilePush)
     XCTAssertTrue(ServerCapabilities(mode: .rbac, enabledFeatures: ["mobile-push-v1"]).supportsMobilePush)
   }
 
   func testStatusDecodesAndPayloadParsesFromUserInfo() async throws {
-    await MockURLProtocol.reset()
-    await MockURLProtocol.setHandler { request in
+    await mock.reset()
+    await mock.setHandler { request in
       XCTAssertEqual(request.url?.path, "/api/apns/status")
       let body = """
         {"success":true,"data":{"enabled":true,"channelId":"ch_1","relayUrl":"https://apns.getarcane.app",
@@ -27,7 +28,7 @@ final class MobilePushTests: XCTestCase {
     let client = ArcaneClient(
       configuration: .init(
         baseURL: URL(string: "https://arcane.example.com")!,
-        urlSession: URLSession(configuration: configuration)))
+        urlSession: mock.session(configuration: configuration)))
 
     let status = try await client.mobilePush.status()
     XCTAssertTrue(status.enabled)

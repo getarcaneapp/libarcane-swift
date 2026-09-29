@@ -21,13 +21,14 @@ public struct PasskeysService: Sendable {
     ceremonyId: String,
     credential: PasskeyCredential
   ) async throws -> AuthenticationResult {
+    let generation = try await authManager.beginAuthenticationOperation()
     let result: AuthenticationResult = try await rest.transport.request(
       "auth/passkey/login/finish",
       method: "POST",
       body: PasskeyFinishRequest(ceremonyId: ceremonyId, credential: credential),
       authorized: false
     )
-    try await authManager.save(authenticationResult: result)
+    try await authManager.save(authenticationResult: result, generation: generation)
     return result
   }
 
@@ -35,6 +36,7 @@ public struct PasskeysService: Sendable {
     transactionId: String,
     codeVerifier: String
   ) async throws -> AuthenticationResult {
+    let generation = try await authManager.beginAuthenticationOperation()
     let result: AuthenticationResult = try await rest.transport.request(
       "auth/passkey/mobile/exchange",
       method: "POST",
@@ -44,7 +46,7 @@ public struct PasskeysService: Sendable {
       ),
       authorized: false
     )
-    try await authManager.save(authenticationResult: result)
+    try await authManager.save(authenticationResult: result, generation: generation)
     return result
   }
 
@@ -61,13 +63,14 @@ public struct PasskeysService: Sendable {
     transactionId: String,
     credential: PasskeyCredential
   ) async throws -> AuthenticationResult {
+    let generation = try await authManager.beginAuthenticationOperation()
     let result: AuthenticationResult = try await rest.transport.request(
       "auth/mfa/passkey/finish",
       method: "POST",
       body: MFAFinishRequest(transactionId: transactionId, credential: credential),
       authorized: false
     )
-    try await authManager.save(authenticationResult: result)
+    try await authManager.save(authenticationResult: result, generation: generation)
     return result
   }
 
@@ -75,13 +78,14 @@ public struct PasskeysService: Sendable {
     transactionId: String,
     code: String
   ) async throws -> AuthenticationResult {
+    let generation = try await authManager.beginAuthenticationOperation()
     let result: AuthenticationResult = try await rest.transport.request(
       "auth/mfa/recovery",
       method: "POST",
       body: RecoveryCodeRequest(transactionId: transactionId, code: code),
       authorized: false
     )
-    try await authManager.save(authenticationResult: result)
+    try await authManager.save(authenticationResult: result, generation: generation)
     return result
   }
 

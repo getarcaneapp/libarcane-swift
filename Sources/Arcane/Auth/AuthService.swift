@@ -30,17 +30,19 @@ public struct AuthService: Sendable {
   public func authenticate(username: String, password: String) async throws
     -> AuthenticationResult
   {
+    let generation = try await authManager.beginAuthenticationOperation()
     let result: AuthenticationResult = try await transport.request(
       "auth/login",
       method: "POST",
       body: LoginRequest(username: username, password: password),
       authorized: false
     )
-    try await authManager.save(authenticationResult: result)
+    try await authManager.save(authenticationResult: result, generation: generation)
     return result
   }
 
   public func logout() async throws {
+    let generation = await authManager.currentCredentialGeneration()
     var remoteError: Error?
     do {
       let _: MessageResponse = try await transport.request(
@@ -50,7 +52,7 @@ public struct AuthService: Sendable {
     }
 
     do {
-      try await authManager.clear()
+      try await authManager.clear(ifCredentialGenerationMatches: generation)
     } catch {
       // Local credential removal is the security-critical outcome. If both
       // operations fail, report this failure rather than the revocation error.
@@ -134,11 +136,12 @@ public struct AuthService: Sendable {
     state: String,
     mobileRedirectURI: String
   ) async throws -> AuthenticationResult {
+    let generation = try await authManager.beginAuthenticationOperation()
     let body = OIDCCallbackRequest(code: code, state: state, mobileRedirectUri: mobileRedirectURI)
     let data = try await transport.rawRequest(
       "oidc/callback", method: "POST", body: body, authorized: false)
     let result = try decodeOIDC(AuthenticationResult.self, from: data)
-    try await authManager.save(authenticationResult: result)
+    try await authManager.save(authenticationResult: result, generation: generation)
     return result
   }
 
@@ -151,6 +154,7 @@ public struct AuthService: Sendable {
 
   @discardableResult
   public func oidcDeviceToken(deviceCode: String) async throws -> OIDCDeviceTokenResponse {
+    let generation = try await authManager.beginAuthenticationOperation()
     let body = OIDCDeviceTokenRequest(deviceCode: deviceCode)
     let data = try await transport.rawRequest(
       "oidc/device/token", method: "POST", body: body, authorized: false)
@@ -158,8 +162,7 @@ public struct AuthService: Sendable {
     let tokens = TokenPair(
       accessToken: response.token, refreshToken: response.refreshToken,
       expiresAt: response.expiresAt)
-    try await authManager.save(tokens: tokens)
-    await authManager.recordCapabilities(from: response.user)
+    try await authManager.save(tokens: tokens, user: response.user, generation: generation)
     return response
   }
 

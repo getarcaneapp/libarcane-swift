@@ -4,11 +4,12 @@ import XCTest
 @testable import Arcane
 
 final class ContainerPaginationTests: XCTestCase {
+  private let mock = MockURLProtocolSession()
   func testContainerListDecodesTopLevelPaginationAndSkipsMalformedRows() async throws {
-    await MockURLProtocol.reset()
+    await mock.reset()
     let client = makeMockClient()
 
-    await MockURLProtocol.setHandler { request in
+    await mock.setHandler { request in
       let components = try XCTUnwrap(
         URLComponents(url: XCTUnwrap(request.url), resolvingAgainstBaseURL: false)
       )
@@ -118,7 +119,7 @@ final class ContainerPaginationTests: XCTestCase {
     return ArcaneClient(
       configuration: .init(
         baseURL: URL(string: "https://arcane.example.com")!,
-        urlSession: URLSession(configuration: configuration)
+        urlSession: mock.session(configuration: configuration)
       )
     )
   }

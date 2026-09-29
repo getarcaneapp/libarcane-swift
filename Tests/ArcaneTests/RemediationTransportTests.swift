@@ -4,6 +4,7 @@ import XCTest
 @testable import Arcane
 
 final class RemediationTransportTests: XCTestCase {
+  private let mock = MockURLProtocolSession()
   func testPublic401DoesNotClearAnActiveSession() async throws {
     let tokens = tokenPair(access: "active", refresh: "refresh")
     let store = InMemoryTokenStore(tokens: tokens)
@@ -28,8 +29,8 @@ final class RemediationTransportTests: XCTestCase {
     let replacementTokens = tokenPair(access: "replacement", refresh: "", lifetime: 7_200)
     let store = InMemoryTokenStore(tokens: oldTokens)
     let client = makeClient(store: store)
-    await MockURLProtocol.reset()
-    await MockURLProtocol.setHandler { request in
+    await mock.reset()
+    await mock.setHandler { request in
       try await Task.sleep(for: .milliseconds(100))
       return (try Self.response(for: request, status: 401), Data())
     }
@@ -51,8 +52,8 @@ final class RemediationTransportTests: XCTestCase {
   func testOfflineLogoutStillClearsLocalCredentials() async throws {
     let store = InMemoryTokenStore(tokens: tokenPair(access: "active", refresh: "refresh"))
     let client = makeClient(store: store)
-    await MockURLProtocol.reset()
-    await MockURLProtocol.setHandler { _ in throw URLError(.notConnectedToInternet) }
+    await mock.reset()
+    await mock.setHandler { _ in throw URLError(.notConnectedToInternet) }
 
     do {
       try await client.auth.logout()
@@ -73,8 +74,8 @@ final class RemediationTransportTests: XCTestCase {
       tokens: tokenPair(access: "old", refresh: "refresh", lifetime: -60)
     )
     let client = makeClient(store: store)
-    await MockURLProtocol.reset()
-    await MockURLProtocol.setHandler { request in
+    await mock.reset()
+    await mock.setHandler { request in
       try await Task.sleep(for: .milliseconds(150))
       let refreshed = TokenRefreshResponse(
         token: "new",
@@ -102,8 +103,8 @@ final class RemediationTransportTests: XCTestCase {
 
   func testCancelledURLRequestThrowsCancellationError() async throws {
     let client = makeClient()
-    await MockURLProtocol.reset()
-    await MockURLProtocol.setHandler { _ in throw URLError(.cancelled) }
+    await mock.reset()
+    await mock.setHandler { _ in throw URLError(.cancelled) }
 
     do {
       _ = try await client.transport.rawRequest(
@@ -118,8 +119,8 @@ final class RemediationTransportTests: XCTestCase {
   func testDestinationDownloadRetriesAndAtomicallyReplacesFile() async throws {
     let counter = RemediationCallCounter()
     let client = makeClient(maxAttempts: 2)
-    await MockURLProtocol.reset()
-    await MockURLProtocol.setHandler { request in
+    await mock.reset()
+    await mock.setHandler { request in
       let attempt = await counter.increment()
       return (
         try Self.response(for: request, status: attempt == 1 ? 503 : 200),
@@ -154,7 +155,7 @@ final class RemediationTransportTests: XCTestCase {
       configuration: .init(
         baseURL: URL(string: "https://arcane.example.com")!,
         tokenStore: store,
-        urlSession: URLSession(configuration: configuration),
+        urlSession: mock.session(configuration: configuration),
         retryPolicy: .init(
           maxAttempts: maxAttempts,
           baseBackoff: .milliseconds(1),
@@ -177,8 +178,8 @@ final class RemediationTransportTests: XCTestCase {
   }
 
   private func respond(status: Int) async {
-    await MockURLProtocol.reset()
-    await MockURLProtocol.setHandler { request in
+    await mock.reset()
+    await mock.setHandler { request in
       (try Self.response(for: request, status: status), Data())
     }
   }
@@ -192,10 +193,10 @@ final class RemediationTransportTests: XCTestCase {
 
   private func waitForRequestCount(_ expectedCount: Int) async throws {
     let deadline = Date().addingTimeInterval(1)
-    while await MockURLProtocol.requestCount() < expectedCount, Date() < deadline {
+    while await mock.requestCount() < expectedCount, Date() < deadline {
       try await Task.sleep(for: .milliseconds(10))
     }
-    let requestCount = await MockURLProtocol.requestCount()
+    let requestCount = await mock.requestCount()
     XCTAssertEqual(requestCount, expectedCount)
   }
 }

@@ -128,12 +128,12 @@ extension JSONValue {
   }
 
   public var intValue: Int? {
-    if case .number(let value) = self { return Int(value) }
+    if case .number(let value) = self { return Int(exactly: value.rounded(.towardZero)) }
     return nil
   }
 
   public var int64Value: Int64? {
-    if case .number(let value) = self { return Int64(value) }
+    if case .number(let value) = self { return Int64(exactly: value.rounded(.towardZero)) }
     return nil
   }
 

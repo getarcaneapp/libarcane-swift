@@ -4,6 +4,7 @@ import XCTest
 @testable import Arcane
 
 final class SwarmLifecycleModelsTests: XCTestCase {
+  private let mock = MockURLProtocolSession()
   private let decoder = ArcaneJSON.makeDecoder()
   private let encoder = ArcaneJSON.makeEncoder()
 
@@ -101,10 +102,10 @@ final class SwarmLifecycleModelsTests: XCTestCase {
   }
 
   func testReconcileEndpointSendsRequiredEmptyJSONBody() async throws {
-    await MockURLProtocol.reset()
+    await mock.reset()
     let client = makeMockClient()
 
-    await MockURLProtocol.setHandler { request in
+    await mock.setHandler { request in
       XCTAssertEqual(request.httpMethod, "POST")
       XCTAssertEqual(request.url?.path, "/api/environments/manager_1/swarm/nodes/agents/reconcile")
       XCTAssertEqual(request.value(forHTTPHeaderField: "Content-Type"), "application/json")
@@ -125,10 +126,10 @@ final class SwarmLifecycleModelsTests: XCTestCase {
   }
 
   func testJoinCandidatesEndpointUsesExactPath() async throws {
-    await MockURLProtocol.reset()
+    await mock.reset()
     let client = makeMockClient()
 
-    await MockURLProtocol.setHandler { request in
+    await mock.setHandler { request in
       XCTAssertEqual(request.httpMethod, "GET")
       XCTAssertEqual(request.url?.path, "/api/environments/manager_1/swarm/join-candidates")
       XCTAssertNil(request.url?.query)
@@ -152,7 +153,7 @@ final class SwarmLifecycleModelsTests: XCTestCase {
   }
 
   func testJoinEnvironmentsEndpointUsesExactPathBodyAndBatchHeader() async throws {
-    await MockURLProtocol.reset()
+    await mock.reset()
     let client = makeMockClient()
     let joinRequest = SwarmJoinEnvironmentsRequest(
       remoteAddrs: ["10.0.0.2:2377"],
@@ -169,7 +170,7 @@ final class SwarmLifecycleModelsTests: XCTestCase {
     )
     let options = try ArcaneRequestOptions(activityBatchID: "easy_join_1")
 
-    await MockURLProtocol.setHandler { request in
+    await mock.setHandler { request in
       XCTAssertEqual(request.httpMethod, "POST")
       XCTAssertEqual(request.url?.path, "/api/environments/manager_1/swarm/join-environments")
       XCTAssertNil(request.url?.query)
@@ -225,7 +226,7 @@ final class SwarmLifecycleModelsTests: XCTestCase {
     return ArcaneClient(
       configuration: .init(
         baseURL: URL(string: "https://arcane.example.com")!,
-        urlSession: URLSession(configuration: configuration)
+        urlSession: mock.session(configuration: configuration)
       )
     )
   }

@@ -4,10 +4,11 @@ import XCTest
 @testable import Arcane
 
 final class SidebarParityContractsTests: XCTestCase {
+  private let mock = MockURLProtocolSession()
   func testImageHistoryDecodingAndRequestPath() async throws {
-    await MockURLProtocol.reset()
+    await mock.reset()
     let client = makeClient()
-    await MockURLProtocol.setHandler { request in
+    await mock.setHandler { request in
       XCTAssertEqual(request.httpMethod, "GET")
       XCTAssertEqual(request.url?.path, "/api/environments/fleet/images/sha256:abc/history")
       return try response(
@@ -32,9 +33,9 @@ final class SidebarParityContractsTests: XCTestCase {
   }
 
   func testSelectiveProjectRestartUsesRepeatedQueryParameters() async throws {
-    await MockURLProtocol.reset()
+    await mock.reset()
     let client = makeClient()
-    await MockURLProtocol.setHandler { request in
+    await mock.setHandler { request in
       XCTAssertEqual(request.httpMethod, "POST")
       XCTAssertEqual(request.url?.path, "/api/environments/0/projects/project/restart")
       let items = URLComponents(url: try XCTUnwrap(request.url), resolvingAgainstBaseURL: false)?
@@ -54,9 +55,9 @@ final class SidebarParityContractsTests: XCTestCase {
   }
 
   func testWholeProjectRestartOmitsServiceQuery() async throws {
-    await MockURLProtocol.reset()
+    await mock.reset()
     let client = makeClient()
-    await MockURLProtocol.setHandler { request in
+    await mock.setHandler { request in
       XCTAssertNil(request.url?.query)
       return try response(
         for: request,
@@ -105,7 +106,7 @@ final class SidebarParityContractsTests: XCTestCase {
     return ArcaneClient(
       configuration: .init(
         baseURL: URL(string: "https://arcane.example.com/api")!,
-        urlSession: URLSession(configuration: configuration)
+        urlSession: mock.session(configuration: configuration)
       )
     )
   }

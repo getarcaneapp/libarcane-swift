@@ -4,6 +4,7 @@ import XCTest
 @testable import Arcane
 
 final class OperationStreamTests: XCTestCase {
+  private let mock = MockURLProtocolSession()
   func testOperationEventDecodesCurrentAndLegacyFrames() throws {
     let decoder = ArcaneJSON.makeDecoder()
     let current = try decoder.decode(
@@ -44,9 +45,9 @@ final class OperationStreamTests: XCTestCase {
   }
 
   func testDoneFrameFinishesSplitStreamAndCancelsHeldRequest() async throws {
-    await MockURLProtocol.reset()
+    await mock.reset()
     let client = makeClient()
-    await MockURLProtocol.setStreamingHandler { request in
+    await mock.setStreamingHandler { request in
       let response = try Self.streamResponse(for: request)
       return MockURLProtocolStreamResponse(
         response: response,
@@ -101,9 +102,9 @@ final class OperationStreamTests: XCTestCase {
     ]
 
     for operation in operations {
-      await MockURLProtocol.reset()
+      await mock.reset()
       let client = makeClient()
-      await MockURLProtocol.setStreamingHandler { request in
+      await mock.setStreamingHandler { request in
         MockURLProtocolStreamResponse(
           response: try Self.streamResponse(for: request),
           chunks: [
@@ -121,9 +122,9 @@ final class OperationStreamTests: XCTestCase {
   }
 
   func testOperationErrorFrameThrowsTypedServerError() async throws {
-    await MockURLProtocol.reset()
+    await mock.reset()
     let client = makeClient()
-    await MockURLProtocol.setStreamingHandler { request in
+    await mock.setStreamingHandler { request in
       MockURLProtocolStreamResponse(
         response: try Self.streamResponse(for: request),
         chunks: [
@@ -158,9 +159,9 @@ final class OperationStreamTests: XCTestCase {
   }
 
   func testConsumerCancellationCleansUpRequest() async throws {
-    await MockURLProtocol.reset()
+    await mock.reset()
     let client = makeClient()
-    await MockURLProtocol.setStreamingHandler { request in
+    await mock.setStreamingHandler { request in
       MockURLProtocolStreamResponse(
         response: try Self.streamResponse(for: request),
         chunks: [
@@ -183,9 +184,9 @@ final class OperationStreamTests: XCTestCase {
   }
 
   func testActivityStreamRemainsOpenUntilConsumerCancellation() async throws {
-    await MockURLProtocol.reset()
+    await mock.reset()
     let client = makeClient()
-    await MockURLProtocol.setStreamingHandler { request in
+    await mock.setStreamingHandler { request in
       MockURLProtocolStreamResponse(
         response: try Self.streamResponse(for: request),
         chunks: [
@@ -202,9 +203,9 @@ final class OperationStreamTests: XCTestCase {
   }
 
   func testDashboardStreamRemainsOpenUntilConsumerCancellation() async throws {
-    await MockURLProtocol.reset()
+    await mock.reset()
     let client = makeClient()
-    await MockURLProtocol.setStreamingHandler { request in
+    await mock.setStreamingHandler { request in
       MockURLProtocolStreamResponse(
         response: try Self.streamResponse(for: request),
         chunks: [
@@ -226,7 +227,7 @@ final class OperationStreamTests: XCTestCase {
     return ArcaneClient(
       configuration: .init(
         baseURL: URL(string: "https://arcane.example.com/base")!,
-        urlSession: URLSession(configuration: configuration)
+        urlSession: mock.session(configuration: configuration)
       )
     )
   }
@@ -287,14 +288,14 @@ final class OperationStreamTests: XCTestCase {
   }
 
   private func waitForRequestStart() async throws {
-    try await waitUntil {
-      await MockURLProtocol.requestCount() > 0
+    try await waitUntil { [mock] in
+      await mock.requestCount() > 0
     }
   }
 
   private func waitForRequestCleanup() async throws {
-    try await waitUntil {
-      await MockURLProtocol.stopLoadingCount() > 0
+    try await waitUntil { [mock] in
+      await mock.stopLoadingCount() > 0
     }
   }
 

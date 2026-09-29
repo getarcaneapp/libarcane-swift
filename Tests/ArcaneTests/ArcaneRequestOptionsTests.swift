@@ -4,6 +4,7 @@ import XCTest
 @testable import Arcane
 
 final class ArcaneRequestOptionsTests: XCTestCase {
+  private let mock = MockURLProtocolSession()
   func testActivityBatchIDValidationMatchesBackendContract() throws {
     let valid = [
       "batch_ABC-123",
@@ -31,14 +32,14 @@ final class ArcaneRequestOptionsTests: XCTestCase {
   }
 
   func testTaskScopedBatchIDIsReappliedAcrossRetries() async throws {
-    await MockURLProtocol.reset()
+    await mock.reset()
     let recorder = RequestOptionsRecorder()
     let configuration = URLSessionConfiguration.ephemeral
     configuration.protocolClasses = [MockURLProtocol.self]
     let client = ArcaneClient(
       configuration: .init(
         baseURL: URL(string: "https://arcane.example.com/base")!,
-        urlSession: URLSession(configuration: configuration),
+        urlSession: mock.session(configuration: configuration),
         retryPolicy: .init(
           maxAttempts: 2,
           baseBackoff: .milliseconds(1),
@@ -47,7 +48,7 @@ final class ArcaneRequestOptionsTests: XCTestCase {
       )
     )
 
-    await MockURLProtocol.setHandler { request in
+    await mock.setHandler { request in
       let attempt = await recorder.record(request)
       let response = try XCTUnwrap(
         HTTPURLResponse(
