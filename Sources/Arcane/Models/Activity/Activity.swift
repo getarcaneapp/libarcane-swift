@@ -394,7 +394,17 @@ public struct ActivityStreamEvent: Codable, Hashable, Sendable {
     self.timestamp = timestamp
   }
 
+  private enum EnvelopeCodingKeys: String, CodingKey {
+    case channel
+    case activity
+  }
+
   public init(from decoder: Decoder) throws {
+    let envelope = try decoder.container(keyedBy: EnvelopeCodingKeys.self)
+    if try envelope.decodeIfPresent(String.self, forKey: .channel) == "activities" {
+      self = try envelope.decode(Self.self, forKey: .activity)
+      return
+    }
     let container = try decoder.container(keyedBy: CodingKeys.self)
     type = try container.decode(ActivityStreamEventType.self, forKey: .type)
     environmentID = try container.decodeIfPresent(String.self, forKey: .environmentID)

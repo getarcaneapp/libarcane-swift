@@ -20,6 +20,7 @@ public struct NDJSONStream<Element: Decodable & Sendable>: AsyncSequence, Sendab
   private let transport: ArcaneURLSessionTransport
   private let path: String
   private let source: Source
+  private let notFoundFallback: (path: String, source: Source)?
   private let terminalAction: (@Sendable (Element) -> NDJSONStreamTerminalAction)?
 
   init(
@@ -29,11 +30,15 @@ public struct NDJSONStream<Element: Decodable & Sendable>: AsyncSequence, Sendab
     body: Data?,
     contentType: String? = "application/json",
     query: [URLQueryItem] = [],
+    notFoundFallback: (path: String, query: [URLQueryItem])? = nil,
     terminalAction: (@Sendable (Element) -> NDJSONStreamTerminalAction)? = nil
   ) {
     self.transport = transport
     self.path = path
     self.source = .body(method: method, body: body, contentType: contentType, query: query)
+    self.notFoundFallback = notFoundFallback.map {
+      ($0.path, .body(method: method, body: body, contentType: contentType, query: $0.query))
+    }
     self.terminalAction = terminalAction
   }
 
@@ -41,6 +46,7 @@ public struct NDJSONStream<Element: Decodable & Sendable>: AsyncSequence, Sendab
     self.transport = transport
     self.path = endpoint.path
     self.source = .multipart(endpoint)
+    self.notFoundFallback = nil
     self.terminalAction = nil
   }
 
@@ -48,6 +54,7 @@ public struct NDJSONStream<Element: Decodable & Sendable>: AsyncSequence, Sendab
     let transport = self.transport
     let path = self.path
     let source = self.source
+    let notFoundFallback = self.notFoundFallback
     let terminalAction = self.terminalAction
     return AsyncThrowingStream<Element, Error> { continuation in
       let task = Task {
@@ -55,9 +62,13 @@ public struct NDJSONStream<Element: Decodable & Sendable>: AsyncSequence, Sendab
           let result = try await Self.openByteStream(
             transport: transport,
             path: path,
-            source: source
+            source: source,
+            notFoundFallback: notFoundFallback
           )
-          defer { result.cleanup() }
+          defer {
+            result.bytes.task.cancel()
+            result.cleanup()
+          }
 
           guard (200..<300).contains(result.http.statusCode) else {
             var snippet = Data()
@@ -122,8 +133,10 @@ public struct NDJSONStream<Element: Decodable & Sendable>: AsyncSequence, Sendab
   private static func openByteStream(
     transport: ArcaneURLSessionTransport,
     path: String,
-    source: Source
+    source: Source,
+    notFoundFallback: (path: String, source: Source)? = nil
   ) async throws -> ByteStreamResult {
+    let result: ByteStreamResult
     switch source {
     case .body(let method, let body, let contentType, let query):
       let (bytes, http) = try await transport.byteStream(
@@ -133,7 +146,7 @@ public struct NDJSONStream<Element: Decodable & Sendable>: AsyncSequence, Sendab
         body: body,
         contentType: contentType
       )
-      return ByteStreamResult(bytes: bytes, http: http, cleanup: {})
+      result = ByteStreamResult(bytes: bytes, http: http, cleanup: {})
     case .multipart(let endpoint):
       let prepared = try transport.makeMultipartTempFile(
         fields: endpoint.fields, files: endpoint.files)
@@ -147,11 +160,22 @@ public struct NDJSONStream<Element: Decodable & Sendable>: AsyncSequence, Sendab
           query: endpoint.query,
           file: prepared
         )
-        return ByteStreamResult(bytes: bytes, http: http, cleanup: cleanup)
+        result = ByteStreamResult(bytes: bytes, http: http, cleanup: cleanup)
       } catch {
         cleanup()
         throw error
       }
     }
+    if result.http.statusCode == 404, let notFoundFallback {
+      result.bytes.task.cancel()
+      result.cleanup()
+      try Task.checkCancellation()
+      return try await openByteStream(
+        transport: transport,
+        path: notFoundFallback.path,
+        source: notFoundFallback.source
+      )
+    }
+    return result
   }
 }

@@ -126,8 +126,8 @@ final class ActivityModelsTests: XCTestCase {
     )
 
     await mock.setHandler { request in
-      XCTAssertEqual(request.url?.path, "/base/api/activities/stream")
-      XCTAssertEqual(request.url?.query, "limit=17")
+      XCTAssertEqual(request.url?.path, "/base/api/stream")
+      XCTAssertEqual(request.url?.query, "channels=activities&limit=17")
       let response = try XCTUnwrap(
         HTTPURLResponse(
           url: XCTUnwrap(request.url),

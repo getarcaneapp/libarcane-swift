@@ -9,6 +9,9 @@ final class ArcaneIntegrationTests: XCTestCase {
       throw XCTSkip("Set ARCANE_TEST_URL to run integration tests")
     }
     let client = ArcaneClient(configuration: .init(baseURL: url, tokenStore: InMemoryTokenStore()))
-    let _: AnyDecodable = try await client.rest.get("health")
+    // Health returns an unwrapped status object on current backends.
+    let data = try await client.transport.rawRequest(
+      "health", method: "GET", body: Optional<String>.none, authorized: false)
+    _ = try ArcaneJSON.makeDecoder().decode(AnyDecodable.self, from: data)
   }
 }

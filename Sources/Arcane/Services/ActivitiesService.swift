@@ -48,15 +48,23 @@ public struct ActivitiesService: Sendable {
     )
   }
 
-  /// Stream activity snapshots and updates as NDJSON.
+  /// Stream activity snapshots and updates as NDJSON. Uses the multiplexed
+  /// activities channel, falling back to the older v2 endpoint only on HTTP 404.
   public func stream(limit: Int = 50) -> NDJSONStream<ActivityStreamEvent> {
     NDJSONStream(
       transport: rest.transport,
-      path: "activities/stream",
+      path: "stream",
       method: "GET",
       body: nil,
       contentType: nil,
-      query: [URLQueryItem(name: "limit", value: "\(limit)")]
+      query: [
+        URLQueryItem(name: "channels", value: "activities"),
+        URLQueryItem(name: "limit", value: "\(limit)")
+      ],
+      notFoundFallback: (
+        path: "activities/stream",
+        query: [URLQueryItem(name: "limit", value: "\(limit)")]
+      )
     )
   }
 
