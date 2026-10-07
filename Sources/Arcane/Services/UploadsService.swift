@@ -26,7 +26,7 @@ public struct UploadsService: Sendable {
     envID: EnvironmentID? = nil, kind: UploadKind, id: String, index: Int, data: Data
   ) async throws -> UploadSession {
     let response = try await rest.transport.rawDataRequest(
-      rest.environmentPath(envID, "uploads/\(kind.rawValue)/\(id)/chunks/\(index)"), body: data)
+      rest.environmentPath(envID, "uploads/\(kind.rawValue)/\(id)/chunks/\(index)"), body: data, expectsJSONResponse: true)
     return try rest.transport.decoder.decode(APIResponse<UploadSession>.self, from: response).data
   }
 

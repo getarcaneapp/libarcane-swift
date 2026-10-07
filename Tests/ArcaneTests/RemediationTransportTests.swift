@@ -32,7 +32,10 @@ final class RemediationTransportTests: XCTestCase {
     await mock.reset()
     await mock.setHandler { request in
       try await Task.sleep(for: .milliseconds(100))
-      return (try Self.response(for: request, status: 401), Data())
+      return (
+        try Self.response(for: request, status: 401),
+        Data(#"{"success":false,"error":"Unauthorized"}"#.utf8)
+      )
     }
 
     let requestTask = Task {
@@ -180,7 +183,11 @@ final class RemediationTransportTests: XCTestCase {
   private func respond(status: Int) async {
     await mock.reset()
     await mock.setHandler { request in
-      (try Self.response(for: request, status: status), Data())
+      (
+        try Self.response(for: request, status: status),
+        [401, 403].contains(status)
+          ? Data(#"{"success":false,"error":"Unauthorized"}"#.utf8) : Data()
+      )
     }
   }
 

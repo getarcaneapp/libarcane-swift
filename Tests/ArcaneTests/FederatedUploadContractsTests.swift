@@ -65,7 +65,7 @@ struct FederatedUploadContractsTests {
   }
 
   @Test func binaryTransportPropagatesForbidden() async throws {
-    FederatedUploadProtocol.handler = { _ in (403, Data(#"{"message":"forbidden"}"#.utf8)) }
+    FederatedUploadProtocol.handler = { _ in (403, Data(#"{"success":false,"message":"forbidden"}"#.utf8)) }
     await #expect(throws: ArcaneError.forbidden) {
       _ = try await makeClient().uploads.putChunk(
         kind: .volumeBackup, id: "session", index: 0, data: Data([0]))

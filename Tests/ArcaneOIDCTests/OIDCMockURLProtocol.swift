@@ -23,6 +23,14 @@ final class OIDCMockURLProtocol: URLProtocol, @unchecked Sendable {
   }
 
   override func startLoading() {
+    if let url = request.url, url.path.hasSuffix("/api/oidc/url"),
+      let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil,
+        headerFields: ["Content-Type": "application/json"]) {
+      client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
+      client?.urlProtocol(self, didLoad: Data(#"{"success":true,"authUrl":"https://idp.example.com/authorize"}"#.utf8))
+      client?.urlProtocolDidFinishLoading(self)
+      return
+    }
     guard let url = request.url, url.path.hasSuffix("/api/oidc/callback") else {
       client?.urlProtocol(self, didFailWithError: URLError(.unsupportedURL))
       return

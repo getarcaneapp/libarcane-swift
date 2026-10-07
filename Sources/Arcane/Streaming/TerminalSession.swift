@@ -14,11 +14,13 @@ public final class TerminalSession: Sendable {
   public static func connect(transport: ArcaneURLSessionTransport, path: String, shell: String)
     async throws -> TerminalSession
   {
-    let request = try await transport.websocketRequest(
+    var request = try await transport.websocketRequest(
       path: path, query: [URLQueryItem(name: "shell", value: shell)])
+    let proxyDelegate = try await transport.proxySupport.prepare(&request)
     let channel = WebSocketChannel<String, Data>(
       request: request,
       session: transport.session,
+      delegate: proxyDelegate,
       encodeOutbound: { .string($0) },
       decodeInbound: { message in
         switch message {

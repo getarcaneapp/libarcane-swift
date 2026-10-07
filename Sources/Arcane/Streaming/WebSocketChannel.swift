@@ -77,7 +77,17 @@ private actor WebSocketTaskDriver {
   }
 
   func receive() async throws -> URLSessionWebSocketTask.Message {
-    try await task.receive()
+    do {
+      return try await task.receive()
+    } catch {
+      if let response = task.response as? HTTPURLResponse,
+        let delegate = task.delegate as? ProxyRequestDelegate
+      {
+        try delegate.support.check(response)
+        if [401, 403].contains(response.statusCode) { throw ArcaneError.authenticationRejected }
+      }
+      throw error
+    }
   }
 
   func send(_ message: URLSessionWebSocketTask.Message) async throws {
@@ -109,20 +119,35 @@ private actor WebSocketTaskDriver {
 }
 
 public final class WebSocketChannel<Outbound: Sendable, Inbound: Sendable>: Sendable {
+  private let taskDelegate: (any URLSessionTaskDelegate)?
   private let operations: WebSocketOperations
   private let encodeOutbound: @Sendable (Outbound) throws -> URLSessionWebSocketTask.Message
   private let decodeInbound: @Sendable (URLSessionWebSocketTask.Message) throws -> Inbound
   private let pingInterval: Duration?
   private let closeGuard = WebSocketCloseGuard()
 
-  public init(
+  public convenience init(
     request: URLRequest,
     session: URLSession = .shared,
+    delegate: (any URLSessionTaskDelegate)? = nil,
     pingInterval: Duration? = arcaneWebSocketDefaultPingInterval,
     encodeOutbound: @escaping @Sendable (Outbound) throws -> URLSessionWebSocketTask.Message,
     decodeInbound: @escaping @Sendable (URLSessionWebSocketTask.Message) throws -> Inbound
   ) {
     let task = session.webSocketTask(with: request)
+    task.delegate = delegate
+    self.init(task: task, pingInterval: pingInterval,
+      encodeOutbound: encodeOutbound, decodeInbound: decodeInbound)
+  }
+
+  /// Starts an unresumed task created by the transport's scoped WebSocket factory.
+  public init(
+    task: URLSessionWebSocketTask,
+    pingInterval: Duration? = arcaneWebSocketDefaultPingInterval,
+    encodeOutbound: @escaping @Sendable (Outbound) throws -> URLSessionWebSocketTask.Message,
+    decodeInbound: @escaping @Sendable (URLSessionWebSocketTask.Message) throws -> Inbound
+  ) {
+    self.taskDelegate = task.delegate
     task.resume()
     let driver = WebSocketTaskDriver(task: task)
     self.operations = WebSocketOperations(
@@ -147,6 +172,7 @@ public final class WebSocketChannel<Outbound: Sendable, Inbound: Sendable>: Send
     encodeOutbound: @escaping @Sendable (Outbound) throws -> URLSessionWebSocketTask.Message,
     decodeInbound: @escaping @Sendable (URLSessionWebSocketTask.Message) throws -> Inbound
   ) {
+    self.taskDelegate = nil
     self.operations = operations
     self.encodeOutbound = encodeOutbound
     self.decodeInbound = decodeInbound

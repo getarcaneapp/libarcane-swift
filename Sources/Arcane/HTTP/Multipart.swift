@@ -59,15 +59,18 @@ extension ArcaneURLSessionTransport {
         request.setValue("\(size)", forHTTPHeaderField: "Content-Length")
       }
       request.httpBodyStream = InputStream(url: prepared.url)
+      let proxyDelegate = try await proxySupport.prepare(&request)
       let (bytes, response): (URLSession.AsyncBytes, URLResponse)
       do {
-        (bytes, response) = try await session.bytes(for: request)
+        (bytes, response) = try await session.bytes(for: request, delegate: proxyDelegate)
       } catch {
         throw normalizedTransportError(error)
       }
       guard let http = response as? HTTPURLResponse else {
         throw ArcaneError.transport("Multipart upload did not return an HTTP response")
       }
+      await proxyDelegate.receive(http)
+      try await checkStreamResponse(http, bytes: bytes)
       if try await refreshAuthorizationIfNeeded(
         statusCode: http.statusCode,
         authorized: true,

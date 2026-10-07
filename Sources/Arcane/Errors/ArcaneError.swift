@@ -1,6 +1,8 @@
 import Foundation
 
 public enum ArcaneError: Error, Sendable, Equatable {
+  case proxyAuthenticationRequired
+  case authenticationRejected
   case unauthorized
   case forbidden
   case notFound

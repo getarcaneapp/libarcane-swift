@@ -4,7 +4,7 @@ import Testing
 import Arcane
 @testable import ArcaneOIDC
 
-@Suite("OIDC authenticator")
+@Suite("OIDC authenticator", .serialized)
 @MainActor
 struct OIDCAuthenticatorTests {
   private nonisolated enum CallbackError: Error {
@@ -237,4 +237,41 @@ struct OIDCAuthenticatorTests {
     #expect(result.tokens.accessToken == "access-token")
     #expect(OIDCMockURLProtocol.callbackRequestCount == 1)
   }
+  @Test func customBrowserUsesExistingCallbackExchange() async throws {
+    let configuration = URLSessionConfiguration.ephemeral
+    configuration.protocolClasses = [OIDCMockURLProtocol.self]
+    let client = ArcaneClient(configuration: .init(
+      baseURL: try #require(URL(string: "https://arcane.example.com")),
+      urlSession: URLSession(configuration: configuration)))
+    let authenticator = OIDCAuthenticator(client: client)
+    var browserCalls = 0
+    let result = try await authenticator.signIn(
+      callbackURLScheme: "arcane-mobile", redirectURI: "arcane-mobile://oidc-callback"
+    ) { authorizationURL, scheme in
+      browserCalls += 1
+      #expect(authorizationURL == URL(string: "https://idp.example.com/authorize"))
+      #expect(scheme == "arcane-mobile")
+      return try #require(URL(string: "arcane-mobile://oidc-callback?code=success&state=state"))
+    }
+    #expect(browserCalls == 1)
+    #expect(result.user.username == "oidc-user")
+    #expect(result.tokens.accessToken == "access-token")
+  }
+
+  @Test func customBrowserRejectsWrongCallbackScheme() async throws {
+    let configuration = URLSessionConfiguration.ephemeral
+    configuration.protocolClasses = [OIDCMockURLProtocol.self]
+    let client = ArcaneClient(configuration: .init(
+      baseURL: try #require(URL(string: "https://arcane.example.com")),
+      urlSession: URLSession(configuration: configuration)))
+    let authenticator = OIDCAuthenticator(client: client)
+    await #expect(throws: OIDCAuthenticator.SignInError.self) {
+      try await authenticator.signIn(
+        callbackURLScheme: "arcane-mobile", redirectURI: "arcane-mobile://oidc-callback"
+      ) { _, _ in
+        try #require(URL(string: "other-app://oidc-callback?code=success&state=state"))
+      }
+    }
+  }
+
 }

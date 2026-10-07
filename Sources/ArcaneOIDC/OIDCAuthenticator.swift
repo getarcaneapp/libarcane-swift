@@ -80,6 +80,27 @@ public final class OIDCAuthenticator: NSObject, ASWebAuthenticationPresentationC
     return try await completeSignIn(callbackURL: callbackURL, redirectURI: redirectURI)
   }
 
+  /// Presents authorization in an app-owned browser that shares the proxy session.
+  @discardableResult
+  public func signIn(
+    callbackURLScheme: String,
+    redirectURI: String,
+    browser: @MainActor (URL, String) async throws -> URL
+  ) async throws -> SignInResult {
+    let response = try await client.auth.oidcAuthURL(mobileRedirectURI: redirectURI)
+    guard let authorizationURL = URL(string: response.authUrl),
+      ["https", "http"].contains(authorizationURL.scheme?.lowercased() ?? "")
+    else {
+      throw SignInError.invalidAuthorizationURL
+    }
+    let callback = try await browser(authorizationURL, callbackURLScheme)
+    guard callback.scheme?.caseInsensitiveCompare(callbackURLScheme) == .orderedSame else {
+      throw SignInError.invalidCallbackURL
+    }
+    try Task.checkCancellation()
+    return try await completeSignIn(callbackURL: callback, redirectURI: redirectURI)
+  }
+
   func completeSignIn(callbackURL: URL, redirectURI: String) async throws -> SignInResult {
     let (code, state) = try parseCallback(callbackURL)
     let response = try await client.auth.oidcCallback(

@@ -80,9 +80,9 @@ import Testing
       Issue.record("Expected stream HTTP failure")
     } catch let error as ArcaneError {
       if status == 401 {
-        #expect(error == .unauthorized)
+        #expect(error == .authenticationRejected)
       } else if status == 403 {
-        #expect(error == .forbidden)
+        #expect(error == .authenticationRejected)
       } else {
         #expect(error == .server(code: "HTTP_500", message: ""))
       }

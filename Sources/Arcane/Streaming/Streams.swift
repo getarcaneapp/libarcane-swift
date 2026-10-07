@@ -106,11 +106,13 @@ public struct LogStream: AsyncSequence, Sendable {
     public func next() async throws -> LogLine? {
       try Task.checkCancellation()
       if state.currentIterator() == nil {
-        let request = try await transport.websocketRequest(path: path, query: query)
+        var request = try await transport.websocketRequest(path: path, query: query)
+        let proxyDelegate = try await transport.proxySupport.prepare(&request)
         let decoder = ArcaneJSON.makeDecoder()
         let channel = WebSocketChannel<Never, LogLine>(
           request: request,
           session: transport.session,
+          delegate: proxyDelegate,
           encodeOutbound: { _ in fatalError("Log streams are receive-only") },
           decodeInbound: { message in
             switch message {
@@ -227,11 +229,13 @@ public struct StatsStream<Element: Decodable & Sendable>: AsyncSequence, Sendabl
     public func next() async throws -> Element? {
       try Task.checkCancellation()
       if state.currentIterator() == nil {
-        let request = try await transport.websocketRequest(path: path, query: query)
+        var request = try await transport.websocketRequest(path: path, query: query)
+        let proxyDelegate = try await transport.proxySupport.prepare(&request)
         let decoder = ArcaneJSON.makeDecoder()
         let channel = WebSocketChannel<Never, Element>(
           request: request,
           session: transport.session,
+          delegate: proxyDelegate,
           encodeOutbound: { _ in fatalError("Stats streams are receive-only") },
           decodeInbound: { message in
             switch message {

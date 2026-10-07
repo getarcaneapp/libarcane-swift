@@ -12,6 +12,7 @@ public final class ArcaneURLSessionTransport: Sendable {
   let retryPolicy: RetryPolicy
   let decoder: JSONDecoder
   let encoder: JSONEncoder
+  let proxySupport: ProxyRequestSupport
   let defaultRequestOptions: ArcaneRequestOptions
 
   init(
@@ -21,6 +22,8 @@ public final class ArcaneURLSessionTransport: Sendable {
     retryPolicy: RetryPolicy,
     decoder: JSONDecoder,
     encoder: JSONEncoder,
+    additionalHeaders: [String: String] = [:],
+    proxySession: (any ArcaneProxySession)? = nil,
     defaultRequestOptions: ArcaneRequestOptions = .init()
   ) {
     self.baseURL = baseURL
@@ -30,6 +33,8 @@ public final class ArcaneURLSessionTransport: Sendable {
     self.decoder = decoder
     self.encoder = encoder
     self.defaultRequestOptions = defaultRequestOptions
+    self.proxySupport = ProxyRequestSupport(
+      baseURL: baseURL, additionalHeaders: additionalHeaders, session: proxySession)
   }
 
   public func request<T: Decodable & Sendable, Body: Encodable & Sendable>(
@@ -91,7 +96,7 @@ public final class ArcaneURLSessionTransport: Sendable {
     try await rawDataRequest(
       path, method: method, query: query,
       body: try body.map { try encoder.encode($0) }, contentType: "application/json",
-      authorized: authorized, options: options)
+      authorized: authorized, options: options, expectsJSONResponse: true)
   }
 
   /// Sends already encoded bytes through the standard authentication and retry handling.
@@ -102,7 +107,8 @@ public final class ArcaneURLSessionTransport: Sendable {
     body: Data?,
     contentType: String = "application/octet-stream",
     authorized: Bool = true,
-    options: ArcaneRequestOptions? = nil
+    options: ArcaneRequestOptions? = nil,
+    expectsJSONResponse: Bool = false
   ) async throws -> Data {
     var didRefresh = false
     var attempt = 1
@@ -118,10 +124,15 @@ public final class ArcaneURLSessionTransport: Sendable {
         authorized: authorized,
         options: requestOptions)
       do {
-        let (data, response) = try await session.data(for: prepared.request)
+        var request = prepared.request
+        let proxyDelegate = try await proxySupport.prepare(&request)
+        let (data, response) = try await session.data(for: request, delegate: proxyDelegate)
         guard let http = response as? HTTPURLResponse else {
           throw ArcaneError.transport("Request did not return an HTTP response")
         }
+
+        await proxyDelegate.receive(http)
+        try proxySupport.check(http, data: data, expectsJSON: expectsJSONResponse)
 
         if try await refreshAuthorizationIfNeeded(
           statusCode: http.statusCode,
@@ -172,7 +183,21 @@ public final class ArcaneURLSessionTransport: Sendable {
       url: baseURL.appendingAPIPath(path).withQueryItems(query).webSocketURL())
     applyRequestOptions(to: &request, options: resolvedRequestOptions(options))
     _ = try await applyAuthenticationHeaders(to: &request)
+    _ = try await proxySupport.prepare(&request)
     return request
+  }
+
+  /// Creates an unresumed WebSocket task with scoped proxy credentials and redirects.
+  public func makeWebSocketTask(
+    path: String,
+    query: [URLQueryItem] = [],
+    options: ArcaneRequestOptions? = nil
+  ) async throws -> URLSessionWebSocketTask {
+    var request = try await websocketRequest(path: path, query: query, options: options)
+    let delegate = try await proxySupport.prepare(&request)
+    let task = session.webSocketTask(with: request)
+    task.delegate = delegate
+    return task
   }
 
   /// Returns the bytes of an HTTP response as an async sequence, plus the response
@@ -203,15 +228,18 @@ public final class ArcaneURLSessionTransport: Sendable {
         }
         request.httpBody = body
       }
+      let proxyDelegate = try await proxySupport.prepare(&request)
       let (bytes, response): (URLSession.AsyncBytes, URLResponse)
       do {
-        (bytes, response) = try await session.bytes(for: request)
+        (bytes, response) = try await session.bytes(for: request, delegate: proxyDelegate)
       } catch {
         throw normalizedTransportError(error)
       }
       guard let http = response as? HTTPURLResponse else {
         throw ArcaneError.transport("Request did not return an HTTP response")
       }
+      await proxyDelegate.receive(http)
+      try await checkStreamResponse(http, bytes: bytes, expectsJSON: accept.lowercased().contains("json"))
       if try await refreshAuthorizationIfNeeded(
         statusCode: http.statusCode,
         authorized: authorized,
@@ -251,11 +279,14 @@ public final class ArcaneURLSessionTransport: Sendable {
         accept: "application/json",
         options: requestOptions
       )
+      var request = preparedRequest.request
+      let proxyDelegate = try await proxySupport.prepare(&request)
       let (data, response): (Data, URLResponse)
       do {
         (data, response) = try await session.upload(
-          for: preparedRequest.request,
-          fromFile: prepared.url
+          for: request,
+          fromFile: prepared.url,
+          delegate: proxyDelegate
         )
       } catch {
         throw normalizedTransportError(error)
@@ -263,6 +294,8 @@ public final class ArcaneURLSessionTransport: Sendable {
       guard let http = response as? HTTPURLResponse else {
         throw ArcaneError.transport("Upload did not return an HTTP response")
       }
+      await proxyDelegate.receive(http)
+      try proxySupport.check(http, data: data)
       if try await refreshAuthorizationIfNeeded(
         statusCode: http.statusCode,
         authorized: true,
@@ -313,10 +346,11 @@ public final class ArcaneURLSessionTransport: Sendable {
     authorized: Bool = true,
     options: ArcaneRequestOptions? = nil
   ) async throws -> Data {
-    try await rawRequest(
+    try await rawDataRequest(
       path,
+      method: "GET",
       query: query,
-      body: Optional<EmptyBody>.none,
+      body: nil,
       authorized: authorized,
       options: options)
   }
@@ -355,6 +389,18 @@ public final class ArcaneURLSessionTransport: Sendable {
       request.setValue(value, forHTTPHeaderField: key)
     }
     return context.headers["Authorization"] == nil ? nil : context.credentialGeneration
+  }
+
+  func checkStreamResponse(_ response: HTTPURLResponse, bytes: URLSession.AsyncBytes, expectsJSON: Bool = true) async throws {
+    try proxySupport.check(response, expectsJSON: expectsJSON)
+    if [401, 403].contains(response.statusCode) {
+      var data = Data()
+      for try await byte in bytes {
+        data.append(byte)
+        if data.count >= 4096 { break }
+      }
+      try proxySupport.check(response, data: data)
+    }
   }
 
   func refreshAuthorizationIfNeeded(
@@ -402,6 +448,8 @@ public final class ArcaneURLSessionTransport: Sendable {
       retryPolicy: retryPolicy,
       decoder: decoder,
       encoder: encoder,
+      additionalHeaders: proxySupport.additionalHeaders,
+      proxySession: proxySupport.session,
       defaultRequestOptions: options
     )
   }

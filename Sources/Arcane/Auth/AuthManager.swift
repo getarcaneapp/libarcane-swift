@@ -23,6 +23,7 @@ public actor AuthManager {
   private let urlSession: URLSession
   private let decoder: JSONDecoder
   private let encoder: JSONEncoder
+  private let proxySupport: ProxyRequestSupport
   private var cachedTokens: TokenPair?
   private var refreshTask: Task<TokenPair, Error>?
   private var capabilities: ServerCapabilities = .unknown
@@ -36,7 +37,9 @@ public actor AuthManager {
     apiKey: String?,
     urlSession: URLSession,
     decoder: JSONDecoder,
-    encoder: JSONEncoder
+    encoder: JSONEncoder,
+    additionalHeaders: [String: String] = [:],
+    proxySession: (any ArcaneProxySession)? = nil
   ) {
     self.baseURL = baseURL
     self.tokenStore = tokenStore
@@ -44,6 +47,8 @@ public actor AuthManager {
     self.urlSession = urlSession
     self.decoder = decoder
     self.encoder = encoder
+    self.proxySupport = ProxyRequestSupport(
+      baseURL: baseURL, additionalHeaders: additionalHeaders, session: proxySession)
   }
 
   public func authenticationHeaders() async throws -> [String: String] {
@@ -65,7 +70,8 @@ public actor AuthManager {
       tokens.expiresAt.timeIntervalSinceNow < Self.expirySkew,
       lastFailedProactiveRefresh.map({
         Date().timeIntervalSince($0) > Self.failedProactiveRefreshBackoff
-      }) ?? true {
+      }) ?? true
+    {
       let generation = credentialGeneration
       do {
         let refreshed = try await refreshTokens()
@@ -305,7 +311,8 @@ public actor AuthManager {
     if !isRetry,
       let latest = try? await tokenStore.loadTokens(),
       !latest.refreshToken.isEmpty,
-      latest.refreshToken != rejectedRefreshToken {
+      latest.refreshToken != rejectedRefreshToken
+    {
       try checkAuthenticationOperation(generation)
       cachedTokens = latest
       return try await refreshTokens(isRetry: true)
@@ -313,7 +320,8 @@ public actor AuthManager {
 
     // An unreadable store must never cost the user their session.
     if let current = try? await tokenStore.loadTokens(),
-      current.refreshToken == rejectedRefreshToken {
+      current.refreshToken == rejectedRefreshToken
+    {
       try? await clear(ifCredentialGenerationMatches: generation)
     }
     throw error
@@ -345,10 +353,13 @@ public actor AuthManager {
     request.httpBody = try encoder.encode(RefreshRequest(refreshToken: refreshToken))
 
     do {
-      let (data, response) = try await urlSession.data(for: request)
+      let proxyDelegate = try await proxySupport.prepare(&request)
+      let (data, response) = try await urlSession.data(for: request, delegate: proxyDelegate)
       guard let http = response as? HTTPURLResponse else {
         throw ArcaneError.transport("Refresh did not return an HTTP response")
       }
+      await proxyDelegate.receive(http)
+      try proxySupport.check(http, data: data)
       guard (200..<300).contains(http.statusCode) else {
         throw ArcaneError.from(
           statusCode: http.statusCode, data: data, headers: http.allHeaderFields, decoder: decoder)

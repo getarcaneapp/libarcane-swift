@@ -37,11 +37,15 @@ extension ArcaneURLSessionTransport {
       var temporaryURL: URL?
 
       do {
-        let (downloadedURL, response) = try await session.download(for: request)
+        let proxyDelegate = try await proxySupport.prepare(&request)
+        let (downloadedURL, response) = try await session.download(
+          for: request, delegate: proxyDelegate)
         temporaryURL = downloadedURL
         guard let http = response as? HTTPURLResponse else {
           throw ArcaneError.transport("Download did not return an HTTP response")
         }
+        await proxyDelegate.receive(http)
+        try proxySupport.check(http, data: readErrorSnippet(from: downloadedURL), expectsJSON: false)
         let action = try await handleDownloadedFile(
           downloadedURL,
           response: http,

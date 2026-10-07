@@ -4,7 +4,7 @@ public struct ArcaneClient: Sendable {
   /// Package-wide client configuration shared by all service entry points.
   /// Most apps only need `baseURL`, a `TokenStore`, and optionally a custom
   /// `URLSession` tuned for their networking environment.
-  public struct Configuration: Sendable {
+  public struct Configuration: Sendable, CustomStringConvertible, CustomDebugStringConvertible {
     public var baseURL: URL
     public var tokenStore: any TokenStore
     public var apiKey: String?
@@ -12,9 +12,14 @@ public struct ArcaneClient: Sendable {
     /// Inject an app-owned session when you need custom connectivity,
     /// caching, cookies, or TLS behavior instead of relying on `.shared`.
     public var urlSession: URLSession
+    public var additionalHeaders: [String: String]
+    public var proxySession: (any ArcaneProxySession)?
     public var retryPolicy: RetryPolicy
     public var jsonDecoder: JSONDecoder
     public var jsonEncoder: JSONEncoder
+
+    public var description: String { "ArcaneClient.Configuration(credentials: [redacted])" }
+    public var debugDescription: String { description }
 
     public init(
       baseURL: URL,
@@ -22,7 +27,9 @@ public struct ArcaneClient: Sendable {
       apiKey: String? = nil,
       defaultEnvironmentID: EnvironmentID = .localDocker,
       urlSession: URLSession = .shared,
-      retryPolicy: RetryPolicy = .default
+      retryPolicy: RetryPolicy = .default,
+      additionalHeaders: [String: String] = [:],
+      proxySession: (any ArcaneProxySession)? = nil
     ) {
       self.baseURL = baseURL
       self.tokenStore = tokenStore
@@ -30,6 +37,8 @@ public struct ArcaneClient: Sendable {
       self.defaultEnvironmentID = defaultEnvironmentID
       self.urlSession = urlSession
       self.retryPolicy = retryPolicy
+      self.additionalHeaders = additionalHeaders
+      self.proxySession = proxySession
       self.jsonDecoder = ArcaneJSON.makeDecoder()
       self.jsonEncoder = ArcaneJSON.makeEncoder()
     }
@@ -88,7 +97,9 @@ public struct ArcaneClient: Sendable {
       apiKey: configuration.apiKey,
       urlSession: configuration.urlSession,
       decoder: configuration.jsonDecoder,
-      encoder: configuration.jsonEncoder
+      encoder: configuration.jsonEncoder,
+      additionalHeaders: configuration.additionalHeaders,
+      proxySession: configuration.proxySession
     )
     let transport = ArcaneURLSessionTransport(
       baseURL: configuration.baseURL,
@@ -96,7 +107,9 @@ public struct ArcaneClient: Sendable {
       authManager: authManager,
       retryPolicy: configuration.retryPolicy,
       decoder: configuration.jsonDecoder,
-      encoder: configuration.jsonEncoder
+      encoder: configuration.jsonEncoder,
+      additionalHeaders: configuration.additionalHeaders,
+      proxySession: configuration.proxySession
     )
     self.init(configuration: configuration, authManager: authManager, transport: transport)
   }
