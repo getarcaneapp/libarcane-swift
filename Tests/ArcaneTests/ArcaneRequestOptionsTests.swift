@@ -8,7 +8,7 @@ final class ArcaneRequestOptionsTests: XCTestCase {
   func testActivityBatchIDValidationMatchesBackendContract() throws {
     let valid = [
       "batch_ABC-123",
-      String(repeating: "a", count: 64),
+      String(repeating: "a", count: 64)
     ]
     for value in valid {
       XCTAssertEqual(try ArcaneRequestOptions(activityBatchID: value).activityBatchID, value)
@@ -19,7 +19,7 @@ final class ArcaneRequestOptionsTests: XCTestCase {
       String(repeating: "a", count: 65),
       "contains space",
       "contains/slash",
-      "batch-é",
+      "batch-é"
     ]
     for value in invalid {
       XCTAssertThrowsError(try ArcaneRequestOptions(activityBatchID: value)) { error in
@@ -66,7 +66,8 @@ final class ArcaneRequestOptionsTests: XCTestCase {
     }
 
     let options = try ArcaneRequestOptions(activityBatchID: "bulk_update-1")
-    let result = try await client
+    let result =
+      try await client
       .withRequestOptions(options)
       .variables
       .update(id: "var_1", request: .init(value: "updated"))

@@ -1,4 +1,5 @@
 import Foundation
+import Synchronization
 import Testing
 
 @testable import Arcane
@@ -169,7 +170,7 @@ import Testing
       _ = try await login.value
       Issue.record("Retired credential write completed")
     } catch is CancellationError {}
-    #expect(try await store.loadTokens() == expected)
+    #expect(await store.loadTokens() == expected)
   }
 
   @Test(arguments: KeychainOperation.allCases)
@@ -374,9 +375,8 @@ private actor SuspendedAuthenticationTokenStore: TokenStore {
 
 private enum KeychainOperation: CaseIterable, Sendable { case load, save, clear }
 
-private final class KeychainScope: @unchecked Sendable {
-  private let lock = NSLock()
-  private var active = true
-  var isActive: Bool { lock.withLock { active } }
-  func retire() { lock.withLock { active = false } }
+private final class KeychainScope: Sendable {
+  private let active = Mutex(true)
+  var isActive: Bool { active.withLock { $0 } }
+  func retire() { active.withLock { $0 = false } }
 }

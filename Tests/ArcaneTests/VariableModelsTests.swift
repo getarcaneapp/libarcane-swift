@@ -11,7 +11,10 @@ final class VariableModelsTests: XCTestCase {
     let variable = try decoder.decode(
       GlobalVariable.self,
       from: Data(
-        #"{"id":"var_1","key":"TOKEN","isSecret":true,"allEnvironments":false,"environmentIds":["0","edge_1"],"createdAt":"2026-07-20T12:00:00Z"}"#
+        #"""
+        { "id": "var_1", "key": "TOKEN", "isSecret": true, "allEnvironments": false, "environmentIds": [ "0", "edge_1"
+        ], "createdAt": "2026-07-20T12:00:00Z" }
+        """#
           .utf8
       )
     )
@@ -29,7 +32,10 @@ final class VariableModelsTests: XCTestCase {
     let statuses = try decoder.decode(
       [EnvironmentSyncStatus].self,
       from: Data(
-        #"[{"environmentId":"0","environmentName":"Local","status":"pending"},{"environmentId":"edge_1","status":"queued"},{"environmentId":"edge_2"}]"#
+        #"""
+        [ { "environmentId": "0", "environmentName": "Local", "status": "pending" }, { "environmentId": "edge_1",
+        "status": "queued" }, { "environmentId": "edge_2" } ]
+        """#
           .utf8
       )
     )

@@ -1,76 +1,34 @@
 import Foundation
+import Synchronization
 
-private final class WebSocketIteratorState<Element: Sendable>: @unchecked Sendable {
+private final class WebSocketIteratorState<Element: Sendable>: Sendable {
   typealias Channel = WebSocketChannel<Never, Element>
-  typealias Iterator = AsyncThrowingStream<Element, Error>.Iterator
 
-  private let lock = NSLock()
-  private var channel: Channel?
-  private var iterator: Iterator?
-  private var cancelled = false
-
-  func currentIterator() -> Iterator? {
-    lock.lock()
-    defer { lock.unlock() }
-    return iterator
+  private struct State {
+    var channel: Channel?
+    var cancelled = false
   }
+  private let state = Mutex(State())
 
-  func install(channel: Channel, iterator: Iterator) -> Bool {
-    lock.lock()
-    defer { lock.unlock() }
-    guard !cancelled else { return false }
-    self.channel = channel
-    self.iterator = iterator
-    return true
-  }
-
-  func update(_ iterator: Iterator) {
-    lock.lock()
-    defer { lock.unlock() }
-    guard !cancelled else { return }
-    self.iterator = iterator
+  func install(channel: Channel) -> Bool {
+    state.withLock {
+      guard !$0.cancelled else { return false }
+      $0.channel = channel
+      return true
+    }
   }
 
   func cancel() {
-    let channel: Channel?
-    lock.lock()
-    if cancelled {
-      lock.unlock()
-      return
+    let channel = state.withLock { state -> Channel? in
+      guard !state.cancelled else { return nil }
+      state.cancelled = true
+      defer { state.channel = nil }
+      return state.channel
     }
-    cancelled = true
-    channel = self.channel
-    self.channel = nil
-    iterator = nil
-    lock.unlock()
     channel?.closeImmediately()
   }
 
-  deinit {
-    cancel()
-  }
-}
-
-public struct LogLine: Codable, Hashable, Sendable {
-  public var text: String
-  public var seq: UInt64?
-  public var level: String?
-  public var service: String?
-  public var timestamp: String?
-}
-
-/// A `LogLine` paired with a stable monotonic identifier assigned at receive time,
-/// suitable for use as a SwiftUI `ForEach` element. `LogLine` itself has no unique
-/// identity (text and timestamps may repeat), so consumers should wrap incoming
-/// lines with a `nextID &+= 1` counter as they arrive.
-public struct IdentifiedLogLine: Identifiable, Hashable, Sendable {
-  public let id: UInt64
-  public let line: LogLine
-
-  public init(id: UInt64, line: LogLine) {
-    self.id = id
-    self.line = line
-  }
+  deinit { cancel() }
 }
 
 public struct LogStream: AsyncSequence, Sendable {
@@ -91,11 +49,14 @@ public struct LogStream: AsyncSequence, Sendable {
     Iterator(transport: transport, path: path, query: query)
   }
 
-  public final class Iterator: AsyncIteratorProtocol, @unchecked Sendable {
+  /// A single-consumer iterator. Create a separate iterator for each consuming task.
+  public final class Iterator: AsyncIteratorProtocol {
     private let transport: ArcaneURLSessionTransport
     private let path: String
     private let query: [URLQueryItem]
     private let state = WebSocketIteratorState<LogLine>()
+    private var iterator: AsyncThrowingStream<LogLine, Error>.Iterator?
+    private var finished = false
 
     fileprivate init(transport: ArcaneURLSessionTransport, path: String, query: [URLQueryItem]) {
       self.transport = transport
@@ -105,7 +66,8 @@ public struct LogStream: AsyncSequence, Sendable {
 
     public func next() async throws -> LogLine? {
       try Task.checkCancellation()
-      if state.currentIterator() == nil {
+      guard !finished else { return nil }
+      if iterator == nil {
         var request = try await transport.websocketRequest(path: path, query: query)
         let proxyDelegate = try await transport.proxySupport.prepare(&request)
         let decoder = ArcaneJSON.makeDecoder()
@@ -118,8 +80,7 @@ public struct LogStream: AsyncSequence, Sendable {
             switch message {
             case .string(let text):
               if let data = text.data(using: .utf8),
-                let json = try? decoder.decode(LogLineMessage.self, from: data)
-              {
+                let json = try? decoder.decode(LogLineMessage.self, from: data) {
                 return LogLine(
                   text: json.message,
                   seq: json.seq,
@@ -143,30 +104,32 @@ public struct LogStream: AsyncSequence, Sendable {
             }
           }
         )
-        guard
-          state.install(
-            channel: channel,
-            iterator: channel.messages.makeAsyncIterator()
-          )
-        else {
+        guard state.install(channel: channel) else {
           channel.closeImmediately()
           throw CancellationError()
         }
+        iterator = channel.messages.makeAsyncIterator()
       }
 
       return try await withTaskCancellationHandler {
         do {
-          guard var iterator = state.currentIterator() else { return nil }
-          let value = try await iterator.next()
-          state.update(iterator)
-          if value == nil { state.cancel() }
+          guard var iterator else { return nil }
+          let value = try await iterator.next(isolation: #isolation)
+          self.iterator = iterator
+          if value == nil {
+            finished = true
+            self.iterator = nil
+            state.cancel()
+          }
           return value
         } catch {
+          finished = true
+          iterator = nil
           state.cancel()
           throw normalizedTransportError(error)
         }
-      } onCancel: {
-        self.state.cancel()
+      } onCancel: { [state] in
+        state.cancel()
       }
     }
 
@@ -175,12 +138,11 @@ public struct LogStream: AsyncSequence, Sendable {
     }
   }
 
-  static func query(follow: Bool, tail: String, since: String?, timestamps: Bool) -> [URLQueryItem]
-  {
+  static func query(follow: Bool, tail: String, since: String?, timestamps: Bool) -> [URLQueryItem] {
     var query = [
       URLQueryItem(name: "follow", value: follow ? "true" : "false"),
       URLQueryItem(name: "tail", value: tail),
-      URLQueryItem(name: "timestamps", value: timestamps ? "true" : "false"),
+      URLQueryItem(name: "timestamps", value: timestamps ? "true" : "false")
     ]
     if let since {
       query.append(URLQueryItem(name: "since", value: since))
@@ -214,11 +176,14 @@ public struct StatsStream<Element: Decodable & Sendable>: AsyncSequence, Sendabl
     Iterator(transport: transport, path: path, query: query)
   }
 
-  public final class Iterator: AsyncIteratorProtocol, @unchecked Sendable {
+  /// A single-consumer iterator. Create a separate iterator for each consuming task.
+  public final class Iterator: AsyncIteratorProtocol {
     private let transport: ArcaneURLSessionTransport
     private let path: String
     private let query: [URLQueryItem]
     private let state = WebSocketIteratorState<Element>()
+    private var iterator: AsyncThrowingStream<Element, Error>.Iterator?
+    private var finished = false
 
     fileprivate init(transport: ArcaneURLSessionTransport, path: String, query: [URLQueryItem]) {
       self.transport = transport
@@ -228,7 +193,8 @@ public struct StatsStream<Element: Decodable & Sendable>: AsyncSequence, Sendabl
 
     public func next() async throws -> Element? {
       try Task.checkCancellation()
-      if state.currentIterator() == nil {
+      guard !finished else { return nil }
+      if iterator == nil {
         var request = try await transport.websocketRequest(path: path, query: query)
         let proxyDelegate = try await transport.proxySupport.prepare(&request)
         let decoder = ArcaneJSON.makeDecoder()
@@ -251,30 +217,32 @@ public struct StatsStream<Element: Decodable & Sendable>: AsyncSequence, Sendabl
             }
           }
         )
-        guard
-          state.install(
-            channel: channel,
-            iterator: channel.messages(bufferingPolicy: .bufferingNewest(1)).makeAsyncIterator()
-          )
-        else {
+        guard state.install(channel: channel) else {
           channel.closeImmediately()
           throw CancellationError()
         }
+        iterator = channel.messages(bufferingPolicy: .bufferingNewest(1)).makeAsyncIterator()
       }
 
       return try await withTaskCancellationHandler {
         do {
-          guard var iterator = state.currentIterator() else { return nil }
-          let value = try await iterator.next()
-          state.update(iterator)
-          if value == nil { state.cancel() }
+          guard var iterator else { return nil }
+          let value = try await iterator.next(isolation: #isolation)
+          self.iterator = iterator
+          if value == nil {
+            finished = true
+            self.iterator = nil
+            state.cancel()
+          }
           return value
         } catch {
+          finished = true
+          iterator = nil
           state.cancel()
           throw normalizedTransportError(error)
         }
-      } onCancel: {
-        self.state.cancel()
+      } onCancel: { [state] in
+        state.cancel()
       }
     }
 

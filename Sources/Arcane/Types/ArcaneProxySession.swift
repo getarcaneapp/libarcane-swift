@@ -3,8 +3,7 @@ import Foundation
 /// An app-owned cookie snapshot. The generation lets the app ignore responses
 /// from requests that started before the proxy session was cleared or replaced.
 public struct ArcaneProxyRequestContext: Sendable, CustomStringConvertible,
-  CustomDebugStringConvertible
-{
+  CustomDebugStringConvertible {
   public let headers: [String: String]
   public let generation: UInt64
   /// False retires an old client before it can send saved proxy headers.

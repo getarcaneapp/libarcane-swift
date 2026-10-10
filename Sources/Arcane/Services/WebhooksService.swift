@@ -15,8 +15,7 @@ public struct WebhooksService: Sendable {
 
   /// Create a new webhook. The raw token is returned only on creation.
   public func create(_ body: CreateWebhook, envID: EnvironmentID? = nil) async throws
-    -> WebhookCreated
-  {
+    -> WebhookCreated {
     try await rest.post(rest.environmentPath(envID, "webhooks"), body: body)
   }
 

@@ -115,7 +115,8 @@ final class RoleModelsTests: XCTestCase {
                   "scope": "env",
                   "actions": [
                       { "key": "start", "permission": "containers:start", "label": "Start" },
-                      { "key": "stop", "permission": "containers:stop", "label": "Stop", "description": "Stop a container", "requires": ["containers:read"] }
+                      { "key": "stop", "permission": "containers:stop", "label": "Stop",
+                        "description": "Stop a container", "requires": ["containers:read"] }
                   ]
               },
               {
@@ -181,7 +182,7 @@ final class RoleModelsTests: XCTestCase {
             permission: "containers:list",
             label: "List",
             requires: ["containers:create"]
-          ),
+          )
         ]
       )
     ])
@@ -193,7 +194,86 @@ final class RoleModelsTests: XCTestCase {
   }
 
   func testAccessSurfaceEvaluationUsesBackendModesAndFailsClosed() {
-    let manifest = PermissionsManifest(
+    let manifest = makeAccessSurfaceManifest()
+    let user = User(
+      id: "u1",
+      username: "operator",
+      permissionsByEnv: [
+        "global": ["dashboard:read"],
+        "edge_1": ["containers:list", "containers:read"]
+      ]
+    )
+
+    XCTAssertTrue(manifest.canAccessSurface(id: "route.global", user: user))
+    XCTAssertTrue(
+      manifest.canAccessSurface(
+        id: "route.environment",
+        user: user,
+        selectedEnvironmentID: "edge_1"
+      )
+    )
+    XCTAssertFalse(
+      manifest.canAccessSurface(
+        id: "route.environment",
+        user: user,
+        selectedEnvironmentID: "edge_2"
+      )
+    )
+    XCTAssertTrue(manifest.canAccessSurface(id: "route.any-scope", user: user))
+    XCTAssertTrue(
+      manifest.canAccessSurface(id: "landing.main", user: user, selectedEnvironmentID: "edge_1")
+    )
+    XCTAssertFalse(manifest.canAccessSurface(id: "future", user: user))
+    XCTAssertFalse(manifest.canAccessSurface(id: "cycle.a", user: user))
+    XCTAssertFalse(manifest.canAccessSurface(id: "missing", user: user))
+
+    let globalSudoUser = User(
+      id: "sudo-global",
+      username: "global-admin",
+      permissionsByEnv: ["global": [Permission.sudo]]
+    )
+    XCTAssertTrue(manifest.canAccessSurface(id: "route.global", user: globalSudoUser))
+    XCTAssertTrue(
+      manifest.canAccessSurface(
+        id: "route.environment",
+        user: globalSudoUser,
+        selectedEnvironmentID: "edge_1"
+      )
+    )
+    XCTAssertTrue(manifest.canAccessSurface(id: "route.any-scope", user: globalSudoUser))
+    XCTAssertTrue(
+      manifest.canAccessSurface(
+        id: "landing.main",
+        user: globalSudoUser,
+        selectedEnvironmentID: "edge_1"
+      )
+    )
+
+    let environmentSudoUser = User(
+      id: "sudo-environment",
+      username: "environment-admin",
+      permissionsByEnv: ["edge_1": [Permission.sudo]]
+    )
+    XCTAssertFalse(manifest.canAccessSurface(id: "route.global", user: environmentSudoUser))
+    XCTAssertTrue(
+      manifest.canAccessSurface(
+        id: "route.environment",
+        user: environmentSudoUser,
+        selectedEnvironmentID: "edge_1"
+      )
+    )
+    XCTAssertTrue(manifest.canAccessSurface(id: "route.any-scope", user: environmentSudoUser))
+    XCTAssertTrue(
+      manifest.canAccessSurface(
+        id: "landing.main",
+        user: environmentSudoUser,
+        selectedEnvironmentID: "edge_1"
+      )
+    )
+  }
+
+  private func makeAccessSurfaceManifest() -> PermissionsManifest {
+    PermissionsManifest(
       resources: [],
       accessSurfaces: [
         AccessSurface(
@@ -258,84 +338,15 @@ final class RoleModelsTests: XCTestCase {
           matchMode: .anyOf,
           scopeMode: .globalOnly,
           children: ["cycle.a"]
-        ),
+        )
       ]
-    )
-    let user = User(
-      id: "u1",
-      username: "operator",
-      permissionsByEnv: [
-        "global": ["dashboard:read"],
-        "edge_1": ["containers:list", "containers:read"],
-      ]
-    )
-
-    XCTAssertTrue(manifest.canAccessSurface(id: "route.global", user: user))
-    XCTAssertTrue(
-      manifest.canAccessSurface(
-        id: "route.environment", user: user, selectedEnvironmentID: "edge_1")
-    )
-    XCTAssertFalse(
-      manifest.canAccessSurface(
-        id: "route.environment", user: user, selectedEnvironmentID: "edge_2")
-    )
-    XCTAssertTrue(manifest.canAccessSurface(id: "route.any-scope", user: user))
-    XCTAssertTrue(
-      manifest.canAccessSurface(id: "landing.main", user: user, selectedEnvironmentID: "edge_1")
-    )
-    XCTAssertFalse(manifest.canAccessSurface(id: "future", user: user))
-    XCTAssertFalse(manifest.canAccessSurface(id: "cycle.a", user: user))
-    XCTAssertFalse(manifest.canAccessSurface(id: "missing", user: user))
-
-    let globalSudoUser = User(
-      id: "sudo-global",
-      username: "global-admin",
-      permissionsByEnv: ["global": [Permission.sudo]]
-    )
-    XCTAssertTrue(manifest.canAccessSurface(id: "route.global", user: globalSudoUser))
-    XCTAssertTrue(
-      manifest.canAccessSurface(
-        id: "route.environment",
-        user: globalSudoUser,
-        selectedEnvironmentID: "edge_1"
-      )
-    )
-    XCTAssertTrue(manifest.canAccessSurface(id: "route.any-scope", user: globalSudoUser))
-    XCTAssertTrue(
-      manifest.canAccessSurface(
-        id: "landing.main",
-        user: globalSudoUser,
-        selectedEnvironmentID: "edge_1"
-      )
-    )
-
-    let environmentSudoUser = User(
-      id: "sudo-environment",
-      username: "environment-admin",
-      permissionsByEnv: ["edge_1": [Permission.sudo]]
-    )
-    XCTAssertFalse(manifest.canAccessSurface(id: "route.global", user: environmentSudoUser))
-    XCTAssertTrue(
-      manifest.canAccessSurface(
-        id: "route.environment",
-        user: environmentSudoUser,
-        selectedEnvironmentID: "edge_1"
-      )
-    )
-    XCTAssertTrue(manifest.canAccessSurface(id: "route.any-scope", user: environmentSudoUser))
-    XCTAssertTrue(
-      manifest.canAccessSurface(
-        id: "landing.main",
-        user: environmentSudoUser,
-        selectedEnvironmentID: "edge_1"
-      )
     )
   }
 
   func testSetUserAssignmentsEncoding() throws {
     let body = SetUserAssignments(assignments: [
       UserAssignmentInput(roleId: Role.BuiltIn.admin),
-      UserAssignmentInput(roleId: Role.BuiltIn.deployer, environmentId: "3"),
+      UserAssignmentInput(roleId: Role.BuiltIn.deployer, environmentId: "3")
     ])
     let data = try encoder.encode(body)
     let decoded = try decoder.decode(SetUserAssignments.self, from: data)

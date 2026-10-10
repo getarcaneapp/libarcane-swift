@@ -13,7 +13,12 @@ final class SidebarParityContractsTests: XCTestCase {
       XCTAssertEqual(request.url?.path, "/api/environments/fleet/images/sha256:abc/history")
       return try response(
         for: request,
-        body: #"{"success":true,"data":[{"id":"sha256:layer","created":1723032000,"createdBy":"RUN apk add curl","tags":["example:latest"],"size":2048,"comment":"buildkit"},{"id":"<missing>","created":0,"createdBy":"","tags":null,"size":0}]}"#
+        body:
+          #"""
+          { "success": true, "data": [ { "id": "sha256:layer", "created": 1723032000, "createdBy": "RUN apk add curl",
+          "tags": [ "example:latest" ], "size": 2048, "comment": "buildkit" }, { "id": "<missing>", "created": 0,
+          "createdBy": "", "tags": null, "size": 0 } ] }
+          """#
       )
     }
 
@@ -72,7 +77,13 @@ final class SidebarParityContractsTests: XCTestCase {
     let network = try ArcaneJSON.makeDecoder().decode(
       NetworkInspect.self,
       from: Data(
-        #"{"id":"network","name":"frontend","driver":"overlay","scope":"swarm","created":"2026-08-07T00:00:00Z","enableIPv4":true,"enableIPv6":false,"ipam":{"driver":"default"},"internal":false,"attachable":true,"ingress":false,"configOnly":false,"containers":{},"options":{},"labels":{},"peers":[{"Name":"manager","IP":"10.0.0.2"},{"Name":"missing-address"},"invalid"],"services":{"api":{"VIP":"10.0.0.10","Ports":["443/tcp",42]},"worker":{},"invalid":"value"},"containersList":[]}"#
+        #"""
+        { "id": "network", "name": "frontend", "driver": "overlay", "scope": "swarm", "created": "2026-08-07T00:00:00Z",
+        "enableIPv4": true, "enableIPv6": false, "ipam": { "driver": "default" }, "internal": false, "attachable": true,
+        "ingress": false, "configOnly": false, "containers": {}, "options": {}, "labels": {}, "peers": [ {
+        "Name": "manager", "IP": "10.0.0.2" }, { "Name": "missing-address" }, "invalid" ], "services": { "api": {
+        "VIP": "10.0.0.10", "Ports": [ "443/tcp", 42 ] }, "worker": {}, "invalid": "value" }, "containersList": [] }
+        """#
           .utf8
       )
     )
@@ -82,7 +93,7 @@ final class SidebarParityContractsTests: XCTestCase {
       network.serviceList,
       [
         NetworkServiceAttachment(name: "api", vip: "10.0.0.10", ports: ["443/tcp"]),
-        NetworkServiceAttachment(name: "worker"),
+        NetworkServiceAttachment(name: "worker")
       ]
     )
   }
@@ -91,7 +102,12 @@ final class SidebarParityContractsTests: XCTestCase {
     let network = try ArcaneJSON.makeDecoder().decode(
       NetworkInspect.self,
       from: Data(
-        #"{"id":"network","name":"bridge","driver":"bridge","scope":"local","created":"2026-08-07T00:00:00Z","enableIPv4":true,"enableIPv6":false,"ipam":{"driver":"default"},"internal":false,"attachable":false,"ingress":false,"configOnly":false,"containers":{},"options":{},"labels":{},"containersList":[]}"#
+        #"""
+        { "id": "network", "name": "bridge", "driver": "bridge", "scope": "local", "created": "2026-08-07T00:00:00Z",
+        "enableIPv4": true, "enableIPv6": false, "ipam": { "driver": "default" }, "internal": false,
+        "attachable": false, "ingress": false, "configOnly": false, "containers": {}, "options": {}, "labels": {},
+        "containersList": [] }
+        """#
           .utf8
       )
     )

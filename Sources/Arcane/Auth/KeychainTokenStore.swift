@@ -53,7 +53,7 @@ public struct KeychainTokenStore: TokenStore {
     // items saved under the old default migrate to this on the next save.
     let attributes: [String: Any] = [
       kSecValueData as String: data,
-      kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlock,
+      kSecAttrAccessible as String: kSecAttrAccessibleAfterFirstUnlock
     ]
     try checkSession()
     let status = SecItemUpdate(query as CFDictionary, attributes as CFDictionary)
@@ -88,7 +88,7 @@ public struct KeychainTokenStore: TokenStore {
     var query: [String: Any] = [
       kSecClass as String: kSecClassGenericPassword,
       kSecAttrService as String: service,
-      kSecAttrAccount as String: account,
+      kSecAttrAccount as String: account
     ]
     if let accessGroup {
       query[kSecAttrAccessGroup as String] = accessGroup

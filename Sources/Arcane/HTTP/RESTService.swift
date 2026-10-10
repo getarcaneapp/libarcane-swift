@@ -9,8 +9,7 @@ public struct RESTService: Sendable {
     query: [URLQueryItem] = [],
     options: ArcaneRequestOptions? = nil
   ) async throws
-    -> T
-  {
+    -> T {
     try await transport.request(path, query: query, options: options)
   }
 
@@ -48,8 +47,7 @@ public struct RESTService: Sendable {
     query: [URLQueryItem] = [],
     options: ArcaneRequestOptions? = nil
   )
-    async throws -> T
-  {
+    async throws -> T {
     try await transport.request(path, method: "DELETE", query: query, options: options)
   }
 

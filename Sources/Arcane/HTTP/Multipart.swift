@@ -9,7 +9,9 @@ public struct MultipartFile: Sendable {
   public var fileURL: URL
 
   public init(
-    fieldName: String, filename: String, contentType: String = "application/octet-stream",
+    fieldName: String,
+    filename: String,
+    contentType: String = "application/octet-stream",
     fileURL: URL
   ) {
     self.fieldName = fieldName
@@ -38,6 +40,7 @@ extension ArcaneURLSessionTransport {
   /// Performs a multipart upload and returns the response body as an async byte
   /// stream, suitable for an NDJSON progress stream. Caller is responsible for
   /// deleting the multipart tempfile once the stream finishes.
+  @concurrent
   func multipartByteStream(
     path: String,
     method: String,
@@ -96,7 +99,8 @@ extension ArcaneURLSessionTransport {
   ) throws -> PreparedMultipart {
     let boundary = "----ArcaneSwiftBoundary\(UUID().uuidString)"
     let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent(
-      "arcane-multipart-\(UUID().uuidString).bin")
+      "arcane-multipart-\(UUID().uuidString).bin"
+    )
     FileManager.default.createFile(atPath: tempURL.path, contents: nil)
 
     do {

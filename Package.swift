@@ -1,6 +1,11 @@
-// swift-tools-version: 6.3
+// swift-tools-version: 6.4
 
 import PackageDescription
+
+let concurrencySettings: [SwiftSetting] = [
+  .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
+  .treatAllWarnings(as: .error)
+]
 
 let package = Package(
   name: "arcane-swift",
@@ -22,9 +27,7 @@ let package = Package(
       dependencies: [
         .product(name: "HTTPTypes", package: "swift-http-types")
       ],
-      swiftSettings: [
-        .enableUpcomingFeature("StrictConcurrency")
-      ],
+      swiftSettings: concurrencySettings,
       linkerSettings: [
         .linkedFramework("Security")
       ]
@@ -34,9 +37,7 @@ let package = Package(
       dependencies: [
         "Arcane"
       ],
-      swiftSettings: [
-        .enableUpcomingFeature("StrictConcurrency")
-      ],
+      swiftSettings: concurrencySettings,
       linkerSettings: [
         .linkedFramework("AuthenticationServices")
       ]
@@ -46,9 +47,7 @@ let package = Package(
       dependencies: [
         "Arcane"
       ],
-      swiftSettings: [
-        .enableUpcomingFeature("StrictConcurrency")
-      ],
+      swiftSettings: concurrencySettings,
       linkerSettings: [
         .linkedFramework("AuthenticationServices"),
         .linkedFramework("Security"),
@@ -56,19 +55,24 @@ let package = Package(
     ),
     .testTarget(
       name: "ArcaneTests",
-      dependencies: ["Arcane"]
+      dependencies: ["Arcane"],
+      swiftSettings: concurrencySettings
     ),
     .testTarget(
       name: "ArcaneOIDCTests",
-      dependencies: ["Arcane", "ArcaneOIDC"]
+      dependencies: ["Arcane", "ArcaneOIDC"],
+      swiftSettings: concurrencySettings
     ),
     .testTarget(
       name: "ArcanePasskeysTests",
-      dependencies: ["Arcane", "ArcanePasskeys"]
+      dependencies: ["Arcane", "ArcanePasskeys"],
+      swiftSettings: concurrencySettings
     ),
     .testTarget(
       name: "ArcaneIntegrationTests",
-      dependencies: ["Arcane"]
+      dependencies: ["Arcane"],
+      swiftSettings: concurrencySettings
     ),
-  ]
+  ],
+  swiftLanguageModes: [.v6]
 )

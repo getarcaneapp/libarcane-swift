@@ -7,7 +7,7 @@ import Arcane
 @Suite("OIDC authenticator", .serialized)
 @MainActor
 struct OIDCAuthenticatorTests {
-  private nonisolated enum CallbackError: Error {
+  nonisolated private enum CallbackError: Error {
     case expected
   }
 

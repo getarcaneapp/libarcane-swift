@@ -8,8 +8,11 @@ public struct S3DestinationsService: Sendable {
     S3Destination
   > {
     try await rest.paginated(
-      "backups/s3", start: query.start ?? 0, limit: query.limit ?? 20,
-      query: query.nonPaginationQueryItems)
+      "backups/s3",
+      start: query.start ?? 0,
+      limit: query.limit ?? 20,
+      query: query.nonPaginationQueryItems
+    )
   }
 
   public func options() async throws -> [S3Destination] {
@@ -38,8 +41,7 @@ public struct S3DestinationsService: Sendable {
   }
 
   public func test(id: String, configuration: UpdateS3Destination? = nil) async throws
-    -> MessageResponse
-  {
+    -> MessageResponse {
     try await rest.requestPayload("backups/s3/\(id)/test", body: configuration)
   }
 

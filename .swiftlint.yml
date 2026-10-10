@@ -1,6 +1,7 @@
 included:
   - Sources/Arcane
   - Sources/ArcaneOIDC
+  - Sources/ArcanePasskeys
   - Tests
 
 excluded:
@@ -56,3 +57,4 @@ identifier_name:
     warning: 2
   excluded:
     - id
+    - v # APNs payload version field.

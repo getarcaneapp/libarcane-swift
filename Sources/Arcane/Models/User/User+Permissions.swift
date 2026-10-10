@@ -17,8 +17,7 @@ extension User {
       if adminGlobally { return true }
     }
     if let perms = permissionsByEnv?[User.globalPermissionsKey],
-      perms.contains(Permission.sudo)
-    {
+      perms.contains(Permission.sudo) {
       return true
     }
     return roles.contains("admin")

@@ -123,8 +123,7 @@ public struct PasskeysService: Sendable {
   }
 
   public func rename(id: String, name: String, stepUpToken: String) async throws
-    -> PasskeySummary
-  {
+    -> PasskeySummary {
     try await rest.put(
       "auth/me/passkeys/\(try encodedPathSegment(id))",
       body: RenamePasskeyRequest(name: name),
@@ -181,8 +180,7 @@ public struct PasskeysService: Sendable {
   }
 
   public func regenerateRecoveryCodes(stepUpToken: String) async throws
-    -> RecoveryCodesResponse
-  {
+    -> RecoveryCodesResponse {
     try await rest.post(
       "auth/me/mfa/recovery-codes/regenerate",
       body: EmptyBody?.none,

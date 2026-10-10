@@ -1,4 +1,5 @@
 import Foundation
+import Synchronization
 
 public struct ArcaneClient: Sendable {
   /// Package-wide client configuration shared by all service entry points.
@@ -195,35 +196,29 @@ public struct ArcaneClient: Sendable {
 }
 
 public enum ArcaneJSON {
-  private final class ISO8601ParserCache: @unchecked Sendable {
-    private let lock = NSLock()
-    private let withFractionalSeconds: ISO8601DateFormatter = {
+  private struct ISO8601Parsers {
+    let withFractionalSeconds: ISO8601DateFormatter = {
       let formatter = ISO8601DateFormatter()
       formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
       return formatter
     }()
-    private let withoutFractionalSeconds: ISO8601DateFormatter = {
+    let withoutFractionalSeconds: ISO8601DateFormatter = {
       let formatter = ISO8601DateFormatter()
       formatter.formatOptions = [.withInternetDateTime]
       return formatter
     }()
-
-    func parse(_ raw: String) -> Date? {
-      lock.lock()
-      defer { lock.unlock() }
-      return withFractionalSeconds.date(from: raw)
-        ?? withoutFractionalSeconds.date(from: raw)
-    }
   }
 
-  private static let iso8601Parsers = ISO8601ParserCache()
+  private static let iso8601Parsers = Mutex(ISO8601Parsers())
 
   public static func makeDecoder() -> JSONDecoder {
     let decoder = JSONDecoder()
     decoder.dateDecodingStrategy = .custom { decoder in
       let container = try decoder.singleValueContainer()
       let raw = try container.decode(String.self)
-      if let date = iso8601Parsers.parse(raw) {
+      if let date = iso8601Parsers.withLock({
+        $0.withFractionalSeconds.date(from: raw) ?? $0.withoutFractionalSeconds.date(from: raw)
+      }) {
         return date
       }
       throw DecodingError.dataCorruptedError(

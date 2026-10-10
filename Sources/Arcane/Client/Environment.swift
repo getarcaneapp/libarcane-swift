@@ -1,8 +1,7 @@
 import Foundation
 
 public struct EnvironmentID: RawRepresentable, ExpressibleByStringLiteral, Codable, Hashable,
-  Sendable
-{
+  Sendable {
   public static let localDocker: EnvironmentID = "0"
 
   public var rawValue: String

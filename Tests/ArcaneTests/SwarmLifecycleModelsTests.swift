@@ -12,7 +12,10 @@ final class SwarmLifecycleModelsTests: XCTestCase {
     let node = try decoder.decode(
       SwarmNode.self,
       from: Data(
-        #"{"id":"node_1","hostname":"worker-1","role":"worker","availability":"active","status":"ready","createdAt":"2026-07-20T12:00:00Z","updatedAt":"2026-07-20T12:01:00Z"}"#
+        #"""
+        { "id": "node_1", "hostname": "worker-1", "role": "worker", "availability": "active", "status": "ready",
+        "createdAt": "2026-07-20T12:00:00Z", "updatedAt": "2026-07-20T12:01:00Z" }
+        """#
           .utf8
       )
     )
@@ -26,7 +29,12 @@ final class SwarmLifecycleModelsTests: XCTestCase {
     let node = try decoder.decode(
       SwarmNode.self,
       from: Data(
-        #"{"id":"node_2","hostname":"manager-1","role":"manager","availability":"active","status":"ready","managerAddress":"10.0.0.2:2377","createdAt":"2026-07-20T12:00:00Z","updatedAt":"2026-07-20T12:01:00Z","agent":{"state":"ambiguous","bindingKind":"pooled","candidates":[{"environmentId":"edge_1","environmentName":"Edge One","environmentType":"agent"}]}}"#
+        #"""
+        { "id": "node_2", "hostname": "manager-1", "role": "manager", "availability": "active", "status": "ready",
+        "managerAddress": "10.0.0.2:2377", "createdAt": "2026-07-20T12:00:00Z", "updatedAt": "2026-07-20T12:01:00Z",
+        "agent": { "state": "ambiguous", "bindingKind": "pooled", "candidates": [ { "environmentId": "edge_1",
+        "environmentName": "Edge One", "environmentType": "agent" } ] } }
+        """#
           .utf8
       )
     )
@@ -77,7 +85,10 @@ final class SwarmLifecycleModelsTests: XCTestCase {
     let response = try decoder.decode(
       SwarmJoinEnvironmentsResponse.self,
       from: Data(
-        #"{"results":[{"environmentId":"edge_1","state":"joined","nodeId":"node_3"},{"environmentId":"edge_2","state":"waiting_for_agent"}]}"#
+        #"""
+        { "results": [ { "environmentId": "edge_1", "state": "joined", "nodeId": "node_3" }, {
+        "environmentId": "edge_2", "state": "waiting_for_agent" } ] }
+        """#
           .utf8
       )
     )

@@ -16,11 +16,10 @@ public struct BuildsService: Sendable {
 
   /// Read file content under the builds workspace root.
   public func getFileContent(path: String, maxBytes: Int64 = 1_048_576, envID: EnvironmentID? = nil)
-    async throws -> BuildFileContent
-  {
+    async throws -> BuildFileContent {
     let query: [URLQueryItem] = [
       URLQueryItem(name: "path", value: path),
-      URLQueryItem(name: "maxBytes", value: "\(maxBytes)"),
+      URLQueryItem(name: "maxBytes", value: "\(maxBytes)")
     ]
     return try await rest.get(rest.environmentPath(envID, "builds/browse/content"), query: query)
   }
@@ -29,7 +28,10 @@ public struct BuildsService: Sendable {
   public func createDirectory(path: String, envID: EnvironmentID? = nil) async throws {
     let query = [URLQueryItem(name: "path", value: path)]
     try await rest.postVoid(
-      rest.environmentPath(envID, "builds/browse/mkdir"), body: EmptyBody?.none, query: query)
+      rest.environmentPath(envID, "builds/browse/mkdir"),
+      body: EmptyBody?.none,
+      query: query
+    )
   }
 
   /// Delete a file or directory under the builds workspace root.
@@ -62,7 +64,9 @@ public struct BuildsService: Sendable {
     struct Body: Encodable, Sendable { let uploadId: String }
     try await rest.postVoid(
       rest.environmentPath(envID, "builds/browse/upload"),
-      body: Body(uploadId: uploadID), query: [URLQueryItem(name: "path", value: path)])
+      body: Body(uploadId: uploadID),
+      query: [URLQueryItem(name: "path", value: path)]
+    )
   }
 
   /// Download the raw bytes of a file in the build workspace.

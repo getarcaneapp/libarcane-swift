@@ -17,8 +17,7 @@ struct ProxyRequestSupport: Sendable {
     guard context?.isValid != false else { throw CancellationError() }
     for (name, value) in context?.headers ?? [:]
     where name.caseInsensitiveCompare("Cookie") == .orderedSame
-      && !value.unicodeScalars.contains(where: { $0 == "\r" || $0 == "\n" })
-    {
+      && !value.unicodeScalars.contains(where: { $0 == "\r" || $0 == "\n" }) {
       request.setValue(value, forHTTPHeaderField: name)
     }
     return ProxyRequestDelegate(support: self, context: context, url: url)
@@ -45,13 +44,14 @@ struct ProxyRequestSupport: Sendable {
 
   static func isAllowed(name: String, value: String) -> Bool {
     let token = CharacterSet(
-      charactersIn: "!#$%&'*+-.^_`|~0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz")
+      charactersIn: "!#$%&'*+-.^_`|~0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+    )
     let lower = name.lowercased()
     return !name.isEmpty && name.unicodeScalars.allSatisfy(token.contains)
       && !value.unicodeScalars.contains(where: { $0 == "\r" || $0 == "\n" })
       && ![
         "authorization", "x-api-key", "x-step-up-token", "cookie", "host", "content-length",
-        "connection", "upgrade", "transfer-encoding", "te", "trailer", "proxy-connection",
+        "connection", "upgrade", "transfer-encoding", "te", "trailer", "proxy-connection"
       ].contains(lower)
       && !lower.hasPrefix("x-arcane-")
   }
@@ -69,8 +69,7 @@ struct ProxyRequestSupport: Sendable {
     if ((html || htmlBody)
       && ((successful && expectsJSON) || [401, 403, 407].contains(response.statusCode)))
       || (300..<400).contains(response.statusCode) || response.statusCode == 407
-      || response.value(forHTTPHeaderField: "Proxy-Authenticate") != nil
-    {
+      || response.value(forHTTPHeaderField: "Proxy-Authenticate") != nil {
       throw ArcaneError.proxyAuthenticationRequired
     }
     // Non-Arcane authentication responses must not invalidate Arcane tokens.
@@ -108,12 +107,16 @@ final class ProxyRequestDelegate: NSObject, URLSessionWebSocketDelegate, Sendabl
     let snapshot = await state.snapshot()
     if let context = snapshot.context, support.contains(response.url ?? snapshot.url) {
       await support.session?.receive(
-        response: response, for: snapshot.url, generation: context.generation)
+        response: response,
+        for: snapshot.url,
+        generation: context.generation
+      )
     }
   }
 
   func urlSession(
-    _ session: URLSession, webSocketTask: URLSessionWebSocketTask,
+    _ session: URLSession,
+    webSocketTask: URLSessionWebSocketTask,
     didOpenWithProtocol protocol: String?
   ) {
     if let response = webSocketTask.response as? HTTPURLResponse {
@@ -123,15 +126,16 @@ final class ProxyRequestDelegate: NSObject, URLSessionWebSocketDelegate, Sendabl
 
   func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
     if task is URLSessionWebSocketTask, error != nil,
-      let response = task.response as? HTTPURLResponse
-    {
+      let response = task.response as? HTTPURLResponse {
       Task { await receive(response) }
     }
   }
 
   func urlSession(
-    _ session: URLSession, task: URLSessionTask,
-    willPerformHTTPRedirection response: HTTPURLResponse, newRequest request: URLRequest,
+    _ session: URLSession,
+    task: URLSessionTask,
+    willPerformHTTPRedirection response: HTTPURLResponse,
+    newRequest request: URLRequest,
     completionHandler: @escaping @Sendable (URLRequest?) -> Void
   ) {
     // Keeping the original response makes an out-of-scope redirect a proxy gate,

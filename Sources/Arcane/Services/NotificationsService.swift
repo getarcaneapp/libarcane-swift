@@ -17,15 +17,13 @@ public struct NotificationsService: Sendable {
 
   /// Get notification settings for a specific provider.
   public func getSettings(provider: NotificationProvider, envID: EnvironmentID? = nil) async throws
-    -> NotificationSettings
-  {
+    -> NotificationSettings {
     try await rawRequest(rest.environmentPath(envID, "notifications/settings/\(provider.rawValue)"))
   }
 
   /// Create or update notification settings.
   public func upsertSettings(_ body: UpdateNotificationSettings, envID: EnvironmentID? = nil)
-    async throws -> NotificationSettings
-  {
+    async throws -> NotificationSettings {
     try await rawRequest(
       rest.environmentPath(envID, "notifications/settings"),
       method: "POST",
@@ -35,15 +33,16 @@ public struct NotificationsService: Sendable {
 
   /// Delete notification settings for a provider.
   public func deleteSettings(provider: NotificationProvider, envID: EnvironmentID? = nil)
-    async throws
-  {
+    async throws {
     try await rest.deleteVoid(
-      rest.environmentPath(envID, "notifications/settings/\(provider.rawValue)"))
+      rest.environmentPath(envID, "notifications/settings/\(provider.rawValue)")
+    )
   }
 
   /// Send a test notification through the configured provider.
   public func test(
-    provider: NotificationProvider, type: NotificationTestType = .simple,
+    provider: NotificationProvider,
+    type: NotificationTestType = .simple,
     envID: EnvironmentID? = nil
   ) async throws -> NotificationTestResponse {
     let path = rest.environmentPath(envID, "notifications/test/\(provider.rawValue)")
@@ -60,15 +59,13 @@ public struct NotificationsService: Sendable {
 
   /// Create or update Apprise integration settings.
   public func upsertAppriseSettings(_ body: UpdateAppriseSettings, envID: EnvironmentID? = nil)
-    async throws -> AppriseSettings
-  {
+    async throws -> AppriseSettings {
     try await rest.post(rest.environmentPath(envID, "notifications/apprise"), body: body)
   }
 
   /// Send a test notification through Apprise.
   public func testApprise(type: NotificationTestType = .simple, envID: EnvironmentID? = nil)
-    async throws
-  {
+    async throws {
     let path = rest.environmentPath(envID, "notifications/apprise/test")
     let query = [URLQueryItem(name: "type", value: type.rawValue)]
     try await rest.postVoid(path, body: EmptyBody?.none, query: query)

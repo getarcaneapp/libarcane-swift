@@ -44,8 +44,7 @@ public struct ImagesService: Sendable {
 
   /// Docker layer history for an image ID or reference.
   public func history(envID: EnvironmentID? = nil, imageID: String) async throws
-    -> [ImageHistoryItem]
-  {
+    -> [ImageHistoryItem] {
     try await rest.get(rest.environmentPath(envID, "images/\(imageID)/history"))
   }
 
@@ -67,7 +66,9 @@ public struct ImagesService: Sendable {
     if let predicateType { items.append(URLQueryItem(name: "predicateType", value: predicateType)) }
     if includeStatement { items.append(URLQueryItem(name: "statement", value: "true")) }
     return try await rest.get(
-      rest.environmentPath(envID, "images/\(id)/attestations"), query: items)
+      rest.environmentPath(envID, "images/\(id)/attestations"),
+      query: items
+    )
   }
 
   /// Remove an image, optionally forcing removal even if in use.
@@ -77,33 +78,34 @@ public struct ImagesService: Sendable {
   }
 
   /// Search Docker Hub repositories.
-  public func search(envID: EnvironmentID? = nil, term: String) async throws -> [ImageSearchResult]
-  {
+  public func search(envID: EnvironmentID? = nil, term: String) async throws -> [ImageSearchResult] {
     try await rest.get(
       rest.environmentPath(envID, "images/search"),
-      query: [URLQueryItem(name: "term", value: term)])
+      query: [URLQueryItem(name: "term", value: term)]
+    )
   }
 
   /// Add a repository tag to an image identified by its Docker image ID.
   @discardableResult
   public func tag(envID: EnvironmentID? = nil, imageID: String, request: ImageTagRequest)
     async throws
-    -> MessageResponse
-  {
+    -> MessageResponse {
     try await rest.post(rest.environmentPath(envID, "images/\(imageID)/tag"), body: request)
   }
 
   /// Stream an image archive to disk without retaining the archive in memory.
   public func export(envID: EnvironmentID? = nil, imageID: String, to destinationURL: URL)
-    async throws
-  {
+    async throws {
     try await rest.transport.downloadRaw(
-      rest.environmentPath(envID, "images/\(imageID)/export"), to: destinationURL)
+      rest.environmentPath(envID, "images/\(imageID)/export"),
+      to: destinationURL
+    )
   }
 
   /// Start a background patch. A returned `patching` record is not completion.
   public func patch(
-    envID: EnvironmentID? = nil, imageID: String,
+    envID: EnvironmentID? = nil,
+    imageID: String,
     options: ImagePatchOptions = .init()
   ) async throws -> ImagePatchRecord {
     try await rest.post(rest.environmentPath(envID, "images/\(imageID)/patch"), body: options)
@@ -115,18 +117,25 @@ public struct ImagesService: Sendable {
   ) async throws -> PaginatedResponse<ImagePatchTarget> {
     try await rest.paginated(
       rest.environmentPath(envID, "images/patch-targets"),
-      start: query.start ?? 0, limit: query.limit ?? 20, query: query.nonPaginationQueryItems)
+      start: query.start ?? 0,
+      limit: query.limit ?? 20,
+      query: query.nonPaginationQueryItems
+    )
   }
 
   public func listPatches(
-    envID: EnvironmentID? = nil, query: SearchPaginationSort = .init(),
+    envID: EnvironmentID? = nil,
+    query: SearchPaginationSort = .init(),
     status: String? = nil
   ) async throws -> PaginatedResponse<ImagePatchRecord> {
     var items = query.nonPaginationQueryItems
     if let status { items.append(URLQueryItem(name: "status", value: status)) }
     return try await rest.paginated(
       rest.environmentPath(envID, "images/patches"),
-      start: query.start ?? 0, limit: query.limit ?? 20, query: items)
+      start: query.start ?? 0,
+      limit: query.limit ?? 20,
+      query: items
+    )
   }
 
   // MARK: - Pull / Build (streaming endpoints)
@@ -214,8 +223,7 @@ public struct ImagesService: Sendable {
 
   /// Inspect a single build history entry.
   public func getBuild(envID: EnvironmentID? = nil, buildId: String) async throws
-    -> ImageBuildRecord
-  {
+    -> ImageBuildRecord {
     try await rest.get(rest.environmentPath(envID, "images/builds/\(buildId)"))
   }
 
@@ -243,26 +251,25 @@ public struct ImagesService: Sendable {
 
   /// Check whether an update is available for an image referenced by repo:tag.
   public func checkUpdateByRef(envID: EnvironmentID? = nil, imageRef: String) async throws
-    -> ImageUpdateResponse
-  {
+    -> ImageUpdateResponse {
     let query = [URLQueryItem(name: "imageRef", value: imageRef)]
     return try await rest.get(rest.environmentPath(envID, "image-updates/check"), query: query)
   }
 
   /// Check whether an update is available for an image by its Docker image ID (GET).
   public func checkUpdateByID(envID: EnvironmentID? = nil, imageId: String) async throws
-    -> ImageUpdateResponse
-  {
+    -> ImageUpdateResponse {
     try await rest.get(rest.environmentPath(envID, "image-updates/check/\(imageId)"))
   }
 
   /// Check whether an update is available for an image by its Docker image ID (POST).
   /// The POST variant exists for clients that prefer non-idempotent semantics.
   public func checkUpdateByIDPost(envID: EnvironmentID? = nil, imageId: String) async throws
-    -> ImageUpdateResponse
-  {
+    -> ImageUpdateResponse {
     try await rest.post(
-      rest.environmentPath(envID, "image-updates/check/\(imageId)"), body: Optional<EmptyBody>.none)
+      rest.environmentPath(envID, "image-updates/check/\(imageId)"),
+      body: Optional<EmptyBody>.none
+    )
   }
 
   /// Batch update check for a list of image references.

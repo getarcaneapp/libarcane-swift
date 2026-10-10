@@ -12,8 +12,7 @@ public final class TerminalSession: Sendable {
   }
 
   public static func connect(transport: ArcaneURLSessionTransport, path: String, shell: String)
-    async throws -> TerminalSession
-  {
+    async throws -> TerminalSession {
     var request = try await transport.websocketRequest(
       path: path, query: [URLQueryItem(name: "shell", value: shell)])
     let proxyDelegate = try await transport.proxySupport.prepare(&request)

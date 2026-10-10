@@ -6,28 +6,36 @@ extension VolumesService {
   }
 
   public func workspaceFile(
-    envID: EnvironmentID? = nil, name: String,
+    envID: EnvironmentID? = nil,
+    name: String,
     relativePath: String
   ) async throws -> VolumeWorkspaceFileContent {
     try await rest.get(
       rest.environmentPath(envID, "volumes/\(name)/workspace/file"),
-      query: [URLQueryItem(name: "relativePath", value: relativePath)])
+      query: [URLQueryItem(name: "relativePath", value: relativePath)]
+    )
   }
 
   public func downloadWorkspaceFile(
-    envID: EnvironmentID? = nil, name: String,
-    relativePath: String, to destinationURL: URL
+    envID: EnvironmentID? = nil,
+    name: String,
+    relativePath: String,
+    to destinationURL: URL
   ) async throws {
     try await rest.transport.downloadRaw(
       rest.environmentPath(envID, "volumes/\(name)/workspace/file/download"),
-      query: [URLQueryItem(name: "relativePath", value: relativePath)], to: destinationURL)
+      query: [URLQueryItem(name: "relativePath", value: relativePath)],
+      to: destinationURL
+    )
   }
 
   /// Atomically apply a revision-checked workspace manifest. Files are streamed from disk.
   /// A conflict is returned to the caller without refreshing or retrying the mutation.
   public func updateWorkspace(
-    envID: EnvironmentID? = nil, name: String,
-    manifest: VolumeWorkspaceUpdateManifest, files: [URL] = []
+    envID: EnvironmentID? = nil,
+    name: String,
+    manifest: VolumeWorkspaceUpdateManifest,
+    files: [URL] = []
   ) async throws -> VolumeWorkspace {
     guard !manifest.fileTreeRevision.isEmpty, (1...500).contains(manifest.fileChanges.count) else {
       throw ArcaneError.validation(fields: [
@@ -51,11 +59,17 @@ extension VolumesService {
       }
     }
     let data = try ArcaneJSON.makeEncoder().encode(manifest)
+    guard let manifestJSON = String(bytes: data, encoding: .utf8) else {
+      throw ArcaneError.decoding("Workspace manifest is not valid UTF-8")
+    }
     let uploads = files.map {
       MultipartFile(fieldName: "files", filename: $0.lastPathComponent, fileURL: $0)
     }
     return try await rest.transport.multipartUpload(
-      rest.environmentPath(envID, "volumes/\(name)/workspace"), method: "PUT",
-      fields: ["manifest": String(decoding: data, as: UTF8.self)], files: uploads)
+      rest.environmentPath(envID, "volumes/\(name)/workspace"),
+      method: "PUT",
+      fields: ["manifest": manifestJSON],
+      files: uploads
+    )
   }
 }

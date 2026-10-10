@@ -5,10 +5,6 @@ import Foundation
 public struct VolumesService: Sendable {
   let rest: RESTService
 
-  init(rest: RESTService) {
-    self.rest = rest
-  }
-
   // MARK: - Volumes
 
   /// Paginated list of Docker volumes for the environment.
@@ -69,8 +65,7 @@ public struct VolumesService: Sendable {
 
   /// Get aggregate usage counts (in use / unused / total).
   public func counts(envID: EnvironmentID? = nil, includeInternal: Bool = false) async throws
-    -> VolumeUsageCounts
-  {
+    -> VolumeUsageCounts {
     var items: [URLQueryItem] = []
     if includeInternal {
       items.append(URLQueryItem(name: "includeInternal", value: "true"))
@@ -87,8 +82,7 @@ public struct VolumesService: Sendable {
 
   /// List directory entries inside a volume.
   public func browse(envID: EnvironmentID? = nil, name: String, path: String = "/") async throws
-    -> [FileEntry]
-  {
+    -> [FileEntry] {
     try await rest.get(
       rest.environmentPath(envID, "volumes/\(name)/browse"),
       query: [URLQueryItem(name: "path", value: path)]
@@ -106,7 +100,7 @@ public struct VolumesService: Sendable {
       rest.environmentPath(envID, "volumes/\(name)/browse/content"),
       query: [
         URLQueryItem(name: "path", value: path),
-        URLQueryItem(name: "maxBytes", value: "\(maxBytes)"),
+        URLQueryItem(name: "maxBytes", value: "\(maxBytes)")
       ]
     )
   }
@@ -155,7 +149,8 @@ public struct VolumesService: Sendable {
   }
 
   /// Create a new backup of a volume.
-  public func createBackup(envID: EnvironmentID? = nil, name: String, request: CreateVolumeBackupRequest = .init()) async throws -> BackupEntry {
+  public func createBackup(envID: EnvironmentID? = nil, name: String, request: CreateVolumeBackupRequest = .init()) async throws
+    -> BackupEntry {
     try await rest.post(
       rest.environmentPath(envID, "volumes/\(name)/backups"),
       body: request
@@ -221,8 +216,7 @@ public struct VolumesService: Sendable {
 
   /// List the files contained inside a backup.
   public func listBackupFiles(envID: EnvironmentID? = nil, backupID: String) async throws
-    -> [String]
-  {
+    -> [String] {
     try await rest.get(rest.environmentPath(envID, "volumes/backups/\(backupID)/files"))
   }
 
@@ -271,8 +265,7 @@ public struct VolumesService: Sendable {
   /// Download the raw bytes of a file inside a volume.
   @available(*, deprecated, message: "Use downloadFile(..., to:) for potentially large files.")
   public func downloadFile(envID: EnvironmentID? = nil, name: String, path: String) async throws
-    -> Data
-  {
+    -> Data {
     try await rest.transport.downloadRaw(
       rest.environmentPath(envID, "volumes/\(name)/browse/download"),
       query: [URLQueryItem(name: "path", value: path)]

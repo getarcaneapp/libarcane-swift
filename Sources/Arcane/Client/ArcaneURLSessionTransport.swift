@@ -34,9 +34,13 @@ public final class ArcaneURLSessionTransport: Sendable {
     self.encoder = encoder
     self.defaultRequestOptions = defaultRequestOptions
     self.proxySupport = ProxyRequestSupport(
-      baseURL: baseURL, additionalHeaders: additionalHeaders, session: proxySession)
+      baseURL: baseURL,
+      additionalHeaders: additionalHeaders,
+      session: proxySession
+    )
   }
 
+  @concurrent
   public func request<T: Decodable & Sendable, Body: Encodable & Sendable>(
     _ path: String,
     method: String = "GET",
@@ -46,7 +50,13 @@ public final class ArcaneURLSessionTransport: Sendable {
     options: ArcaneRequestOptions? = nil
   ) async throws -> T {
     let data = try await rawRequest(
-      path, method: method, query: query, body: body, authorized: authorized, options: options)
+      path,
+      method: method,
+      query: query,
+      body: body,
+      authorized: authorized,
+      options: options
+    )
     do {
       return try decoder.decode(APIResponse<T>.self, from: data).data
     } catch {
@@ -54,6 +64,7 @@ public final class ArcaneURLSessionTransport: Sendable {
     }
   }
 
+  @concurrent
   public func request<T: Decodable & Sendable>(
     _ path: String,
     method: String = "GET",
@@ -63,9 +74,16 @@ public final class ArcaneURLSessionTransport: Sendable {
   ) async throws -> T {
     let body: EmptyBody? = nil
     return try await request(
-      path, method: method, query: query, body: body, authorized: authorized, options: options)
+      path,
+      method: method,
+      query: query,
+      body: body,
+      authorized: authorized,
+      options: options
+    )
   }
 
+  @concurrent
   public func paginated<T: Decodable & Sendable>(
     _ path: String,
     start: Int,
@@ -77,7 +95,12 @@ public final class ArcaneURLSessionTransport: Sendable {
     items.append(URLQueryItem(name: "start", value: "\(max(0, start))"))
     items.append(URLQueryItem(name: "limit", value: "\(limit)"))
     let data = try await rawRequest(
-      path, query: items, body: Optional<EmptyBody>.none, authorized: true, options: options)
+      path,
+      query: items,
+      body: Optional<EmptyBody>.none,
+      authorized: true,
+      options: options
+    )
     do {
       return try decoder.decode(PaginatedResponse<T>.self, from: data)
     } catch {
@@ -85,6 +108,7 @@ public final class ArcaneURLSessionTransport: Sendable {
     }
   }
 
+  @concurrent
   public func rawRequest<Body: Encodable & Sendable>(
     _ path: String,
     method: String = "GET",
@@ -94,12 +118,19 @@ public final class ArcaneURLSessionTransport: Sendable {
     options: ArcaneRequestOptions? = nil
   ) async throws -> Data {
     try await rawDataRequest(
-      path, method: method, query: query,
-      body: try body.map { try encoder.encode($0) }, contentType: "application/json",
-      authorized: authorized, options: options, expectsJSONResponse: true)
+      path,
+      method: method,
+      query: query,
+      body: try body.map { try encoder.encode($0) },
+      contentType: "application/json",
+      authorized: authorized,
+      options: options,
+      expectsJSONResponse: true
+    )
   }
 
   /// Sends already encoded bytes through the standard authentication and retry handling.
+  @concurrent
   public func rawDataRequest(
     _ path: String,
     method: String = "PUT",
@@ -115,16 +146,10 @@ public final class ArcaneURLSessionTransport: Sendable {
     let requestOptions = resolvedRequestOptions(options)
 
     while true {
-      let prepared = try await makeRequest(
-        path,
-        method: method,
-        query: query,
-        body: body,
-        contentType: contentType,
-        authorized: authorized,
-        options: requestOptions)
+      var request = makeRequest(path, method: method, query: query, body: body, contentType: contentType)
+      applyRequestOptions(to: &request, options: requestOptions)
+      let generation = try await applyAuthenticationHeaders(to: &request, authorized: authorized)
       do {
-        var request = prepared.request
         let proxyDelegate = try await proxySupport.prepare(&request)
         let (data, response) = try await session.data(for: request, delegate: proxyDelegate)
         guard let http = response as? HTTPURLResponse else {
@@ -143,19 +168,21 @@ public final class ArcaneURLSessionTransport: Sendable {
         }
 
         if shouldRetry(method: method, statusCode: http.statusCode),
-          attempt < retryPolicy.maxAttempts
-        {
+          attempt < retryPolicy.maxAttempts {
           try await sleepBeforeRetry(attempt: attempt)
           attempt += 1
           continue
         }
 
         guard (200..<300).contains(http.statusCode) else {
-          if http.statusCode == 401, let generation = prepared.credentialGeneration {
+          if http.statusCode == 401, let generation {
             try? await authManager.clear(ifCredentialGenerationMatches: generation)
           }
           throw ArcaneError.from(
-            statusCode: http.statusCode, data: data, headers: http.allHeaderFields, decoder: decoder
+            statusCode: http.statusCode,
+            data: data,
+            headers: http.allHeaderFields,
+            decoder: decoder
           )
         }
         return data
@@ -174,13 +201,15 @@ public final class ArcaneURLSessionTransport: Sendable {
     }
   }
 
+  @concurrent
   public func websocketRequest(
     path: String,
     query: [URLQueryItem] = [],
     options: ArcaneRequestOptions? = nil
   ) async throws -> URLRequest {
     var request = URLRequest(
-      url: baseURL.appendingAPIPath(path).withQueryItems(query).webSocketURL())
+      url: baseURL.appendingAPIPath(path).withQueryItems(query).webSocketURL()
+    )
     applyRequestOptions(to: &request, options: resolvedRequestOptions(options))
     _ = try await applyAuthenticationHeaders(to: &request)
     _ = try await proxySupport.prepare(&request)
@@ -188,6 +217,7 @@ public final class ArcaneURLSessionTransport: Sendable {
   }
 
   /// Creates an unresumed WebSocket task with scoped proxy credentials and redirects.
+  @concurrent
   public func makeWebSocketTask(
     path: String,
     query: [URLQueryItem] = [],
@@ -200,146 +230,11 @@ public final class ArcaneURLSessionTransport: Sendable {
     return task
   }
 
-  /// Returns the bytes of an HTTP response as an async sequence, plus the response
-  /// metadata. Used by NDJSON streams and binary downloads. The caller is responsible
-  /// for checking `http.statusCode` and consuming the bytes — this method does not
-  /// validate the response status.
-  public func byteStream(
-    path: String,
-    method: String = "GET",
-    query: [URLQueryItem] = [],
-    body: Data? = nil,
-    contentType: String? = nil,
-    accept: String = "application/x-ndjson, application/x-json-stream, application/json",
-    authorized: Bool = true,
-    options: ArcaneRequestOptions? = nil
-  ) async throws -> (URLSession.AsyncBytes, HTTPURLResponse) {
-    var didRefresh = false
-    let requestOptions = resolvedRequestOptions(options)
-    while true {
-      var request = URLRequest(url: baseURL.appendingAPIPath(path).withQueryItems(query))
-      request.httpMethod = method
-      request.setValue(accept, forHTTPHeaderField: "Accept")
-      applyRequestOptions(to: &request, options: requestOptions)
-      let generation = try await applyAuthenticationHeaders(to: &request, authorized: authorized)
-      if let body {
-        if let contentType {
-          request.setValue(contentType, forHTTPHeaderField: "Content-Type")
-        }
-        request.httpBody = body
-      }
-      let proxyDelegate = try await proxySupport.prepare(&request)
-      let (bytes, response): (URLSession.AsyncBytes, URLResponse)
-      do {
-        (bytes, response) = try await session.bytes(for: request, delegate: proxyDelegate)
-      } catch {
-        throw normalizedTransportError(error)
-      }
-      guard let http = response as? HTTPURLResponse else {
-        throw ArcaneError.transport("Request did not return an HTTP response")
-      }
-      await proxyDelegate.receive(http)
-      try await checkStreamResponse(http, bytes: bytes, expectsJSON: accept.lowercased().contains("json"))
-      if try await refreshAuthorizationIfNeeded(
-        statusCode: http.statusCode,
-        authorized: authorized,
-        didRefresh: &didRefresh
-      ) {
-        continue
-      }
-      if http.statusCode == 401, let generation {
-        try? await authManager.clear(ifCredentialGenerationMatches: generation)
-      }
-      return (bytes, http)
-    }
-  }
-
-  /// Uploads a multipart/form-data request from a tempfile (streamed from disk to
-  /// avoid loading large files into memory). The response is decoded as the
-  /// standard `APIResponse<T>` envelope.
-  public func multipartUpload<T: Decodable & Sendable>(
-    _ path: String,
-    method: String = "POST",
-    query: [URLQueryItem] = [],
-    fields: [String: String] = [:],
-    files: [MultipartFile],
-    options: ArcaneRequestOptions? = nil
-  ) async throws -> T {
-    let prepared = try makeMultipartTempFile(fields: fields, files: files)
-    defer { try? FileManager.default.removeItem(at: prepared.url) }
-
-    var didRefresh = false
-    let requestOptions = resolvedRequestOptions(options)
-    while true {
-      let preparedRequest = try await makeMultipartRequest(
-        path: path,
-        method: method,
-        query: query,
-        prepared: prepared,
-        accept: "application/json",
-        options: requestOptions
-      )
-      var request = preparedRequest.request
-      let proxyDelegate = try await proxySupport.prepare(&request)
-      let (data, response): (Data, URLResponse)
-      do {
-        (data, response) = try await session.upload(
-          for: request,
-          fromFile: prepared.url,
-          delegate: proxyDelegate
-        )
-      } catch {
-        throw normalizedTransportError(error)
-      }
-      guard let http = response as? HTTPURLResponse else {
-        throw ArcaneError.transport("Upload did not return an HTTP response")
-      }
-      await proxyDelegate.receive(http)
-      try proxySupport.check(http, data: data)
-      if try await refreshAuthorizationIfNeeded(
-        statusCode: http.statusCode,
-        authorized: true,
-        didRefresh: &didRefresh
-      ) {
-        continue
-      }
-      guard (200..<300).contains(http.statusCode) else {
-        if http.statusCode == 401, let generation = preparedRequest.credentialGeneration {
-          try? await authManager.clear(ifCredentialGenerationMatches: generation)
-        }
-        throw ArcaneError.from(
-          statusCode: http.statusCode, data: data, headers: http.allHeaderFields, decoder: decoder)
-      }
-      do {
-        return try decoder.decode(APIResponse<T>.self, from: data).data
-      } catch {
-        throw ArcaneError.decoding(String(describing: error))
-      }
-    }
-  }
-
-  /// Uploads a multipart/form-data request to an endpoint that returns NDJSON.
-  public func multipartUploadStream<Element: Decodable & Sendable>(
-    _ path: String,
-    method: String = "POST",
-    query: [URLQueryItem] = [],
-    fields: [String: String] = [:],
-    files: [MultipartFile],
-    options: ArcaneRequestOptions? = nil
-  ) -> NDJSONStream<Element> {
-    // The actual upload and streaming happen lazily inside the AsyncSequence's
-    // iterator so the caller can `for try await` directly. The body is the
-    // assembled multipart tempfile; the stream owns the tempfile lifecycle.
-    let endpoint = MultipartEndpoint(
-      path: path, method: method, query: query, fields: fields, files: files)
-    let streamTransport = options.map(withRequestOptions) ?? self
-    return NDJSONStream(transport: streamTransport, multipart: endpoint)
-  }
-
   /// Returns the raw bytes of a `GET` response. Used for binary downloads
   /// (mTLS bundles, volume backups, file contents). The auth/retry path is
   /// the same as `rawRequest` but the result is unwrapped binary instead of
   /// an `APIResponse<T>` envelope.
+  @concurrent
   public func downloadRaw(
     _ path: String,
     query: [URLQueryItem] = [],
@@ -352,7 +247,8 @@ public final class ArcaneURLSessionTransport: Sendable {
       query: query,
       body: nil,
       authorized: authorized,
-      options: options)
+      options: options
+    )
   }
 
   private func makeRequest(
@@ -360,20 +256,16 @@ public final class ArcaneURLSessionTransport: Sendable {
     method: String,
     query: [URLQueryItem],
     body: Data?,
-    contentType: String,
-    authorized: Bool,
-    options: ArcaneRequestOptions
-  ) async throws -> AuthenticatedRequest {
+    contentType: String
+  ) -> URLRequest {
     var request = URLRequest(url: baseURL.appendingAPIPath(path).withQueryItems(query))
     request.httpMethod = method
     request.setValue("application/json", forHTTPHeaderField: "Accept")
-    applyRequestOptions(to: &request, options: options)
-    let generation = try await applyAuthenticationHeaders(to: &request, authorized: authorized)
     if let body {
       request.setValue(contentType, forHTTPHeaderField: "Content-Type")
       request.httpBody = body
     }
-    return AuthenticatedRequest(request: request, credentialGeneration: generation)
+    return request
   }
 
   @discardableResult
@@ -485,16 +377,22 @@ public final class ArcaneURLSessionTransport: Sendable {
   }
 
   func sleepBeforeRetry(attempt: Int) async throws {
-    let multiplier = 1 << max(0, attempt - 1)
-    let base =
-      retryPolicy.baseBackoff.components.attoseconds / 1_000_000_000
-      + retryPolicy.baseBackoff.components.seconds * 1_000_000_000
-    let maxDelay =
-      retryPolicy.maxBackoff.components.attoseconds / 1_000_000_000
-      + retryPolicy.maxBackoff.components.seconds * 1_000_000_000
-    let delay = min(base * Int64(multiplier), maxDelay)
-    try await Task.sleep(nanoseconds: UInt64(max(delay, 0)))
+    try await Task.sleep(for: retryDelay(attempt: attempt))
   }
+
+  func retryDelay(attempt: Int) -> Duration {
+    let cap = max(.zero, retryPolicy.maxBackoff)
+    var delay = min(max(.zero, retryPolicy.baseBackoff), cap)
+    guard delay > .zero, attempt > 1 else { return delay }
+    // Stop at the cap before multiplying, including for arbitrarily large attempt counts.
+    for _ in 1..<attempt {
+      guard delay < cap else { break }
+      if delay >= cap - delay { return cap }
+      delay *= 2
+    }
+    return delay
+  }
+
 }
 
 extension URL {

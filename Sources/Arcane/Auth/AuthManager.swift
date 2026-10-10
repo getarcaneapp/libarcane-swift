@@ -70,8 +70,7 @@ public actor AuthManager {
       tokens.expiresAt.timeIntervalSinceNow < Self.expirySkew,
       lastFailedProactiveRefresh.map({
         Date().timeIntervalSince($0) > Self.failedProactiveRefreshBackoff
-      }) ?? true
-    {
+      }) ?? true {
       let generation = credentialGeneration
       do {
         let refreshed = try await refreshTokens()
@@ -186,20 +185,18 @@ public actor AuthManager {
     let task = Task {
       _ = try? await previous?.value
       try checkAuthenticationOperation(generation)
-      if let tokens {
-        try await tokenStore.saveTokens(tokens)
-      } else {
-        try await tokenStore.clearTokens()
-      }
       do {
+        if let tokens {
+          try await tokenStore.saveTokens(tokens)
+        } else {
+          try await tokenStore.clearTokens()
+        }
         try checkAuthenticationOperation(generation)
       } catch {
         // Retiring or cancelling a completion during the write restores
         // the accepted credential before the next mutation can run.
-        if let cachedTokens {
-          try await tokenStore.saveTokens(cachedTokens)
-        } else {
-          try await tokenStore.clearTokens()
+        try? await withCancellationRecovery {
+          try await self.restoreAcceptedCredentials()
         }
         throw error
       }
@@ -209,6 +206,14 @@ public actor AuthManager {
       try await task.value
     } onCancel: {
       task.cancel()
+    }
+  }
+
+  private func restoreAcceptedCredentials() async throws {
+    if let cachedTokens {
+      try await tokenStore.saveTokens(cachedTokens)
+    } else {
+      try await tokenStore.clearTokens()
     }
   }
 
@@ -311,8 +316,7 @@ public actor AuthManager {
     if !isRetry,
       let latest = try? await tokenStore.loadTokens(),
       !latest.refreshToken.isEmpty,
-      latest.refreshToken != rejectedRefreshToken
-    {
+      latest.refreshToken != rejectedRefreshToken {
       try checkAuthenticationOperation(generation)
       cachedTokens = latest
       return try await refreshTokens(isRetry: true)
@@ -320,8 +324,7 @@ public actor AuthManager {
 
     // An unreadable store must never cost the user their session.
     if let current = try? await tokenStore.loadTokens(),
-      current.refreshToken == rejectedRefreshToken
-    {
+      current.refreshToken == rejectedRefreshToken {
       try? await clear(ifCredentialGenerationMatches: generation)
     }
     throw error

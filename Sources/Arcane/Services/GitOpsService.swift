@@ -23,7 +23,11 @@ public struct GitOpsService: Sendable {
     if let sort { query.append(URLQueryItem(name: "sort", value: sort)) }
     if let order { query.append(URLQueryItem(name: "order", value: order.rawValue)) }
     return try await rest.transport.paginated(
-      "customize/git-repositories", start: start, limit: limit, query: query)
+      "customize/git-repositories",
+      start: start,
+      limit: limit,
+      query: query
+    )
   }
 
   /// Get a git repository by ID.
@@ -37,8 +41,7 @@ public struct GitOpsService: Sendable {
   }
 
   /// Update an existing git repository.
-  public func updateRepository(id: String, body: UpdateGitRepository) async throws -> GitRepository
-  {
+  public func updateRepository(id: String, body: UpdateGitRepository) async throws -> GitRepository {
     try await rest.put("customize/git-repositories/\(id)", body: body)
   }
 
@@ -52,7 +55,10 @@ public struct GitOpsService: Sendable {
     var query: [URLQueryItem] = []
     if let branch { query.append(URLQueryItem(name: "branch", value: branch)) }
     try await rest.postVoid(
-      "customize/git-repositories/\(id)/test", body: EmptyBody?.none, query: query)
+      "customize/git-repositories/\(id)/test",
+      body: EmptyBody?.none,
+      query: query
+    )
   }
 
   /// List branches available in a git repository.
@@ -62,8 +68,7 @@ public struct GitOpsService: Sendable {
 
   /// Browse files and directories in a git repository at the given branch.
   public func browseRepositoryFiles(id: String, branch: String, path: String? = nil) async throws
-    -> GitOpsBrowseResponse
-  {
+    -> GitOpsBrowseResponse {
     var query: [URLQueryItem] = [URLQueryItem(name: "branch", value: branch)]
     if let path { query.append(URLQueryItem(name: "path", value: path)) }
     return try await rest.get("customize/git-repositories/\(id)/files", query: query)
@@ -100,13 +105,16 @@ public struct GitOpsService: Sendable {
       query.append(URLQueryItem(name: "autoSync", value: autoSync ? "true" : "false"))
     }
     return try await rest.transport.paginated(
-      rest.environmentPath(envID, "gitops-syncs"), start: start, limit: limit, query: query)
+      rest.environmentPath(envID, "gitops-syncs"),
+      start: start,
+      limit: limit,
+      query: query
+    )
   }
 
   /// Create a new GitOps sync configuration.
   public func createSync(_ body: CreateGitOpsSync, envID: EnvironmentID? = nil) async throws
-    -> GitOpsSync
-  {
+    -> GitOpsSync {
     try await rest.post(rest.environmentPath(envID, "gitops-syncs"), body: body)
   }
 
@@ -117,8 +125,7 @@ public struct GitOpsService: Sendable {
 
   /// Update an existing GitOps sync.
   public func updateSync(id: String, body: UpdateGitOpsSync, envID: EnvironmentID? = nil)
-    async throws -> GitOpsSync
-  {
+    async throws -> GitOpsSync {
     try await rest.put(rest.environmentPath(envID, "gitops-syncs/\(id)"), body: body)
   }
 
@@ -128,23 +135,22 @@ public struct GitOpsService: Sendable {
   }
 
   /// Manually trigger a sync operation.
-  public func performSync(id: String, envID: EnvironmentID? = nil) async throws -> GitOpsSyncResult
-  {
+  public func performSync(id: String, envID: EnvironmentID? = nil) async throws -> GitOpsSyncResult {
     try await rest.post(
-      rest.environmentPath(envID, "gitops-syncs/\(id)/sync"), body: EmptyBody?.none)
+      rest.environmentPath(envID, "gitops-syncs/\(id)/sync"),
+      body: EmptyBody?.none
+    )
   }
 
   /// Get the current status of a GitOps sync.
   public func getSyncStatus(id: String, envID: EnvironmentID? = nil) async throws
-    -> GitOpsSyncStatus
-  {
+    -> GitOpsSyncStatus {
     try await rest.get(rest.environmentPath(envID, "gitops-syncs/\(id)/status"))
   }
 
   /// Browse files in a synced repository.
   public func browseSyncFiles(id: String, path: String? = nil, envID: EnvironmentID? = nil)
-    async throws -> GitOpsBrowseResponse
-  {
+    async throws -> GitOpsBrowseResponse {
     var query: [URLQueryItem] = []
     if let path { query.append(URLQueryItem(name: "path", value: path)) }
     return try await rest.get(rest.environmentPath(envID, "gitops-syncs/\(id)/files"), query: query)
@@ -152,8 +158,7 @@ public struct GitOpsService: Sendable {
 
   /// Import multiple GitOps syncs from a JSON list.
   public func importSyncs(_ syncs: [ImportGitOpsSyncRequest], envID: EnvironmentID? = nil)
-    async throws -> ImportGitOpsSyncResponse
-  {
+    async throws -> ImportGitOpsSyncResponse {
     try await rest.post(rest.environmentPath(envID, "gitops-syncs/import"), body: syncs)
   }
 
@@ -161,8 +166,7 @@ public struct GitOpsService: Sendable {
 
   /// Preview what the next Git backup would commit.
   public func previewBackup(id: String, envID: EnvironmentID? = nil) async throws
-    -> GitBackupPreview
-  {
+    -> GitBackupPreview {
     try await rest.get(rest.environmentPath(envID, "gitops-syncs/\(id)/backup/preview"))
   }
 
@@ -185,7 +189,8 @@ public struct GitOpsService: Sendable {
     envID: EnvironmentID? = nil
   ) async throws -> GitBackupRevision {
     try await rest.get(
-      rest.environmentPath(envID, "gitops-syncs/\(id)/backup/history/\(commit)"))
+      rest.environmentPath(envID, "gitops-syncs/\(id)/backup/history/\(commit)")
+    )
   }
 
   /// Resolve a backup that needs attention.
@@ -195,6 +200,8 @@ public struct GitOpsService: Sendable {
     envID: EnvironmentID? = nil
   ) async throws -> GitOpsSyncResult {
     try await rest.post(
-      rest.environmentPath(envID, "gitops-syncs/\(id)/backup/resolve"), body: body)
+      rest.environmentPath(envID, "gitops-syncs/\(id)/backup/resolve"),
+      body: body
+    )
   }
 }

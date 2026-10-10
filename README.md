@@ -6,20 +6,24 @@ Hand-written Swift SDK for the [Arcane](https://github.com/getarcaneapp/arcane) 
 
 `libarcane-swift` is a single-layer, idiomatic Swift client built directly on `URLSession`. There is no code generation: every DTO and every endpoint method is hand-crafted to mirror the Arcane Go types and HTTP surface.
 
-Two products:
+Three products:
 
-- **`Arcane`** — the core client. Auth, token storage, environment scoping, REST helpers, WebSocket streams, and per-resource services.
-- **`ArcaneOIDC`** — optional, for browser-based OIDC sign-in. Apps that only use API keys or username/password auth can skip linking `AuthenticationServices`.
+- `Arcane`: the core client. Auth, token storage, environment scoping, REST helpers, WebSocket streams, and per-resource services.
+- `ArcaneOIDC`: optional, for browser-based OIDC sign-in. Apps that only use API keys or username/password auth can skip linking `AuthenticationServices`.
+- `ArcanePasskeys`: optional browser-based passkey login, MFA, registration, and step-up authentication through the Arcane passkey bridge.
 
 The type and module layout closely mirrors the Go packages under `arcane/types/`, so engineers moving between the two repos pay no translation tax.
 
 ## Requirements
 
-- Swift toolchain: `6.3` or newer
-- Swift Package Manager manifest: `// swift-tools-version: 6.3`
+- Swift toolchain: `6.4` or newer, using Swift 6 language mode
+- Swift Package Manager manifest: `// swift-tools-version: 6.4`
+- Xcode 27.0 or newer for Apple platform builds, with the iOS 27 and macOS 27 SDKs
 - Deployment targets declared by this package:
-  - `iOS 18`
+  - `iOS / iPadOS 18`
   - `macOS 26`
+
+The SDK supports iOS/iPadOS 18 through 27 and macOS 26 and 27. Build with Xcode 27 or newer to use the latest SDKs. See the [Swift 6.4 migration notes](docs/swift-6.4-migration.md) for concurrency and cleanup changes.
 
 ## Quickstart
 
@@ -154,6 +158,8 @@ for try await chunk in terminal.output {
 
 `LogStream`, `StatsStream`, `NDJSONStream`, and `TerminalSession` are all `AsyncSequence`-driven surfaces. Stop iterating or cancel the consuming task when you no longer need the stream so the underlying request or websocket can close promptly.
 
+Each stream iterator belongs to one consuming task and is not `Sendable`. Do not share an iterator across tasks or call `next()` concurrently. Create a separate stream and iterator for each independent subscription.
+
 ## Low-Level Escape Hatches
 
 When the backend grows faster than the hand-written SDK surface, use the existing lower-level layers instead of reimplementing auth, retries, or environment path handling:
@@ -182,7 +188,7 @@ do {
 ```sh
 swift build
 swift test
-swiftlint lint
+swiftlint lint --strict
 ```
 
 Integration tests skip themselves unless `ARCANE_TEST_URL` is set:
@@ -195,7 +201,7 @@ ARCANE_TEST_URL=https://my-arcane.example.com swift test
 
 ```sh
 brew install swiftlint
-swiftlint lint
+swiftlint lint --strict
 ```
 
 ### Keeping types in sync with Arcane

@@ -68,36 +68,31 @@ public struct ContainersService: Sendable {
 
   /// Create a new container.
   public func create(envID: EnvironmentID? = nil, body: ContainerCreate) async throws
-    -> ContainerCreated
-  {
+    -> ContainerCreated {
     try await rest.post(rest.environmentPath(envID, "containers"), body: body)
   }
 
   /// Load the editable configuration, including Compose ownership and edit restrictions.
   public func editConfig(envID: EnvironmentID? = nil, id: String) async throws
-    -> ContainerEditConfig
-  {
+    -> ContainerEditConfig {
     try await rest.get(rest.environmentPath(envID, "containers/\(id)/edit-config"))
   }
 
   /// Apply the supplied fields and recreate the container. The result contains its new ID.
   public func edit(envID: EnvironmentID? = nil, id: String, body: ContainerEdit) async throws
-    -> ContainerDetails
-  {
+    -> ContainerDetails {
     try await rest.post(rest.environmentPath(envID, "containers/\(id)/edit"), body: body)
   }
 
   /// Create an image from the container's filesystem.
   public func commit(envID: EnvironmentID? = nil, id: String, body: ContainerCommitRequest)
-    async throws -> ContainerCommitResult
-  {
+    async throws -> ContainerCommitResult {
     try await rest.post(rest.environmentPath(envID, "containers/\(id)/commit"), body: body)
   }
 
   /// Generate a Compose document from selected containers.
   public func generateCompose(envID: EnvironmentID? = nil, body: ContainerGenerateComposeRequest)
-    async throws -> ContainerGenerateComposeResponse
-  {
+    async throws -> ContainerGenerateComposeResponse {
     try await rest.post(rest.environmentPath(envID, "containers/generate-compose"), body: body)
   }
 
@@ -111,7 +106,7 @@ public struct ContainersService: Sendable {
   ) async throws -> MessageResponse {
     let query: [URLQueryItem] = [
       URLQueryItem(name: "force", value: force ? "true" : "false"),
-      URLQueryItem(name: "volumes", value: removeVolumes ? "true" : "false"),
+      URLQueryItem(name: "volumes", value: removeVolumes ? "true" : "false")
     ]
     return try await rest.delete(rest.environmentPath(envID, "containers/\(id)"), query: query)
   }
@@ -121,40 +116,52 @@ public struct ContainersService: Sendable {
   @discardableResult
   public func start(envID: EnvironmentID? = nil, id: String) async throws -> MessageResponse {
     try await rest.post(
-      rest.environmentPath(envID, "containers/\(id)/start"), body: Optional<EmptyBody>.none)
+      rest.environmentPath(envID, "containers/\(id)/start"),
+      body: Optional<EmptyBody>.none
+    )
   }
 
   @discardableResult
   public func stop(envID: EnvironmentID? = nil, id: String) async throws -> MessageResponse {
     try await rest.post(
-      rest.environmentPath(envID, "containers/\(id)/stop"), body: Optional<EmptyBody>.none)
+      rest.environmentPath(envID, "containers/\(id)/stop"),
+      body: Optional<EmptyBody>.none
+    )
   }
 
   @discardableResult
   public func restart(envID: EnvironmentID? = nil, id: String) async throws -> MessageResponse {
     try await rest.post(
-      rest.environmentPath(envID, "containers/\(id)/restart"), body: Optional<EmptyBody>.none)
+      rest.environmentPath(envID, "containers/\(id)/restart"),
+      body: Optional<EmptyBody>.none
+    )
   }
 
   /// Redeploy a container: pulls the latest image and recreates the container.
   /// Returns the new container's details.
   public func redeploy(envID: EnvironmentID? = nil, id: String) async throws -> ContainerDetails {
     try await rest.post(
-      rest.environmentPath(envID, "containers/\(id)/redeploy"), body: Optional<EmptyBody>.none)
+      rest.environmentPath(envID, "containers/\(id)/redeploy"),
+      body: Optional<EmptyBody>.none
+    )
   }
 
   /// Pause a running container.
   @discardableResult
   public func pause(envID: EnvironmentID? = nil, id: String) async throws -> MessageResponse {
     try await rest.post(
-      rest.environmentPath(envID, "containers/\(id)/pause"), body: Optional<EmptyBody>.none)
+      rest.environmentPath(envID, "containers/\(id)/pause"),
+      body: Optional<EmptyBody>.none
+    )
   }
 
   /// Resume a paused container.
   @discardableResult
   public func unpause(envID: EnvironmentID? = nil, id: String) async throws -> MessageResponse {
     try await rest.post(
-      rest.environmentPath(envID, "containers/\(id)/unpause"), body: Optional<EmptyBody>.none)
+      rest.environmentPath(envID, "containers/\(id)/unpause"),
+      body: Optional<EmptyBody>.none
+    )
   }
 
   /// Send a signal to a running container (default: SIGKILL).
@@ -196,7 +203,8 @@ public struct ContainersService: Sendable {
   /// Download every log line Docker retains for the container as raw bytes.
   public func downloadLogs(envID: EnvironmentID? = nil, id: String) async throws -> Data {
     try await rest.transport.downloadRaw(
-      rest.environmentPath(envID, "containers/\(id)/logs/download"))
+      rest.environmentPath(envID, "containers/\(id)/logs/download")
+    )
   }
 
   /// Download container logs directly to a destination URL.
@@ -226,7 +234,7 @@ public struct ContainersService: Sendable {
     var query: [URLQueryItem] = [
       URLQueryItem(name: "follow", value: follow ? "true" : "false"),
       URLQueryItem(name: "tail", value: tail),
-      URLQueryItem(name: "timestamps", value: timestamps ? "true" : "false"),
+      URLQueryItem(name: "timestamps", value: timestamps ? "true" : "false")
     ]
     if let since {
       query.append(URLQueryItem(name: "since", value: since))

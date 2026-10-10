@@ -9,8 +9,11 @@ public struct FederatedCredentialsService: Sendable {
     FederatedCredential
   > {
     try await rest.transport.paginated(
-      "federated-credentials", start: query.start ?? 0,
-      limit: query.limit ?? 20, query: query.nonPaginationQueryItems)
+      "federated-credentials",
+      start: query.start ?? 0,
+      limit: query.limit ?? 20,
+      query: query.nonPaginationQueryItems
+    )
   }
 
   public func get(id: String) async throws -> FederatedCredential {
@@ -22,8 +25,7 @@ public struct FederatedCredentialsService: Sendable {
   }
 
   public func update(id: String, body: UpdateFederatedCredential) async throws
-    -> FederatedCredential
-  {
+    -> FederatedCredential {
     try await rest.put("federated-credentials/\(id)", body: body)
   }
 

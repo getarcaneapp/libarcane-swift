@@ -20,7 +20,6 @@ public struct BackupEntry: Codable, Hashable, Sendable, Identifiable {
   public var error: String?
   public var type: String?
 
-
   public init(
     id: String,
     volumeName: String,
@@ -38,7 +37,8 @@ public struct BackupEntry: Codable, Hashable, Sendable, Identifiable {
   private enum CodingKeys: String, CodingKey {
     case id, volumeName, size, createdAt
     case activityID = "activityId"
-    case status, trigger, destination, format, localSnapshotId, remoteSnapshotId, s3DestinationId, s3DestinationName, remoteInstanceId, policyId, error, type
+    case status, trigger, destination, format, localSnapshotId, remoteSnapshotId, s3DestinationId, s3DestinationName, remoteInstanceId,
+      policyId, error, type
   }
 }
 

@@ -61,7 +61,10 @@ final class ProjectFileModelsTests: XCTestCase {
       projectFiles: [
         ProjectFileDraft(relativePath: "config", isDirectory: true),
         ProjectFileDraft(
-          relativePath: "config/app.yaml", isDirectory: false, content: "enabled: true\n"),
+          relativePath: "config/app.yaml",
+          isDirectory: false,
+          content: "enabled: true\n"
+        )
       ]
     )
 
@@ -100,7 +103,7 @@ final class ProjectFileModelsTests: XCTestCase {
           operation: .delete,
           relativePath: "old",
           recursive: true
-        ),
+        )
       ]
     )
 

@@ -380,14 +380,20 @@ extension PermissionsManifest {
       case .allOf:
         return surface.permissions.allSatisfy {
           userHasPermissionInternal(
-            user, permission: $0, scopeMode: surface.scopeMode,
-            selectedEnvironmentID: selectedEnvironmentID)
+            user,
+            permission: $0,
+            scopeMode: surface.scopeMode,
+            selectedEnvironmentID: selectedEnvironmentID
+          )
         }
       case .anyOf:
         return surface.permissions.contains {
           userHasPermissionInternal(
-            user, permission: $0, scopeMode: surface.scopeMode,
-            selectedEnvironmentID: selectedEnvironmentID)
+            user,
+            permission: $0,
+            scopeMode: surface.scopeMode,
+            selectedEnvironmentID: selectedEnvironmentID
+          )
         }
       case .unknown:
         return false

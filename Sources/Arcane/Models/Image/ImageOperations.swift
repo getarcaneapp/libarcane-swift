@@ -27,8 +27,11 @@ public struct ImagePatchOptions: Codable, Hashable, Sendable {
   public var ignoreErrors: Bool?
 
   public init(
-    suffix: String? = nil, patchedTag: String? = nil, timeoutSeconds: Int? = nil,
-    scanId: String? = nil, ignoreErrors: Bool? = nil
+    suffix: String? = nil,
+    patchedTag: String? = nil,
+    timeoutSeconds: Int? = nil,
+    scanId: String? = nil,
+    ignoreErrors: Bool? = nil
   ) {
     self.suffix = suffix
     self.patchedTag = patchedTag

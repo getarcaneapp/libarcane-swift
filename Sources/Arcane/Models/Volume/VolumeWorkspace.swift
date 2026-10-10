@@ -24,9 +24,14 @@ public struct VolumeWorkspaceFileChange: Codable, Hashable, Sendable {
   public var recursive: Bool?
 
   public init(
-    operation: VolumeWorkspaceOperation, relativePath: String,
-    newName: String? = nil, newParentPath: String? = nil, uploadIndex: Int? = nil,
-    baselineIndex: Int? = nil, backupId: String? = nil, recursive: Bool? = nil
+    operation: VolumeWorkspaceOperation,
+    relativePath: String,
+    newName: String? = nil,
+    newParentPath: String? = nil,
+    uploadIndex: Int? = nil,
+    baselineIndex: Int? = nil,
+    backupId: String? = nil,
+    recursive: Bool? = nil
   ) {
     self.operation = operation
     self.relativePath = relativePath

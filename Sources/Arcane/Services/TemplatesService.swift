@@ -126,9 +126,10 @@ public struct TemplatesService: Sendable {
     message: "Use ArcaneClient.variables for manager-owned variables. This legacy API replaces materialized environment values."
   )
   public func updateGlobalVariables(_ variables: [EnvVariable], envID: EnvironmentID? = nil)
-    async throws
-  {
+    async throws {
     try await rest.putVoid(
-      rest.environmentPath(envID, "templates/variables"), body: EnvVariables(variables: variables))
+      rest.environmentPath(envID, "templates/variables"),
+      body: EnvVariables(variables: variables)
+    )
   }
 }

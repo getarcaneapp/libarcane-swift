@@ -62,7 +62,7 @@ public struct DockerInfo: Codable, Hashable, Sendable {
   }
 
   private static let topLevelKeys: Set<String> = [
-    "success", "apiVersion", "gitCommit", "goVersion", "os", "arch", "buildTime",
+    "success", "apiVersion", "gitCommit", "goVersion", "os", "arch", "buildTime"
   ]
 
   public init(from decoder: Decoder) throws {
@@ -102,7 +102,7 @@ public struct DockerInfo: Codable, Hashable, Sendable {
       "goVersion": .string(goVersion),
       "os": .string(os),
       "arch": .string(arch),
-      "buildTime": .string(buildTime),
+      "buildTime": .string(buildTime)
     ]
     if let info {
       for (key, value) in info where !Self.topLevelKeys.contains(key) {

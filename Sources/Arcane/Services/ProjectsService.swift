@@ -62,8 +62,7 @@ public struct ProjectsService: Sendable {
   }
 
   /// Get the project compose details (compose content, includes, configs).
-  public func compose(envID: EnvironmentID? = nil, projectID: String) async throws -> ProjectDetails
-  {
+  public func compose(envID: EnvironmentID? = nil, projectID: String) async throws -> ProjectDetails {
     try await rest.get(rest.environmentPath(envID, "projects/\(projectID)/compose"))
   }
 
@@ -94,14 +93,12 @@ public struct ProjectsService: Sendable {
   }
 
   /// Get the project's runtime service state.
-  public func runtime(envID: EnvironmentID? = nil, projectID: String) async throws -> ProjectDetails
-  {
+  public func runtime(envID: EnvironmentID? = nil, projectID: String) async throws -> ProjectDetails {
     try await rest.get(rest.environmentPath(envID, "projects/\(projectID)/runtime"))
   }
 
   /// Get the project's image update summary.
-  public func updates(envID: EnvironmentID? = nil, projectID: String) async throws -> ProjectDetails
-  {
+  public func updates(envID: EnvironmentID? = nil, projectID: String) async throws -> ProjectDetails {
     try await rest.get(rest.environmentPath(envID, "projects/\(projectID)/updates"))
   }
 

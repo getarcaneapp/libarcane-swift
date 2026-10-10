@@ -4,31 +4,6 @@ import Foundation
 
 @MainActor
 public final class OIDCAuthenticator: NSObject, ASWebAuthenticationPresentationContextProviding {
-  public struct SignInResult: Sendable {
-    public let user: User
-    public let tokens: TokenPair
-  }
-
-  public nonisolated enum SignInError: LocalizedError, Sendable {
-    case invalidAuthorizationURL
-    case invalidCallbackURL
-    case missingCodeOrState
-    case sessionDidNotStart
-
-    public var errorDescription: String? {
-      switch self {
-      case .invalidAuthorizationURL:
-        "Arcane returned an invalid OIDC authorization URL."
-      case .invalidCallbackURL:
-        "The identity provider did not return an OIDC callback URL."
-      case .missingCodeOrState:
-        "The OIDC callback did not include the required code and state."
-      case .sessionDidNotStart:
-        "The secure sign-in session could not be started."
-      }
-    }
-  }
-
   private let client: ArcaneClient
   private weak var presentationAnchor: ASPresentationAnchor?
 
@@ -125,8 +100,7 @@ public final class OIDCAuthenticator: NSObject, ASWebAuthenticationPresentationC
     let callback = AsyncThrowingStream<URL, Error>.makeStream(
       bufferingPolicy: .bufferingOldest(1)
     )
-    let completionHandler: ASWebAuthenticationSession.CompletionHandler = {
-      callbackURL, error in
+    let completionHandler: ASWebAuthenticationSession.CompletionHandler = { callbackURL, error in
       if let error {
         callback.continuation.finish(throwing: error)
         return

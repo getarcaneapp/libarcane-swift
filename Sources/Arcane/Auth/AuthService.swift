@@ -7,7 +7,9 @@ public struct AuthService: Sendable {
   private let encoder: JSONEncoder
 
   init(
-    transport: ArcaneURLSessionTransport, authManager: AuthManager, decoder: JSONDecoder,
+    transport: ArcaneURLSessionTransport,
+    authManager: AuthManager,
+    decoder: JSONDecoder,
     encoder: JSONEncoder
   ) {
     self.transport = transport
@@ -28,8 +30,7 @@ public struct AuthService: Sendable {
 
   @discardableResult
   public func authenticate(username: String, password: String) async throws
-    -> AuthenticationResult
-  {
+    -> AuthenticationResult {
     let generation = try await authManager.beginAuthenticationOperation()
     let result: AuthenticationResult = try await transport.request(
       "auth/login",
@@ -46,7 +47,10 @@ public struct AuthService: Sendable {
     var remoteError: Error?
     do {
       let _: MessageResponse = try await transport.request(
-        "auth/logout", method: "POST", body: Optional<EmptyBody>.none)
+        "auth/logout",
+        method: "POST",
+        body: Optional<EmptyBody>.none
+      )
     } catch {
       remoteError = error
     }
@@ -78,7 +82,10 @@ public struct AuthService: Sendable {
   public func changePassword(currentPassword: String?, newPassword: String) async throws {
     let body = PasswordChange(currentPassword: currentPassword, newPassword: newPassword)
     let _: MessageResponse = try await transport.request(
-      "auth/password", method: "POST", body: body)
+      "auth/password",
+      method: "POST",
+      body: body
+    )
   }
 
   // MARK: - OIDC
@@ -89,29 +96,37 @@ public struct AuthService: Sendable {
 
   public func oidcStatus() async throws -> OIDCStatusInfo {
     let data = try await transport.rawRequest(
-      "oidc/status", body: Optional<EmptyBody>.none, authorized: false)
+      "oidc/status",
+      body: Optional<EmptyBody>.none,
+      authorized: false
+    )
     return try decodeOIDC(OIDCStatusInfo.self, from: data)
   }
 
   public func oidcConfig() async throws -> OIDCConfigResponse {
     let data = try await transport.rawRequest(
-      "oidc/config", body: Optional<EmptyBody>.none, authorized: false)
+      "oidc/config",
+      body: Optional<EmptyBody>.none,
+      authorized: false
+    )
     return try decodeOIDC(OIDCConfigResponse.self, from: data)
   }
 
   public func oidcAuthURL(mobileRedirectURI: String, redirectTo: String = "/") async throws
-    -> OIDCAuthURLResponse
-  {
+    -> OIDCAuthURLResponse {
     let body = OIDCAuthURLRequest(redirectUri: redirectTo, mobileRedirectUri: mobileRedirectURI)
     let data = try await transport.rawRequest(
-      "oidc/url", method: "POST", body: body, authorized: false)
+      "oidc/url",
+      method: "POST",
+      body: body,
+      authorized: false
+    )
     return try decodeOIDC(OIDCAuthURLResponse.self, from: data)
   }
 
   @discardableResult
   public func oidcCallback(code: String, state: String, mobileRedirectURI: String) async throws
-    -> OIDCCallbackResponse
-  {
+    -> OIDCCallbackResponse {
     switch try await authenticateOIDCCallback(
       code: code,
       state: state,
@@ -139,7 +154,11 @@ public struct AuthService: Sendable {
     let generation = try await authManager.beginAuthenticationOperation()
     let body = OIDCCallbackRequest(code: code, state: state, mobileRedirectUri: mobileRedirectURI)
     let data = try await transport.rawRequest(
-      "oidc/callback", method: "POST", body: body, authorized: false)
+      "oidc/callback",
+      method: "POST",
+      body: body,
+      authorized: false
+    )
     let result = try decodeOIDC(AuthenticationResult.self, from: data)
     try await authManager.save(authenticationResult: result, generation: generation)
     return result
@@ -148,7 +167,11 @@ public struct AuthService: Sendable {
   public func oidcDeviceCode() async throws -> OIDCDeviceAuthResponse {
     let body = OIDCDeviceAuthRequest()
     let data = try await transport.rawRequest(
-      "oidc/device/code", method: "POST", body: body, authorized: false)
+      "oidc/device/code",
+      method: "POST",
+      body: body,
+      authorized: false
+    )
     return try decodeOIDC(OIDCDeviceAuthResponse.self, from: data)
   }
 
@@ -157,11 +180,17 @@ public struct AuthService: Sendable {
     let generation = try await authManager.beginAuthenticationOperation()
     let body = OIDCDeviceTokenRequest(deviceCode: deviceCode)
     let data = try await transport.rawRequest(
-      "oidc/device/token", method: "POST", body: body, authorized: false)
+      "oidc/device/token",
+      method: "POST",
+      body: body,
+      authorized: false
+    )
     let response = try decodeOIDC(OIDCDeviceTokenResponse.self, from: data)
     let tokens = TokenPair(
-      accessToken: response.token, refreshToken: response.refreshToken,
-      expiresAt: response.expiresAt)
+      accessToken: response.token,
+      refreshToken: response.refreshToken,
+      expiresAt: response.expiresAt
+    )
     try await authManager.save(tokens: tokens, user: response.user, generation: generation)
     return response
   }

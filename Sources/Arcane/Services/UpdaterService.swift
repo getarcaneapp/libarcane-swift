@@ -11,8 +11,7 @@ public struct UpdaterService: Sendable {
 
   /// Runs the updater. When `options` is omitted the server uses its defaults.
   public func run(_ options: UpdaterOptions? = nil, envID: EnvironmentID? = nil) async throws
-    -> UpdaterResult
-  {
+    -> UpdaterResult {
     try await rest.post(rest.environmentPath(envID, "updater/run"), body: options)
   }
 
@@ -23,8 +22,7 @@ public struct UpdaterService: Sendable {
 
   /// Returns the most recent `limit` history records.
   public func history(limit: Int = 50, envID: EnvironmentID? = nil) async throws
-    -> [AutoUpdateRecord]
-  {
+    -> [AutoUpdateRecord] {
     try await rest.get(
       rest.environmentPath(envID, "updater/history"),
       query: [URLQueryItem(name: "limit", value: "\(limit)")]
@@ -34,8 +32,7 @@ public struct UpdaterService: Sendable {
   /// Updates a single container by pulling the latest image and applying the
   /// appropriate strategy server-side.
   public func updateContainer(_ containerId: String, envID: EnvironmentID? = nil) async throws
-    -> UpdaterResult
-  {
+    -> UpdaterResult {
     try await rest.post(
       rest.environmentPath(envID, "containers/\(containerId)/update"),
       body: Optional<EmptyBody>.none

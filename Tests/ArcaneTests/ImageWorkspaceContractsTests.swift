@@ -12,7 +12,9 @@ struct ImageWorkspaceContractsTests {
     return ArcaneClient(
       configuration: .init(
         baseURL: URL(string: "https://arcane.example.com")!,
-        urlSession: mock.session(configuration: configuration)))
+        urlSession: mock.session(configuration: configuration)
+      )
+    )
   }
 
   @Test func searchPreservesSpecialCharacters() async throws {
@@ -26,7 +28,8 @@ struct ImageWorkspaceContractsTests {
         HTTPURLResponse(url: request.url!, statusCode: 200, httpVersion: nil, headerFields: nil)!,
         Data(
           #"{"success":true,"data":[{"name":"org/image","description":"test","starCount":4,"official":false,"automated":true}]}"#
-            .utf8)
+            .utf8
+        )
       )
     }
     let result = try await client().images.search(term: "org/image & other")
@@ -40,20 +43,26 @@ struct ImageWorkspaceContractsTests {
       #expect(request.httpMethod == "POST")
       #expect(request.url?.path == "/api/environments/0/images/sha256:abc/patch")
       let body =
-        try JSONSerialization.jsonObject(with: mockRequestBody(request)) as! [String: Any]
+        try #require(try JSONSerialization.jsonObject(with: mockRequestBody(request)) as? [String: Any])
       #expect(body["scanId"] as? String == "scan-1")
       #expect(body["ignoreErrors"] as? Bool == false)
       #expect(body["suffix"] == nil)
       return (
         HTTPURLResponse(url: request.url!, statusCode: 200, httpVersion: nil, headerFields: nil)!,
         Data(
-          #"{"success":true,"data":{"id":"p1","environmentId":"0","originalImageId":"sha256:abc","originalRef":"org/image:latest","patchedRef":"org/image:patched","mode":"report","status":"patching","activityId":"a1","createdAt":"2026-09-04T01:02:03Z"}}"#
-            .utf8)
+          #"""
+          { "success": true, "data": { "id": "p1", "environmentId": "0", "originalImageId": "sha256:abc",
+          "originalRef": "org/image:latest", "patchedRef": "org/image:patched", "mode": "report", "status": "patching",
+          "activityId": "a1", "createdAt": "2026-09-04T01:02:03Z" } }
+          """#
+            .utf8
+        )
       )
     }
     let patch = try await client().images.patch(
       imageID: "sha256:abc",
-      options: .init(scanId: "scan-1", ignoreErrors: false))
+      options: .init(scanId: "scan-1", ignoreErrors: false)
+    )
     #expect(patch.status == "patching")
     #expect(patch.activityId == "a1")
     #expect(patch.packagesUpdated == nil)
@@ -67,7 +76,7 @@ struct ImageWorkspaceContractsTests {
     await mock.setHandler { request in
       #expect(request.httpMethod == "PUT")
       #expect(request.url?.path == "/api/environments/0/volumes/my volume/workspace")
-      let body = String(decoding: try mockRequestBody(request), as: UTF8.self)
+      let body = try #require(String(bytes: mockRequestBody(request), encoding: .utf8))
       #expect(body.contains(#"name="manifest""#))
       #expect(body.contains(#""fileTreeRevision":"rev-1""#))
       #expect(body.contains(#""uploadIndex":0"#))
@@ -77,7 +86,8 @@ struct ImageWorkspaceContractsTests {
         HTTPURLResponse(url: request.url!, statusCode: 200, httpVersion: nil, headerFields: nil)!,
         Data(
           #"{"success":true,"data":{"files":[],"fileTreeRevision":"rev-2","fileTreeTruncated":false,"activityId":"a2"}}"#
-            .utf8)
+            .utf8
+        )
       )
     }
     let result = try await client().volumes.updateWorkspace(
@@ -86,7 +96,10 @@ struct ImageWorkspaceContractsTests {
         fileTreeRevision: "rev-1",
         fileChanges: [
           .init(operation: .updateFile, relativePath: "config/site.conf", uploadIndex: 0)
-        ]), files: [file])
+        ]
+      ),
+      files: [file]
+    )
     #expect(result.fileTreeRevision == "rev-2")
     #expect(result.activityID == "a2")
   }
@@ -99,12 +112,19 @@ struct ImageWorkspaceContractsTests {
       return (
         HTTPURLResponse(url: request.url!, statusCode: 200, httpVersion: nil, headerFields: nil)!,
         Data(
-          #"{"success":true,"data":{"path":"/folder/a & b.bin","relativePath":"folder/a & b.bin","name":"a & b.bin","mimeType":"application/octet-stream","size":7,"editable":false,"readOnlyReason":"binary"}}"#
-            .utf8)
+          #"""
+          { "success": true, "data": { "path": "/folder/a & b.bin", "relativePath": "folder/a & b.bin",
+          "name": "a & b.bin", "mimeType": "application/octet-stream", "size": 7, "editable": false,
+          "readOnlyReason": "binary" } }
+          """#
+            .utf8
+        )
       )
     }
     let file = try await client().volumes.workspaceFile(
-      name: "data", relativePath: "folder/a & b.bin")
+      name: "data",
+      relativePath: "folder/a & b.bin"
+    )
     #expect(file.content == nil)
     #expect(file.editable == false)
     #expect(file.readOnlyReason == "binary")
@@ -116,7 +136,7 @@ struct ImageWorkspaceContractsTests {
       #expect(request.httpMethod == "POST")
       #expect(request.url?.path == "/api/environments/0/images/sha256:abc/tag")
       let body =
-        try JSONSerialization.jsonObject(with: mockRequestBody(request)) as! [String: Any]
+        try #require(try JSONSerialization.jsonObject(with: mockRequestBody(request)) as? [String: Any])
       #expect(body["repository"] as? String == "registry:5000/team/image")
       #expect(body["tag"] == nil)
       return (
@@ -125,7 +145,9 @@ struct ImageWorkspaceContractsTests {
       )
     }
     _ = try await client().images.tag(
-      imageID: "sha256:abc", request: .init(repository: "registry:5000/team/image"))
+      imageID: "sha256:abc",
+      request: .init(repository: "registry:5000/team/image")
+    )
   }
 
   @Test func patchHistoryPreservesPaginationAndStatus() async throws {
@@ -140,11 +162,14 @@ struct ImageWorkspaceContractsTests {
         HTTPURLResponse(url: request.url!, statusCode: 200, httpVersion: nil, headerFields: nil)!,
         Data(
           #"{"success":true,"data":[],"pagination":{"totalItems":30,"totalPages":3,"currentPage":4,"itemsPerPage":10}}"#
-            .utf8)
+            .utf8
+        )
       )
     }
     let response = try await client().images.listPatches(
-      query: .init(start: 30, limit: 10), status: "failed")
+      query: .init(start: 30, limit: 10),
+      status: "failed"
+    )
     #expect(response.data.isEmpty)
   }
 
@@ -156,7 +181,9 @@ struct ImageWorkspaceContractsTests {
           fileTreeRevision: "revision",
           fileChanges: [
             .init(operation: .updateFile, relativePath: "a", uploadIndex: 0)
-          ]))
+          ]
+        )
+      )
       Issue.record("Expected validation error")
     } catch ArcaneError.validation {}
   }

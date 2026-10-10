@@ -84,8 +84,7 @@ public enum AuthenticationResult: Codable, Hashable, Sendable {
 
     if status == .mfaRequired {
       if let challenge = try container.decodeIfPresent(MFAChallenge.self, forKey: .mfa)
-        ?? container.decodeIfPresent(MFAChallenge.self, forKey: .challenge)
-      {
+        ?? container.decodeIfPresent(MFAChallenge.self, forKey: .challenge) {
         self = .mfaRequired(challenge)
       } else {
         self = .mfaRequired(try MFAChallenge(from: decoder))
@@ -99,7 +98,8 @@ public enum AuthenticationResult: Codable, Hashable, Sendable {
         refreshToken: try container.decode(String.self, forKey: .refreshToken),
         expiresAt: try container.decode(Date.self, forKey: .expiresAt),
         user: try container.decode(User.self, forKey: .user)
-      ))
+      )
+    )
   }
 
   public func encode(to encoder: Encoder) throws {

@@ -57,8 +57,7 @@ public struct SystemService: Sendable {
 
   /// Removes unused Docker resources according to `options`.
   public func prune(_ options: PruneAllRequest, envID: EnvironmentID? = nil) async throws
-    -> PruneAllResult
-  {
+    -> PruneAllResult {
     try await rest.post(rest.environmentPath(envID, "system/prune"), body: options)
   }
 
@@ -66,27 +65,29 @@ public struct SystemService: Sendable {
 
   /// Starts every container (creating them where necessary).
   public func startAllContainers(envID: EnvironmentID? = nil) async throws
-    -> SystemContainerActionResult
-  {
+    -> SystemContainerActionResult {
     try await rest.post(
-      rest.environmentPath(envID, "system/containers/start-all"), body: Optional<EmptyBody>.none)
+      rest.environmentPath(envID, "system/containers/start-all"),
+      body: Optional<EmptyBody>.none
+    )
   }
 
   /// Starts every stopped container.
   public func startAllStoppedContainers(envID: EnvironmentID? = nil) async throws
-    -> SystemContainerActionResult
-  {
+    -> SystemContainerActionResult {
     try await rest.post(
-      rest.environmentPath(envID, "system/containers/start-stopped"), body: Optional<EmptyBody>.none
+      rest.environmentPath(envID, "system/containers/start-stopped"),
+      body: Optional<EmptyBody>.none
     )
   }
 
   /// Stops every running container.
   public func stopAllContainers(envID: EnvironmentID? = nil) async throws
-    -> SystemContainerActionResult
-  {
+    -> SystemContainerActionResult {
     try await rest.post(
-      rest.environmentPath(envID, "system/containers/stop-all"), body: Optional<EmptyBody>.none)
+      rest.environmentPath(envID, "system/containers/stop-all"),
+      body: Optional<EmptyBody>.none
+    )
   }
 
   // MARK: - Convert / Upgrade
@@ -94,8 +95,7 @@ public struct SystemService: Sendable {
   /// Converts a `docker run ...` command-line into an equivalent compose document.
   /// The response is returned without the standard envelope.
   public func convertDockerRun(_ request: ConvertDockerRunRequest, envID: EnvironmentID? = nil)
-    async throws -> ConvertDockerRunResponse
-  {
+    async throws -> ConvertDockerRunResponse {
     let data = try await rest.transport.rawRequest(
       rest.environmentPath(envID, "system/convert"),
       method: "POST",
@@ -129,7 +129,9 @@ public struct SystemService: Sendable {
   /// (HTTP 202 is normal here — the server is mid-replacement).
   public func triggerUpgrade(envID: EnvironmentID? = nil) async throws {
     try await rest.postVoid(
-      rest.environmentPath(envID, "system/upgrade"), body: Optional<EmptyBody>.none)
+      rest.environmentPath(envID, "system/upgrade"),
+      body: Optional<EmptyBody>.none
+    )
   }
 
   /// Triggers a fleet-wide Arcane upgrade: online remote agents are upgraded
@@ -139,7 +141,9 @@ public struct SystemService: Sendable {
   /// callers conventionally pass the manager environment (`"0"`).
   public func triggerUpdateAll(envID: EnvironmentID? = nil) async throws -> EnvironmentUpdateJob {
     try await rest.post(
-      rest.environmentPath(envID, "system/upgrade/all"), body: Optional<EmptyBody>.none)
+      rest.environmentPath(envID, "system/upgrade/all"),
+      body: Optional<EmptyBody>.none
+    )
   }
 
   /// Returns the most recent fleet-wide update-all job. Throws

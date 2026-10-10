@@ -12,8 +12,7 @@ public struct VulnerabilitiesService: Sendable {
   /// Initiate a new Trivy scan for an image. Returns the resulting scan record
   /// once the scan completes.
   public func scanImage(envID: EnvironmentID? = nil, imageId: String) async throws
-    -> VulnerabilityScanResult
-  {
+    -> VulnerabilityScanResult {
     try await rest.post(
       rest.environmentPath(envID, "images/\(imageId)/vulnerabilities/scan"),
       body: Optional<EmptyBody>.none
@@ -22,15 +21,13 @@ public struct VulnerabilitiesService: Sendable {
 
   /// Most recent full scan result for an image.
   public func scanResult(envID: EnvironmentID? = nil, imageId: String) async throws
-    -> VulnerabilityScanResult
-  {
+    -> VulnerabilityScanResult {
     try await rest.get(rest.environmentPath(envID, "images/\(imageId)/vulnerabilities"))
   }
 
   /// Compact severity summary for an image. Suitable for list views.
   public func scanSummary(envID: EnvironmentID? = nil, imageId: String) async throws
-    -> VulnerabilityScanSummary
-  {
+    -> VulnerabilityScanSummary {
     try await rest.get(rest.environmentPath(envID, "images/\(imageId)/vulnerabilities/summary"))
   }
 
@@ -41,7 +38,9 @@ public struct VulnerabilitiesService: Sendable {
   ) async throws -> VulnerabilityScanSummariesResponse {
     let body = VulnerabilityScanSummariesRequest(imageIds: imageIds)
     return try await rest.post(
-      rest.environmentPath(envID, "images/vulnerabilities/summaries"), body: body)
+      rest.environmentPath(envID, "images/vulnerabilities/summaries"),
+      body: body
+    )
   }
 
   /// Paginated list of vulnerabilities for a specific image.
@@ -64,22 +63,19 @@ public struct VulnerabilitiesService: Sendable {
   // MARK: - Environment-wide
 
   /// Status of the bundled Trivy scanner.
-  public func scannerStatus(envID: EnvironmentID? = nil) async throws -> VulnerabilityScannerStatus
-  {
+  public func scannerStatus(envID: EnvironmentID? = nil) async throws -> VulnerabilityScannerStatus {
     try await rest.get(rest.environmentPath(envID, "vulnerabilities/scanner-status"))
   }
 
   /// Aggregated vulnerability counts across all images in the environment.
   public func environmentSummary(envID: EnvironmentID? = nil) async throws
-    -> EnvironmentVulnerabilitySummary
-  {
+    -> EnvironmentVulnerabilitySummary {
     try await rest.get(rest.environmentPath(envID, "vulnerabilities/summary"))
   }
 
   /// Environment patch priority, trend, drivers, and ranked findings and images.
   public func riskOverview(envID: EnvironmentID? = nil) async throws
-    -> VulnerabilityRiskOverview
-  {
+    -> VulnerabilityRiskOverview {
     try await rest.get(rest.environmentPath(envID, "vulnerabilities/overview"))
   }
 
@@ -129,7 +125,9 @@ public struct VulnerabilitiesService: Sendable {
       items.append(URLQueryItem(name: "fixAvailable", value: fixAvailable ? "true" : "false"))
     }
     return try await rest.transport.downloadRaw(
-      rest.environmentPath(envID, "vulnerabilities/export"), query: items)
+      rest.environmentPath(envID, "vulnerabilities/export"),
+      query: items
+    )
   }
 
   /// Download the vulnerability CSV export directly to a destination URL.
@@ -156,7 +154,10 @@ public struct VulnerabilitiesService: Sendable {
       items.append(URLQueryItem(name: "fixAvailable", value: fixAvailable ? "true" : "false"))
     }
     return try await rest.transport.downloadRaw(
-      rest.environmentPath(envID, "vulnerabilities/export"), query: items, to: destinationURL)
+      rest.environmentPath(envID, "vulnerabilities/export"),
+      query: items,
+      to: destinationURL
+    )
   }
 
   /// Distinct image names available for vulnerability filtering.
@@ -167,7 +168,9 @@ public struct VulnerabilitiesService: Sendable {
     var items: [URLQueryItem] = []
     if let severity { items.append(URLQueryItem(name: "severity", value: severity)) }
     return try await rest.get(
-      rest.environmentPath(envID, "vulnerabilities/image-options"), query: items)
+      rest.environmentPath(envID, "vulnerabilities/image-options"),
+      query: items
+    )
   }
 
   // MARK: - Ignore records
@@ -183,7 +186,8 @@ public struct VulnerabilitiesService: Sendable {
   /// Remove an existing ignore record.
   public func unignore(envID: EnvironmentID? = nil, ignoreId: String) async throws {
     let _: EmptyVulnerabilityResponse = try await rest.delete(
-      rest.environmentPath(envID, "vulnerabilities/ignore/\(ignoreId)"))
+      rest.environmentPath(envID, "vulnerabilities/ignore/\(ignoreId)")
+    )
   }
 
   /// Paginated list of currently ignored vulnerabilities.

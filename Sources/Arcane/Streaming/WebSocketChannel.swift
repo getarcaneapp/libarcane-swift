@@ -1,4 +1,5 @@
 import Foundation
+import Synchronization
 
 /// Default WebSocket keepalive ping interval. The server emits 15s app-level
 /// heartbeats that satisfy `timeoutIntervalForRequest`, but intermediate
@@ -42,30 +43,27 @@ struct WebSocketOperations: Sendable {
 /// One-shot claim flag for continuation-bridged callbacks that the system may
 /// invoke more than once. Lock-based because the callback arrives on an
 /// arbitrary URLSession queue.
-private final class ContinuationResumeGuard: @unchecked Sendable {
-  private let lock = NSLock()
-  private var claimed = false
+private final class ContinuationResumeGuard: Sendable {
+  private let claimed = Mutex(false)
 
-  /// True exactly once; every later call returns false.
   func tryClaim() -> Bool {
-    lock.lock()
-    defer { lock.unlock() }
-    if claimed { return false }
-    claimed = true
-    return true
+    claimed.withLock {
+      guard !$0 else { return false }
+      $0 = true
+      return true
+    }
   }
 }
 
-private final class WebSocketCloseGuard: @unchecked Sendable {
-  private let lock = NSLock()
-  private var closed = false
+private final class WebSocketCloseGuard: Sendable {
+  private let closed = Mutex(false)
 
   func claim() -> Bool {
-    lock.lock()
-    defer { lock.unlock() }
-    guard !closed else { return false }
-    closed = true
-    return true
+    closed.withLock {
+      guard !$0 else { return false }
+      $0 = true
+      return true
+    }
   }
 }
 
@@ -81,8 +79,7 @@ private actor WebSocketTaskDriver {
       return try await task.receive()
     } catch {
       if let response = task.response as? HTTPURLResponse,
-        let delegate = task.delegate as? ProxyRequestDelegate
-      {
+        let delegate = task.delegate as? ProxyRequestDelegate {
         try delegate.support.check(response)
         if [401, 403].contains(response.statusCode) { throw ArcaneError.authenticationRejected }
       }
@@ -136,8 +133,12 @@ public final class WebSocketChannel<Outbound: Sendable, Inbound: Sendable>: Send
   ) {
     let task = session.webSocketTask(with: request)
     task.delegate = delegate
-    self.init(task: task, pingInterval: pingInterval,
-      encodeOutbound: encodeOutbound, decodeInbound: decodeInbound)
+    self.init(
+      task: task,
+      pingInterval: pingInterval,
+      encodeOutbound: encodeOutbound,
+      decodeInbound: decodeInbound
+    )
   }
 
   /// Starts an unresumed task created by the transport's scoped WebSocket factory.
@@ -254,8 +255,7 @@ public final class WebSocketChannel<Outbound: Sendable, Inbound: Sendable>: Send
   }
 
   public func close(code: URLSessionWebSocketTask.CloseCode = .normalClosure, reason: Data? = nil)
-    async
-  {
+    async {
     guard closeGuard.claim() else { return }
     await operations.close(code, reason)
   }

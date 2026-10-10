@@ -16,7 +16,10 @@ public struct SettingsService: Sendable {
   public func getPublicSettings(envID: EnvironmentID? = nil) async throws -> [PublicSetting] {
     let path = rest.environmentPath(envID, "settings/public")
     let data = try await rest.transport.rawRequest(
-      path, body: Optional<EmptyBody>.none, authorized: false)
+      path,
+      body: Optional<EmptyBody>.none,
+      authorized: false
+    )
     return try Self.decoder.decode([PublicSetting].self, from: data)
   }
 
@@ -31,8 +34,7 @@ public struct SettingsService: Sendable {
 
   /// Update settings for an environment.
   public func updateSettings(_ body: UpdateSettings, envID: EnvironmentID? = nil) async throws
-    -> [SettingDto]
-  {
+    -> [SettingDto] {
     try await rest.put(rest.environmentPath(envID, "settings"), body: body)
   }
 
@@ -52,7 +54,9 @@ public struct SettingsService: Sendable {
   /// - Note: The endpoint returns the list directly without an ``APIResponse`` envelope.
   public func categories() async throws -> [SettingCategory] {
     let data = try await rest.transport.rawRequest(
-      "settings/categories", body: Optional<EmptyBody>.none)
+      "settings/categories",
+      body: Optional<EmptyBody>.none
+    )
     return try Self.decoder.decode([SettingCategory].self, from: data)
   }
 

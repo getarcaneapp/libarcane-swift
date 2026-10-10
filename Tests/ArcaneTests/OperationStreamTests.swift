@@ -247,7 +247,7 @@ final class OperationStreamTests: XCTestCase {
     _ operation: @escaping @Sendable () async throws -> Value
   ) async throws -> Value {
     try await withThrowingTaskGroup(of: Value.self) { group in
-      group.addTask(operation: operation)
+      group.addTask { try await operation() }
       group.addTask {
         try await Task.sleep(for: .seconds(2))
         throw TestTimeout.expired

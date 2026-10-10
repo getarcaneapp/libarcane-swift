@@ -1,4 +1,5 @@
 import Foundation
+import Synchronization
 import Testing
 
 @testable import Arcane
@@ -88,26 +89,19 @@ final class MockURLProtocolSession: Sendable {
   func stopLoadingCount() async -> Int { await store.recordedStopLoadingCount() }
 }
 
-final class MockURLProtocolRegistry: @unchecked Sendable {
-  private let lock = NSLock()
-  private var stores: [String: MockURLProtocolHandlerStore] = [:]
+final class MockURLProtocolRegistry: Sendable {
+  private let stores = Mutex<[String: MockURLProtocolHandlerStore]>([:])
 
   func register(_ store: MockURLProtocolHandlerStore, id: String) {
-    lock.lock()
-    defer { lock.unlock() }
-    stores[id] = store
+    stores.withLock { $0[id] = store }
   }
 
   func remove(id: String) {
-    lock.lock()
-    defer { lock.unlock() }
-    stores.removeValue(forKey: id)
+    _ = stores.withLock { $0.removeValue(forKey: id) }
   }
 
   func store(for id: String?) -> MockURLProtocolHandlerStore? {
-    lock.lock()
-    defer { lock.unlock() }
-    return id.flatMap { stores[$0] }
+    stores.withLock { stores in id.flatMap { stores[$0] } }
   }
 }
 

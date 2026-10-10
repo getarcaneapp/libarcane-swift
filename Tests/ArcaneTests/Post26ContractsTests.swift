@@ -22,7 +22,10 @@ final class Post26ContractsTests: XCTestCase {
     let mfa = try ArcaneJSON.makeDecoder().decode(
       AuthenticationResult.self,
       from: Data(
-        #"{"status":"mfa_required","mfa":{"transactionId":"transaction-1","method":"passkey","options":{"challenge":"abc"},"expiresAt":"2026-08-07T00:00:00Z"}}"#
+        #"""
+        { "status": "mfa_required", "mfa": { "transactionId": "transaction-1", "method": "passkey", "options": {
+        "challenge": "abc" }, "expiresAt": "2026-08-07T00:00:00Z" } }
+        """#
           .utf8
       )
     )
@@ -67,7 +70,10 @@ final class Post26ContractsTests: XCTestCase {
       return (
         response!,
         Data(
-          #"{"success":true,"data":{"status":"mfa_required","mfa":{"transactionId":"transaction-1","method":"passkey","options":{},"expiresAt":"2026-08-07T00:00:00Z"}}}"#
+          #"""
+          { "success": true, "data": { "status": "mfa_required", "mfa": { "transactionId": "transaction-1",
+          "method": "passkey", "options": {}, "expiresAt": "2026-08-07T00:00:00Z" } } }
+          """#
             .utf8
         )
       )
@@ -110,14 +116,20 @@ final class Post26ContractsTests: XCTestCase {
       return (
         response!,
         Data(
-          #"{"status":"mfa_required","mfa":{"transactionId":"oidc-transaction","method":"passkey","options":{},"expiresAt":"2026-08-07T00:00:00Z"}}"#
+          #"""
+          { "status": "mfa_required", "mfa": { "transactionId": "oidc-transaction", "method": "passkey", "options": {},
+          "expiresAt": "2026-08-07T00:00:00Z" } }
+          """#
             .utf8
         )
       )
     }
 
     let result = try await client.auth.authenticateOIDCCallback(
-      code: "code", state: "state", mobileRedirectURI: "arcane-mobile://oidc-callback")
+      code: "code",
+      state: "state",
+      mobileRedirectURI: "arcane-mobile://oidc-callback"
+    )
     guard case .mfaRequired = result else {
       return XCTFail("Expected OIDC MFA to remain pending")
     }
@@ -126,7 +138,10 @@ final class Post26ContractsTests: XCTestCase {
 
     do {
       _ = try await client.auth.oidcCallback(
-        code: "code", state: "state", mobileRedirectURI: "arcane-mobile://oidc-callback")
+        code: "code",
+        state: "state",
+        mobileRedirectURI: "arcane-mobile://oidc-callback"
+      )
       XCTFail("Expected the source-compatible OIDC convenience to throw")
     } catch let error as MFARequiredError {
       XCTAssertEqual(error.challenge.transactionId, "oidc-transaction")
@@ -214,7 +229,9 @@ final class Post26ContractsTests: XCTestCase {
     )
     let genericData = try ArcaneJSON.makeEncoder().encode(generic)
     let roundTrip = try ArcaneJSON.makeDecoder().decode(
-      UpdateNotificationSettings.self, from: genericData)
+      UpdateNotificationSettings.self,
+      from: genericData
+    )
     XCTAssertEqual(roundTrip, generic)
 
     let email = UpdateNotificationSettings(
@@ -266,7 +283,10 @@ final class Post26ContractsTests: XCTestCase {
   func testRegistryRepositoryNamesRemainBackwardCompatible() throws {
     let decoder = ArcaneJSON.makeDecoder()
     let oldResponse = Data(
-      #"{"id":"registry-1","url":"ghcr.io","username":"user","insecure":false,"enabled":true,"registryType":"custom","createdAt":"2026-08-06T00:00:00Z","updatedAt":"2026-08-06T00:00:00Z"}"#
+      #"""
+      { "id": "registry-1", "url": "ghcr.io", "username": "user", "insecure": false, "enabled": true,
+      "registryType": "custom", "createdAt": "2026-08-06T00:00:00Z", "updatedAt": "2026-08-06T00:00:00Z" }
+      """#
         .utf8
     )
     XCTAssertEqual(
@@ -282,7 +302,9 @@ final class Post26ContractsTests: XCTestCase {
     XCTAssertNil(legacyObject["repositoryNames"])
 
     let v27Create = CreateContainerRegistry(
-      url: "ghcr.io", repositoryNames: ["getarcaneapp/arcane", "getarcaneapp/agent"])
+      url: "ghcr.io",
+      repositoryNames: ["getarcaneapp/arcane", "getarcaneapp/agent"]
+    )
     let v27Object = try XCTUnwrap(
       JSONSerialization.jsonObject(with: ArcaneJSON.makeEncoder().encode(v27Create))
         as? [String: Any]
@@ -296,7 +318,10 @@ final class Post26ContractsTests: XCTestCase {
   func testRegistrySyncDefaultsMissingNamesAndOnlyEncodesWhenRequested() throws {
     let decoder = ArcaneJSON.makeDecoder()
     let legacyData = Data(
-      #"{"id":"registry-1","url":"ghcr.io","username":"user","token":"token","insecure":false,"enabled":true,"registryType":"custom","createdAt":"2026-08-06T00:00:00Z","updatedAt":"2026-08-06T00:00:00Z"}"#
+      #"""
+      { "id": "registry-1", "url": "ghcr.io", "username": "user", "token": "token", "insecure": false, "enabled": true,
+      "registryType": "custom", "createdAt": "2026-08-06T00:00:00Z", "updatedAt": "2026-08-06T00:00:00Z" }
+      """#
         .utf8
     )
     let legacy = try decoder.decode(ContainerRegistrySync.self, from: legacyData)

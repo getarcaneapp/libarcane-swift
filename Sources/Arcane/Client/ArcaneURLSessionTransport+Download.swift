@@ -17,6 +17,7 @@ extension ArcaneURLSessionTransport {
   /// buffering the payload in memory. The destination is replaced atomically
   /// only after a successful response has finished downloading.
   @discardableResult
+  @concurrent
   public func downloadRaw(
     _ path: String,
     query: [URLQueryItem] = [],
@@ -95,8 +96,7 @@ extension ArcaneURLSessionTransport {
     }
 
     if shouldRetry(method: "GET", statusCode: response.statusCode),
-      context.attempt < retryPolicy.maxAttempts
-    {
+      context.attempt < retryPolicy.maxAttempts {
       removeTemporaryFile(downloadedURL)
       try await sleepBeforeRetry(attempt: context.attempt)
       return .retry(incrementAttempt: true)

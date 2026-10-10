@@ -54,8 +54,7 @@ struct HumaErrorDetail: Decodable, Sendable {
 
 extension ArcaneError {
   static func from(statusCode: Int, data: Data, headers: [AnyHashable: Any], decoder: JSONDecoder)
-    -> ArcaneError
-  {
+    -> ArcaneError {
     let body = String(data: data, encoding: .utf8) ?? ""
     let arcaneError = try? decoder.decode(APIErrorResponse.self, from: data)
     let arcaneHasFields =

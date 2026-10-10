@@ -45,17 +45,25 @@ import Testing
           }
         }
         """#
-      let response = try #require(HTTPURLResponse(
-        url: request.url!, statusCode: 200, httpVersion: nil,
-        headerFields: ["Content-Type": "application/json"]))
+      let response = try #require(
+        HTTPURLResponse(
+          url: request.url!,
+          statusCode: 200,
+          httpVersion: nil,
+          headerFields: ["Content-Type": "application/json"]
+        )
+      )
       return (response, Data(body.utf8))
     }
 
     let configuration = URLSessionConfiguration.ephemeral
     configuration.protocolClasses = [MockURLProtocol.self]
-    let client = ArcaneClient(configuration: .init(
-      baseURL: URL(string: "https://vulnerability-contract.example")!,
-      urlSession: mock.session(configuration: configuration)))
+    let client = ArcaneClient(
+      configuration: .init(
+        baseURL: URL(string: "https://vulnerability-contract.example")!,
+        urlSession: mock.session(configuration: configuration)
+      )
+    )
 
     let overview = try await client.vulnerabilities.riskOverview(envID: .init(rawValue: "testing"))
     #expect(overview.riskScore == 72)
@@ -71,17 +79,25 @@ import Testing
     await mock.setHandler { request in
       #expect(request.httpMethod == "DELETE")
       #expect(request.url?.path == "/api/environments/testing/vulnerabilities/ignore/ignore-1")
-      let response = try #require(HTTPURLResponse(
-        url: request.url!, statusCode: 200, httpVersion: nil,
-        headerFields: ["Content-Type": "application/json"]))
+      let response = try #require(
+        HTTPURLResponse(
+          url: request.url!,
+          statusCode: 200,
+          httpVersion: nil,
+          headerFields: ["Content-Type": "application/json"]
+        )
+      )
       return (response, Data(#"{"success":true,"data":{}}"#.utf8))
     }
 
     let configuration = URLSessionConfiguration.ephemeral
     configuration.protocolClasses = [MockURLProtocol.self]
-    let client = ArcaneClient(configuration: .init(
-      baseURL: URL(string: "https://vulnerability-contract.example")!,
-      urlSession: mock.session(configuration: configuration)))
+    let client = ArcaneClient(
+      configuration: .init(
+        baseURL: URL(string: "https://vulnerability-contract.example")!,
+        urlSession: mock.session(configuration: configuration)
+      )
+    )
 
     try await client.vulnerabilities.unignore(envID: .init(rawValue: "testing"), ignoreId: "ignore-1")
   }

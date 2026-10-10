@@ -24,8 +24,7 @@ public struct JobsService: Sendable {
 
   /// Update background job cron schedules. Only non-nil fields are applied.
   public func updateSchedules(_ body: UpdateJobScheduleConfig, envID: EnvironmentID? = nil)
-    async throws -> JobScheduleConfig
-  {
+    async throws -> JobScheduleConfig {
     try await rest.put(rest.environmentPath(envID, "job-schedules"), body: body)
   }
 
@@ -50,7 +49,10 @@ public struct JobsService: Sendable {
   public func run(jobID: String, envID: EnvironmentID? = nil) async throws -> JobRunResponse {
     let path = rest.environmentPath(envID, "jobs/\(jobID)/run")
     let data = try await rest.transport.rawRequest(
-      path, method: "POST", body: Optional<EmptyBody>.none)
+      path,
+      method: "POST",
+      body: Optional<EmptyBody>.none
+    )
     do {
       return try JSONDecoder.arcane.decode(JobRunResponse.self, from: data)
     } catch {

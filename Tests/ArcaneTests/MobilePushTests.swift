@@ -19,8 +19,11 @@ final class MobilePushTests: XCTestCase {
         "devices":[{"id":"d1","label":"iPhone","events":{"image_update":true},"environmentIds":[],"createdAt":"2026-08-29T18:00:00Z"}]}}
         """
       let response = HTTPURLResponse(
-        url: request.url!, statusCode: 200, httpVersion: nil,
-        headerFields: ["Content-Type": "application/json"])!
+        url: request.url!,
+        statusCode: 200,
+        httpVersion: nil,
+        headerFields: ["Content-Type": "application/json"]
+      )!
       return (response, Data(body.utf8))
     }
     let configuration = URLSessionConfiguration.ephemeral
@@ -28,7 +31,9 @@ final class MobilePushTests: XCTestCase {
     let client = ArcaneClient(
       configuration: .init(
         baseURL: URL(string: "https://arcane.example.com")!,
-        urlSession: mock.session(configuration: configuration)))
+        urlSession: mock.session(configuration: configuration)
+      )
+    )
 
     let status = try await client.mobilePush.status()
     XCTAssertTrue(status.enabled)
@@ -40,8 +45,8 @@ final class MobilePushTests: XCTestCase {
       "arcane": [
         "v": 1, "eventId": "e1", "occurredAt": "2026-08-29T18:00:00Z", "type": "auto_heal",
         "severity": "warning", "environmentId": "0",
-        "route": ["kind": "container", "environmentId": "0", "id": "abc"], "channelId": "ch_1",
-      ],
+        "route": ["kind": "container", "environmentId": "0", "id": "abc"], "channelId": "ch_1"
+      ]
     ]
     let payload = try XCTUnwrap(MobilePushPayload(userInfo: userInfo))
     XCTAssertEqual(payload.route.kind, .container)

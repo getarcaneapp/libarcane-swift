@@ -1,31 +1,35 @@
 import Foundation
+import Synchronization
 
 final class OIDCMockURLProtocol: URLProtocol, @unchecked Sendable {
-  private static let lock = NSLock()
-  nonisolated(unsafe) private static var recordedCallbackRequestCount = 0
+  private static let recordedCallbackRequestCount = Mutex(0)
 
   static var callbackRequestCount: Int {
-    lock.withLock { recordedCallbackRequestCount }
+    recordedCallbackRequestCount.withLock { $0 }
   }
 
   static func reset() {
-    lock.withLock {
-      recordedCallbackRequestCount = 0
+    recordedCallbackRequestCount.withLock {
+      $0 = 0
     }
   }
 
-  override class func canInit(with request: URLRequest) -> Bool {
+  override static func canInit(with request: URLRequest) -> Bool {
     true
   }
 
-  override class func canonicalRequest(for request: URLRequest) -> URLRequest {
+  override static func canonicalRequest(for request: URLRequest) -> URLRequest {
     request
   }
 
   override func startLoading() {
     if let url = request.url, url.path.hasSuffix("/api/oidc/url"),
-      let response = HTTPURLResponse(url: url, statusCode: 200, httpVersion: nil,
-        headerFields: ["Content-Type": "application/json"]) {
+      let response = HTTPURLResponse(
+        url: url,
+        statusCode: 200,
+        httpVersion: nil,
+        headerFields: ["Content-Type": "application/json"]
+      ) {
       client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
       client?.urlProtocol(self, didLoad: Data(#"{"success":true,"authUrl":"https://idp.example.com/authorize"}"#.utf8))
       client?.urlProtocolDidFinishLoading(self)
@@ -36,8 +40,8 @@ final class OIDCMockURLProtocol: URLProtocol, @unchecked Sendable {
       return
     }
 
-    Self.lock.withLock {
-      Self.recordedCallbackRequestCount += 1
+    Self.recordedCallbackRequestCount.withLock {
+      $0 += 1
     }
 
     guard

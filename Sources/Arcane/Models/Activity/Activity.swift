@@ -106,7 +106,7 @@ public enum ActivityType: Hashable, Sendable, Codable {
     "vulnerability_scan": .vulnerabilityScan,
     "auto_update": .autoUpdate,
     "system_prune": .systemPrune,
-    "resource_action": .resourceAction,
+    "resource_action": .resourceAction
   ]
 
   public init(rawValue: String) {
