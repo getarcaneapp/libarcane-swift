@@ -19,7 +19,7 @@ let package = Package(
     .library(name: "ArcanePasskeys", targets: ["ArcanePasskeys"]),
   ],
   dependencies: [
-    .package(url: "https://github.com/apple/swift-http-types", from: "1.6.0")
+    .package(url: "https://github.com/apple/swift-http-types", from: "1.8.0")
   ],
   targets: [
     .target(

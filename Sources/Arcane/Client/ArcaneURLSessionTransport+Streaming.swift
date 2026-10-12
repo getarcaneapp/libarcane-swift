@@ -45,7 +45,8 @@ extension ArcaneURLSessionTransport {
       if try await refreshAuthorizationIfNeeded(
         statusCode: http.statusCode,
         authorized: authorized,
-        didRefresh: &didRefresh
+        didRefresh: &didRefresh,
+        sentAuthorization: request.value(forHTTPHeaderField: "Authorization")
       ) {
         continue
       }

@@ -94,6 +94,15 @@ public actor AuthManager {
     )
   }
 
+  /// The Authorization header requests are currently signed with, without
+  /// loading or refreshing anything.
+  func currentAuthorizationHeader() -> String? {
+    guard apiKey?.isEmpty ?? true, let accessToken = cachedTokens?.accessToken, !accessToken.isEmpty else {
+      return nil
+    }
+    return "Bearer \(accessToken)"
+  }
+
   public func hasRefreshCredential() async throws -> Bool {
     if apiKey != nil {
       return false

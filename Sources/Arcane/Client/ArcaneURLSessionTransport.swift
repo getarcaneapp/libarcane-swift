@@ -162,7 +162,8 @@ public final class ArcaneURLSessionTransport: Sendable {
         if try await refreshAuthorizationIfNeeded(
           statusCode: http.statusCode,
           authorized: authorized,
-          didRefresh: &didRefresh
+          didRefresh: &didRefresh,
+          sentAuthorization: request.value(forHTTPHeaderField: "Authorization")
         ) {
           continue
         }
@@ -298,7 +299,8 @@ public final class ArcaneURLSessionTransport: Sendable {
   func refreshAuthorizationIfNeeded(
     statusCode: Int,
     authorized: Bool,
-    didRefresh: inout Bool
+    didRefresh: inout Bool,
+    sentAuthorization: String? = nil
   ) async throws -> Bool {
     guard statusCode == 401,
       authorized,
@@ -306,6 +308,14 @@ public final class ArcaneURLSessionTransport: Sendable {
       try await authManager.hasRefreshCredential()
     else {
       return false
+    }
+    // A refresh finished while this request was in flight: retry with the
+    // rotated token instead of spending another single-use refresh token.
+    if let sentAuthorization,
+      let current = await authManager.currentAuthorizationHeader(),
+      current != sentAuthorization {
+      didRefresh = true
+      return true
     }
     _ = try await authManager.refreshTokens()
     didRefresh = true
@@ -373,7 +383,19 @@ public final class ArcaneURLSessionTransport: Sendable {
     guard ["GET", "HEAD", "OPTIONS", "PUT", "DELETE"].contains(method.uppercased()) else {
       return false
     }
-    return error.code != .cancelled
+    switch error.code {
+    // Retrying these can't succeed and only delays the error: an unreachable
+    // or timed-out host already waited out its timeout, and TLS/trust or
+    // malformed-response failures repeat identically.
+    case .cancelled, .timedOut, .notConnectedToInternet, .badServerResponse,
+      .secureConnectionFailed, .serverCertificateUntrusted, .serverCertificateHasBadDate,
+      .serverCertificateHasUnknownRoot, .serverCertificateNotYetValid,
+      .clientCertificateRejected, .clientCertificateRequired,
+      .appTransportSecurityRequiresSecureConnection, .userAuthenticationRequired:
+      return false
+    default:
+      return true
+    }
   }
 
   func sleepBeforeRetry(attempt: Int) async throws {
