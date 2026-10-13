@@ -44,6 +44,35 @@ import Testing
     #expect(await mock.requestCount() == 1)
   }
 
+  @Test func modernStreamDecodesServerSentEventFrames() async throws {
+    let mock = MockURLProtocolSession()
+    let client = makeActivityStreamClient(mock)
+    let date = Date(timeIntervalSince1970: 1_780_000_000)
+    let running = streamActivity(status: .running, date: date)
+    let payload =
+      Data(": connected\n\n".utf8)
+      + Data("data: ".utf8)
+      + (try multiplexedLine(
+        .init(type: .activity, environmentID: "edge", activity: running, timestamp: date)))
+      + Data("\n".utf8)
+      + Data(#"data: {"type":"heartbeat","timestamp":"2026-06-01T15:01:00Z"}"#.utf8)
+      + Data("\n\n".utf8)
+      + Data("event: message\nid: 3\nretry: 1000\n\n".utf8)
+    await mock.setStreamingHandler { request in
+      #expect(request.url?.path == "/base/api/stream")
+      return .init(
+        response: activityStreamResponse(request, status: 200),
+        chunks: [payload],
+        holdOpen: false
+      )
+    }
+    var events: [ActivityStreamEvent] = []
+    for try await event in client.activities.stream() { events.append(event) }
+    #expect(events.map(\.type) == [.activity, .heartbeat])
+    #expect(events.first?.activity?.status == .running)
+    #expect(events.first?.environmentID == "edge")
+  }
+
   @Test func modern404FallsBackToLegacyAndClosesRejectedRequest() async throws {
     let mock = MockURLProtocolSession()
     let client = makeActivityStreamClient(mock)

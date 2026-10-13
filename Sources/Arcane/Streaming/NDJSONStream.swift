@@ -108,7 +108,13 @@ public struct NDJSONStream<Element: Decodable & Sendable>: AsyncSequence, Sendab
   }
 
   private static func decodeLine(_ line: String, using decoder: JSONDecoder) throws -> Element? {
-    let trimmed = line.trimmingCharacters(in: .whitespaces)
+    var trimmed = line.trimmingCharacters(in: .whitespaces)
+    // The multiplexed `/stream` endpoint is Server-Sent Events: each JSON
+    // payload arrives on a `data:` line. Other SSE fields (`event:`, `id:`,
+    // `retry:`, `:` comments) fall through below as non-JSON and are skipped.
+    if trimmed.hasPrefix("data:") {
+      trimmed = String(trimmed.dropFirst(5)).trimmingCharacters(in: .whitespaces)
+    }
     guard !trimmed.isEmpty, let data = trimmed.data(using: .utf8) else {
       return nil
     }
