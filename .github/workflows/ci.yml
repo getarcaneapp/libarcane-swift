@@ -64,7 +64,13 @@ jobs:
           xcode-version: "27.0"
       - name: Install iOS 18.6 runtime
         if: matrix.ios == '18.6'
-        run: xcodebuild -downloadPlatform iOS -buildVersion 18.6 -architectureVariant arm64
+        # iOS 18.x runtimes are only published as universal; arm64-only variants start at iOS 26.
+        run: |
+          if xcrun simctl list runtimes | grep -q 'iOS 18.6'; then
+            echo "iOS 18.6 runtime already installed"
+          else
+            xcodebuild -downloadPlatform iOS -buildVersion 18.6
+          fi
       - name: Create iOS 18.6 simulator
         if: matrix.ios == '18.6'
         run: xcrun simctl create 'iPhone 16' 'iPhone 16' com.apple.CoreSimulator.SimRuntime.iOS-18-6
