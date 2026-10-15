@@ -20,6 +20,9 @@ public struct ContainerSummary: Codable, Hashable, Sendable, Identifiable {
   public var updateInfo: ImageUpdateInfo?
   public var redeployDisabled: Bool?
   public var hidden: Bool?
+  /// Resource usage sampled by the server's shared stats collector. Only present on
+  /// resource-sorted list requests (`ContainerResourceSort`) for running containers.
+  public var resourceSample: ContainerResourceSample?
 
   private enum CodingKeys: String, CodingKey {
     case id
@@ -40,6 +43,7 @@ public struct ContainerSummary: Codable, Hashable, Sendable, Identifiable {
     case updateInfo
     case redeployDisabled
     case hidden
+    case resourceSample
   }
 
   public init(
@@ -60,7 +64,8 @@ public struct ContainerSummary: Codable, Hashable, Sendable, Identifiable {
     iconDarkUrl: String? = nil,
     updateInfo: ImageUpdateInfo? = nil,
     redeployDisabled: Bool? = nil,
-    hidden: Bool? = nil
+    hidden: Bool? = nil,
+    resourceSample: ContainerResourceSample? = nil
   ) {
     self.id = id
     self.names = names
@@ -80,6 +85,7 @@ public struct ContainerSummary: Codable, Hashable, Sendable, Identifiable {
     self.updateInfo = updateInfo
     self.redeployDisabled = redeployDisabled
     self.hidden = hidden
+    self.resourceSample = resourceSample
   }
 
   public init(from decoder: Decoder) throws {
@@ -102,6 +108,58 @@ public struct ContainerSummary: Codable, Hashable, Sendable, Identifiable {
     updateInfo = try container.decodeIfPresent(ImageUpdateInfo.self, forKey: .updateInfo)
     redeployDisabled = try container.decodeIfPresent(Bool.self, forKey: .redeployDisabled)
     hidden = try container.decodeIfPresent(Bool.self, forKey: .hidden)
+    // A malformed sample must not drop the whole row from the lossy list decode.
+    resourceSample = try? container.decodeIfPresent(ContainerResourceSample.self, forKey: .resourceSample)
+  }
+}
+
+/// Server-side container list sort keys backed by the shared stats collector.
+/// Responses sorted by these keys carry `ContainerSummary.resourceSample` for
+/// running containers; check `ContainerListResponse.resourceSortSupported`
+/// because older servers ignore the key and fall back to their default order.
+public enum ContainerResourceSort: String, CaseIterable, Sendable {
+  case cpuUsage
+  case memoryUsage
+}
+
+/// A point-in-time resource usage sample for a container. Ordering and the
+/// displayed values come from the same sample.
+public struct ContainerResourceSample: Codable, Hashable, Sendable {
+  /// Normalized CPU usage percentage (0-100 scale).
+  public var cpuPercent: Double
+  public var memoryUsageBytes: UInt64
+  /// Memory limit in bytes; the host total when the container has no limit.
+  public var memoryLimitBytes: UInt64
+  public var sampleTime: Date?
+
+  public init(
+    cpuPercent: Double = 0,
+    memoryUsageBytes: UInt64 = 0,
+    memoryLimitBytes: UInt64 = 0,
+    sampleTime: Date? = nil
+  ) {
+    self.cpuPercent = cpuPercent
+    self.memoryUsageBytes = memoryUsageBytes
+    self.memoryLimitBytes = memoryLimitBytes
+    self.sampleTime = sampleTime
+  }
+
+  /// Memory usage as a percentage of the limit, or nil when the limit is unknown.
+  public var memoryPercent: Double? {
+    guard memoryLimitBytes > 0 else { return nil }
+    return min(max(Double(memoryUsageBytes) / Double(memoryLimitBytes) * 100, 0), 100)
+  }
+
+  private enum CodingKeys: String, CodingKey {
+    case cpuPercent, memoryUsageBytes, memoryLimitBytes, sampleTime
+  }
+
+  public init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    cpuPercent = try container.decode(Double.self, forKey: .cpuPercent)
+    memoryUsageBytes = try container.decode(UInt64.self, forKey: .memoryUsageBytes)
+    memoryLimitBytes = try container.decode(UInt64.self, forKey: .memoryLimitBytes)
+    sampleTime = try? container.decodeIfPresent(Date.self, forKey: .sampleTime)
   }
 }
 

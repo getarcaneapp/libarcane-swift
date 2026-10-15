@@ -72,23 +72,28 @@ public struct ContainerListResponse: Decodable, Sendable {
   public var groups: [ContainerSummaryGroup]?
   public var counts: ContainerStatusCounts
   public var pagination: PaginationResponse
+  /// True when the server honors `ContainerResourceSort` keys. Older servers omit it
+  /// and silently ignore resource sorts.
+  public var resourceSortSupported: Bool
 
   public init(
     success: Bool,
     data: [ContainerSummary] = [],
     groups: [ContainerSummaryGroup]? = nil,
     counts: ContainerStatusCounts = .init(),
-    pagination: PaginationResponse
+    pagination: PaginationResponse,
+    resourceSortSupported: Bool = false
   ) {
     self.success = success
     self.data = data
     self.groups = groups
     self.counts = counts
     self.pagination = pagination
+    self.resourceSortSupported = resourceSortSupported
   }
 
   private enum CodingKeys: String, CodingKey {
-    case success, data, groups, counts, pagination
+    case success, data, groups, counts, pagination, resourceSortSupported
   }
 
   public init(from decoder: Decoder) throws {
@@ -98,5 +103,7 @@ public struct ContainerListResponse: Decodable, Sendable {
     groups = try container.decodeIfPresent([ContainerSummaryGroup].self, forKey: .groups)
     counts = try container.decode(ContainerStatusCounts.self, forKey: .counts)
     pagination = try container.decode(PaginationResponse.self, forKey: .pagination)
+    resourceSortSupported =
+      try container.decodeIfPresent(Bool.self, forKey: .resourceSortSupported) ?? false
   }
 }

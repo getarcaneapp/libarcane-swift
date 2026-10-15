@@ -46,6 +46,54 @@ final class ContainerPaginationTests: XCTestCase {
     XCTAssertEqual(response.pagination.totalItems, 101)
   }
 
+  func testResourceSortedListSendsSortAndDecodesSamples() async throws {
+    await mock.reset()
+    let client = makeMockClient()
+
+    await mock.setHandler { request in
+      let components = try XCTUnwrap(
+        URLComponents(url: XCTUnwrap(request.url), resolvingAgainstBaseURL: false)
+      )
+      let query = Dictionary(
+        uniqueKeysWithValues: (components.queryItems ?? []).map { ($0.name, $0.value) }
+      )
+      XCTAssertEqual(query["sort"], "cpuUsage")
+      XCTAssertEqual(query["order"], "desc")
+
+      let response = try XCTUnwrap(
+        HTTPURLResponse(
+          url: XCTUnwrap(request.url),
+          statusCode: 200,
+          httpVersion: nil,
+          headerFields: ["Content-Type": "application/json"]
+        )
+      )
+      return (response, Data(Self.resourceSortedPayload.utf8))
+    }
+
+    let response = try await client.containers.list(
+      query: .init(sortBy: ContainerResourceSort.cpuUsage.rawValue, sortOrder: .descending)
+    )
+
+    XCTAssertTrue(response.resourceSortSupported)
+    XCTAssertEqual(response.data.map(\.id), ["sampled", "stopped", "malformed"])
+    let sample = try XCTUnwrap(response.data[0].resourceSample)
+    XCTAssertEqual(sample.cpuPercent, 12.5)
+    XCTAssertEqual(sample.memoryUsageBytes, 268_435_456)
+    XCTAssertEqual(sample.memoryLimitBytes, 1_073_741_824)
+    XCTAssertEqual(sample.memoryPercent, 25)
+    XCTAssertNotNil(sample.sampleTime)
+    XCTAssertNil(response.data[1].resourceSample)
+    XCTAssertNil(response.data[2].resourceSample)
+  }
+
+  func testListResponseWithoutResourceSortFlagDefaultsToUnsupported() throws {
+    let response = try JSONDecoder().decode(
+      ContainerListResponse.self, from: Data(Self.containerListPayload.utf8))
+    XCTAssertFalse(response.resourceSortSupported)
+    XCTAssertNil(response.data.first?.resourceSample)
+  }
+
   func testPaginatorAdvancesByServerPageSizeAfterShortDecodedPage() async throws {
     let starts = StartRecorder()
     let paginator = ArcanePaginator<Int>(limit: 50) { start, _ in
@@ -129,6 +177,26 @@ final class ContainerPaginationTests: XCTestCase {
       "id":"valid","names":["/valid"],"image":"nginx:latest","imageId":"sha256:1",
       "command":"nginx","created":1,"ports":[],"labels":{},"state":"running",
       "status":"Up","hostConfig":{},"networkSettings":{},"mounts":[]
+    }
+    """#
+
+  private static let resourceSortedPayload = #"""
+    {
+      "success":true,
+      "resourceSortSupported":true,
+      "data":[
+        {"id":"sampled","names":["/sampled"],"image":"nginx","imageId":"sha256:1","command":"","created":1,
+         "ports":[],"labels":{},"state":"running","status":"Up","hostConfig":{},"networkSettings":{},"mounts":[],
+         "resourceSample":{"cpuPercent":12.5,"memoryUsageBytes":268435456,"memoryLimitBytes":1073741824,
+           "sampleTime":"2026-10-14T12:00:00.123456789Z"}},
+        {"id":"stopped","names":["/stopped"],"image":"nginx","imageId":"sha256:1","command":"","created":1,
+         "ports":[],"labels":{},"state":"exited","status":"Exited","hostConfig":{},"networkSettings":{},"mounts":[]},
+        {"id":"malformed","names":["/malformed"],"image":"nginx","imageId":"sha256:1","command":"","created":1,
+         "ports":[],"labels":{},"state":"running","status":"Up","hostConfig":{},"networkSettings":{},"mounts":[],
+         "resourceSample":{"cpuPercent":"high"}}
+      ],
+      "counts":{"runningContainers":2,"stoppedContainers":1,"totalContainers":3},
+      "pagination":{"totalPages":1,"totalItems":3,"currentPage":1,"itemsPerPage":20}
     }
     """#
 
